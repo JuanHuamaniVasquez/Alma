@@ -4,10 +4,11 @@ import { ContactShadows, Line, useGLTF, useProgress } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { BUDGETS, INDICATOR_NAMES, type Indicator, type LedgerDay } from "@/lib/api";
-import { ANCHORS_IVA, CrewMesh, type CrewLook } from "./CrewFigure";
+import type { CrewLook } from "./CrewFigure";
 
 useGLTF.setDecoderPath("/draco/");
 useGLTF.preload("/models/z2.glb");
+for (const n of ["VEGA", "LYRA", "ALTAIR", "CASTOR", "RIGEL"]) useGLTF.preload(`/models/crew_${n}.glb`);
 const HEIGHT = 1.9, FOCUS_Y = 0.98;
 const IVORY = "#efe8da", SIGNAL = "#ff5a1f";
 
@@ -100,9 +101,37 @@ function Suit(props: { marks: Marks; mode: "books" | "body"; onTap: () => void; 
   return <Body anchors={ANCHORS_EVA} {...props}><primitive object={model} /></Body>;
 }
 
-/** El tripulante DENTRO de la nave: personaje ficticio y estilizado, con cara, uniforme, indicativo y franja de su color. */
-function Crew({ look, ...props }: { look: CrewLook; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
-  return <Body anchors={ANCHORS_IVA} {...props}><CrewMesh look={look} /></Body>;
+/** Anclas de los indicadores sobre el cuerpo generado (fracciones de la altura H; pies en y=0, frente = +z; A-pose). */
+function anchorsFor(H: number): Record<string, [number, number, number]> {
+  return { "sueño": [0, 1.02 * H, 0.0], "ánimo": [-0.045 * H, 0.935 * H, 0.06 * H], temperatura: [0, 0.855 * H, 0.04 * H], fc: [-0.055 * H, 0.72 * H, 0.085 * H],
+           "presión": [0.165 * H, 0.745 * H, 0.0], glucosa: [0, 0.57 * H, 0.09 * H] };
+}
+const HAIR = /short0|bob0|ponytail|long0|afro|braid|eyebrow|eyelash/;
+
+/** El tripulante DENTRO de la nave: humano GENERADO por script en Blender (MPFB; piel, ojos, pelo y dientes de assets CC0) con el mono de vuelo hecho a medida.
+ *  Capas: «uniform» (con mono) o «body» (solo el cuerpo). Personaje FICTICIO: combinación de parámetros, nunca una persona real. */
+function CrewGLB({ name, layer, ...props }: { name: string; layer: "uniform" | "body"; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
+  const { scene } = useGLTF(`/models/crew_${name}.glb`);
+  const { model, H } = useMemo(() => {
+    const m = scene.clone(true);
+    const box = new THREE.Box3().setFromObject(m), c = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
+    m.position.set(-c.x, -box.min.y, -c.z);
+    m.traverse((o) => {
+      const mesh = o as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      const mat = (mesh.material as THREE.MeshStandardMaterial).clone();
+      const n = (mat.name || "").toLowerCase();
+      const pelo = HAIR.test(n);
+      mat.transparent = false; mat.opacity = 1; mat.alphaTest = pelo ? 0.12 : 0; mat.depthWrite = true; mat.side = pelo ? THREE.DoubleSide : THREE.FrontSide;
+      mat.roughness = n.includes("uniform") ? 0.86 : n.includes("body") || n.includes("lips") ? 0.55 : 0.6; mat.metalness = 0;
+      if (n.includes("uniform")) mat.vertexColors = true;
+      mesh.material = mat; mesh.userData.kind = n.includes("uniform") ? "uniform" : "skin";
+    });
+    return { model: m, H: size.y };
+  }, [scene]);
+  useEffect(() => { model.traverse((o) => { if (o.userData.kind === "uniform") o.visible = layer === "uniform"; }); }, [layer, model]);
+  const anchors = useMemo(() => anchorsFor(H), [H]);
+  return <Body anchors={anchors} {...props}><primitive object={model} /></Body>;
 }
 
 /** La bahía holográfica: peana con anillos, haz de luz vertical y anillos de barrido en el suelo. Solo luz (aditivo): sin geometría pesada. */
@@ -173,8 +202,8 @@ function Ring({ i, id, state, onPick, active, labels }: { i: number; id: string;
   );
 }
 
-export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look, holo }: {
-  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook; holo: boolean;
+export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look, holo, layer }: {
+  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook; holo: boolean; layer: "uniform" | "body";
 }) {
   const labels: Labels = useRef({});
   const marks: Marks = useRef({});
@@ -184,14 +213,14 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
   const stateOf = (id: string): State => { const p = ledger?.presupuestos[id]; return !p ? "absent" : p.cierra ? "closes" : "open"; };
   return (
     <div className="absolute inset-0">
-      <Canvas camera={{ position: [0, 1.1, 5.4], fov: 30 }} dpr={[1, 2]} gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05 }}>
+      <Canvas camera={{ position: [0, 1.1, 5.4], fov: 30, near: 2.5, far: 14 }} dpr={[1, 2]} gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05 }}>
         <hemisphereLight args={["#e9e2d6", "#1a1612", 0.55]} />
         <directionalLight position={[2.6, 3.2, 3]} intensity={2.6} color="#ffd9b3" />
         <directionalLight position={[-3, 2, -2.5]} intensity={1.5} color="#d9dde0" />
         <pointLight position={[0, 0.2, 1.6]} intensity={0.8} color="#ffb47a" distance={4} />
         <Rig />
         {holo && <Bay />}
-        {outfit === "eva" ? <Suspense fallback={null}><Suit marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense> : <Crew look={look} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} />}
+        {outfit === "eva" ? <Suspense fallback={null}><Suit marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense> : <Suspense fallback={null}><CrewGLB name={look.indicativo} layer={layer} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense>}
         <ContactShadows position={[0, 0, 0]} opacity={0.7} scale={4} blur={2.4} far={1.6} />
         {mode === "books" && BUDGETS.map(([id], i) => <Ring key={id} i={i} id={id} state={stateOf(id)} onPick={onPick} active={picked === id} labels={labels} />)}
       </Canvas>

@@ -24,6 +24,7 @@ export default function MedicalModule() {
   const [sel, setSel] = useState(0);
   const [outfit, setOutfit] = useState<"iva" | "eva">("iva");
   const [holo, setHolo] = useState(true);
+  const [layer, setLayer] = useState<"uniform" | "body">("uniform");
   const { say, has } = useAlma();
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export default function MedicalModule() {
       if (q.get("pick")) setTimeout(() => setPicked(q.get("pick")), 400);
       if (q.get("out") === "eva") setOutfit("eva");
       if (q.get("holo") === "0") setHolo(false);
+      if (q.get("layer") === "body") setLayer("body");
       if (q.get("mode") === "body") { setMode("body"); if (q.get("ind")) setTimeout(() => setPickedInd(q.get("ind")), 400); }
       const all = await Promise.all(d.dias.map((n) => get<LedgerDay>(`/api/libro/dia/${n}/`)));
       setOpen(new Set(all.filter((x): x is LedgerDay => !!x && !x.cierra).map((x) => x.dia_habitat)));
@@ -60,7 +62,7 @@ export default function MedicalModule() {
   return (
     <div className="absolute inset-0" style={{ background: "radial-gradient(60% 70% at 50% 42%, #2a2018 0%, #14110e 55%, #0d0c0b 100%)" }}>
       <SuitScene ledger={ledger} picked={picked} onPick={pickRing} mode={mode} indicators={indsCrew} pickedInd={pickedInd} onPickInd={pickInd} onTapSuit={() => { const k = outfit === "eva" ? "suit" : who ? `crew-${who.indicativo}` : "suit"; if (has(k)) say(k, true); }}
-        outfit={outfit} look={who ?? FALLBACK} holo={holo} />
+        outfit={outfit} look={who ?? FALLBACK} holo={holo} layer={layer} />
       {who && <p className="pointer-events-none absolute inset-x-0 top-12 z-10 text-center font-display text-[1.6rem] leading-none" style={{ color: who.color }}>{who.indicativo} <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-ink-faint">· {who.rol} · {outfit === "eva" ? "outside" : "inside"}</span></p>}
       <div role="tablist" aria-label="View" className="absolute left-1/2 top-4 z-20 flex -translate-x-1/2 gap-6 font-mono text-[11px] uppercase tracking-[0.22em]">
         {([["books", "Books"], ["body", "Body"]] as const).map(([m, t]) => (
@@ -84,13 +86,20 @@ export default function MedicalModule() {
             <button key={m} role="tab" aria-selected={outfit === m} onClick={() => setOutfit(m)} className={`border-b pb-0.5 transition-colors ${outfit === m ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>
           ))}
         </div>
+        {outfit === "iva" && (
+          <div className="mt-3 flex gap-4 font-mono text-[10px] uppercase tracking-[0.2em]" role="tablist" aria-label="Layer">
+            {([["uniform", "Uniform"], ["body", "Body"]] as const).map(([m, t]) => (
+              <button key={m} role="tab" aria-selected={layer === m} onClick={() => setLayer(m)} className={`border-b pb-0.5 transition-colors ${layer === m ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>
+            ))}
+          </div>
+        )}
         <div className="mt-3 flex gap-4 font-mono text-[10px] uppercase tracking-[0.2em]" role="tablist" aria-label="Display">
           {([[true, "Hologram"], [false, "Solid"]] as const).map(([m, t]) => (
             <button key={t} role="tab" aria-selected={holo === m} onClick={() => setHolo(m)} className={`border-b pb-0.5 transition-colors ${holo === m ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>
           ))}
         </div>
         <p className="mt-3 font-mono text-[9.5px] uppercase leading-relaxed tracking-[0.16em] text-ink-faint">
-          {outfit === "eva" ? "NASA Z-2 prototype suit · NASA 3D Resources" : "Stylized fictional character"}<br />not a real person · body states = stand-in
+          {outfit === "eva" ? "NASA Z-2 prototype suit · NASA 3D Resources" : "Generated fictional character"}<br />not a real person · body states = stand-in
         </p>
       </nav>
       {mode === "body" && pickedInd && <IndicatorSlip crewName={who?.indicativo} ind={indsCrew.find((i) => i.indicador === pickedInd)} name={INDICATOR_NAMES[pickedInd]} onClose={() => setPickedInd(null)} onSent={() => get<{ indicadores: Indicator[] }>("/api/indicadores/").then((d) => setInds(d?.indicadores ?? []))} />}

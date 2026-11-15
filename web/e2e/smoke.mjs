@@ -68,7 +68,7 @@ await clicTexto("button", "Outside");
 await esperarTexto("NASA Z-2 prototype suit", 8000);
 check("«Outside» cambia al traje Z-2 y sigue rotulado «not a real person»", (await texto()).toLowerCase().includes("not a real person"));
 await clicTexto("button", "Inside");
-await esperarTexto("Stylized fictional character", 8000);
+await esperarTexto("Generated fictional character", 8000);
 
 // 3 · figura humana: modo Body, ánimo en 3 toques
 await clicTexto("button", "Body");

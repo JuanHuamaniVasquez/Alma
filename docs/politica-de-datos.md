@@ -62,3 +62,6 @@ Fuentes por buscar (datos con archivos reales para el motor y las tarjetas): se 
 > Si el código necesita algo simulado o inventado que no esté aquí: **detenerse, añadir la fila y avisar al humano** antes de escribirlo.
 
 > **Nota de archivo (2026-11-15):** las lecturas crudas de SWPC (`data/lecturas/swpc_*.json`) generadas desde ahora NO se versionan (con `ingestar_swpc --cada` crecerían sin límite); `data/lecturas/manifiesto.jsonl` (hash de cada lectura) sí. Las ocho ya versionadas siguen en el repositorio como evidencia.
+
+### X-16 · Tripulación 3D generada (M3.11)
+Los 5 cuerpos de `web/public/models/crew_*.glb` son personajes FICTICIOS generados por script (`scripts/blender/crew_build.py`) con MPFB/MakeHuman (assets CC0: piel, pelo, ojos, dientes). Uniforme y franja de color hechos por script. No son personas reales. Crédito: MakeHuman Community / MPFB.
