@@ -128,3 +128,7 @@ Detalle completo: DOC-04 §9 y DOC-03 §8–§9. Resumen:
 - **sysmap** (`~/Documentos/sysmap`, comando `sysmap`) — mapa del *código* sacado del propio código. **Antes de codear o tocar un archivo existente**: `sysmap archivo <ruta>`, `sysmap depende <ruta>`, `sysmap impact <ruta>`; antes de cerrar la sesión: `sysmap cierre`. Si avisa de algo (ciclo, trinquete, punto débil), se informa al humano antes de seguir. Cuando exista git y código (M0.2), correr `sysmap empezar` **una vez** (instala ganchos de git y de Claude) — solo con permiso del humano.
 - Estas herramientas son contexto, no fuente: ante conflicto manda DOC-01. No sustituyen la regla de oro (§0): para citar un número o contrato, abrir el DOC.
 - Stack cerrado en §2 (Django + PostgreSQL + Next.js). sysmap entiende los tres.
+
+## 12 · Política de datos (decisión del humano, 2026-11-15)
+
+Detalle y registros: `docs/politica-de-datos.md`. Resumen: **nada simulado sin etiqueta, nada inventado.** Todo dato real con fuente identificable; si no está en los enlaces NASA/CSA (`docs/recursos-nasa.md`) se buscan papers o datos abiertos y se anotan. Sin dato real el ítem se declara bloqueado. Todo lo simulado/inventado lleva banner `SIMULADO` y una fila en el registro §3 de ese documento; lo que no esté ahí no se escribe: detenerse y avisar.

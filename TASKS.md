@@ -14,6 +14,7 @@
 - [ ] **M0.3 Materializar contratos DC-01…DC-12** como schemas validados (pydantic o dataclasses con validación) — campo a campo desde DOC-01 §3, incluyendo `estado_linea` de DC-04 (v0.2) y los 11 campos de DC-12. *Hecho: un test de validación por contrato (12 tests), y un test que RECHAZA una tarjeta DC-12 sin `fuentes[]` con identificador y una DC-05 sin `regla_exacta`.* — Dev A
 - [ ] **M0.4 Datos y fixtures reales al repo**: NOAA SWPC (IN-3, sin API key), dataset OS-892 o extracto con identificador en `data/`, fichas de verdad, bestiario K-1/K-2 (`docs/inventario-maestro-bestiario.md`). *Hecho: loader lee los datos reales, imprime banner REAL/SIMULADO y rechaza registros sin banner, sin fuente con id o sin semilla.* — Dev B
 - [ ] **M0.5 Regenerar/verificar los 8 preregistros FB-001…FB-008** en `docs/actas/` con sus hashes SHA-256 (GO-2; hashes de referencia en DOC-02 Apéndice B — p. ej. FB-005 `6c923ac5…`). *Hecho: script recalcula los 8 hashes y cuadran; test lo verifica.* — Dev B
+- [x] **M0.6 Andamio Django + política de datos** (fila añadida por petición del humano 2026-11-15): proyecto `backend/` (config + 6 apps: ingesta, libro, motor, fabrica, superficies, gobernanza), PostgreSQL real, dominio puro en `src/`, `docs/politica-de-datos.md`. *Hecho: tests de conexión a Postgres, una-app-por-módulo, dominio sin imports de Django y flujo unidireccional.* — Dev A · evidencia: 12 tests pytest verdes
 
 ## M1 · El libro + El Contrapeso (P0 — Dev A)
 
