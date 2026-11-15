@@ -33,3 +33,32 @@ def test_con_ruido_gaussiano_el_fpr_es_nominal_y_el_canal_ve_lo_que_el_cusum_no(
     assert p["2.0"]["cusum_media"] <= 0.10
     v = veredictos(r)
     assert v["H1"] == v["H2"] == v["H3"] == "SOSTENIDA" and v["H4_control_valido"]
+
+
+def test_mad_es_robusto_a_un_dia_atipico_donde_f_no_lo_es():
+    from src.motor.canal_varianza import razon_f
+    from src.motor.evaluacion_varianza import razon_mad
+    rng = random.Random(20261113)
+    base = [rng.gauss(0, 1) for _ in range(28)]
+    vig = [rng.gauss(0, 1) for _ in range(14)]
+    vig_atipico = vig[:-1] + [15.0]       # una noche de 15σ (p. ej. sueño de 0 min por no llevar el reloj)
+    assert razon_f(base, vig_atipico) > 3 * razon_f(base, vig)
+    assert abs(razon_mad(base, vig_atipico) - razon_mad(base, vig)) < 0.25
+
+
+def test_seleccion_en_entrenamiento_y_critico_empirico_sobre_ruido_con_colas_pesadas():
+    from src.motor.evaluacion_varianza import candidato, critico_empirico, razon_f, seleccionar
+    def pesadas(semilla):  # t de 3 g.l. escalada: colas más pesadas que la normal
+        rng, d, out = random.Random(semilla), date(2021, 6, 1), []
+        for i in range(14 * 30 + 28):
+            d += timedelta(days=1)
+            out.append((d, 400 + 40 * rng.gauss(0, 1) / max(0.3, (sum(rng.gauss(0, 1) ** 2 for _ in range(3)) / 3) ** 0.5)))
+        return out
+    ls = {f"p{i}": pesadas(20261113 + i) for i in range(8)}
+    c = critico_empirico([ls], razon_f)
+    assert c > 2.85                                           # con colas pesadas el crítico normal se queda corto
+    s = seleccionar(ls, ls)
+    assert set(s["tabla"]) == {"C2", "C3", "C4"} and s["tabla"]["C3"]["fpr_entrenamiento"] <= 0.03
+    assert s["elegido"] in (None, "C2", "C3", "C4")
+    est, cc = candidato("C3", (ls, ls))
+    assert est is razon_f and cc == c

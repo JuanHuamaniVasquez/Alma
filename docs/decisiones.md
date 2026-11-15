@@ -43,6 +43,7 @@
 | D-37 | 2026-11-15 | **M2.12 cancelada** (solo software, sin hardware): los datos reales de un flujo medido vienen de S-12 y FB-004R | humano (instrucción) + Claude | `docs/protocolo-banco-de-mesa.md` |
 | D-38 | 2026-11-15 | **MP-14 aceptada por el humano:** DOC-01 v0.2.7, `umbral_personal` en DC-05; la FUNDICIÓN publica su primer detector (M4.5) con el límite de selectividad declarado | humano (autorización explícita) | `DOC-01` nota v0.2.6→v0.2.7, `src/motor/umbral_personal.py` |
 | D-39 | 2026-11-15 | **MP-15 aceptada por el humano:** DOC-01 v0.2.8 (`f_varianza` en DC-05/DC-14, campo `canal` en DC-14). FB-020 REFUTÓ la calibración gaussiana en datos reales (FPR 9 %): el canal queda en el contrato pero sin emitir verde/alarma real hasta M2.21 | humano (aceptación) + resultado de FB-020 | `DOC-01` nota v0.2.7→v0.2.8, `docs/actas/NOTA-FB-020.md` |
+| D-40 | 2026-11-15 | **FB-020-v2 (M2.21): el candidato robusto C4 (razón de MAD, crítico empírico) queda sin validar** — la validación fuera de muestra en Zenodo tuvo 5 ventanas (no concluyente). El canal de varianza sigue sin emitir verde/alarma con datos reales; M2.22 queda bloqueada por dato | resultado de FB-020-v2 | `docs/actas/NOTA-FB-020-v2.md` |
 
 ## Decisiones pendientes del humano
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).
