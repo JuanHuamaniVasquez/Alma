@@ -86,7 +86,7 @@ def test_los_valores_de_enum_son_los_de_doc01(dc):
         assert sin_acento == permitidos, f"{dc}.{campo}: DOC {sorted(sin_acento)} ≠ código {sorted(permitidos)}"
 
 
-def test_el_doc_declara_exactamente_13_contratos():
+def test_el_doc_declara_exactamente_14_contratos():
     assert sorted(re.findall(r"### (DC-\d\d) ·", DOC01)) == sorted(CONTRATOS)
 
 

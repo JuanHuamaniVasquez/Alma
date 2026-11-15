@@ -1,4 +1,4 @@
-# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.5)
+# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.6)
 
 > **Qué es este documento:** el contrato de ingeniería del proyecto. Define las capas del sistema, el registro oficial de módulos, los contratos de datos campo a campo, el protocolo de cambios y la cola de mejoras propuestas. Es el antídoto contra el vibe coding: nada se construye sin fila en el registro, y toda mejora futura tiene exactamente un hogar.
 > **Reglas del documento:** (1) nada se codea sin su fila en el registro §2; (2) toda mejora nueva entra por el protocolo §5 y queda como PROPUESTA en §7 hasta ser aceptada; (3) los contratos §3 se versionan con el mapa — cambiar un contrato es cambiar de versión del mapa.
@@ -9,6 +9,7 @@
 > **v0.2.2 → v0.2.3 (2026-11-15, decisión del humano; cambio de contrato → bump según §5):** DC-04 fija la fórmula `residuo_contable = emision_observada − emision_esperada` y la regla de cierre de línea `|residuo_contable| ≤ 2 · incertidumbre_del_manifiesto` (mismo umbral que `dos_sigma`). Es una decisión de diseño aún **sin validar con datos reales**.
 > **v0.2.3 → v0.2.4 (2026-11-15, D-20; cambio de contrato → bump según §5):** DC-12 `fuentes[]` admite también **NTRS** (id de 11 dígitos) y **PMID**, además de accesión OSDR, DOI y lote. Motivo: DOC-04 §2 lista NTRS como cuerpo público con identificador y DOC-01 no lo admitía (contradicción entre documentos).
 > **v0.2.4 → v0.2.5 (2026-11-15, D-30; cambio de contrato → bump según §5):** DC-05 admite `indicador` **como alternativa exclusiva** a `presupuesto_id` (mismo patrón que DC-06): las alarmas de indicadores sin presupuesto documentado (pulso, temperatura…) llevan recibo sin inventar un presupuesto. Se evaluaron y descartaron: mapear indicador→presupuesto (inventa el del pulso), un 10.º presupuesto «cuerpo» (altera el vocabulario central) y dejar esas alarmas sin recibo.
+> **v0.2.5 → v0.2.6 (2026-11-15, MP-5 aceptada; cambio de contrato → bump según §5):** nuevo contrato **DC-14 · Recibo de verde** («el verde sin recibo no aparece»): un «sin anomalías» declara su efecto mínimo detectable y su potencia **condicionados a los días válidos observados**, en σ y en unidades físicas; con pocos datos el estado es `sin_datos_suficientes`. Ancla: Altman & Bland 1995, *BMJ*, doi:10.1136/bmj.311.7003.485.
 
 ---
 
@@ -152,7 +153,7 @@ Estados de construcción: **OPERATIVO** (existe y corre) · **ESPECIFICADO** (co
 
 ---
 
-## §3 · Contratos de datos (DC-01 … DC-13)
+## §3 · Contratos de datos (DC-01 … DC-14)
 
 Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisión de schema. Convención: timestamps en ISO 8601 UTC; `persona_id` siempre pseudónimo; todo registro de simulación lleva banner REAL/SIMULADO. **Herencia de banner (v0.2.1):** un registro derivado no declara banner: lo hereda trazando a sus fuentes de ingesta (DC-01/02/03); si alguna entrada es SIMULADO, el derivado muestra SIMULADO — jamás se asciende a REAL en silencio.
 
@@ -324,6 +325,26 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | `error` | texto | **Solo si `fallo`**: la causa, nunca omitida |
 | `banner` | enum: REAL · SIMULADO | Obligatorio; fuente swpc/donki/osdr ⇒ REAL; simulador ⇒ SIMULADO |
 
+
+### DC-14 · Recibo de verde — «sin anomalías» + lo que el detector habría visto (MO-3, v0.2.6)
+
+| Campo | Tipo | Nota |
+|---|---|---|
+| `recibo_id`, `ts_utc`, `sujeto` | — | `ts_utc` = fin de la ventana |
+| `presupuesto_id` / `indicador` | enum (como DC-04) / enum (como DC-06) | **Exactamente uno**, igual que DC-05 |
+| `estado` | enum: verde · sin_datos_suficientes · retirado | `sin_datos_suficientes` no declara nada; `retirado` = la regla alarmó al reevaluar con datos corregidos |
+| `ventana_dias`, `dias_validos` | int | La **cobertura** viaja con el recibo (la ausencia es dato) |
+| `detector` | enum: dos_sigma · cusum | |
+| `k`, `h` | float | Parámetros del CUSUM; `h` calibrado, no artesanal |
+| `potencia_declarada` | float (0–1) | Solo si `verde` |
+| `mde_sigma` | float (σ) | Efecto mínimo detectable con esa potencia **dados los `dias_validos`**; solo si `verde` |
+| `mde_fisico` | float | `mde_sigma` × σ_efectiva, en la `unidad` del indicador; solo si `verde` |
+| `unidad` | string | min, lpm… |
+| `supuesto` | texto | Supuesto estadístico declarado (p. ej. ruido independiente; tabla simulada) |
+| `regla_exacta` | texto ejecutable | Verde ⇔ la regla NO alarma sobre los datos de la ventana |
+| `semilla`, `hash_preregistro` | int, SHA-256 | Recibo completo, como DC-05 |
+| `banner` | enum: REAL · SIMULADO | Obligatorio |
+
 ---
 
 ## §4 · Mapeo pantalla → contrato (el frontend futuro no toca el motor)
@@ -374,6 +395,7 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | IN-3 lectura continua clima espacial | IN-3 | DC-03 (`lectura_clima_espacial`) | — (ingesta, no experimento) | — | T3 (datos reales en vivo) |
 | MP-4 registro de intentos de ingesta | IN-3 | DC-13 | — (ingesta, no experimento) | — | T3 (la ausencia del feed es dato) |
 | LB-1 regla de cierre del libro (residuo = observada − esperada; cierra si \|r\| ≤ 2σ) | LB-1 | DC-04 | — (decisión de diseño; se falsa con FB-005 y datos reales) | — | T1 (sin validar) |
+| MP-5 verde con potencia | MO-3 | DC-14 | FB-011 (preregistrada antes de correr) | 20261113 | T2 (en silicio y contrastado en datos reales de LifeSnaps, no astronautas) |
 
 Familias de casos (contenido para FA-1): FM-1 emisor no contabilizado · FM-2 ventana de estrés viral · FM-3 sueño×hueso (reanclada con Swanson 2017/2018 — C-18/C-19) · FM-4 ventana post-EVA · FM-5 CO₂→cefalea (calibración) · FM-6 ejercicio×IL-6 · FM-7 jardín como tripulante · FM-8 farmacia como sensor · FM-9 disforia de segunda mitad · FM-10 el síndrome Pandorum (PROPUESTA — anclas C-20…C-23 de DOC-02: cascada sueño → ocio → farmacia → conducta, sin leer jamás contenido).
 
@@ -421,7 +443,7 @@ Cada fila sigue el protocolo §5: una capa destino, ancla verificada, prueba cua
 
 ## Cómo vive este documento
 
-- Se versiona como todo el proyecto (**v0.2.5 hoy**: parche Apéndice A de DOC-02 + adiciones de DOC-04 aplicados el 11-nov; próximo bump cuando cambie un contrato DC-x o se acepte/rechace una MP).
+- Se versiona como todo el proyecto (**v0.2.6 hoy**: parche Apéndice A de DOC-02 + adiciones de DOC-04 aplicados el 11-nov; próximo bump cuando cambie un contrato DC-x o se acepte/rechace una MP).
 - Cada acta FB-xxx nueva añade su fila en §6 el mismo día que se ejecuta.
 - Cada mejora propuesta entra como fila en §7 con estado PROPUESTA; el rechazo también se escribe (como las 10 ideas dormidas: nada muere sin razón).
 - Antes de cada sesión de código se abre §2; después de cada sesión se actualiza el estado de las filas tocadas. El mapa es el primer punto ciego programado del software: sabe dónde está todo, y por eso sabe qué falta.

@@ -55,6 +55,11 @@ VALIDOS = {
 VALIDOS["DC-13"] = dict(intento_id="in-1", ts_utc=T, fuente="swpc",
                         url="https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json",
                         resultado="ok", http_status=200, hash_lectura_cruda=H, banner="REAL")
+VALIDOS["DC-14"] = dict(recibo_id="rv-1", ts_utc=T, sujeto="astro-01", indicador="sueño", estado="verde", ventana_dias=14,
+                        dias_validos=14, detector="cusum", k=0.5, h=10.0117, potencia_declarada=0.9, mde_sigma=1.75,
+                        mde_fisico=178.8, unidad="min", supuesto="ruido independiente; tabla simulada",
+                        regla_exacta="CUSUM_BILATERAL k=0.5 h=10.0117 mu=400.0 sigma=102.2 :: ...", semilla=20261113,
+                        hash_preregistro=H, banner="REAL")
 # DC-12: valor_si_cierta apunta a detectores NUEVOS (DC-xx aún por crear), p. ej. DC-13.
 
 
@@ -79,8 +84,8 @@ def test_rechaza_campo_fuera_del_contrato(dc):
         con(dc, campo_inventado=1)
 
 
-def test_son_exactamente_13_contratos():
-    assert sorted(CONTRATOS) == sorted(VALIDOS) and len(CONTRATOS) == 13
+def test_son_exactamente_14_contratos():
+    assert sorted(CONTRATOS) == sorted(VALIDOS) and len(CONTRATOS) == 14
 
 
 def test_semillas_publicas():
@@ -333,3 +338,24 @@ def test_dc05_exactamente_uno_de_presupuesto_o_indicador():
         con("DC-05", presupuesto_id=None)                             # ninguno
     with pytest.raises(ValidationError):
         con("DC-05", presupuesto_id=None, indicador="oxigeno")        # indicador fuera del vocabulario
+
+
+# --- DC-14 · recibo de verde (v0.2.6) ------------------------------------------------------------------
+def test_dc14_un_verde_declara_potencia_mde_y_los_dos_cierres_de_coherencia():
+    for campo in ("potencia_declarada", "mde_sigma", "mde_fisico"):
+        with pytest.raises(ValidationError):
+            con("DC-14", **{campo: None})                              # un verde sin potencia/MDE no es recibo
+    with pytest.raises(ValidationError):
+        con("DC-14", dias_validos=15)                                  # más días válidos que la ventana
+    with pytest.raises(ValidationError):
+        con("DC-14", presupuesto_id="ritmo")                           # indicador Y presupuesto
+    with pytest.raises(ValidationError):
+        con("DC-14", potencia_declarada=1.0)
+
+
+def test_dc14_sin_datos_suficientes_no_declara_nada_y_la_cobertura_viaja():
+    sd = con("DC-14", estado="sin_datos_suficientes", dias_validos=4, potencia_declarada=None, mde_sigma=None, mde_fisico=None)
+    assert sd.cobertura == pytest.approx(4 / 14)
+    with pytest.raises(ValidationError):
+        con("DC-14", estado="sin_datos_suficientes", dias_validos=4)    # declara potencia sin base
+    assert con("DC-14", estado="retirado")
