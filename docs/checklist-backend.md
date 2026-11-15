@@ -26,7 +26,7 @@
 | M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
 | M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
 
-Tests: **188 pytest verdes**. `sysmap check`: nada peor que la línea base.
+Tests: **193 pytest verdes**. `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
 
@@ -107,7 +107,7 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 | K-1 | Bestiario: familias de hipótesis minadas de ficción + clase real | [~] `docs/inventario-maestro-bestiario.md` presente; es **andamio** (BRONCE) y quedó **anterior a DOC-01 v0.2** (8 balances vs 9 presupuestos); lleva nota de verificación de unicidad |
 | K-2 | Familias de casos FM-1…FM-10 con ancla citada | [~] listadas en el bestiario y en DOC-01 §6; las anclas con identificador están verificadas en `auditoria-de-fuentes.md`; **faltan** las que solo se citan por nombre (M0.12) |
 | K-3 | Semillas públicas y reglas de reproducibilidad | [x] `SEMILLAS_PUBLICAS` en `src/contratos/comunes.py`, compuerta en `preregistro.py` y `compuerta.py` |
-| K-4 | Ficha de Verdad (8 CIENCIA REAL + 3 EXTRAPOLACIÓN) | [ ] **no está en el repo**; hay una ficha parcial (`data/OS-892-extracto.*`, verificada). Hay que reconstruirla con fuentes enlazadas |
+| K-4 | Ficha de Verdad (8 CIENCIA REAL + 3 EXTRAPOLACIÓN) | [~] **reconstruida** en `docs/ficha-de-verdad.md` (21 filas, 5 clases incl. SIN VERIFICAR) con lo verificado; la original sigue sin estar en el repo |
 | K-5 | Banco de anclas citadas (~45 fuentes verificadas) | [~] 23 anclas en DOC-02 Ap. C + banco del bestiario §7 + 19 identificadores verificados (`auditoria-de-fuentes.md`) + fuentes S-01…S-10; **no consolidado** en un solo registro de ~45 |
 | K-6 | Ideas dormidas (10 de 17) con razón de muerte escrita | [ ] **no está en el repo**; solo se las menciona. Hay que pedirlas al humano o reconstruirlas |
 

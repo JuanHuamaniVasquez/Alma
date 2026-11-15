@@ -26,7 +26,10 @@
 | D-20 | 2026-11-15 | **DC-12 admite NTRS y PMID** como fuentes con identificador (DOC-01 → v0.2.4): DOC-04 §2 listaba NTRS y DOC-01 no lo admitía. Hallado al leer DOC-04 completo | Claude (bajo D-15) | `src/contratos/dc12_fundicion.py` |
 | D-21 | 2026-11-15 | **Coherencia documento ⇄ código comprobada por máquina** y registro de afirmaciones heredadas (`afirmaciones-por-verificar.md`): lo ✗/⚠ no se dice al jurado como hecho | Claude (bajo D-15), a petición del humano | `tests/test_doc_vs_codigo.py` |
 | D-22 | 2026-11-15 | **MP-7 y MP-8 aceptadas** por el humano («acepto lo que propones»; Claude como ejecutor) | humano | `docs/propuestas.md` |
+| D-23 | 2026-11-15 | **Red teaming del Contrapeso:** la σ se propaga con covarianza (errores correlacionados declarados); la demo FB-005-D1 se reanaliza aparte, sin alterar su registro | Claude (bajo D-15) | `src/motor/contrapeso.py`, `docs/red-team.md` |
+| D-24 | 2026-11-15 | **K-4 Ficha de Verdad reconstruida** con la plantilla del manual + clase «SIN VERIFICAR»; se corrige la frase «cuando no cuadra, existe algo no contabilizado» (falsa como regla: Vulcano) | Claude (bajo D-15) | `docs/ficha-de-verdad.md`, `docs/linaje-de-residuos.md` |
 
 ## Decisiones pendientes del humano
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).
 - Aportar el **banco Monte Carlo, actas y scripts de FB-001/FB-002** (bloquean M2.3 y M2.6), la **Ficha de Verdad (K-4)** y las **ideas dormidas (K-6)**.
+- ¿Aceptas **MP-9** (banco de mesa; **necesita que montes hardware**) y **MP-10** (`docs/propuestas.md`)?
