@@ -13,4 +13,4 @@
 | FB-001, FB-002 | **no hay acta en el repo** | ejecutadas según DOC-01/02; el acta y el script (`falsacion_d4_creo_ocio.py`) no están aquí. No se inventan |
 | FB-003, FB-004 | **sin acta redactada** | figuran como «programadas»; hay que escribirlas y registrarlas antes de correr |
 
-Decisión que corresponde al humano: si el hash publicado originalmente (11-nov) debe seguir siendo la referencia pública o se adopta el re-registro de este repo. Ningún runner debe ejecutar hasta que esa decisión conste.
+**Decidido por el humano el 2026-11-15 (D-13):** se adoptan los re-registros de este repo como referencia pública; el hash publicado el 11-nov se conserva solo como histórico no reproducible. Los runners pueden ejecutar FB-005…FB-008 con `exigir_preregistro`.

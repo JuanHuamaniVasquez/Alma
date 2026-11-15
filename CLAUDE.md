@@ -145,3 +145,7 @@ Detalle y registros: `docs/politica-de-datos.md`. Resumen: **nada simulado sin e
 ## 14 · Alcance congelado (decisión del humano, 2026-11-15)
 
 Hasta cerrar **M2.8** (evaluación preregistrada sobre datos reales) **no se añaden módulos nuevos**. Prioridad: LB-1, MO-6 (El Contrapeso, = conciliación de datos aplicada a un hábitat tripulado), MO-1…MO-3 y GO-2. LA FUNDICIÓN queda en segundo plano salvo tarjetas con fuente real. Las ideas nuevas entran por `docs/propuestas.md`, no por código. Registro de decisiones: `docs/decisiones.md`. Parámetros públicos de la simulación: `docs/parametros-publicos.md`.
+
+## 15 · Norte científico (decisión del humano, 2026-11-15)
+
+Objetivo: un proyecto de **nivel de avance científico** — «un pequeño paso para el hombre, un gran salto para la humanidad». Traducido a reglas: toda afirmación **preregistrada con hash antes de correr**, **reproducible** (semillas públicas), con **datos reales** o **simulación etiquetada**, **límites declarados primero**, y **los resultados nulos se publican**. La ejecución técnica la lidera Claude siguiendo la cola; el entregable de largo plazo es un preprint reproducible (M5.5, M5.6). Evaluación honesta de qué es común y qué es original: `docs/evaluacion-paper.md`.

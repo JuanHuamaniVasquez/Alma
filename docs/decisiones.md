@@ -16,8 +16,10 @@
 | D-10 | 2026-11-15 | **Alcance congelado** hasta cerrar M2.8: prioridad LB-1, Contrapeso, MO-1…MO-3, preregistro; LA FUNDICIÓN en segundo plano salvo tarjetas con fuente real | humano (acepta recomendaciones) | `CLAUDE.md` §14 |
 | D-11 | 2026-11-15 | La simulación de FB-005 se **parametriza con números públicos de NASA** (sigue SIMULADA) | humano (acepta recomendaciones) | `docs/parametros-publicos.md` |
 | D-12 | 2026-11-15 | **LifeSnaps** (Zenodo 7229547, CC-BY 4.0) elegido como dataset real para validar línea base + CUSUM; md5 verificado contra Zenodo | Claude (humano delegó la búsqueda) | `docs/politica-de-datos.md` S-07 |
+| D-13 | 2026-11-15 | **Se adoptan los re-registros** de FB-005…FB-008 (hash de bytes exactos, `docs/actas/INDEX.jsonl`) como referencia pública; el hash publicado el 11-nov se conserva como histórico no reproducible | humano | `docs/actas/README.md` |
+| D-14 | 2026-11-15 | **MP-5 (verde con potencia) y MP-6 (tarjeta sueño/HRV × Kp) aceptadas**; entran a la cola como M2.10 y M4.6 | humano | `docs/propuestas.md`, `TASKS.md` |
+| D-15 | 2026-11-15 | **Claude lidera la ejecución técnica**; norte: un proyecto de nivel de avance científico (preregistrado, reproducible, datos reales, nulos publicados). Se sigue el orden de la cola | humano | `CLAUDE.md` §15 |
+| D-16 | 2026-11-15 | **El Contrapeso propaga la incertidumbre en cuadratura** (errores independientes, supuesto declarado) y cierra con \|residuo\| ≤ 2·σ_propagada; sus fixtures son SIMULADOS y parametrizados con números públicos de NASA | Claude (bajo D-15) | `src/motor/contrapeso.py` |
 
 ## Decisiones pendientes del humano
-- ¿Se adoptan los **re-registros** de FB-005…008 como referencia pública o se conserva el hash publicado el 11-nov? (`docs/actas/README.md`)
-- ¿Se aceptan **MP-5 y MP-6** (`docs/propuestas.md`)?
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).
