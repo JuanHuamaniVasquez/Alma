@@ -39,6 +39,8 @@
 | D-33 | 2026-11-15 | **FB-001/FB-002 sin originales:** se buscaron en la máquina; hay una reimplementación «equivalente» (descartada como sustituto) y el **PDF fundacional con los números y la Tabla 9**. Camino elegido: **réplica independiente con ajuste fuera de muestra** (MP-13) en vez de esperar o citar sin verificar; las alternativas están en `propuestas.md` | Claude (bajo D-15), a petición del humano | `docs/referencia-fb001-fb002.md` |
 | D-34 | 2026-11-15 | **Banco de mesa (MP-9):** protocolo escrito; se divide en 12a (software, ahora) y 12b (hardware, humano) | Claude (bajo D-15) | `docs/protocolo-banco-de-mesa.md` |
 | D-35 | 2026-11-15 | **FB-002 (10/10, 21 d) se reencuadra:** sin original, la réplica reconstruida (FB-015-v2) reproduce la estructura de la Tabla 9 (6/7) y el umbral de 200 min pero **no** el 10/10 (8/10). El pitch y CLAUDE.md §10 usan la etiqueta «documentado, no replicado» | Claude (bajo D-15), por resultado preregistrado | `NOTA-FB-015-v2.md` |
+| D-36 | 2026-11-15 | **M0.5 reencuadrada:** como los originales FB-001…FB-004 no existen, se cierra con lo cumplible (GO-2 automatizado + actas R reescritas con hash antes de correr). Las cifras originales de FB-001/FB-002 quedan «documentadas, no replicadas» | Claude (bajo D-15) | `TASKS.md` M0.5, `docs/referencia-fb001-fb002.md` |
+| D-37 | 2026-11-15 | **M2.12 cancelada** (solo software, sin hardware): los datos reales de un flujo medido vienen de S-12 y FB-004R | humano (instrucción) + Claude | `docs/protocolo-banco-de-mesa.md` |
 
 ## Decisiones pendientes del humano
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).
