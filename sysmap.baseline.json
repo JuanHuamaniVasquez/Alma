@@ -1,0 +1,15 @@
+{
+ "commit": "b58c395a43cdd2e5b0bc5bacabf58bba91c221be",
+ "findings": {
+  "sysmap:no-license:license": {
+   "severity": "low",
+   "title": "El proyecto no tiene un archivo LICENSE"
+  }
+ },
+ "ignored_rules": [
+  "hidden-coupling",
+  "open-intent"
+ ],
+ "taken": "2026-11-15T03:50:28+00:00",
+ "version": 1
+}
