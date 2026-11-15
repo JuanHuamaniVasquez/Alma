@@ -48,6 +48,25 @@ EN.update({"sueno-fc": {"title": "Short sleep, faster resting pulse", "predictio
            "carga-rmssd": {"title": "A hard day, a quieter night", "prediction": "Within each person, days with intense activity above their own median have overnight heart-rate variability at least 0.05 sd lower.", "refuter": "Effect smaller than 0.05 sd or p > 0.0167 (act FB-026).",
                          "mechanism": "Heavy training load lowers vagal activity that night.", "result": "Refuted: no effect (+0.03 sd, p = 0.72). The effect may act on the next night, which a same-row pairing cannot see. Written by the generator (FB-026)."}})
 
+# FB-027: segunda tanda del vivero (4 refutadas)
+_F27 = {"temp-eficiencia": ("temperatura nocturna de la muñeca", "eficiencia del sueño", "FB-027 H1: ρ = +0,108 (signo CONTRARIO, p± = 0,0015), 47 personas", "S ≤ −0,10 y p ≤ 0,0125"),
+        "estres-eficiencia": ("puntaje de estrés del dispositivo", "eficiencia del sueño", "FB-027 H2: ρ = +0,190 (signo contrario); polaridad de stress_score sin verificar al sellar y el puntaje incluye el sueño", "S ≤ −0,10 y p ≤ 0,0125"),
+        "kp-respiracion": ("Kp máximo del día", "frecuencia respiratoria nocturna", "FB-027 H3: ρ = −0,012, p = 0,74, 33 personas", "|S| ≥ 0,10 y p ≤ 0,0125"),
+        "carga-rmssd-noche": ("actividad intensa del día D", "rmssd de la noche D+1", "FB-027 H4: −0,082 sd, p = 0,029 > 0,0125 (sugestiva, no concluyente), 36 personas", "S ≤ −0,05 sd y p ≤ 0,0125")}
+for _c, (_x, _y, _nota, _regla) in _F27.items():
+    TARJETAS.append((_c, dict(par_variables=CUERPO("%s de cada persona" % _x, "su %s" % _y), mecanismo=M[_c].mecanismo,
+        prediccion="Intrapersonal, sobre datos reales: %s (regla sellada: %s)." % (G.TEST_SPEC[_c]["enunciado"], _regla), senal_refutadora="No se cumple la regla sellada en el acta FB-027 (%s) o el placebo entre personas no es nulo." % _regla,
+        fuentes=[LS] + ([{"id": "10.1029/2020SW002641", "tipo": "DOI"}] if _c == "kp-respiracion" else []), precio=P("LifeSnaps (S-07), ya cargado", "nulo por desplazamiento circular (2 000)" if G.TEST_SPEC[_c].get("tipo") else "barajado intrapersona (10 000)", 1),
+        valor_si_cierta=["DC-05"], estado="refutada", preregistro_hash=H["FB-027"]), _nota))
+EN.update({"temp-eficiencia": {"title": "Warmer nights, worse sleep efficiency", "prediction": "Within each person, a warmer wrist at night goes with a lower sleep efficiency (median rank correlation ≤ −0.10).", "refuter": "Correlation not at least −0.10 or p > 0.0125 on held-out days (act FB-027).",
+                               "mechanism": "Thermoregulation: heat makes sleep lighter.", "result": "Refuted — and the sign was the opposite: warmer nights went with BETTER efficiency (ρ = +0.11, p = 0.0015). A lead, not a result: confirming it needs another cohort with skin temperature."},
+           "estres-eficiencia": {"title": "Stress score, worse sleep efficiency", "prediction": "Within each person, a higher stress score goes with a lower sleep efficiency (median rank correlation ≤ −0.10).", "refuter": "Correlation not at least −0.10 or p > 0.0125 on held-out days (act FB-027).",
+                               "mechanism": "Stress fragments sleep.", "result": "Refuted with the opposite sign (ρ = +0.19). We sealed it without checking which way the score runs (higher = fewer signs of stress, per Fitbit) — and the score is partly built from sleep."},
+           "kp-respiracion": {"title": "Geomagnetic activity, breathing rate", "prediction": "Within each person, the day's peak Kp goes with a change in nightly breathing rate (|median rank correlation| ≥ 0.10).", "refuter": "|S| below 0.10 or p > 0.0125 against the circular-shift null (act FB-027).",
+                            "mechanism": "Heliobiology (contested).", "result": "Refuted: nothing (ρ = −0.01, p = 0.74, 33 people). Consistent with the earlier Kp test."},
+           "carga-rmssd-noche": {"title": "A hard day, a quieter NEXT night", "prediction": "Within each person, days with intense activity above their own median are followed by overnight HRV at least 0.05 sd lower.", "refuter": "Effect smaller than 0.05 sd or p > 0.0125 (act FB-027).",
+                               "mechanism": "Recovery: heavy load lowers vagal tone the next night.", "result": "Refuted by the correction we fixed in advance: the effect has the size we expected (−0.08 sd) but p = 0.029. Suggestive, not conclusive."}})
+
 
 def main() -> int:
     ruta = RAIZ / "data/fundicion/tarjetas.jsonl"

@@ -1,134 +1,11 @@
 {
- "generado_utc": "2026-11-15T22:10:24Z",
- "n_mecanismos": 11,
+ "generado_utc": "2026-11-15T22:27:38Z",
+ "n_mecanismos": 12,
  "fuente_datos": "LifeSnaps (Zenodo 7229547), conteos de pares REALES",
- "n_listos": 3,
+ "n_listos": 0,
  "n_bloqueados": 3,
- "n_ya_probadas": 5,
+ "n_ya_probadas": 9,
  "candidatos": [
-  {
-   "id": "c6f8ed81-b402-50ac-8c5e-ff6fccfdab17",
-   "clave": "temp-eficiencia",
-   "titulo": "Warmer skin at night, lighter sleep",
-   "mecanismo": "Temperatura nocturna de la muñeca más alta → peor eficiencia del sueño (termorregulación; ancla por verificar en M5.5)",
-   "causa": "temp_noche",
-   "efecto": "eficiencia_sueno",
-   "fuentes": [
-    {
-     "id": "10.1038/s41597-022-01764-x",
-     "tipo": "DOI",
-     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
-    }
-   ],
-   "mata": "Correlación intrapersonal mediana > −0,1 en prueba",
-   "valor_si_cierta": [
-    "DC-05"
-   ],
-   "estado": "listo",
-   "ya_probada_en": null,
-   "datos": {
-    "pares": 3356,
-    "personas_con_40_dias": 47,
-    "falta": []
-   },
-   "precio": {
-    "datos": "LifeSnaps cargado: 3356 pares, 47 personas con ≥ 40 días",
-    "computo": "Spearman intrapersona, mitad/mitad",
-    "dias": 1
-   },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr",
-   "en": {
-    "mechanism": "A warmer wrist at night should mean lighter, less efficient sleep (thermoregulation).",
-    "kill": "Median within-person correlation above −0.1 on held-out days.",
-    "price": "Real wearable data held: 3,356 person-days, 47 people with at least 40 days.",
-    "compute": "About 1 day of compute.",
-    "next": "Seal the preregistration (hash) before running anything."
-   }
-  },
-  {
-   "id": "a1a62083-90dc-5cb0-ad4b-5a91510a35b2",
-   "clave": "kp-respiracion",
-   "titulo": "Geomagnetic activity, breathing rate",
-   "mecanismo": "Actividad geomagnética → frecuencia respiratoria nocturna (heliobiología; evidencia controvertida)",
-   "causa": "kp",
-   "efecto": "resp_noche",
-   "fuentes": [
-    {
-     "id": "10.1038/s41597-022-01764-x",
-     "tipo": "DOI",
-     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
-    },
-    {
-     "id": "10.1029/2020SW002641",
-     "tipo": "DOI",
-     "nombre": "GFZ Kp index"
-    }
-   ],
-   "mata": "Estadístico dentro del nulo por desplazamiento circular (p > 0,0125)",
-   "valor_si_cierta": [
-    "DC-03",
-    "DC-05"
-   ],
-   "estado": "listo",
-   "ya_probada_en": null,
-   "datos": {
-    "pares": 2495,
-    "personas_con_40_dias": 33,
-    "falta": []
-   },
-   "precio": {
-    "datos": "LifeSnaps cargado: 2495 pares, 33 personas con ≥ 40 días",
-    "computo": "10 000 permutaciones circulares",
-    "dias": 1
-   },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr",
-   "en": {
-    "mechanism": "Geomagnetic activity might shift nightly breathing rate (heliobiology; contested).",
-    "kill": "The statistic falls inside the circular-shift null (p > 0.0125).",
-    "price": "Real wearable data held: 2,495 person-days, 33 people with at least 40 days.",
-    "compute": "About 1 day of compute.",
-    "next": "Seal the preregistration (hash) before running anything."
-   }
-  },
-  {
-   "id": "77061d86-ebe4-5837-bc52-fd0d83628e4b",
-   "clave": "estres-eficiencia",
-   "titulo": "Stress score, worse sleep efficiency",
-   "mecanismo": "Estrés alto → sueño más fragmentado (ancla por verificar en M5.5)",
-   "causa": "estres",
-   "efecto": "eficiencia_sueno",
-   "fuentes": [
-    {
-     "id": "10.1038/s41597-022-01764-x",
-     "tipo": "DOI",
-     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
-    }
-   ],
-   "mata": "Correlación intrapersonal mediana > −0,1 en prueba",
-   "valor_si_cierta": [
-    "DC-05"
-   ],
-   "estado": "listo",
-   "ya_probada_en": null,
-   "datos": {
-    "pares": 1865,
-    "personas_con_40_dias": 26,
-    "falta": []
-   },
-   "precio": {
-    "datos": "LifeSnaps cargado: 1865 pares, 26 personas con ≥ 40 días",
-    "computo": "Spearman intrapersona, mitad/mitad",
-    "dias": 1
-   },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr",
-   "en": {
-    "mechanism": "A high stress score should fragment the night: lower sleep efficiency.",
-    "kill": "Median within-person correlation above −0.1 on held-out days.",
-    "price": "Real wearable data held: 1,865 person-days, 26 people with at least 40 days.",
-    "compute": "About 1 day of compute.",
-    "next": "Seal the preregistration (hash) before running anything."
-   }
-  },
   {
    "id": "7fb6cdcb-57f3-5e15-9a57-9842a08015a3",
    "clave": "sueno-fc",
@@ -175,6 +52,45 @@
    }
   },
   {
+   "id": "c6f8ed81-b402-50ac-8c5e-ff6fccfdab17",
+   "clave": "temp-eficiencia",
+   "titulo": "Warmer skin at night, lighter sleep",
+   "mecanismo": "Temperatura nocturna de la muñeca más alta → peor eficiencia del sueño (termorregulación; ancla por verificar en M5.5)",
+   "causa": "temp_noche",
+   "efecto": "eficiencia_sueno",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    }
+   ],
+   "mata": "Correlación intrapersonal mediana > −0,1 en prueba",
+   "valor_si_cierta": [
+    "DC-05"
+   ],
+   "estado": "ya_probada",
+   "ya_probada_en": "FB-027",
+   "datos": {
+    "pares": 3356,
+    "personas_con_40_dias": 47,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 3356 pares, 47 personas con ≥ 40 días",
+    "computo": "Spearman intrapersona, mitad/mitad",
+    "dias": null
+   },
+   "siguiente": "Ya sellada y ejecutada: FB-027",
+   "en": {
+    "mechanism": "A warmer wrist at night should mean lighter, less efficient sleep (thermoregulation).",
+    "kill": "Median within-person correlation above −0.1 on held-out days.",
+    "price": "Real wearable data held: 3,356 person-days, 47 people with at least 40 days.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Already sealed and run: FB-027."
+   }
+  },
+  {
    "id": "3a9e0cc6-4a25-5aed-8dbc-f62ead88fe49",
    "clave": "temp-fc",
    "titulo": "Warmer night, faster rest",
@@ -211,6 +127,51 @@
     "price": "Real wearable data held: 3,338 person-days, 47 people with at least 40 days.",
     "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
     "next": "Already sealed and run: FB-022."
+   }
+  },
+  {
+   "id": "a1a62083-90dc-5cb0-ad4b-5a91510a35b2",
+   "clave": "kp-respiracion",
+   "titulo": "Geomagnetic activity, breathing rate",
+   "mecanismo": "Actividad geomagnética → frecuencia respiratoria nocturna (heliobiología; evidencia controvertida)",
+   "causa": "kp",
+   "efecto": "resp_noche",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    },
+    {
+     "id": "10.1029/2020SW002641",
+     "tipo": "DOI",
+     "nombre": "GFZ Kp index"
+    }
+   ],
+   "mata": "Estadístico dentro del nulo por desplazamiento circular (p > 0,0125)",
+   "valor_si_cierta": [
+    "DC-03",
+    "DC-05"
+   ],
+   "estado": "ya_probada",
+   "ya_probada_en": "FB-027",
+   "datos": {
+    "pares": 2495,
+    "personas_con_40_dias": 33,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 2495 pares, 33 personas con ≥ 40 días",
+    "computo": "10 000 permutaciones circulares",
+    "dias": null
+   },
+   "siguiente": "Ya sellada y ejecutada: FB-027",
+   "en": {
+    "mechanism": "Geomagnetic activity might shift nightly breathing rate (heliobiology; contested).",
+    "kill": "The statistic falls inside the circular-shift null (p > 0.0125).",
+    "price": "Real wearable data held: 2,495 person-days, 33 people with at least 40 days.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Already sealed and run: FB-027."
    }
   },
   {
@@ -293,6 +254,46 @@
    }
   },
   {
+   "id": "be751f01-c2bb-56e7-a8a1-11807dbd58de",
+   "clave": "carga-rmssd-noche",
+   "titulo": "A hard day, a quieter NEXT night",
+   "mecanismo": "Carga de entrenamiento intensa → menor variabilidad vagal la NOCHE SIGUIENTE (recuperación; ancla por verificar en M5.5)",
+   "causa": "actividad_intensa",
+   "efecto": "rmssd",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    }
+   ],
+   "mata": "Diferencia intrapersonal de rmssd (día D+1) ≥ −0,05 sd o p > 0,0125 entre días intensos y el resto",
+   "valor_si_cierta": [
+    "DC-05",
+    "DC-14"
+   ],
+   "estado": "ya_probada",
+   "ya_probada_en": "FB-027",
+   "datos": {
+    "pares": 2475,
+    "personas_con_40_dias": 33,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 2475 pares, 33 personas con ≥ 40 días",
+    "computo": "barajado intrapersona (10 000), pareo día D → día D+1",
+    "dias": null
+   },
+   "siguiente": "Ya sellada y ejecutada: FB-027",
+   "en": {
+    "mechanism": "A hard training day should leave less vagal activity the NEXT night (recovery).",
+    "kill": "Within-person HRV difference on day D+1 no lower than −0.05 sd, or p > 0.0125.",
+    "price": "Real wearable data held: 2,475 person-days, 33 people with at least 40 days.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Already sealed and run: FB-027."
+   }
+  },
+  {
    "id": "174fe3b1-d778-5bfa-a06f-b5f9936cab92",
    "clave": "sueno-rmssd",
    "titulo": "Short sleep, lower overnight HRV",
@@ -335,6 +336,45 @@
     "price": "Real wearable data held: 2,463 person-days, 33 people with at least 40 days.",
     "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
     "next": "Already sealed and run: FB-026."
+   }
+  },
+  {
+   "id": "77061d86-ebe4-5837-bc52-fd0d83628e4b",
+   "clave": "estres-eficiencia",
+   "titulo": "Stress score, worse sleep efficiency",
+   "mecanismo": "Estrés alto → sueño más fragmentado (ancla por verificar en M5.5)",
+   "causa": "estres",
+   "efecto": "eficiencia_sueno",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    }
+   ],
+   "mata": "Correlación intrapersonal mediana > −0,1 en prueba",
+   "valor_si_cierta": [
+    "DC-05"
+   ],
+   "estado": "ya_probada",
+   "ya_probada_en": "FB-027",
+   "datos": {
+    "pares": 1865,
+    "personas_con_40_dias": 26,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 1865 pares, 26 personas con ≥ 40 días",
+    "computo": "Spearman intrapersona, mitad/mitad",
+    "dias": null
+   },
+   "siguiente": "Ya sellada y ejecutada: FB-027",
+   "en": {
+    "mechanism": "A high stress score should fragment the night: lower sleep efficiency.",
+    "kill": "Median within-person correlation above −0.1 on held-out days.",
+    "price": "Real wearable data held: 1,865 person-days, 26 people with at least 40 days.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Already sealed and run: FB-027."
    }
   },
   {

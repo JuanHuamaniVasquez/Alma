@@ -1,0 +1,15 @@
+# NOTA FB-027 · segunda tanda de hipótesis GENERADAS por el laboratorio (UNA ejecución; acta `00c8f0fc…`, registrada 2026-11-15T22:24:25Z)
+
+Datos REALES de personas en vida cotidiana (LifeSnaps × GFZ Kp), no astronautas. α = 0,0125 por hipótesis (Bonferroni 0,05/4); correlaciones en la mitad de PRUEBA con nulo circular (2 000 desplazamientos).
+
+| Hipótesis (del vivero) | Personas | S | p | Veredicto |
+|---|---|---|---|---|
+| H1 · temperatura nocturna ↑ → eficiencia del sueño ↓ | 47 | ρ = **+0,108** | p(−) = 0,999 · p(±) = 0,0015 | **REFUTADA** (signo contrario, y significativo) |
+| H2 · puntaje de estrés ↑ → eficiencia del sueño ↓ | 26 | ρ = **+0,190** | p(−) = 1,000 · p(±) = 0,0005 | **REFUTADA** (signo contrario, y significativo) |
+| H3 · Kp ↔ frecuencia respiratoria nocturna | 33 | ρ = −0,012 | p(±) = 0,74 | **REFUTADA** (nada) |
+| H4 · carga intensa (D) → rmssd más baja de la noche SIGUIENTE (D+1) | 36 | −0,082 sd | p = 0,029 | **REFUTADA** (efecto del tamaño esperado, pero p > α = 0,0125) |
+| H5 · placebo entre personas | — | −0,041 | p(−) = 0,10 | VÁLIDO |
+
+**Lectura honesta.** (1) **Cuatro refutaciones, y dos de ellas son informativas.** H1 y H2 salieron con el signo CONTRARIO al que yo escribí en el acta y con una significancia sólida: una temperatura de muñeca más alta y un puntaje de estrés más alto se acompañan de MEJOR eficiencia del sueño. (2) **Mi error en H2 tiene una causa conocida:** sellé el acta sin verificar la polaridad de `stress_score`. Las fuentes de Fitbit (soporte de Google y su blog) lo describen mayoritariamente como un puntaje donde **más alto = menos signos físicos de estrés** (una entrada de blog de Google lo contradice), y además el puntaje **incluye el patrón de sueño** entre sus entradas: el acoplamiento con la eficiencia del sueño está construido dentro del propio puntaje. La regla escrita da REFUTADA y se publica así; la causa probable queda declarada, no probada. (3) **H1 es una pista, no un resultado:** la relación positiva temperatura–eficiencia es post hoc en su dirección; confirmarla exige otra cohorte con temperatura de piel y eficiencia del sueño (Zenodo 8018238 no trae temperatura). El generador la deja como candidata BLOQUEADA. (4) **H4 es sugestiva, no concluyente:** el tamaño (−0,082 sd) es el que predecía la hipótesis de recuperación, pero p = 0,029 no pasa el Bonferroni fijado antes; con más datos independientes podría sostenerse (la rmssd no existe en Zenodo: bloqueada). (5) **Mis predicciones:** H1 50/50 (refutada, con signo contrario), H2 sostenida (**fallé**), H3 refutada (acerté), H4 50/50 (marginal), placebo válido (acerté).
+**Siguiente (FB-028):** replicar en una cohorte INDEPENDIENTE (Zenodo 8018238) el hallazgo más sólido del vivero que sí tiene datos allí: sueño corto → pulso en reposo más alto (FB-026 H1 salió significativa pero bajo el mínimo preregistrado).
+**Límites:** no son astronautas; asociaciones, no causalidad; mitad de prueba; polaridad de `stress_score` no verificada al sellar.

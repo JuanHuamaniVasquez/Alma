@@ -84,6 +84,34 @@
    "refuter": "Effect smaller than 0.05 sd or p > 0.0167 (act FB-026).",
    "mechanism": "Heavy training load lowers vagal activity that night.",
    "result": "Refuted: no effect (+0.03 sd, p = 0.72). The effect may act on the next night, which a same-row pairing cannot see. Written by the generator (FB-026)."
+  },
+  "bd59d0af-1d37-50a1-9352-04a62d1d32f5": {
+   "title": "Warmer nights, worse sleep efficiency",
+   "prediction": "Within each person, a warmer wrist at night goes with a lower sleep efficiency (median rank correlation ≤ −0.10).",
+   "refuter": "Correlation not at least −0.10 or p > 0.0125 on held-out days (act FB-027).",
+   "mechanism": "Thermoregulation: heat makes sleep lighter.",
+   "result": "Refuted — and the sign was the opposite: warmer nights went with BETTER efficiency (ρ = +0.11, p = 0.0015). A lead, not a result: confirming it needs another cohort with skin temperature."
+  },
+  "d51a5d88-0554-5f0e-887f-c32b9253956d": {
+   "title": "Stress score, worse sleep efficiency",
+   "prediction": "Within each person, a higher stress score goes with a lower sleep efficiency (median rank correlation ≤ −0.10).",
+   "refuter": "Correlation not at least −0.10 or p > 0.0125 on held-out days (act FB-027).",
+   "mechanism": "Stress fragments sleep.",
+   "result": "Refuted with the opposite sign (ρ = +0.19). We sealed it without checking which way the score runs (higher = fewer signs of stress, per Fitbit) — and the score is partly built from sleep."
+  },
+  "46e1545e-fb49-5d87-8a7c-070e503982ea": {
+   "title": "Geomagnetic activity, breathing rate",
+   "prediction": "Within each person, the day's peak Kp goes with a change in nightly breathing rate (|median rank correlation| ≥ 0.10).",
+   "refuter": "|S| below 0.10 or p > 0.0125 against the circular-shift null (act FB-027).",
+   "mechanism": "Heliobiology (contested).",
+   "result": "Refuted: nothing (ρ = −0.01, p = 0.74, 33 people). Consistent with the earlier Kp test."
+  },
+  "a7610b8a-7938-5ebc-9784-8fb1d32444a0": {
+   "title": "A hard day, a quieter NEXT night",
+   "prediction": "Within each person, days with intense activity above their own median are followed by overnight HRV at least 0.05 sd lower.",
+   "refuter": "Effect smaller than 0.05 sd or p > 0.0125 (act FB-027).",
+   "mechanism": "Recovery: heavy load lowers vagal tone the next night.",
+   "result": "Refuted by the correction we fixed in advance: the effect has the size we expected (−0.08 sd) but p = 0.029. Suggestive, not conclusive."
   }
  },
  "detectores": {

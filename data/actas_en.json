@@ -406,6 +406,24 @@
     "wearables",
     "nursery"
    ]
+  },
+  "FB-027": {
+   "title": "The lab's second batch: four hypotheses, four refutations",
+   "summary": "Four more of the lab's own hypotheses, sealed then run once. Warmer nights and a higher stress score both went with BETTER sleep efficiency, the opposite of what we wrote (the stress score is built partly from sleep, and we had not checked its direction). Geomagnetic activity showed nothing. A hard day lowers next-night HRV by the size we expected (−0.08 sd), but not strongly enough to pass the correction we fixed in advance.",
+   "outcome": "refuted",
+   "data": "real",
+   "tags": [
+    "generated",
+    "sleep efficiency",
+    "stress",
+    "temperature",
+    "kp",
+    "recovery",
+    "hrv",
+    "placebo",
+    "wearables",
+    "nursery"
+   ]
   }
  }
 }

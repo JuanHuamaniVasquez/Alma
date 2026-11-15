@@ -14,18 +14,18 @@
   "audio": "/voice/a0d5104e363d84c3.mp3"
  },
  "fundicion": {
-  "id": "5f4cfb09a29fdf21",
-  "texto": "The foundry has minted 12 hypothesis cards: 6 refuted, 4 sustained, and 1 compiled into a new detector. Refuted cards are published exactly like the sustained ones.",
+  "id": "517d82f28ca6582d",
+  "texto": "The foundry has minted 16 hypothesis cards: 10 refuted, 4 sustained, and 1 compiled into a new detector. Refuted cards are published exactly like the sustained ones.",
   "fuente": "/api/fundicion · DC-12",
   "banner": "REAL",
-  "audio": "/voice/5f4cfb09a29fdf21.mp3"
+  "audio": "/voice/517d82f28ca6582d.mp3"
  },
  "actas": {
-  "id": "15dadbdc1a53a8f7",
-  "texto": "27 experiments were preregistered with a SHA-256 hash before they ran. 22 have been executed, each exactly once. Failures are part of the record.",
+  "id": "7ba9575e1007c968",
+  "texto": "28 experiments were preregistered with a SHA-256 hash before they ran. 23 have been executed, each exactly once. Failures are part of the record.",
   "fuente": "/api/actas · GO-2",
   "banner": "REAL",
-  "audio": "/voice/15dadbdc1a53a8f7.mp3"
+  "audio": "/voice/7ba9575e1007c968.mp3"
  },
  "residuo": {
   "id": "493cdc99f7863690",

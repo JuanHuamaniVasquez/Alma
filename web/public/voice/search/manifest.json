@@ -342,5 +342,9 @@
  "id_FB-026": {
   "texto": "F B zero two six",
   "audio": "/voice/search/id_FB-026.mp3"
+ },
+ "id_FB-027": {
+  "texto": "F B zero two seven",
+  "audio": "/voice/search/id_FB-027.mp3"
  }
 }
