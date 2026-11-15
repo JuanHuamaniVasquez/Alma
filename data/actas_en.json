@@ -424,6 +424,19 @@
     "wearables",
     "nursery"
    ]
+  },
+  "FB-028": {
+   "title": "Replication: short sleep and resting pulse",
+   "summary": "We re-tested, in an independent cohort of 169 people, whether short sleep raises resting pulse. The direction held but the size shrank to about 0.1 beats per minute (p = 0.03), short of both the original rule and the size seen in the first cohort. Reported as refuted: real but too small to matter for an individual alarm.",
+   "outcome": "refuted",
+   "data": "real",
+   "tags": [
+    "replication",
+    "sleep",
+    "pulse",
+    "wearables",
+    "independent cohort"
+   ]
   }
  }
 }

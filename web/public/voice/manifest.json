@@ -21,11 +21,11 @@
   "audio": "/voice/517d82f28ca6582d.mp3"
  },
  "actas": {
-  "id": "7ba9575e1007c968",
-  "texto": "28 experiments were preregistered with a SHA-256 hash before they ran. 23 have been executed, each exactly once. Failures are part of the record.",
+  "id": "c7a45974d59b7292",
+  "texto": "29 experiments were preregistered with a SHA-256 hash before they ran. 24 have been executed, each exactly once. Failures are part of the record.",
   "fuente": "/api/actas · GO-2",
   "banner": "REAL",
-  "audio": "/voice/7ba9575e1007c968.mp3"
+  "audio": "/voice/c7a45974d59b7292.mp3"
  },
  "residuo": {
   "id": "493cdc99f7863690",
