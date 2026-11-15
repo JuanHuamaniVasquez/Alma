@@ -27,7 +27,7 @@ export default function Budget() {
   const rows = BUDGETS.map(([id, name]) => ({ id, name, line: ledger?.habitat.find((h) => h.presupuesto_id === id) }));
   const nOpen = ledger ? Object.values(ledger.presupuestos).filter((p) => !p.cierra).length : 0, nBooks = ledger ? Object.keys(ledger.presupuestos).length : 0;
   return (
-    <Room voice={day != null ? `libro-${day}` : undefined} scroll>
+    <Room voice={day != null ? `libro-${day}` : undefined} scroll hero="budget" heroFocus="50% 60%">
       <div className="mx-auto max-w-5xl px-10 pt-10">
         <h1 className="font-display text-5xl leading-tight">Do the ship&apos;s books close?</h1>
         <p className="mt-3 max-w-2xl text-ink-dim">Nine books, one rule: what comes in, minus what goes out, minus what is stored, must equal what was declared lost — within the manifest&apos;s own uncertainty. Where no real anchor exists, the book stays empty.</p>

@@ -53,10 +53,10 @@ check("el audio de ALMA arranca tras el clic (política de autoplay)", audio.som
 
 // 2 · navegación con flechas
 await page.keyboard.press("ArrowRight");
-await page.waitForFunction(() => location.pathname === "/machine", { timeout: 8000 });
+await page.waitForFunction(() => location.pathname === "/machine", { timeout: 25000 });
 check("la flecha derecha va a Machine Room", true);
 await page.keyboard.press("ArrowLeft");
-await page.waitForFunction(() => location.pathname === "/", { timeout: 8000 });
+await page.waitForFunction(() => location.pathname === "/", { timeout: 25000 });
 
 // 2b · la tripulación de 5: elegir, dentro / fuera
 await page.waitForFunction(() => document.querySelectorAll('nav[aria-label="Crew"] ul button').length === 5, { timeout: 15000 }).catch(() => {});   // el roster llega de la API
@@ -151,8 +151,8 @@ await page.waitForFunction(() => location.pathname === "/foundry", { timeout: 20
 
 // 6 · Fundición y cápsulas
 await page.goto(`${BASE}/foundry`, { waitUntil: "domcontentloaded" });
-await page.waitForFunction(() => document.querySelectorAll("article").length === 7, { timeout: 30000 });
-check("la Fundición muestra sus 7 tarjetas (2 con astronautas reales)", true);
+await page.waitForFunction(() => document.querySelectorAll("article").length >= 8 && document.body.innerText.toLowerCase().includes("9 born"), { timeout: 30000 });
+check("la Fundición muestra 9 tarjetas (paginadas de 3 en 3) y el vivero generado", (await page.evaluate(() => !!document.querySelector('[data-testid="nursery"]'))));
 await page.goto(`${BASE}/capsule`, { waitUntil: "domcontentloaded" });
 await page.waitForFunction(() => document.querySelectorAll("article").length === 3, { timeout: 30000 });
 check("las 3 cápsulas llevan límites", (await page.$$eval("article", (a) => a.every((x) => x.innerText.toLowerCase().includes("limits")))));

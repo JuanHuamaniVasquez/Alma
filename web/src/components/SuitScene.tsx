@@ -3,7 +3,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Line, useGLTF, useProgress } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
-import { BUDGETS, INDICATOR_NAMES, type Entorno, type Indicator, type LedgerDay } from "@/lib/api";
+import { BUDGETS, INDICATOR_NAMES, type Anillo, type Entorno, type Indicator, type LedgerDay } from "@/lib/api";
 import type { CrewLook } from "./CrewFigure";
 
 useGLTF.setDecoderPath("/draco/");
@@ -359,8 +359,8 @@ function Ring({ i, id, state, onPick, active, labels }: { i: number; id: string;
 }
 
 const drag = { pts: new Map<number, [number, number]>(), start: [0, 0] as [number, number], pinch: 0 };
-export default function SuitScene({ env, ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look, holo, layer, helmet }: {
-  env: Entorno | null; ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook; holo: boolean; layer: Layer; helmet: boolean;
+export default function SuitScene({ env, anillos, ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look, holo, layer, helmet }: {
+  env: Entorno | null; anillos: Record<string, Anillo> | null; ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook; holo: boolean; layer: Layer; helmet: boolean;
 }) {
   const labels: Labels = useRef({});
   const marks: Marks = useRef({});
@@ -371,7 +371,9 @@ export default function SuitScene({ env, ledger, picked, onPick, mode, indicator
   /** Anillos sin libro pero con un DRIVER real en vivo (no cierra: nada declarado perdido): Dose ← protones GOES; Rhythm ← luz de la ISS. */
   const driverOf = (id: string): { text: string; alarm?: boolean } | null => {
     if (id === "dosis" && env?.protones.disponible && env.protones.pfu != null) return { text: `${env.protones.pfu < 10 ? env.protones.pfu.toFixed(2) : Math.round(env.protones.pfu)} pfu protons · live`, alarm: !!env.protones.tormenta_s1_o_mas };
-    if (id === "ritmo" && env?.iss.disponible) return { text: `ISS in ${env.iss.a_la_luz ? "sunlight" : "Earth's shadow"} · live` };
+    if (id === "ritmo" && env?.iss.disponible) return { text: `ISS in ${env.iss.a_la_luz ? "sunlight" : "shadow"} · live` };
+    if (id === "energia" && env?.rayosx.disponible && env.rayosx.clase) return { text: `sun X-rays ${env.rayosx.clase} · live` };
+    if (anillos?.[id]) return { text: anillos[id].texto };            // resultado REAL y sellado que le corresponde al anillo (no es un libro)
     return null;
   };
   const stateOf = (id: string): State => { const p = ledger?.presupuestos[id]; return p ? (p.cierra ? "closes" : "open") : driverOf(id) ? "driver" : "absent"; };

@@ -101,7 +101,7 @@ function WakeGate({ onWake }: { onWake: () => void }) {
 }
 
 /** El orbe de ALMA + subtítulos. Al terminar de hablar el texto se desvanece a los 5 s (y vuelve al pasar el ratón o tocar el orbe); el sello y la fuente siguen visibles. */
-export function AlmaDock({ room }: { room?: string }) {
+export function AlmaDock({ room, docked = false }: { room?: string; docked?: boolean }) {
   const { say, line, shown, speaking, has, muted, setMuted, subs, setSubs } = useAlma();
   const [quiet, setQuiet] = useState(false);       // ¿ya pasaron 5 s desde que terminó de hablar?
   const [over, setOver] = useState(false);
@@ -115,7 +115,7 @@ export function AlmaDock({ room }: { room?: string }) {
   const sound = <button onClick={() => setMuted(!muted)} aria-pressed={muted} className="pointer-events-auto text-ink-faint hover:text-ink">sound {muted ? "off" : "on"}</button>;
   const subsBtn = <button onClick={() => setSubs(subs === "full" ? "off" : "full")} aria-pressed={subs === "off"} className="pointer-events-auto text-ink-faint hover:text-ink">subtitles {subs === "full" ? "on" : "off"}</button>;
   return (
-    <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-20 pb-5 pl-6 pt-10 transition-[background] duration-700 ${textVisible && line ? "bg-gradient-to-t from-bg from-55% via-bg/80 to-transparent" : "bg-gradient-to-t from-bg/90 to-transparent"}`}>
+    <div className={docked ? "relative z-20 shrink-0 border-t border-line bg-bg px-6 pb-3 pt-3" : `pointer-events-none absolute inset-x-0 bottom-0 z-20 pb-5 pl-6 pt-10 transition-[background] duration-700 ${textVisible && line ? "bg-gradient-to-t from-bg from-55% via-bg/80 to-transparent" : ""}`}>
       <div className="flex max-w-[54rem] items-end gap-4" onMouseEnter={() => setOver(true)} onMouseLeave={() => setOver(false)}>
         <button onClick={() => room && say(room, true)} disabled={!room || !has(room)} aria-label="Ask ALMA to speak"
           className="pointer-events-auto relative mb-1 h-11 w-11 shrink-0 rounded-full outline-offset-4 disabled:opacity-40"

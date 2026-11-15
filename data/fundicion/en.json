@@ -49,6 +49,20 @@
    "refuter": "Fewer than 2 of 4 leave the pooled band (act FB-025, H1).",
    "mechanism": "Pooling within-person variation gives more degrees of freedom (t = 2.36 instead of 4.30) and a tighter band (exploratory: same data as FB-024).",
    "result": "Refuted on real astronaut data: 0 of 4. Bands narrow by about 30%, but the detection floor stays near ±70% of the person's mean — day-to-day variation is huge (FB-025)."
+  },
+  "e593f7af-05e3-5992-a404-a552af5a56d3": {
+   "title": "Warmer nights, faster resting pulse",
+   "prediction": "Within each person, on held-out days, nightly skin temperature and resting pulse rise together (median rank correlation ≥ 0.20, ≥ 65% of people positive).",
+   "refuter": "Median below 0.20 or fewer than 65% positive (act FB-022, H1).",
+   "mechanism": "Thermoregulation: a warmer night raises resting heart rate.",
+   "result": "Sustained on real wearable data: median ρ = +0.24, 72% of 47 people positive (FB-022). Real coupling, modest size."
+  },
+  "d835780f-d561-538a-8bd3-0e21d51bd133": {
+   "title": "Faster breathing, faster pulse",
+   "prediction": "Within each person, on held-out days, nightly breathing rate and resting pulse rise together (median rank correlation ≥ 0.20, ≥ 65% positive).",
+   "refuter": "Median below 0.20 or fewer than 65% positive (act FB-022, H3).",
+   "mechanism": "Cardiorespiratory coupling.",
+   "result": "Sustained on real wearable data: median ρ = +0.27, 79% of 33 people positive (FB-022)."
   }
  },
  "detectores": {

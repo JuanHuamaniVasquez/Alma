@@ -16,7 +16,7 @@ export default function Kill() {
   const a = Math.abs(day.A_manifiesto.z), b = Math.abs(day.B_ley.residuo_kg) / day.B_ley.sigma_propagada_kg;
   const closes = day.B_ley.veredicto === "CIERRA";
   return (
-    <Room voice="demo_kill" scroll>
+    <Room voice="demo_kill" scroll hero="leak" heroFocus="50% 30%">
       <div className="mx-auto max-w-6xl px-10 pt-10">
         <h1 className="font-display text-5xl leading-tight">Same day. Same data.<br /><span className="text-ink-dim">Two detectors.</span></h1>
         <div className="mt-6 flex items-center gap-5">

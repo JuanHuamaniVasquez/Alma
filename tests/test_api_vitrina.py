@@ -20,7 +20,7 @@ def test_fundicion_expone_tablero_tarjetas_detector_y_faro():
     r = get("/api/fundicion/")
     assert r.status_code == 200
     d = r.json()
-    assert d["tablero"]["nacidas"] == len(d["tarjetas"]) == 7
+    assert d["tablero"]["nacidas"] == len(d["tarjetas"]) == 9
     assert d["tablero"]["detectores_nuevos"] == len(d["detectores"]) == 1
     assert all(t["senal_refutadora"] and t["fuentes"] for t in d["tarjetas"])  # sin fuente o sin señal refutadora no existe
     assert len(d["faro"]) == 1
@@ -324,7 +324,7 @@ def test_m7_astronautas_solo_agregados_y_osdr_catalogo():
 
 @pytest.mark.django_db
 @pytest.mark.parametrize("url", ["libro/dias/", "alarmas/", "residuo/", "verdes/", "indicadores/", "tripulacion/", "fundicion/", "actas/", "capsulas/", "demo-kill/", "tormenta/",
-                                 "tormenta/escenario/G3/", "privacidad/", "nilm/", "eproceso/", "esperado/", "enlace/", "astronautas/", "osdr/"])
+                                 "tormenta/escenario/G3/", "privacidad/", "nilm/", "eproceso/", "esperado/", "enlace/", "astronautas/", "osdr/", "anillos/", "vivero/", "frontera/"])
 def test_toda_respuesta_de_la_api_lleva_banner_real_o_simulado(url):
     """Mandamiento 3 (auditoría 2026-11-15): banner en la respuesta, o en cada elemento de su lista principal. (`entorno/` y `ecg/` se prueban aparte: red/archivo local.)"""
     d = get("/api/" + url).json()

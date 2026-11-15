@@ -128,6 +128,16 @@
 
 - [x] **M7.7 FB-025 (exploratoria)** — banda con varianza agrupada sobre OSD-569: las bandas se estrechan ≈ 30 %, pero el piso de detección de linfocitos sigue en ±70 % de la media; H1/H2 refutadas, H3/H4 sostenidas. `docs/actas/NOTA-FB-025.md`, acta `fb459739…`. **Evidencia git:** commits b6f0a9c (acta) → d992bcb (ejecución).
 
+## M8 · Revisión de frontend y laboratorio (petición del humano 2026-11-15: anillos vacíos, sin paginación, laboratorio que no generaba hipótesis, navbar cargado, poco visual)
+
+- [x] **M8.1 Navbar** — 4 grupos (Crew · Ship ▾ · World ▾ · Lab ▾) con menú desplegable en vez de 9 enlaces; chips «Habitat simulated · day» (solo salas con libro) y «● Live».
+- [x] **M8.2 ALMA ya no tapa el contenido (M3.8)** — en salas de lectura la barra de ALMA es sólida y el contenido termina encima (`Room`/`AlmaDock docked`).
+- [x] **M8.3 Anillos sin «no ledger»** — cada anillo muestra algo REAL: en vivo (dosis ← protones GOES, ritmo ← luz de la ISS, energía ← rayos X solares) o un resultado sellado (tiempo ← 79/88 días reales cierran 1 440 min; inmunidad ← linfocitos de astronautas reales; carga ← FB-016 A; conducta ← FB-016 B); `/api/anillos/` lee los registros. No son libros: la tarjeta lo dice.
+- [x] **M8.4 Paginación** — `Pager`/`usePaged`: columnas de la Fundición de 3 en 3 y el vivero.
+- [x] **M8.5 El laboratorio GENERA hipótesis** — `src/fabrica/generador.py` (biblioteca de 11 mecanismos con fuente × datos REALES cargados): 6 listas para sellar, 3 bloqueadas por dato inexistente (en vuelo), 2 ya probadas; `scripts/generar_vivero.py` → `data/fundicion/vivero.json`, `/api/vivero/`, sección «The nursery» + cadena de montaje en la Fundición; 2 tarjetas nuevas sostenidas acuñadas desde FB-022 (`scripts/acunar_tarjetas_m8.py`; 9 tarjetas). `tests/test_generador.py`.
+- [x] **M8.6 Más imagen real** — 6 fotos REALES de NASA (images-api.nasa.gov, créditos en `credits.json`), cabecera por sala, la Tierra más reciente de la cámara EPIC (`/api/tierra/`), y la huella visual del hash de cada acta en La Bóveda.
+- [ ] **M8.7 Sesión 2 de la auditoría** — contrato DC-03 para el entorno en vivo y destino del e-proceso en DC-05 (DOC-01 v0.2.9); decisión D-38 de semillas.
+
 ## Bloqueado / decisiones pendientes del humano (no son ítems de código)
 
 - Stack definitivo (M0.1) — propuesta por defecto en CLAUDE.md §2.

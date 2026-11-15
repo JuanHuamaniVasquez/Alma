@@ -14,11 +14,11 @@
   "audio": "/voice/a0d5104e363d84c3.mp3"
  },
  "fundicion": {
-  "id": "2fbb553f97d09318",
-  "texto": "The foundry has minted 7 hypothesis cards: 4 refuted, 1 sustained, and 1 compiled into a new detector. Refuted cards are published exactly like the sustained ones.",
+  "id": "8efb8715e538da6e",
+  "texto": "The foundry has minted 9 hypothesis cards: 4 refuted, 3 sustained, and 1 compiled into a new detector. Refuted cards are published exactly like the sustained ones.",
   "fuente": "/api/fundicion · DC-12",
   "banner": "REAL",
-  "audio": "/voice/2fbb553f97d09318.mp3"
+  "audio": "/voice/8efb8715e538da6e.mp3"
  },
  "actas": {
   "id": "3dbd120bf2374d43",

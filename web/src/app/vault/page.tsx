@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAlma } from "@/components/Alma";
 import { Room } from "@/components/Room";
+import { HashArt } from "@/components/HashArt";
 import { Stamp } from "@/components/Stamp";
 import { get, word, type Acta } from "@/lib/api";
 import { closest, emptyFilters, hasFilters, OUTCOME_LABEL, parse, ROOMS, search, type Doc, type Filters, type Outcome } from "@/lib/search";
@@ -169,8 +170,8 @@ export default function Vault() {
             const a = (doc as Doc & { raw: Acta }).raw, isOpen = open === a.acta;
             return (
               <li key={a.acta} ref={(el) => { rows.current[a.acta] = el; }} className={`transition-colors ${isOpen ? "bg-ink/[0.05]" : "hover:bg-ink/[0.025]"}`}>
-                <button onClick={() => setOpen(isOpen ? null : a.acta)} aria-expanded={isOpen} className="grid w-full grid-cols-[8.5rem_1fr_auto] items-baseline gap-6 px-3 py-4 text-left">
-                  <span className="font-display text-[1.7rem] leading-none">{a.acta}</span>
+                <button onClick={() => setOpen(isOpen ? null : a.acta)} aria-expanded={isOpen} className="grid w-full grid-cols-[11.5rem_1fr_auto] items-center gap-6 px-3 py-4 text-left">
+                  <span className="flex items-center gap-3"><HashArt hash={a.hash_sha256} /><span className="font-display text-[1.7rem] leading-none">{a.acta}</span></span>
                   <span><span className="block text-[15px] font-medium text-ink">{doc.title}</span><span className="mt-1 block text-[13px] leading-snug text-ink-dim">{doc.summary}</span></span>
                   <span className="flex flex-col items-end gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.14em]">
                     <span className={doc.outcome === "refuted" ? "text-signal" : doc.outcome === "sustained" ? "text-ok" : "text-ink-dim"}>{OUTCOME_LABEL[doc.outcome]}</span>
@@ -178,7 +179,7 @@ export default function Vault() {
                   </span>
                 </button>
                 {isOpen && (
-                  <div className="grid gap-3 px-3 pb-5 pl-[10.5rem] font-mono text-[11px] leading-relaxed text-ink-dim">
+                  <div className="grid gap-3 px-3 pb-5 pl-[13.5rem] font-mono text-[11px] leading-relaxed text-ink-dim">
                     <p className="break-all"><span className="text-ink">{a.hash_sha256.slice(0, 16)}</span>{a.hash_sha256.slice(16)}</p>
                     <p className="uppercase tracking-[0.12em] text-ink-faint">{a.registrada_utc.replace("T", " ").replace("Z", " UTC")} · seed {a.semillas.join(", ")} · {a.ejecutada ? "executed once" : "sealed, not yet run"}</p>
                     {verdicts(a.veredictos).length > 0 && <p className="flex flex-wrap gap-x-4 gap-y-1 uppercase tracking-[0.1em]">{verdicts(a.veredictos).map(([k, v]) => <span key={k} className={v === "REFUTED" ? "text-signal" : ""}>{k.replace(/_/g, " ")} {v}</span>)}</p>}
@@ -209,7 +210,7 @@ export default function Vault() {
 
 /** Resultado de la verificación de un acta (el cálculo vive en el padre, para que «verify all» no dependa de qué página se ve). */
 function Verify({ r, onRun, compact }: { r: "busy" | "err" | { ok: boolean; hash: string } | undefined; onRun: () => void; compact?: boolean }) {
-  if (compact) return r && typeof r === "object" ? <p className={`px-3 pb-2 pl-[10.5rem] font-mono text-[10.5px] ${r.ok ? "text-ok" : "text-signal"}`}>{r.ok ? "✓ MATCH — recomputed in your browser" : "✗ DOES NOT MATCH"}</p> : null;
+  if (compact) return r && typeof r === "object" ? <p className={`px-3 pb-2 pl-[13.5rem] font-mono text-[10.5px] ${r.ok ? "text-ok" : "text-signal"}`}>{r.ok ? "✓ MATCH — recomputed in your browser" : "✗ DOES NOT MATCH"}</p> : null;
   return (
     <div className="font-mono text-[10.5px] leading-relaxed">
       {r === undefined || r === "err" ? <button onClick={onRun} className="uppercase tracking-[0.16em] text-ink-dim underline underline-offset-4 hover:text-ink">{r === "err" ? "could not verify — retry" : "recompute this hash in your browser"}</button>

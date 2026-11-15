@@ -517,3 +517,70 @@ class Frontera(SoloLectura):
         except Exception as e:                                                          # noqa: BLE001  sin el archivo local no hay ficha (la ausencia es dato)
             out.append({"id": "ECG", "verdict": "open", "hash": None, "numeros": {}, "error": type(e).__name__})
         return Response({"banner": Banner.REAL.value, "regla_color": "held = todas las hipótesis sostenidas; failed = ninguna; mixed = el resto (derivado del registro sellado)", "fichas": out})
+
+
+class Anillos(SoloLectura):
+    """M8 · Los anillos «sin libro» de la sala principal dejan de estar vacíos: cada uno muestra un RESULTADO real y sellado que le corresponde (con su fuente, su acta y su límite). No son libros: no cierran ni abren."""
+
+    def get(self, request):
+        import csv
+        import json
+
+        from src.libro.cierre_tiempo import evaluar_dia
+        from src.contratos.dc04_libro import EstadoLinea
+        raiz = Path(settings.BASE_DIR).parent
+        res = {}
+        for l in (raiz / "docs" / "actas" / "RESULTADOS.jsonl").read_text(encoding="utf-8").splitlines():
+            if l.strip():
+                j = json.loads(l); res.setdefault(j["acta"], j)
+        out: dict = {}
+        fx = list(csv.DictReader((raiz / "data" / "fixtures" / "lifesnaps_diario_extracto.csv").open(encoding="utf-8")))
+        ev = [evaluar_dia(f) for f in fx]
+        completos = [e for e in ev if e.residuo_min is not None]
+        cierran = sum(e.estado is EstadoLinea.LIMPIO for e in completos)
+        out["tiempo"] = {"texto": f"{cierran}/{len(completos)} real days close", "detalle": f"One real wearable's {len(completos)} complete days: {cierran} add up to 1,440 minutes within a minute; {len(fx) - len(completos)} rows lack data and are recorded as absent, never filled.",
+                         "fuente": "LifeSnaps (Zenodo 7229547) · data/fixtures · M2.9", "limite": "One wearer, not an astronaut; an accounting identity of the export, not physiology."}
+        if (a := res.get("FB-024")):
+            c = a["tabla"]["abs_lymphocytes|R+1"]["mediana_cambio_pct"]
+            out["inmunidad"] = {"texto": f"astronauts: lymphocytes {c:+.0f}%", "detalle": "Blood counts of four Inspiration4 astronauts: median change in lymphocytes on landing day versus each person's own baseline. No one left their personal band: with 3 baseline samples it is too wide to see it.",
+                                "fuente": f"NASA OSDR OSD-569 · FB-024 · sha256 {a['hash_acta'][:8]}", "limite": "Four civilians; none sampled in flight; no causality."}
+        if (a := res.get("FB-016")):
+            out["carga"] = {"texto": f"short sleep → +{100 * a['A']['S']:.1f} pts tired", "detalle": "Days with less sleep than a person's own median raise the chance they report being tired by this many percentage points (sealed test, sustained).",
+                            "fuente": f"LifeSnaps · FB-016 A · sha256 {a['hash_acta'][:8]}", "limite": "Everyday people wearing Fitbits, not astronauts."}
+            out["conducta"] = {"texto": "tension ≠ lower HRV", "detalle": "Hypothesis: days of reported tension lower overnight heart-rate variability. The sealed test refuted it (the difference had the opposite sign).",
+                               "fuente": f"LifeSnaps · FB-016 B · sha256 {a['hash_acta'][:8]}", "limite": "Everyday people, not astronauts; small sample."}
+        return Response({"banner": Banner.REAL.value, "anillos": out})
+
+
+class Vivero(SoloLectura):
+    """M8 · El vivero de LA FUNDICIÓN: hipótesis GENERADAS por `src/fabrica/generador.py` (biblioteca de mecanismos × datos reales cargados). Candidatos, no resultados."""
+
+    def get(self, request):
+        import json
+        d = json.loads((Path(settings.RAIZ) / "data" / "fundicion" / "vivero.json").read_text(encoding="utf-8"))
+        return Response({"banner": Banner.REAL.value, **d})
+
+
+_TIERRA: dict = {"t": 0.0, "d": None}
+
+
+class Tierra(SoloLectura):
+    """M8 · La Tierra de AHORA vista por la cámara EPIC de NASA (satélite DSCOVR, a ≈ 1,5 millones de km): última imagen natural. Hash de la respuesta cruda; si cae, `disponible: false`."""
+
+    def get(self, request):
+        import hashlib
+        import json
+        import time
+        import urllib.request
+        if _TIERRA["d"] is None or time.time() - _TIERRA["t"] > 1800:
+            url = "https://epic.gsfc.nasa.gov/api/natural"
+            try:
+                crudo = urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "ALMA-TONO-LAB/0.1"}), timeout=8).read()      # noqa: S310
+                u = json.loads(crudo)[0]
+                f = u["date"][:10].split("-")
+                _TIERRA["d"] = {"banner": Banner.REAL.value, "disponible": True, "fuente": url, "hash_lectura_cruda": hashlib.sha256(crudo).hexdigest(), "fecha_utc": u["date"], "caption": u.get("caption", ""),
+                                "imagen": f"https://epic.gsfc.nasa.gov/archive/natural/{f[0]}/{f[1]}/{f[2]}/jpg/{u['image']}.jpg", "cuerpo": "Earth, seen by NASA's EPIC camera on DSCOVR"}
+            except Exception as e:                                                                         # noqa: BLE001  la ausencia es dato
+                _TIERRA["d"] = {"banner": Banner.REAL.value, "disponible": False, "fuente": url, "error": type(e).__name__}
+            _TIERRA["t"] = time.time()
+        return Response(_TIERRA["d"])

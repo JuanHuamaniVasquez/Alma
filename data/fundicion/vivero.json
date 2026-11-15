@@ -1,0 +1,390 @@
+{
+ "generado_utc": "2026-11-15T21:27:38Z",
+ "n_mecanismos": 11,
+ "fuente_datos": "LifeSnaps (Zenodo 7229547), conteos de pares REALES",
+ "n_listos": 6,
+ "n_bloqueados": 3,
+ "n_ya_probadas": 2,
+ "candidatos": [
+  {
+   "id": "7fb6cdcb-57f3-5e15-9a57-9842a08015a3",
+   "clave": "sueno-fc",
+   "titulo": "Short sleep, faster resting pulse",
+   "mecanismo": "Restricción de sueño → mayor activación simpática → pulso en reposo más alto al día siguiente (ancla por verificar en M5.5)",
+   "causa": "sueno_min",
+   "efecto": "fc_reposo",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    },
+    {
+     "id": "25127232",
+     "tipo": "PMID",
+     "nombre": "Barger 2014 — astronaut sleep"
+    }
+   ],
+   "mata": "Diferencia intrapersonal de pulso en reposo < 0,5 lpm o p > 0,025 entre días de sueño corto y el resto",
+   "valor_si_cierta": [
+    "DC-02",
+    "DC-05"
+   ],
+   "estado": "listo",
+   "ya_probada_en": null,
+   "datos": {
+    "pares": 3512,
+    "personas_con_40_dias": 48,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 3512 pares, 48 personas con ≥ 40 días",
+    "computo": "barajado intrapersona (10 000)",
+    "dias": 1
+   },
+   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+  },
+  {
+   "id": "c6f8ed81-b402-50ac-8c5e-ff6fccfdab17",
+   "clave": "temp-eficiencia",
+   "titulo": "Warmer skin at night, lighter sleep",
+   "mecanismo": "Temperatura nocturna de la muñeca más alta → peor eficiencia del sueño (termorregulación; ancla por verificar en M5.5)",
+   "causa": "temp_noche",
+   "efecto": "eficiencia_sueno",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    }
+   ],
+   "mata": "Correlación intrapersonal mediana > −0,1 en prueba",
+   "valor_si_cierta": [
+    "DC-05"
+   ],
+   "estado": "listo",
+   "ya_probada_en": null,
+   "datos": {
+    "pares": 3356,
+    "personas_con_40_dias": 47,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 3356 pares, 47 personas con ≥ 40 días",
+    "computo": "Spearman intrapersona, mitad/mitad",
+    "dias": 1
+   },
+   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+  },
+  {
+   "id": "a1a62083-90dc-5cb0-ad4b-5a91510a35b2",
+   "clave": "kp-respiracion",
+   "titulo": "Geomagnetic activity, breathing rate",
+   "mecanismo": "Actividad geomagnética → frecuencia respiratoria nocturna (heliobiología; evidencia controvertida)",
+   "causa": "kp",
+   "efecto": "resp_noche",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    },
+    {
+     "id": "10.1029/2020SW002641",
+     "tipo": "DOI",
+     "nombre": "GFZ Kp index"
+    }
+   ],
+   "mata": "Estadístico dentro del nulo por desplazamiento circular (p > 0,0125)",
+   "valor_si_cierta": [
+    "DC-03",
+    "DC-05"
+   ],
+   "estado": "listo",
+   "ya_probada_en": null,
+   "datos": {
+    "pares": 2495,
+    "personas_con_40_dias": 33,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 2495 pares, 33 personas con ≥ 40 días",
+    "computo": "10 000 permutaciones circulares",
+    "dias": 1
+   },
+   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+  },
+  {
+   "id": "736ac56f-57c1-5f5b-88fe-aa8616eea06c",
+   "clave": "carga-rmssd",
+   "titulo": "A hard day, a quieter night",
+   "mecanismo": "Carga de entrenamiento intensa → menor variabilidad vagal esa noche (ancla por verificar en M5.5)",
+   "causa": "actividad_intensa",
+   "efecto": "rmssd",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    }
+   ],
+   "mata": "Correlación de rangos intrapersonal mediana > −0,1 en prueba (mitad final de cada serie)",
+   "valor_si_cierta": [
+    "DC-05",
+    "DC-14"
+   ],
+   "estado": "listo",
+   "ya_probada_en": null,
+   "datos": {
+    "pares": 2475,
+    "personas_con_40_dias": 33,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 2475 pares, 33 personas con ≥ 40 días",
+    "computo": "Spearman intrapersona, mitad/mitad",
+    "dias": 1
+   },
+   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+  },
+  {
+   "id": "174fe3b1-d778-5bfa-a06f-b5f9936cab92",
+   "clave": "sueno-rmssd",
+   "titulo": "Short sleep, lower overnight HRV",
+   "mecanismo": "Restricción de sueño → menor variabilidad vagal nocturna (ancla por verificar en M5.5)",
+   "causa": "sueno_min",
+   "efecto": "rmssd",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    },
+    {
+     "id": "25127232",
+     "tipo": "PMID",
+     "nombre": "Barger 2014 — astronaut sleep"
+    }
+   ],
+   "mata": "Diferencia intrapersonal de rmssd ≥ −0,05 sd o p > 0,025",
+   "valor_si_cierta": [
+    "DC-02",
+    "DC-05"
+   ],
+   "estado": "listo",
+   "ya_probada_en": null,
+   "datos": {
+    "pares": 2463,
+    "personas_con_40_dias": 33,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 2463 pares, 33 personas con ≥ 40 días",
+    "computo": "barajado intrapersona (10 000)",
+    "dias": 1
+   },
+   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+  },
+  {
+   "id": "77061d86-ebe4-5837-bc52-fd0d83628e4b",
+   "clave": "estres-eficiencia",
+   "titulo": "Stress score, worse sleep efficiency",
+   "mecanismo": "Estrés alto → sueño más fragmentado (ancla por verificar en M5.5)",
+   "causa": "estres",
+   "efecto": "eficiencia_sueno",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    }
+   ],
+   "mata": "Correlación intrapersonal mediana > −0,1 en prueba",
+   "valor_si_cierta": [
+    "DC-05"
+   ],
+   "estado": "listo",
+   "ya_probada_en": null,
+   "datos": {
+    "pares": 1865,
+    "personas_con_40_dias": 26,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 1865 pares, 26 personas con ≥ 40 días",
+    "computo": "Spearman intrapersona, mitad/mitad",
+    "dias": 1
+   },
+   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+  },
+  {
+   "id": "3a9e0cc6-4a25-5aed-8dbc-f62ead88fe49",
+   "clave": "temp-fc",
+   "titulo": "Warmer night, faster rest",
+   "mecanismo": "Temperatura nocturna más alta → pulso en reposo más alto (termorregulación)",
+   "causa": "temp_noche",
+   "efecto": "fc_reposo",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    }
+   ],
+   "mata": "Mediana de Spearman de prueba < 0,20 o < 65 % positivos",
+   "valor_si_cierta": [
+    "DC-05"
+   ],
+   "estado": "ya_probada",
+   "ya_probada_en": "FB-022",
+   "datos": {
+    "pares": 3338,
+    "personas_con_40_dias": 47,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 3338 pares, 47 personas con ≥ 40 días",
+    "computo": "Spearman intrapersona, mitad/mitad",
+    "dias": null
+   },
+   "siguiente": "Ya sellada y ejecutada: FB-022"
+  },
+  {
+   "id": "eb665acc-59ec-5902-90e2-fa71d498f699",
+   "clave": "resp-fc",
+   "titulo": "Faster breathing, faster pulse",
+   "mecanismo": "Respiración nocturna más rápida → pulso en reposo más alto (acoplamiento cardiorrespiratorio)",
+   "causa": "resp_noche",
+   "efecto": "fc_reposo",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    }
+   ],
+   "mata": "Mediana de Spearman de prueba < 0,20 o < 65 % positivos",
+   "valor_si_cierta": [
+    "DC-05"
+   ],
+   "estado": "ya_probada",
+   "ya_probada_en": "FB-022",
+   "datos": {
+    "pares": 2483,
+    "personas_con_40_dias": 33,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 2483 pares, 33 personas con ≥ 40 días",
+    "computo": "Spearman intrapersona, mitad/mitad",
+    "dias": null
+   },
+   "siguiente": "Ya sellada y ejecutada: FB-022"
+  },
+  {
+   "id": "7f922b88-f45e-56a9-a3f2-c056b9036a77",
+   "clave": "hf-en-vuelo",
+   "titulo": "Weightlessness lowers vagal power",
+   "mecanismo": "Vuelo espacial → menor potencia de alta frecuencia del intervalo RR (Hughson 2012, 6 astronautas)",
+   "causa": "vlf_hf_en_vuelo",
+   "efecto": "rmssd",
+   "fuentes": [
+    {
+     "id": "22134699",
+     "tipo": "PMID",
+     "nombre": "Hughson 2012 — cardiovascular control on the ISS"
+    }
+   ],
+   "mata": "HF no menor en vuelo que antes del vuelo en ≥ 4 de 6",
+   "valor_si_cierta": [
+    "DC-01",
+    "DC-14"
+   ],
+   "estado": "bloqueado",
+   "ya_probada_en": null,
+   "datos": {
+    "pares": 0,
+    "personas_con_40_dias": 0,
+    "falta": [
+     "vlf_hf_en_vuelo"
+    ]
+   },
+   "precio": {
+    "datos": "no existe dato abierto: vlf_hf_en_vuelo",
+    "computo": "pareada pre/en vuelo (n pequeña)",
+    "dias": null
+   },
+   "siguiente": "Esperar a que el dato exista; no se simula"
+  },
+  {
+   "id": "5553f0c9-7671-50de-9511-84378f3f8414",
+   "clave": "sueno-en-vuelo",
+   "titulo": "Sleep in flight vs on the ground",
+   "mecanismo": "Vuelo espacial → menos sueño obtenido (Barger 2014: 6,09 h en la ISS)",
+   "causa": "sueno_en_vuelo",
+   "efecto": "sueno_min",
+   "fuentes": [
+    {
+     "id": "25127232",
+     "tipo": "PMID",
+     "nombre": "Barger 2014 — astronaut sleep"
+    }
+   ],
+   "mata": "Diferencia en vuelo − tierra ≥ −0,2 h",
+   "valor_si_cierta": [
+    "DC-01",
+    "DC-14"
+   ],
+   "estado": "bloqueado",
+   "ya_probada_en": null,
+   "datos": {
+    "pares": 0,
+    "personas_con_40_dias": 0,
+    "falta": [
+     "sueno_en_vuelo"
+    ]
+   },
+   "precio": {
+    "datos": "no existe dato abierto: sueno_en_vuelo",
+    "computo": "pareada por astronauta",
+    "dias": null
+   },
+   "siguiente": "Esperar a que el dato exista; no se simula"
+  },
+  {
+   "id": "29c14e7a-6211-5698-9e4c-b94a4e6b7337",
+   "clave": "retardo-estres",
+   "titulo": "Delayed ground contact, more crew stress",
+   "mecanismo": "Retardo y apagones de comunicación → más estrés del equipo (McBrayer 2022 describe retardos de 0–22 min)",
+   "causa": "estres_con_retardo",
+   "efecto": "tension",
+   "fuentes": [
+    {
+     "id": "20220013418",
+     "tipo": "NTRS",
+     "nombre": "McBrayer 2022 — Mars communication delays"
+    }
+   ],
+   "mata": "Sin relación dosis-respuesta entre retardo y estrés autorreportado",
+   "valor_si_cierta": [
+    "DC-02",
+    "DC-05"
+   ],
+   "estado": "bloqueado",
+   "ya_probada_en": null,
+   "datos": {
+    "pares": 0,
+    "personas_con_40_dias": 0,
+    "falta": [
+     "estres_con_retardo"
+    ]
+   },
+   "precio": {
+    "datos": "no existe dato abierto: estres_con_retardo",
+    "computo": "regresión ordinal por misión",
+    "dias": null
+   },
+   "siguiente": "Esperar a que el dato exista; no se simula"
+  }
+ ]
+}

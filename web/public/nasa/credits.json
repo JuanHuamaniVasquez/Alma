@@ -1,0 +1,74 @@
+{
+ "frontier": {
+  "nasa_id": "iss073e0702307",
+  "titulo": " NASA astronaut pedals on the International Space Station's exercise cycle",
+  "centro": "JSC",
+  "fecha": "2025-09-17",
+  "descripcion": "iss073e0702307 (Sept. 17, 2025) --- NASA astronaut and Expedition 73 Flight Engineer Mike Fincke pedals on the International Space Station's exercise cycle, also known as Cycle Ergometer with Vibration Isolation and Stabilization, or CEVIS, providing aerobic and cardiovascular conditioning in microg",
+  "url": "https://images.nasa.gov/details/iss073e0702307",
+  "tam": [
+   1067,
+   1600
+  ]
+ },
+ "machine": {
+  "nasa_id": "iss072e143163",
+  "titulo": "Astronaut Suni Williams replaces particulate filters on the water recovery system",
+  "centro": "JSC",
+  "fecha": "2024-11-01",
+  "descripcion": "iss072e143163 (Nov. 1, 2024) --- NASA astronaut and Expedition 72 Commander Suni Williams replaces particulate filters on the water recovery system, a component of the Tranquility module's waste and hygiene compartment, the International Space Station's bathroom.",
+  "url": "https://images.nasa.gov/details/iss072e143163",
+  "tam": [
+   1600,
+   1067
+  ]
+ },
+ "leak": {
+  "nasa_id": "iss033e017337",
+  "titulo": "EVA to trouble-shoot amonia leak",
+  "centro": "JSC",
+  "fecha": "2012-11-01",
+  "descripcion": "ISS033-E-017337 (1 Nov. 2012) --- NASA astronaut Sunita Williams, Expedition 33 commander, participates in a session of extravehicular activity (EVA) outside the International Space Station on Nov. 1, 2012. During the six-hour, 38-minute spacewalk, Williams and Japan Aerospace Exploration Agency ast",
+  "url": "https://images.nasa.gov/details/iss033e017337",
+  "tam": [
+   1600,
+   1063
+  ]
+ },
+ "foundry": {
+  "nasa_id": "iss072e861307",
+  "titulo": "Astronaut Takuya Onishi inserts blood samples into a science freezer",
+  "centro": "JSC",
+  "fecha": "2025-03-27",
+  "descripcion": "iss072e861307 (March 27, 2025) --- JAXA (Japan Aerospace Exploration Agency) astronaut and Expediion 72 Flight Engineer Takuya Onishi inserts a cryogenic storage unit, called a dewar, containing blood samples collected from a crew member into a science freezer for preservation and later analysis. Th",
+  "url": "https://images.nasa.gov/details/iss072e861307",
+  "tam": [
+   1600,
+   1067
+  ]
+ },
+ "budget": {
+  "nasa_id": "iss058e005282",
+  "titulo": "View of the Earth's limb with an aurora",
+  "centro": "JSC",
+  "fecha": "2019-01-18",
+  "descripcion": "iss058e005282 (Jan. 19, 2019) --- A portion of the International Space Station's solar arrays caps this nighttime view of the Earth's limb with an aurora as the orbital complex orbited 258 miles above Ukraine and Russia.",
+  "url": "https://images.nasa.gov/details/iss058e005282",
+  "tam": [
+   1600,
+   1067
+  ]
+ },
+ "capsule": {
+  "nasa_id": "iss071e264174",
+  "titulo": "The Milky Way appears behind the SpaceX Dragon Endeavour",
+  "centro": "JSC",
+  "fecha": "2024-06-29",
+  "descripcion": "iss071e264174 (June 29, 2024) --- The Milky Way appears in the vastness of space behind the SpaceX Dragon crew spacecraft docked to the Harmony module's space-facing port on the International Space Station. NASA astronaut and Expedition 71 Flight Engineer Matt Dominick can be seen peering out of the",
+  "url": "https://images.nasa.gov/details/iss071e264174",
+  "tam": [
+   1600,
+   1067
+  ]
+ }
+}

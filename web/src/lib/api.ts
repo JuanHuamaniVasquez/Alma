@@ -103,3 +103,13 @@ export type Astronautas = { banner: Banner; ejecutada: boolean; hash_acta?: stri
 export type Osdr = { capturado_utc: string; n: number; n_crew: number; nota: string; estudios: { accession: string; titulo: string; liberado: string | null; ensayos: string[]; mision: string | null; tipo: "crew" | "cells"; url: string }[] };
 
 export type Frontera = { banner: Banner; regla_color: string; fichas: { id: string; verdict: "held" | "failed" | "mixed" | "measured" | "open"; hash: string | null; numeros: Record<string, number> }[] };
+
+export type Anillo = { texto: string; detalle: string; fuente: string; limite: string };
+export type Anillos = { banner: Banner; anillos: Record<string, Anillo> };
+
+export type ViveroCand = { id: string; clave: string; titulo: string; mecanismo: string; causa: string; efecto: string; fuentes: { id: string; tipo: string; nombre: string }[]; mata: string;
+  valor_si_cierta: string[]; estado: "listo" | "ya_probada" | "bloqueado"; ya_probada_en: string | null; datos: { pares: number; personas_con_40_dias: number; falta: string[] };
+  precio: { datos: string; computo: string; dias: number | null }; siguiente: string };
+export type Vivero = { banner: Banner; generado_utc: string; n_mecanismos: number; n_listos: number; n_bloqueados: number; n_ya_probadas: number; fuente_datos: string; candidatos: ViveroCand[] };
+
+export type Tierra = { banner: Banner; disponible: boolean; imagen?: string; fecha_utc?: string; caption?: string; cuerpo?: string };

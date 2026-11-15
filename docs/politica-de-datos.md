@@ -85,3 +85,10 @@ Rejilla de 4 220 corridas SIMULADAS (5 tripulantes ficticios, CO₂ de referenci
 | S-25 | **NASA OSDR — catálogo de estudios con humanos y vuelo espacial** (52 resultados del buscador, `organism = Homo sapiens`, consulta «spaceflight») | https://osdr.nasa.gov/osdr/data/search | públicos | Instantánea en `data/referencias/osdr_humanos.json` (fecha de captura dentro del archivo). |
 | S-26 | **ISS en vivo** (posición, altitud, `visibility` daylight/eclipsed/visible) | https://api.wheretheiss.at/v1/satellites/25544 | sin clave; ≈ 1 petición/s | Respuesta real guardada en `tests/fixtures/entorno/iss.json`. Es posición derivada de elementos orbitales, no telemetría de la estación. |
 | S-27 | **Protones GOES ≥10 MeV y rayos X 0,1–0,8 nm** (NOAA SWPC) | https://services.swpc.noaa.gov/json/goes/primary/ | públicos (NOAA) | Fixtures reales en `tests/fixtures/entorno/`. Umbral de tormenta de radiación S1 = 10 pfu (NOAA SWPC, spaceweather.gov/node/415). |
+
+### Fuentes M8 (2026-11-15)
+| ID | Fuente | Enlace | Licencia / acceso | Verificación |
+|---|---|---|---|---|
+| S-28 | **Biblioteca de Imágenes y Video de NASA** — 6 fotografías (nasa_id: iss073e0702307, iss072e143163, iss033e017337, iss072e861307, iss058e005282, iss071e264174) | https://images.nasa.gov · API https://images-api.nasa.gov | Material de NASA, en general de dominio público (Brand Center «images and media»); se acredita cada una; no implica respaldo de NASA | Descargadas con `scripts/descargar_imagenes_nasa.py` a `web/public/nasa/` + `credits.json` (título, centro, fecha, enlace). Cada imagen se revisó a ojo. |
+| S-29 | **Cámara EPIC (DSCOVR)**, última imagen natural de la Tierra | https://epic.gsfc.nasa.gov/api/natural | públicos | `/api/tierra/` con hash de la respuesta cruda; la imagen se enlaza, no se copia; la última puede tener 1–2 días de retraso (el texto lo dice). |
+| S-30 | **Natural Earth 110m land** (contornos de continentes del mapa de la ISS) | https://www.naturalearthdata.com | dominio público | `web/public/data/land110.json` (67 KB, redondeado a 0,1°). |

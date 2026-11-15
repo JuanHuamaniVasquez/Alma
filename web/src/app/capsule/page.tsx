@@ -15,7 +15,7 @@ export default function CapsulePage() {
   const [cs, setCs] = useState<Capsule[] | null>(null);
   useEffect(() => { get<{ capsulas: Capsule[] }>("/api/capsulas/").then((d) => setCs(d?.capsulas ?? [])); }, []);
   return (
-    <Room scroll>
+    <Room scroll hero="capsule" heroFocus="50% 55%">
       <div className="mx-auto max-w-5xl px-10 pt-10">
         <h1 className="font-display text-5xl leading-tight">A verdict you can carry.</h1>
         <p className="mt-3 max-w-2xl text-ink-dim">Each capsule packs a resolved hypothesis: the protocol, the exact numbers, the rule that would have killed it, the preregistration hash — and, first of all, its limits. No limits, no capsule.</p>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Room } from "@/components/Room";
 import { Stamp } from "@/components/Stamp";
-import { get, type Astronautas, type Entorno, type Frontera, type Osdr } from "@/lib/api";
+import { get, type Astronautas, type Entorno, type Frontera, type Osdr, type Tierra } from "@/lib/api";
 
 /** 09 · THE FRONTIER — lo que la nave sabe AHORA (datos reales NASA/NOAA), lo que NASA ya publicó de cuerpos de astronautas, y lo que probamos más allá del reto (con sus nulos). */
 export default function Frontier() {
@@ -11,6 +11,8 @@ export default function Frontier() {
   const [astro, setAstro] = useState<Astronautas | null>(null);
   const [osdr, setOsdr] = useState<Osdr | null>(null);
   const [fr, setFr] = useState<Frontera | null>(null);
+  const [tierra, setTierra] = useState<Tierra | null>(null);
+  useEffect(() => { get<Tierra>("/api/tierra/").then(setTierra); }, []);
   const trail = useRef<[number, number][]>([]);
   const [, bump] = useState(0);
   useEffect(() => {
@@ -20,11 +22,11 @@ export default function Frontier() {
     return () => clearInterval(id);
   }, []);
   return (
-    <Room voice="frontier" scroll>
+    <Room voice="frontier" scroll hero="frontier" heroFocus="50% 14%">
       <div className="mx-auto max-w-6xl px-10 pb-24 pt-10">
         <h1 className="font-display text-5xl leading-tight">What the ship knows<br /><span className="text-ink-dim">right now, and what we dared to test.</span></h1>
         <p className="mt-4 max-w-2xl text-ink-dim">Three things on this page are real and from NASA or NOAA: live space around the crew, blood counts of real astronauts, and the catalogue of everything NASA has opened about spaceflown human bodies. The rest are experiments we sealed before running — including the ones that failed.</p>
-        {env && <LiveEnvironment env={env} trail={trail.current} />}
+        {env && <LiveEnvironment env={env} trail={trail.current} tierra={tierra} />}
         {astro?.ejecutada && <RealAstronauts a={astro} />}
         {osdr && <Atlas o={osdr} />}
         <Tiles fr={fr} />
@@ -39,7 +41,7 @@ function Section({ title, banner, children, id }: { title: string; banner?: "REA
 }
 
 /* ---------- 1 · entorno en vivo ---------- */
-function LiveEnvironment({ env, trail }: { env: Entorno; trail: [number, number][] }) {
+function LiveEnvironment({ env, trail, tierra }: { env: Entorno; trail: [number, number][]; tierra: Tierra | null }) {
   const { iss, protones: p, rayosx: x } = env;
   return (
     <Section title="Live around the crew" banner={env.banner} id="live">
@@ -62,6 +64,13 @@ function LiveEnvironment({ env, trail }: { env: Entorno; trail: [number, number]
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">Solar X-rays · flare class</p>
             {x.disponible ? <p className="mt-1 font-display text-5xl leading-none">{x.clase}<span className="ml-2 font-mono text-[11px] text-ink-faint">peak today {x.max_ventana}</span></p> : <p className="text-ink-faint">Unavailable.</p>}
           </div>
+          {tierra?.disponible && tierra.imagen && (
+            <figure className="flex items-center gap-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={tierra.imagen} alt="Earth as seen by NASA's EPIC camera" width={150} height={150} className="h-[150px] w-[150px] rounded-full object-cover" loading="lazy" />
+              <figcaption className="text-[11px] leading-snug text-ink-faint"><span className="font-mono uppercase tracking-[0.16em] text-ink-dim">Earth, latest image</span><br />NASA EPIC camera on DSCOVR, 1.5 million km away · {tierra.fecha_utc?.slice(0, 16)} UTC</figcaption>
+            </figure>
+          )}
           <p className="text-[11px] leading-snug text-ink-faint">Sources: wheretheiss.at (orbit-derived position), NOAA SWPC GOES. The ISS position is computed from orbital elements, not station telemetry. Updated every 30 s.</p>
         </div>
       </div>

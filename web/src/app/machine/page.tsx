@@ -29,7 +29,7 @@ export default function MachineRoom() {
   }, [r]);
   const sel = pick ? tapes.find(([id]) => id === pick.id)?.[1][pick.i] : undefined;
   return (
-    <Room voice="residuo" scroll>
+    <Room voice="residuo" scroll hero="machine" heroFocus="50% 35%">
       <div className="mx-auto max-w-6xl px-10 pt-10">
         <h1 className="font-display text-5xl leading-tight">What was promised.<br /><span className="text-ink-dim">What was observed.</span></h1>
         <p className="mt-4 max-w-2xl text-ink-dim">Each tape is one book. The straight line is the manifest&apos;s promise; the shaded lane is two sigma of its own uncertainty. Where the trace leaves the lane, the gap lights up.</p>
