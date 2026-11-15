@@ -36,6 +36,7 @@
 - [ ] **M3.9 Búsqueda, filtros y paginación en cada vista + paleta de comandos global con voz y reporte hablado en inglés** — componente común reutilizado en Fundición, Machine Room, Storm, Budget y Capsule; amplía el vocabulario de ALMA a tarjetas, libro y lecturas (P2). — Dev C
 - [ ] **M3.10 Indicador «x % real / y % simulado» por sala y más feeds reales** (DONKI; OSDR cuando OS-892 publique) (P3). — Dev A
 - [x] **M5.10 README completo** — qué es, cómo correrlo, las 8 salas con capturas (`docs/screenshots/`, `pnpm screenshots`), ALMA y su voz, real vs simulado con la explicación de por qué hay tanto «SIMULATED», la ciencia (21 actas), arquitectura, API, pruebas, límites, hoja de ruta, créditos. — Dev C
+- [~] **M3.11 Bahía holográfica y tripulación realista (EN CURSO)** — HECHO: modo **Hologram | Solid** (shader propio: fresnel, líneas de barrido, franja que recorre el cuerpo; tono ámbar/marfil, no cian), peana con anillos y haz de luz que se desvanece; sobre el traje Z-2 real se ve como un holograma de astronauta. PENDIENTE: figura de interior realista (hoy un maniquí estilizado), capas **Outside → Inside → Body → Anatomy** y quitar casco/traje. Requiere el pack CC0 *Human Base Meshes* de Blender (lo descarga el equipo; yo lo proceso con Blender por línea de comandos). — Dev C
 
 ## M1 · El libro + El Contrapeso (P0 — Dev A)
 

@@ -1,7 +1,7 @@
 "use client";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Line, useGLTF, useProgress } from "@react-three/drei";
-import { Suspense, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { BUDGETS, INDICATOR_NAMES, type Indicator, type LedgerDay } from "@/lib/api";
 import { ANCHORS_IVA, CrewMesh, type CrewLook } from "./CrewFigure";
@@ -10,6 +10,28 @@ useGLTF.setDecoderPath("/draco/");
 useGLTF.preload("/models/z2.glb");
 const HEIGHT = 1.9, FOCUS_Y = 0.98;
 const IVORY = "#efe8da", SIGNAL = "#ff5a1f";
+
+/** Holograma: fresnel (borde brillante), líneas de barrido que suben, parpadeo mínimo y el mapa de color del modelo como modulación de brillo (los detalles del traje se leen).
+ *  Tono ÁMBAR/marfil (no el cian típico de las interfaces generadas). Aditivo y sin escribir profundidad: se ve «hecho de luz». */
+const HOLO = { color: new THREE.Color("#ffb45c"), rim: new THREE.Color("#fff2dc") };
+function holoMaterial(map: THREE.Texture | null): THREE.ShaderMaterial {
+  return new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+    uniforms: { uTime: { value: 0 }, uMap: { value: map }, uHasMap: { value: map ? 1 : 0 }, uColor: { value: HOLO.color }, uRim: { value: HOLO.rim } },
+    vertexShader: `varying vec3 vN; varying vec3 vV; varying vec3 vW; varying vec2 vUv;
+      void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); vW = (modelMatrix * vec4(position,1.0)).xyz; vUv = uv; gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: `uniform float uTime; uniform sampler2D uMap; uniform float uHasMap; uniform vec3 uColor; uniform vec3 uRim; varying vec3 vN; varying vec3 vV; varying vec3 vW; varying vec2 vUv;
+      void main(){
+        float fres = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.2);
+        float scan = 0.5 + 0.5 * sin(vW.y * 110.0 - uTime * 2.4);
+        float sweep = smoothstep(0.96, 1.0, sin(vW.y * 1.4 - uTime * 0.9) * 0.5 + 0.5);          // una franja brillante que recorre el cuerpo
+        float lum = uHasMap > 0.5 ? dot(texture2D(uMap, vUv).rgb, vec3(0.33)) : 0.7;
+        float a = 0.10 + lum * 0.22 + fres * 0.78 + scan * 0.10 + sweep * 0.45;
+        vec3 c = mix(uColor, uRim, clamp(fres * 1.3 + sweep, 0.0, 1.0));
+        a *= 0.94 + 0.06 * sin(uTime * 37.0);
+        gl_FragColor = vec4(c * (0.55 + lum * 0.7), clamp(a, 0.0, 1.0)); }`,
+  });
+}
 type State = "closes" | "open" | "absent";
 type Labels = React.MutableRefObject<Record<string, HTMLDivElement | null>>;
 type Marks = React.MutableRefObject<Record<string, HTMLButtonElement | null>>;
@@ -21,12 +43,23 @@ const ANCHORS_EVA: Record<string, [number, number, number]> = {
 const INDICATOR_IDS = Object.keys(ANCHORS_EVA);
 
 /** Cuerpo: balanceo suave, anclas de los marcadores del DOM (se atenúan si miran hacia dentro) y toque para que ALMA hable. Sirve al traje y a la tripulación. */
-function Body({ anchors: pos, marks, mode, onTap, children }: { anchors: Record<string, [number, number, number]>; marks: Marks; mode: "books" | "body"; onTap: () => void; children: React.ReactNode }) {
+function Body({ anchors: pos, marks, mode, onTap, children, holo }: { anchors: Record<string, [number, number, number]>; marks: Marks; mode: "books" | "body"; onTap: () => void; children: React.ReactNode; holo: boolean }) {
+  const mats = useRef<THREE.ShaderMaterial[]>([]);
   const anchors = useRef<Record<string, THREE.Object3D | null>>({});
   const v = useMemo(() => new THREE.Vector3(), []);
   const { size } = useThree();
   const ref = useRef<THREE.Group>(null);
+  useEffect(() => {                                                        // holograma ⇄ sólido: se intercambian los materiales y se guardan los originales
+    const g = ref.current; if (!g) return;
+    mats.current = [];
+    g.traverse((o) => {
+      const m = o as THREE.Mesh; if (!m.isMesh) return;
+      if (holo) { if (!m.userData.orig) m.userData.orig = m.material; const map = (m.userData.orig as THREE.MeshStandardMaterial).map ?? null; const hm = holoMaterial(map); m.material = hm; mats.current.push(hm); }
+      else if (m.userData.orig) { m.material = m.userData.orig; }
+    });
+  }, [holo, children]);
   useFrame(({ clock, camera }) => {
+    for (const m of mats.current) m.uniforms.uTime.value = clock.elapsedTime;
     if (ref.current) ref.current.rotation.y = Math.sin(clock.elapsedTime * 0.2) * 0.5;
     for (const id of INDICATOR_IDS) {
       const a = anchors.current[id], el = marks.current[id];
@@ -48,7 +81,7 @@ function Body({ anchors: pos, marks, mode, onTap, children }: { anchors: Record<
 }
 
 /** Traje NASA Z-2 (NASA 3D Resources, sin copyright): el tripulante FUERA de la nave. Visor oscuro y sin cara. */
-function Suit(props: { marks: Marks; mode: "books" | "body"; onTap: () => void }) {
+function Suit(props: { marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
   const { scene } = useGLTF("/models/z2.glb");
   const model = useMemo(() => {
     const m = scene.clone(true);
@@ -68,8 +101,29 @@ function Suit(props: { marks: Marks; mode: "books" | "body"; onTap: () => void }
 }
 
 /** El tripulante DENTRO de la nave: personaje ficticio y estilizado, con cara, uniforme, indicativo y franja de su color. */
-function Crew({ look, ...props }: { look: CrewLook; marks: Marks; mode: "books" | "body"; onTap: () => void }) {
+function Crew({ look, ...props }: { look: CrewLook; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
   return <Body anchors={ANCHORS_IVA} {...props}><CrewMesh look={look} /></Body>;
+}
+
+/** La bahía holográfica: peana con anillos, haz de luz vertical y anillos de barrido en el suelo. Solo luz (aditivo): sin geometría pesada. */
+function Bay() {
+  const sweep = useRef<THREE.Mesh>(null);
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime;
+    if (sweep.current) { const k = (t * 0.35) % 1; sweep.current.scale.setScalar(0.6 + k * 1.1); (sweep.current.material as THREE.MeshBasicMaterial).opacity = (1 - k) * 0.35; }
+  });
+  const ring = (r: number, w: number, o: number) => <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.004, 0]}><ringGeometry args={[r, r + w, 96]} /><meshBasicMaterial color="#ffb45c" transparent opacity={o} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>;
+  return (
+    <group>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.002, 0]}><circleGeometry args={[1.0, 64]} /><meshBasicMaterial color="#ffb45c" transparent opacity={0.05} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
+      {ring(0.98, 0.012, 0.9)}{ring(0.78, 0.006, 0.45)}{ring(0.55, 0.004, 0.3)}
+      <mesh ref={sweep} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.006, 0]}><ringGeometry args={[0.97, 1.0, 96]} /><meshBasicMaterial color="#fff2dc" transparent opacity={0.3} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
+      <mesh position={[0, 1.15, 0]}><cylinderGeometry args={[0.92, 1.0, 2.3, 64, 1, true]} />
+        <shaderMaterial transparent depthWrite={false} side={THREE.DoubleSide} blending={THREE.AdditiveBlending} uniforms={{ uT: { value: 0 } }}
+          vertexShader={`varying float vY; void main(){ vY = position.y / 2.3 + 0.5; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`}
+          fragmentShader={`varying float vY; void main(){ float a = pow(1.0 - vY, 1.8) * 0.16; gl_FragColor = vec4(1.0, 0.70, 0.36, a); }`} /></mesh>
+    </group>
+  );
 }
 
 /** Cámara centrada en el cuerpo, con un paralaje mínimo del puntero (calma: nada brusco). */
@@ -119,8 +173,8 @@ function Ring({ i, id, state, onPick, active, labels }: { i: number; id: string;
   );
 }
 
-export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look }: {
-  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook;
+export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look, holo }: {
+  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook; holo: boolean;
 }) {
   const labels: Labels = useRef({});
   const marks: Marks = useRef({});
@@ -136,7 +190,8 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
         <directionalLight position={[-3, 2, -2.5]} intensity={1.5} color="#d9dde0" />
         <pointLight position={[0, 0.2, 1.6]} intensity={0.8} color="#ffb47a" distance={4} />
         <Rig />
-        {outfit === "eva" ? <Suspense fallback={null}><Suit marks={marks} mode={mode} onTap={onTapSuit} /></Suspense> : <Crew look={look} marks={marks} mode={mode} onTap={onTapSuit} />}
+        {holo && <Bay />}
+        {outfit === "eva" ? <Suspense fallback={null}><Suit marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense> : <Crew look={look} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} />}
         <ContactShadows position={[0, 0, 0]} opacity={0.7} scale={4} blur={2.4} far={1.6} />
         {mode === "books" && BUDGETS.map(([id], i) => <Ring key={id} i={i} id={id} state={stateOf(id)} onPick={onPick} active={picked === id} labels={labels} />)}
       </Canvas>
