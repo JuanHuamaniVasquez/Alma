@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Room } from "@/components/Room";
 import { Stamp } from "@/components/Stamp";
@@ -17,6 +18,11 @@ export default function Foundry() {
         <h1 className="font-display text-5xl leading-tight">Ideas are cheap.<br /><span className="text-ink-dim">Surviving them is the product.</span></h1>
         {t && <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-faint">{t.nacidas} born · <span className="text-signal">{t.refutada} refuted</span> · {t.sostenida} sustained · {t.sin_datos} no data · {t.detectores_nuevos} compiled into a detector</p>}
         <div className="mt-3 flex items-center gap-4"><Stamp banner="REAL" /><span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">real wearable data from everyday people — not astronauts</span></div>
+        <div className="mt-6 max-w-3xl border-l-2 border-ink-faint/40 pl-4 text-[13px] leading-snug text-ink-dim" data-testid="foundry-explainer">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">What is this page?</p>
+          <p className="mt-1">The Foundry is the ship&apos;s laboratory. Every card is one hypothesis about how the body reacts to the spacecraft — for example, <em>&quot;do sleep-poor days make people report tiredness the next day?&quot;</em> A card cannot exist without a real source, a mechanism, and <strong className="text-ink">the exact result that would kill it</strong>. Cards move left to right: <strong className="text-ink">in test → refuted or sustained</strong>, or <strong className="text-ink">no data</strong> when the public data to test it does not exist (we never fill that gap with invented numbers). A sustained card can become a new detector for the monitor.</p>
+          <p className="mt-2">Cards on other pages come from the same method: real astronauts&apos; blood in <Link href="/frontier#astronauts" className="underline decoration-ink-faint hover:text-ink">The Frontier</Link>.</p>
+        </div>
         <div className="mt-9 grid grid-cols-4 gap-5">
           {COLS.map(([estado, name]) => (
             <section key={estado}>

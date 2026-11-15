@@ -431,3 +431,45 @@ class EnlaceTierra(SoloLectura):
         return Response({**ref, "banner": Banner.REAL.value,
                          "paquete": {"alarmas_activas_con_recibo": Alarma.objects.filter(estado="activa").count(), "recibos_de_verde": ReciboVerde.objects.count(),
                                      "contenido": "aggregates only: counts and states, never an individual's values"}})
+
+
+_ENTORNO: dict = {"t": 0.0, "d": None}
+
+
+class Entorno(SoloLectura):
+    """M7.1 · Entorno REAL en vivo de la tripulación: ISS (posición y luz), protones GOES y rayos X solares (el Kp vive en La Tormenta). Si una fuente no responde, `disponible: false` (no se rellena)."""
+
+    def get(self, request):
+        import time
+
+        from src.ingesta import entorno as E
+        if _ENTORNO["d"] is None or time.time() - _ENTORNO["t"] > 30:                     # caché de 30 s: respeta ≈1 petición/s de la fuente de la ISS
+            from concurrent.futures import ThreadPoolExecutor
+            with ThreadPoolExecutor(3) as ex:                                              # las tres fuentes en paralelo (≈ 1 s en vez de ≈ 4 s)
+                fi, fp, fx = ex.submit(E.seguro, E.iss, E.URL_ISS), ex.submit(E.seguro, E.protones, E.URL_PROT), ex.submit(E.seguro, E.rayosx, E.URL_XR)
+            _ENTORNO["d"] = {"banner": Banner.REAL.value, "iss": fi.result(), "protones": fp.result(), "rayosx": fx.result(),
+                             "aviso": "Live, real, NASA/NOAA-derived feeds. The ISS position is computed from orbital elements, not station telemetry."}
+            _ENTORNO["t"] = time.time()
+        return Response(_ENTORNO["d"])
+
+
+class AstronautasHematologia(SoloLectura):
+    """M7.2 · Resultado sellado de FB-024 (hemograma REAL de 4 astronautas de Inspiration4): solo agregados, nunca la serie de una persona."""
+
+    def get(self, request):
+        import json
+        ruta = Path(settings.BASE_DIR).parent / "docs" / "actas" / "RESULTADOS.jsonl"
+        r = next((x for x in (json.loads(l) for l in ruta.read_text(encoding="utf-8").splitlines() if l) if x.get("acta") == "FB-024"), None)
+        if r is None:
+            return Response({"banner": Banner.REAL.value, "ejecutada": False})
+        return Response({"banner": Banner.REAL.value, "ejecutada": True, "hash_acta": r["hash_acta"], "fuente": "NASA OSDR OSD-569 (SpaceX Inspiration4), LSDS-7 CBC", "n_personas": 4,
+                         "tiempos": ["R+1", "R+45", "R+82", "R+194"], "conciliacion": {"valores": r["conciliacion"]["valores"], "filas": len(r["conciliacion"]["filas"]), "de_filas": 28}, "tabla": r["tabla"], "veredictos": r["veredictos"],
+                         "aviso": "Four real astronauts (civilian crew), three pre-flight draws each, none in flight. Aggregates only."})
+
+
+class OsdrHumanos(SoloLectura):
+    """M7.3 · Instantánea del catálogo REAL de OSDR (estudios con humanos y vuelo espacial)."""
+
+    def get(self, request):
+        import json
+        return Response(json.loads((Path(settings.BASE_DIR).parent / "data" / "referencias" / "osdr_humanos.json").read_text(encoding="utf-8")))

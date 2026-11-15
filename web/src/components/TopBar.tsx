@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { get, type LedgerDays } from "@/lib/api";
+import { get, type Entorno, type LedgerDays } from "@/lib/api";
 import { Stamp } from "./Stamp";
 import { useShip } from "./Ship";
 
@@ -15,6 +15,7 @@ export const ROOMS = [
   { href: "/storm", n: "06", name: "The Storm" },
   { href: "/budget", n: "07", name: "The Budget" },
   { href: "/capsule", n: "08", name: "The Capsule" },
+  { href: "/frontier", n: "09", name: "The Frontier" },
 ] as const;
 
 const LEDGER_ROOMS = ["/", "/machine", "/kill", "/budget"]; // salas que muestran el universo simulado del hábitat; las demás llevan su propio sello
@@ -24,6 +25,8 @@ export function TopBar() {
   const [days, setDays] = useState<LedgerDays | null>(null);
   const { day } = useShip();
   const [checked, setChecked] = useState(false);
+  const [live, setLive] = useState<boolean | null>(null);
+  useEffect(() => { get<Entorno>("/api/entorno/").then((d) => setLive(!!d && (d.iss.disponible || d.protones.disponible))); }, []);
   useEffect(() => { get<LedgerDays>("/api/libro/dias/").then((d) => { setDays(d); setChecked(true); }); }, []);
   useEffect(() => {
     const i = ROOMS.findIndex((r) => r.href === path);
@@ -40,15 +43,16 @@ export function TopBar() {
         <nav className="flex gap-3 whitespace-nowrap font-mono text-[10.5px] uppercase tracking-[0.1em] xl:gap-6 xl:text-[11px] xl:tracking-[0.18em]">
           {ROOMS.map((r) => (
             <Link key={r.href} href={r.href} className={path === r.href ? "text-ink" : "text-ink-faint hover:text-ink-dim"}>
-              <span className="mr-2 hidden text-ink-faint xl:inline">{r.n}</span>{r.name}
+              <span className="mr-2 hidden text-ink-faint 2xl:inline">{r.n}</span>{r.name}
             </Link>
           ))}
         </nav>
       </div>
       <div className="flex items-center gap-4 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.14em] text-ink-dim xl:tracking-[0.18em]">
         {checked && !days && <span className="text-signal" title="Start the backend: uv run python backend/manage.py runserver">API offline</span>}
-        {LEDGER_ROOMS.includes(path) && (days?.ultimo != null ? <span>Day {day ?? days.ultimo}</span> : <span className="text-ink-faint">No ledger loaded</span>)}
-        {LEDGER_ROOMS.includes(path) && days && days.ultimo != null && <Stamp banner={days.banner} compact />}
+        {LEDGER_ROOMS.includes(path) && (days?.ultimo != null ? <span className="hidden 2xl:inline">Day {day ?? days.ultimo}</span> : <span className="text-ink-faint">No ledger loaded</span>)}
+        {LEDGER_ROOMS.includes(path) && days && days.ultimo != null && <span className="inline-block -rotate-2 border border-warn px-1.5 py-[1px] text-[10px] font-medium tracking-[0.16em] text-warn" title="The habitat's air and water are a simulated universe">Habitat simulated</span>}
+        {live && <span className="inline-block border border-ok px-1.5 py-[1px] text-[10px] font-medium tracking-[0.16em] text-ok" title="Live NASA/NOAA feeds: ISS orbit, GOES protons and X-rays">● Live</span>}
       </div>
     </header>
   );

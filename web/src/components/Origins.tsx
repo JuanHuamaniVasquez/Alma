@@ -11,6 +11,7 @@ const MAP: Record<string, { real: string[]; sim: string[] }> = {
   "/foundry": { real: ["Sources: DOIs, NTRS reports, NASA OSDR identifiers", "Outcomes of tests run on real data"], sim: ["Cards that depend on missing data stay blocked, never filled in"] },
   "/storm": { real: ["The Sun: NASA SDO imagery", "Planetary Kp index: NOAA SWPC, live"], sim: ["The G1–G5 scenarios (clearly marked)"] },
   "/budget": { real: ["Privacy counts: derived from the real stand-in states, with noise", "NASA planning figures for air and water"], sim: ["The habitat's air and water ledger (simulated universe); the other seven books are empty on purpose"] },
+  "/frontier": { real: ["Live ISS position (orbit-derived), GOES protons and solar X-rays: NASA/NOAA", "Blood counts of four real astronauts (NASA OSDR, Inspiration4)", "The OSDR catalogue of human spaceflight studies"], sim: ["The cabin-air attribution curve (simulation)", "Everything else is a sealed test of ours; its data source is on each tile"] },
   "/capsule": { real: ["Results exported from preregistered tests on real data"], sim: ["Anything produced by simulation is labelled on its own capsule"] },
 };
 

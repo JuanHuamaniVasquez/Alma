@@ -6,6 +6,6 @@ const p = await b.newPage(); await p.setViewport({ width: 1440, height: 900, dev
 await p.goto("http://localhost:3000" + ruta, { waitUntil: "domcontentloaded" });
 await p.waitForFunction(() => document.body.innerText.length > 200, { timeout: 40000 });
 await p.waitForFunction(() => !document.body.innerText.includes("Loading NASA Z-2"), { timeout: 60000 }).catch(() => {});
-await new Promise((r) => setTimeout(r, 12000));
+await new Promise((r) => setTimeout(r, 9000));
 await p.screenshot({ path: out, clip: { x: +x, y: +y, width: +w, height: +h } });
 await b.close();

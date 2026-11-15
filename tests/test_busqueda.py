@@ -12,7 +12,7 @@ def test_ids_se_hablan_letra_a_letra_y_son_unicos():
     assert hablar_id("FB-005") == "F B zero zero five" and hablar_id("FB-005-D1") == "F B zero zero five, D one"
     assert hablar_id("FB-020-v2") == "F B zero two zero, version two" and hablar_id("FB-003R") == "F B zero zero three R"
     hablados = [hablar_id(a) for a in IDS]
-    assert len(set(hablados)) == len(IDS) == 24
+    assert len(set(hablados)) == len(IDS) == 25
 
 
 def test_clips_cubren_numeros_veredictos_salas_e_ids_y_los_resultados_del_resumen_son_hablables():

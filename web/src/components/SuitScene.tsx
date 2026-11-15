@@ -3,7 +3,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Line, useGLTF, useProgress } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
-import { BUDGETS, INDICATOR_NAMES, type Indicator, type LedgerDay } from "@/lib/api";
+import { BUDGETS, INDICATOR_NAMES, type Entorno, type Indicator, type LedgerDay } from "@/lib/api";
 import type { CrewLook } from "./CrewFigure";
 
 useGLTF.setDecoderPath("/draco/");
@@ -45,7 +45,7 @@ function holoMaterial(map: THREE.Texture | null, base: THREE.Color | null, vcol:
         gl_FragColor = vec4(c * (0.55 + lum * 0.7), clamp(a, 0.0, 1.0)); }`,
   });
 }
-type State = "closes" | "open" | "absent";
+type State = "closes" | "open" | "absent" | "driver";
 type Labels = React.MutableRefObject<Record<string, HTMLDivElement | null>>;
 type Marks = React.MutableRefObject<Record<string, HTMLButtonElement | null>>;
 
@@ -347,7 +347,7 @@ function Ring({ i, id, state, onPick, active, labels }: { i: number; id: string;
       <object3D ref={anchor} position={[(i % 2 ? 1 : -1) * 1.15, y, 0]} />{/* ancla fija, sin la inclinación del anillo: etiquetas a 0,2 m una de otra */}
     <group position={[0, y, 0]} rotation={[tilt, 0, roll]}>
       <group ref={g}>
-        <Line ref={mat as never} points={pts} color={state === "open" ? SIGNAL : IVORY} lineWidth={lw} transparent opacity={op} dashed={state === "absent"} dashSize={0.04} gapSize={0.05} />
+        <Line ref={mat as never} points={pts} color={state === "open" ? SIGNAL : state === "driver" ? "#ffb45c" : IVORY} lineWidth={state === "driver" ? 1.6 : lw} transparent opacity={state === "driver" ? 0.85 : op} dashed={state === "absent"} dashSize={0.04} gapSize={0.05} />
         <mesh onClick={(e) => { e.stopPropagation(); onPick(id); }} onPointerOver={() => { setHover(true); document.body.style.cursor = "pointer"; }}
           onPointerOut={() => { setHover(false); document.body.style.cursor = ""; }} rotation={[Math.PI / 2, 0, 0]} scale={[1, 0.82, 1]}>
           <torusGeometry args={[r, 0.06, 6, 48]} /><meshBasicMaterial transparent opacity={0} depthWrite={false} />
@@ -359,8 +359,8 @@ function Ring({ i, id, state, onPick, active, labels }: { i: number; id: string;
 }
 
 const drag = { pts: new Map<number, [number, number]>(), start: [0, 0] as [number, number], pinch: 0 };
-export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look, holo, layer, helmet }: {
-  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook; holo: boolean; layer: Layer; helmet: boolean;
+export default function SuitScene({ env, ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look, holo, layer, helmet }: {
+  env: Entorno | null; ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook; holo: boolean; layer: Layer; helmet: boolean;
 }) {
   const labels: Labels = useRef({});
   const marks: Marks = useRef({});
@@ -368,7 +368,13 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
   const ready = !active && progress >= 100;
   const indState = (i?: Indicator) => (!i || i.bloqueado ? "blocked" : i.canal === "autorreporte" ? "channel" : i.crew ? (i.crew === "alarma" ? "alarm" : i.crew === "verde" ? "ok" : "channel") : (i.alarma ?? 0) > 0 ? "alarm" : "ok");
   const organStates: Record<string, OrganState> = Object.fromEntries(indicators.map((i) => [i.indicador, indState(i) as OrganState]));
-  const stateOf = (id: string): State => { const p = ledger?.presupuestos[id]; return !p ? "absent" : p.cierra ? "closes" : "open"; };
+  /** Anillos sin libro pero con un DRIVER real en vivo (no cierra: nada declarado perdido): Dose ← protones GOES; Rhythm ← luz de la ISS. */
+  const driverOf = (id: string): { text: string; alarm?: boolean } | null => {
+    if (id === "dosis" && env?.protones.disponible && env.protones.pfu != null) return { text: `${env.protones.pfu < 10 ? env.protones.pfu.toFixed(2) : Math.round(env.protones.pfu)} pfu protons · live`, alarm: !!env.protones.tormenta_s1_o_mas };
+    if (id === "ritmo" && env?.iss.disponible) return { text: `ISS in ${env.iss.a_la_luz ? "sunlight" : "Earth's shadow"} · live` };
+    return null;
+  };
+  const stateOf = (id: string): State => { const p = ledger?.presupuestos[id]; return p ? (p.cierra ? "closes" : "open") : driverOf(id) ? "driver" : "absent"; };
   return (
     <div className="absolute inset-0 cursor-grab touch-none active:cursor-grabbing" onPointerDown={(e) => { drag.pts.set(e.pointerId, [e.clientX, e.clientY]); view.moved = false; drag.start = [e.clientX, e.clientY]; drag.pinch = 0; }}
       onPointerMove={(e) => {
@@ -413,8 +419,8 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
           const s = stateOf(id);
           return (
             <div key={id} ref={(el) => { labels.current[id] = el; }} className="absolute left-0 top-0 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.2em] will-change-transform [text-shadow:0_0_8px_#0d0c0b,0_0_2px_#0d0c0b]"
-              style={{ color: s === "open" ? "var(--color-signal)" : s === "absent" ? "var(--color-ink-faint)" : "var(--color-ink-dim)" }}>
-              {label}{s === "absent" ? " · no ledger" : s === "open" ? " · open" : ""}
+              style={{ color: s === "open" || driverOf(id)?.alarm ? "var(--color-signal)" : s === "absent" ? "var(--color-ink-faint)" : s === "driver" ? "#ffb45c" : "var(--color-ink-dim)" }}>
+              {label}{s === "absent" ? " · no ledger" : s === "open" ? " · open" : s === "driver" ? ` · ${driverOf(id)?.text}` : ""}
             </div>
           );
         })}

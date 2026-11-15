@@ -120,11 +120,11 @@
 ## M7 · DATOS REALES DE NASA Y VISIBILIDAD (petición del humano 2026-11-15: «todo dice simulado, no se ven las ideas nuevas, faltan datos de NASA»)
 
 - [x] **M7.2 Hemograma REAL de astronautas (OSD-569, Inspiration4)** — FB-024 (acta `41f0413d…`, ANTES): conciliación del hemograma contra sí mismo (1 fila de 28 no cierra), banda personal con 3 puntos de base; H1/H2 refutadas (banda demasiado ancha para ver un −24 % mediano de linfocitos), H3 y H4 sostenidas. `src/ingesta/osdr_cbc.py`, `src/motor/hematologia.py`, `tests/test_hematologia_i4.py`, `docs/actas/NOTA-FB-024.md`.
-- [ ] **M7.1 Entorno en vivo REAL** (ISS en vivo + protones GOES + rayos X) → API `/api/entorno/` y anillos de la sala 01 (Dose, Rhythm, Energy) con datos reales.
-- [ ] **M7.3 Atlas OSDR de estudios con astronautas** (52 estudios reales, instantánea en `data/referencias/osdr_humanos.json`).
-- [ ] **M7.4 Sala nueva «The Frontier»** (09): entorno en vivo, astronautas reales, atlas OSDR, y un tile por idea de M6 con su resultado (honesto) y enlace a donde se ve.
-- [ ] **M7.5 Cabecera sin «SIMULATED» a todo**: chips separados (LIVE NASA/NOAA · SIMULATED HABITAT) y la leyenda de anillos vacíos explicada.
-- [ ] **M7.6 La Fundición explicada** («What is this?») y tarjeta DC-12 con fuente real de astronautas.
+- [x] **M7.1 Entorno en vivo REAL** (ISS en vivo + protones GOES + rayos X) — HECHO: `src/ingesta/entorno.py`, `/api/entorno/` (3 fuentes en paralelo, caché 30 s, `disponible:false` si cae una), fixtures REALES en `tests/fixtures/entorno/`; anillos **Dose** (protones GOES, umbral S1 = 10 pfu de NOAA) y **Rhythm** (luz de la ISS) en la sala 01 con el dato en vivo y tarjeta «live driver» (no es un libro: no cierra porque nada se declara perdido). *Energy sigue vacío a propósito.*
+- [x] **M7.3 Atlas OSDR** — HECHO: `scripts/actualizar_osdr.py` → `data/referencias/osdr_humanos.json` (52 estudios humanos + vuelo, 14 con tripulación; heurística de clasificación declarada), `/api/osdr/`; acceso a archivos NO verificado salvo OSD-569.
+- [x] **M7.4 Sala nueva «The Frontier»** (09) — HECHO: mapa de la ISS con continentes (Natural Earth 110m, dominio público) y terminador día/noche, medidor de protones contra S1, clase de rayos X, sangre real de astronautas (curva de cambio mediano, «3 de 112 fuera de banda», «1 de 28 no cierra»), atlas OSDR filtrable, 6 tiles con su veredicto honesto, y «lo que nadie puede abrir».
+- [x] **M7.5 Cabecera**: chips separados «Habitat simulated» y «● Live»; el día solo en pantallas anchas.
+- [x] **M7.6 La Fundición explicada** («What is this page?») — HECHO. **Pendiente:** acuñar una tarjeta DC-12 con la fuente real OSD-569 (requiere pasar la puerta de `src/fabrica/mesa.py`: mecanismo de la biblioteca FA, precio, señal refutadora).
 
 ## Bloqueado / decisiones pendientes del humano (no son ítems de código)
 

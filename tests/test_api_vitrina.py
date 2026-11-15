@@ -295,3 +295,28 @@ def test_m6_ecg_real_con_calidad_medida_y_aviso_de_no_astronauta():
     assert d["banner"] == "REAL" and "not an astronaut" in d["aviso"] and d["calidad"]["sensibilidad"] >= 0.98 and d["calidad"]["ppv"] >= 0.98
     w = get("/api/ecg/?t=300&dur=10").json()
     assert w["fs_envio"] == 180 and len(w["y"]) == 1800
+
+
+def test_m7_entorno_con_respuestas_reales_guardadas(monkeypatch):
+    """M7.1 · el entorno en vivo se prueba con respuestas REALES capturadas (tests/fixtures/entorno/), sin red; si una fuente cae, se dice y no se rellena."""
+    from src.ingesta import entorno as E
+    from apps.superficies import views
+    F = RAIZ / "tests" / "fixtures" / "entorno"
+    monkeypatch.setattr(E, "_get", lambda url, t=8.0: json.loads((F / ("iss.json" if "wheretheiss" in url else "protones.json" if "protons" in url else "rayosx.json")).read_text()))
+    views._ENTORNO.update(t=0.0, d=None)
+    d = get("/api/entorno/").json()
+    assert d["banner"] == "REAL" and d["iss"]["disponible"] and d["iss"]["visibilidad"] in {"daylight", "eclipsed", "visible"} and 350 < d["iss"]["alt_km"] < 450
+    assert d["protones"]["disponible"] and d["protones"]["umbral_s1_pfu"] == 10.0 and isinstance(d["protones"]["tormenta_s1_o_mas"], bool)
+    assert d["rayosx"]["clase"][0] in "ABCMX"
+    monkeypatch.setattr(E, "_get", lambda url, t=8.0: (_ for _ in ()).throw(TimeoutError()))
+    views._ENTORNO.update(t=0.0, d=None)
+    assert get("/api/entorno/").json()["iss"] == {"disponible": False, "fuente": E.URL_ISS, "error": "TimeoutError"}
+    views._ENTORNO.update(t=0.0, d=None)
+
+
+def test_m7_astronautas_solo_agregados_y_osdr_catalogo():
+    a = get("/api/astronautas/").json()
+    assert a["banner"] == "REAL" and a["ejecutada"] and a["n_personas"] == 4 and a["conciliacion"]["valores"] == 5
+    assert not any(c in json.dumps(a) for c in ("C001", "C002", "C003", "C004"))            # ninguna serie ni id de persona cruza a la superficie
+    o = get("/api/osdr/").json()
+    assert o["n"] >= 50 and o["n_crew"] >= 10 and any(e["accession"] == "OSD-569" for e in o["estudios"])

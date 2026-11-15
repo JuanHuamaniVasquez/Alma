@@ -6,7 +6,8 @@ import { AlmaDock, useAlma } from "@/components/Alma";
 import { DayTicks } from "@/components/DayTicks";
 import { IndicatorSlip, Receipt } from "@/components/Receipt";
 import { useShip } from "@/components/Ship";
-import { BUDGETS, get, INDICATOR_NAMES, type CrewMember, type CrewPayload, type Indicator, type LedgerDay, type LedgerDays } from "@/lib/api";
+import { Stamp } from "@/components/Stamp";
+import { BUDGETS, get, INDICATOR_NAMES, type CrewMember, type CrewPayload, type Entorno, type Indicator, type LedgerDay, type LedgerDays } from "@/lib/api";
 
 const FALLBACK: CrewMember = { indicativo: "VEGA", rol: "Commander", color: "#d9a441", piel: "#e6b98f", pelo: "#2a1d14", peinado: "short", complexion: 1.04, estado: null };
 const SuitScene = dynamic(() => import("@/components/SuitScene"), { ssr: false });
@@ -27,6 +28,8 @@ export default function MedicalModule() {
   const [holo, setHolo] = useState(false);
   const [helmet, setHelmet] = useState(true);
   const [monitor, setMonitor] = useState(false);
+  const [env, setEnv] = useState<Entorno | null>(null);
+  useEffect(() => { const l = () => get<Entorno>("/api/entorno/").then(setEnv); l(); const id = setInterval(l, 30000); return () => clearInterval(id); }, []);
   const [layer, setLayer] = useState<"uniform" | "body" | "anatomy">("uniform");
   const { say, has } = useAlma();
 
@@ -66,7 +69,7 @@ export default function MedicalModule() {
   const line = ledger?.habitat.find((h) => h.presupuesto_id === picked) ?? null;
   return (
     <div className="absolute inset-0" style={{ background: "radial-gradient(60% 70% at 50% 42%, #2a2018 0%, #14110e 55%, #0d0c0b 100%)" }}>
-      <SuitScene ledger={ledger} picked={picked} onPick={pickRing} mode={mode} indicators={indsCrew} pickedInd={pickedInd} onPickInd={pickInd} onTapSuit={() => { const k = outfit === "eva" ? "suit" : who ? `crew-${who.indicativo}` : "suit"; if (has(k)) say(k, true); }}
+      <SuitScene env={env} ledger={ledger} picked={picked} onPick={pickRing} mode={mode} indicators={indsCrew} pickedInd={pickedInd} onPickInd={pickInd} onTapSuit={() => { const k = outfit === "eva" ? "suit" : who ? `crew-${who.indicativo}` : "suit"; if (has(k)) say(k, true); }}
         outfit={outfit} look={who ?? FALLBACK} holo={holo} layer={layer} helmet={helmet} />
       {monitor && <VitalsMonitor onClose={() => setMonitor(false)} />}
       {who && <p className="pointer-events-none absolute inset-x-0 top-12 z-10 text-center font-display text-[1.6rem] leading-none" style={{ color: who.color }}>{who.indicativo} <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-ink-faint">· {who.rol} · {outfit === "eva" ? "outside" : "inside"}</span></p>}
@@ -124,9 +127,30 @@ export default function MedicalModule() {
         </p>
       </nav>
       {mode === "body" && pickedInd && <IndicatorSlip crewName={who?.indicativo} ind={indsCrew.find((i) => i.indicador === pickedInd)} name={INDICATOR_NAMES[pickedInd]} onClose={() => setPickedInd(null)} onSent={() => get<{ indicadores: Indicator[] }>("/api/indicadores/").then((d) => setInds(d?.indicadores ?? []))} />}
+      {mode === "books" && picked && !line && (picked === "dosis" || picked === "ritmo") && env && <DriverSlip id={picked} env={env} onClose={() => setPicked(null)} />}
       {mode === "books" && picked && ledger && <Receipt line={line} label={label} day={ledger.dia_habitat} banner={ledger.banner} onClose={() => setPicked(null)} />}
       {mode === "books" && day != null && <DayTicks days={days} day={day} open={open} onPick={setDay} />}
       <AlmaDock room={mode === "body" ? "indicadores" : day != null ? `libro-${day}` : undefined} />
     </div>
+  );
+}
+
+
+/** Un anillo con DRIVER real (no es un libro: no se puede cerrar porque nada se declara perdido). */
+function DriverSlip({ id, env, onClose }: { id: string; env: Entorno; onClose: () => void }) {
+  const dose = id === "dosis";
+  return (
+    <aside className="slot-in fixed right-8 top-16 z-30 w-[22rem] rotate-[0.5deg] bg-paper px-6 pb-6 pt-5 font-mono text-[12px] leading-relaxed text-paper-ink shadow-[0_24px_50px_-12px_rgb(0_0_0/.7)]" aria-label="Live driver">
+      <button onClick={onClose} aria-label="Close" className="absolute right-4 top-3 text-paper-dim hover:text-paper-ink">×</button>
+      <p className="border-b border-dashed border-paper-dim/50 pb-3 font-display text-[1.7rem] leading-none">{dose ? "Dose" : "Rhythm"} · live driver</p>
+      {dose ? (<>
+        <p className="mt-3">Energetic protons at the GOES satellites: <strong>{env.protones.pfu?.toFixed(2)} pfu</strong>. Radiation storm S1 begins at {env.protones.umbral_s1_pfu} pfu: {env.protones.tormenta_s1_o_mas ? "it has begun." : "not now."}</p>
+        <p className="mt-2 text-[11px]">Solar X-rays: flare class {env.rayosx.clase ?? "unavailable"}.</p>
+      </>) : (<>
+        <p className="mt-3">The ISS is {env.iss.a_la_luz ? "in sunlight" : "in Earth's shadow"} at {env.iss.alt_km} km: the crew&apos;s light and dark cycle comes from the orbit itself (about sixteen sunrises a day).</p>
+      </>)}
+      <p className="mt-3 border-t border-dashed border-paper-dim/50 pt-3 text-[11px]">This is an <em>input</em> from the world, not a balance: a book needs something declared lost to check against, and no public record gives that for a crewed cabin. Real feed, {id === "dosis" ? "NOAA SWPC GOES" : "wheretheiss.at (orbit-derived)"}.</p>
+      <div className="mt-4 flex justify-end"><Stamp banner="REAL" /></div>
+    </aside>
   );
 }

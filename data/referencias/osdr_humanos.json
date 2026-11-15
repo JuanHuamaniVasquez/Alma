@@ -1,0 +1,607 @@
+{
+ "capturado_utc": "2026-11-15T20:29:06Z",
+ "fuente": "https://osdr.nasa.gov/osdr/data/search",
+ "consultas": [
+  "spaceflight",
+  "astronaut",
+  "Inspiration4",
+  "crew"
+ ],
+ "filtro": "organism = Homo sapiens",
+ "nota": "Catálogo de metadatos de OSDR. Acceso a archivos y contenido NO verificados estudio por estudio (solo OSD-569 CBC se descargó y analizó: FB-024).",
+ "n": 52,
+ "n_crew": 14,
+ "estudios": [
+  {
+   "accession": "OSD-13",
+   "titulo": "T Cell Activation in Microgravity Compared to 1g (Earth's) Gravity",
+   "liberado": "2012-06-21",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "Expedition 14",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-13"
+  },
+  {
+   "accession": "OSD-51",
+   "titulo": "Woman skeletal muscle transcriptome with bed rest and countermeasures.",
+   "liberado": "2010-09-10",
+   "ensayos": [],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-51"
+  },
+  {
+   "accession": "OSD-52",
+   "titulo": "Expression data from SPHINX (SPaceflight of Huvec: an INtegrated eXperiment)",
+   "liberado": "2013-01-20",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "Expedition 25",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-52"
+  },
+  {
+   "accession": "OSD-53",
+   "titulo": "Spaceflight Modulates Gene Expression in Astronauts",
+   "liberado": "2013-10-15",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-53"
+  },
+  {
+   "accession": "OSD-54",
+   "titulo": "Immune responses to the in vitro LPS assault engineered in the spaceflight multi-omics study",
+   "liberado": null,
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "STS-135",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-54"
+  },
+  {
+   "accession": "OSD-114",
+   "titulo": "Gene Expression Profile Changes due to Bleomycin-Induced DNA Damage in Human Fibroblasts in Space",
+   "liberado": "2017-01-20",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-3",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-114"
+  },
+  {
+   "accession": "OSD-118",
+   "titulo": "Transient gene expression profile changes of confluent human fibroblast cells in spaceflight",
+   "liberado": "2017-04-28",
+   "ensayos": [
+    "transcription profiling",
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-3",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-118"
+  },
+  {
+   "accession": "OSD-140",
+   "titulo": "Dynamic nature of epigenetic patterns observed during the Mars 520-d mission simulation",
+   "liberado": "2015-01-14",
+   "ensayos": [
+    "DNA methylation profiling"
+   ],
+   "mision": null,
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-140"
+  },
+  {
+   "accession": "OSD-174",
+   "titulo": "Effects of a Closed Space Environment on Gene Expression in Hair Follicles of Astronauts in the International Space Station",
+   "liberado": "2016-03-31",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-174"
+  },
+  {
+   "accession": "OSD-258",
+   "titulo": "Effects of Spaceflight on Human Induced Pluripotent Stem Cell-Derived Cardiomyocyte Structure and Function",
+   "liberado": "2019-11-07",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-258"
+  },
+  {
+   "accession": "OSD-315",
+   "titulo": "Comparative proteomic analysis and bioluminescent reporter gene assays to investigate effects of simulated microgravity on Caco-2 cells",
+   "liberado": "2017-07-26",
+   "ensayos": [
+    "protein expression profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-315"
+  },
+  {
+   "accession": "OSD-316",
+   "titulo": "Plasticity of the human IgM repertoire in response to a long-term spaceflight",
+   "liberado": "2020-05-26",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-316"
+  },
+  {
+   "accession": "OSD-323",
+   "titulo": "Evaluating the effect of spaceflight on the host-pathogen interaction between human intestinal epithelial cells and Salmonella Typhimurium",
+   "liberado": "2021-02-23",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "STS-131",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-323"
+  },
+  {
+   "accession": "OSD-344",
+   "titulo": "Real-time quantitative PCR analysis of human cardiovascular progenitor cells flown aboard the International Space Station",
+   "liberado": "2018-07-26",
+   "ensayos": [
+    "transcription profiling",
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-11",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-344"
+  },
+  {
+   "accession": "OSD-353",
+   "titulo": "The Effects of Spaceflight Factors on the Human Plasma Proteome, Including Both Real Space Missions and Ground-Based Experiments",
+   "liberado": "2019-04-07",
+   "ensayos": [
+    "protein expression profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-353"
+  },
+  {
+   "accession": "OSD-359",
+   "titulo": "Proteome profiling of the exhaled breath condensate after long-term spaceflights",
+   "liberado": "2019-09-27",
+   "ensayos": [
+    "protein expression profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-359"
+  },
+  {
+   "accession": "OSD-431",
+   "titulo": "Microgravity and space radiation exert either opposite or synergic effects on single molecular pathways",
+   "liberado": "2021-12-22",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "Soyuz TMA-18M",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-431"
+  },
+  {
+   "accession": "OSD-481",
+   "titulo": "New insights into the role of lncRNA after spaceflight",
+   "liberado": "2022-01-18",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-481"
+  },
+  {
+   "accession": "OSD-483",
+   "titulo": "small-RNA sequencing of sEV isolated from plasma of astronauts",
+   "liberado": "2022-01-12",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-483"
+  },
+  {
+   "accession": "OSD-484",
+   "titulo": "Astronauts plasma-derived exosomes induced gene expression in AC16 cells",
+   "liberado": "2022-03-12",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-484"
+  },
+  {
+   "accession": "OSD-516",
+   "titulo": "Modeling cellular responses to serum and vitamin D in microgravity using a human kidney microphysiological system",
+   "liberado": "2024-07-18",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-17",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-516"
+  },
+  {
+   "accession": "OSD-530",
+   "titulo": "Cell-free RNA analysis of plasma samples collected from six astronauts in JAXA Cell-Free Epigenome (CFE) Study",
+   "liberado": "2022-12-01",
+   "ensayos": [
+    "transcription profiling",
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-530"
+  },
+  {
+   "accession": "OSD-539",
+   "titulo": "Transcriptomic response of bioengineered human cartilage to parabolic flight microgravity is sex-dependent",
+   "liberado": "2022-09-30",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-539"
+  },
+  {
+   "accession": "OSD-542",
+   "titulo": "Effects of 14 days of confinement on blood gene expression profiles in men",
+   "liberado": "2022-10-08",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-542"
+  },
+  {
+   "accession": "OSD-546",
+   "titulo": "SCD – Stem Cell Differentiation Toward Osteoblast Onboard the International Space Station",
+   "liberado": "2019-01-31",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "Soyuz TMA-16M  Soyuz TMA-15M",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-546"
+  },
+  {
+   "accession": "OSD-569",
+   "titulo": "Whole Blood Measurements from the SpaceX Inspiration4 Mission (RNA-seq, epitranscriptome, WGS, clonal hematopoiesis, CBC)",
+   "liberado": "2024-05-14",
+   "ensayos": [
+    "Complete Blood Count",
+    "transcription profiling",
+    "genome sequencing",
+    "transcription profiling",
+    "Targeted Genome Sequencing"
+   ],
+   "mision": "SpaceX Inspiration4",
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-569"
+  },
+  {
+   "accession": "OSD-570",
+   "titulo": "SpaceX Inspiration4 PBMC Profiling: snRNA-seq, snATAC-seq, and T-cell and B-cell repertoire profiling",
+   "liberado": "2024-05-14",
+   "ensayos": [
+    "transcription profiling",
+    "Chromatin Accessibility",
+    "transcription profiling",
+    "transcription profiling"
+   ],
+   "mision": "SpaceX Inspiration4",
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-570"
+  },
+  {
+   "accession": "OSD-571",
+   "titulo": "SpaceX Inspiration4 Plasma Profiling: Proteomics, EVPs, Metabolomics, cfDNA Sequencing and cfRNA Sequencing",
+   "liberado": "2024-05-14",
+   "ensayos": [
+    "protein expression profiling",
+    "protein expression profiling",
+    "metabolite profiling",
+    "genome sequencing",
+    "transcription profiling"
+   ],
+   "mision": "SpaceX Inspiration4",
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-571"
+  },
+  {
+   "accession": "OSD-574",
+   "titulo": "SpaceX Inspiration4 Deltoid Skin and Microbiome Data: Spatial Transcriptomics (NanoString GeoMx), Metageomics, and Metatranscriptomics",
+   "liberado": "2024-05-14",
+   "ensayos": [
+    "Metagenomic sequencing",
+    "transcription profiling",
+    "metatranscriptome sequencing assay"
+   ],
+   "mision": "SpaceX Inspiration4",
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-574"
+  },
+  {
+   "accession": "OSD-577",
+   "titulo": "3D Human Umbilical Vein Endothelial Cells (HUVECs) irradiated with GCR simulated irradiation with miRNA based countermeasures",
+   "liberado": "2023-01-19",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-577"
+  },
+  {
+   "accession": "OSD-635",
+   "titulo": "Spaceflight effects on human vascular smooth muscle cell phenotype and function",
+   "liberado": "2024-04-03",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-17",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-635"
+  },
+  {
+   "accession": "OSD-684",
+   "titulo": "Human skeletal muscle tissue chip autonomous payload reveals changes in fiber type and metabolic gene expression due to spaceflight",
+   "liberado": "2024-03-07",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-21",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-684"
+  },
+  {
+   "accession": "OSD-687",
+   "titulo": "SpaceX Inspiration4 T-Cell Histone Modification Profiling (H3K4me1, H3K4me3, H3K27ac)",
+   "liberado": "2024-05-14",
+   "ensayos": [
+    "protein-DNA binding site identification"
+   ],
+   "mision": "SpaceX Inspiration4",
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-687"
+  },
+  {
+   "accession": "OSD-689",
+   "titulo": "Single-cell analysis identifies conserved features of immune dysfunction in simulated microgravity and spaceflight",
+   "liberado": "2024-11-18",
+   "ensayos": [
+    "transcription profiling",
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-689"
+  },
+  {
+   "accession": "OSD-781",
+   "titulo": "Skeletal muscle-on-a-chip in microgravity as a platform for regeneration modeling and drug screening - myoblast data",
+   "liberado": "2024-07-02",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "NG-16",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-781"
+  },
+  {
+   "accession": "OSD-783",
+   "titulo": "Multidirectional effect of low-intensity electrical myostimulation on gene expression and phenotype in thigh and calf muscles after one week of disuse - soleus data",
+   "liberado": "2024-11-01",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-783"
+  },
+  {
+   "accession": "OSD-784",
+   "titulo": "Multidirectional effect of low-intensity electrical myostimulation on gene expression and phenotype in thigh and calf muscles after one week of disuse - vastus lateralis data",
+   "liberado": "2024-11-01",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-784"
+  },
+  {
+   "accession": "OSD-811",
+   "titulo": "Space microgravity increases expression of genes associated with proliferation and differentiation in human cardiac spheres",
+   "liberado": "2025-03-19",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-20",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-811"
+  },
+  {
+   "accession": "OSD-812",
+   "titulo": "Simulated microgravity impairs human NK cell cytotoxic activity against space radiation-relevant leukemic cells.",
+   "liberado": "2024-08-22",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-812"
+  },
+  {
+   "accession": "OSD-816",
+   "titulo": "The ex vivo human translaminar autonomous system to study spaceflight associated neuro-ocular syndrome pathogenesis (Retina, RT-PCR and electroretinography)",
+   "liberado": "2026-07-23",
+   "ensayos": [
+    "transcription profiling",
+    "Electrophysiology"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-816"
+  },
+  {
+   "accession": "OSD-863",
+   "titulo": "Effects of microgravity on human iPSC-derived neural organoids on the International Space Station - cortical organoids",
+   "liberado": "2024-08-14",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-19",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-863"
+  },
+  {
+   "accession": "OSD-867",
+   "titulo": "Impact of spaceflight on gene expression in cultured human mesenchymal stem/stromal cell",
+   "liberado": "2025-03-19",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-10",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-867"
+  },
+  {
+   "accession": "OSD-871",
+   "titulo": "Effects of microgravity on human iPSC-derived neural organoids on the International Space Station - dopaminergic organoids",
+   "liberado": "2024-08-14",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-19",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-871"
+  },
+  {
+   "accession": "OSD-903",
+   "titulo": "Longitudinal transcriptomic and epigenetic analysis in astronauts reveals dynamic immune response to spaceflight [RNA-seq]",
+   "liberado": "2025-07-30",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "AX-1",
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-903"
+  },
+  {
+   "accession": "OSD-936",
+   "titulo": "Gravitational and mechanical forces drive mitochondrial translation- human HEK293 cell datasets",
+   "liberado": "2026-01-26",
+   "ensayos": [
+    "transcription profiling",
+    "transcription profiling",
+    "translation profiling",
+    "translation profiling"
+   ],
+   "mision": "NG-14",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-936"
+  },
+  {
+   "accession": "OSD-937",
+   "titulo": "Microgravity accelerates skeletal muscle degeneration: Functional and transcriptomic insights from an ISS muscle lab-on-chip model",
+   "liberado": "2025-08-13",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-25",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-937"
+  },
+  {
+   "accession": "OSD-941",
+   "titulo": "Spaceflight reshapes Alzheimer's disease–associated molecular programs in human brain organoids",
+   "liberado": "2026-10-26",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "SpaceX-30",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-941"
+  },
+  {
+   "accession": "OSD-943",
+   "titulo": "Longitudinal transcriptomic and epigenetic analysis in astronauts reveals dynamic immune response to spaceflight [DNA methylation]",
+   "liberado": "2025-07-30",
+   "ensayos": [
+    "DNA methylation profiling"
+   ],
+   "mision": "AX-1",
+   "tipo": "crew",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-943"
+  },
+  {
+   "accession": "OSD-999",
+   "titulo": "Sex‐Specific Changes in Brain Organoids from Acute Simulated Galactic Cosmic Radiation are Rescued by Targeted ECM Pathway Stimulation (sex-specific response experiment)",
+   "liberado": "2025-12-08",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-999"
+  },
+  {
+   "accession": "OSD-1000",
+   "titulo": "Sex‐Specific Changes in Brain Organoids from Acute Simulated Galactic Cosmic Radiation are Rescued by Targeted ECM Pathway Stimulation (Opto-FGFR-mediated rescue under simGCRsim exposure)",
+   "liberado": "2025-12-08",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-1000"
+  },
+  {
+   "accession": "OSD-1005",
+   "titulo": "PROtection MEdiated by Antioxidant NanoTEchnOlogy Against Neuronal Damage in Space 2 (PROMETEO 2, Nano Protection)",
+   "liberado": "2026-05-15",
+   "ensayos": [
+    "transcription profiling"
+   ],
+   "mision": "Ax-3",
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-1005"
+  },
+  {
+   "accession": "OSD-1008",
+   "titulo": "Proteomic dataset of MECP2-deficient and wild-type human brain organoids under spaceflight and ground conditions",
+   "liberado": "2026-02-09",
+   "ensayos": [
+    "protein expression profiling"
+   ],
+   "mision": null,
+   "tipo": "cells",
+   "url": "https://osdr.nasa.gov/bio/repo/data/studies/OSD-1008"
+  }
+ ]
+}

@@ -35,6 +35,8 @@
 | C-09 | Cada alarma/verde lleva recibo con regla exacta ejecutable, semilla y hash de preregistro; un verde declara potencia y MDE (en σ y en unidades físicas) o es `sin_datos_suficientes` | implementada y testeada | DC-05, DC-14, `tests/test_contratos.py`, `tests/test_checklist_honestidad.py` | — | los verdes REALES cubren solo `fc` y `sueño` (LifeSnaps) |
 | C-10 | Los hechos de vuelo mostrados (sueño 6,09 h en la ISS; pulso sin cambio en vuelo; hueso 1–1,5 %/mes; retardo 0–22 min) están **copiados de sus fuentes** con cita | verificado | S-21, S-22, S-05, S-23; `data/referencias/*.json` | REAL (literatura) | promedios de grupo publicados, no predicciones individuales |
 | C-11 | Las pantallas dicen en cada sala qué es real y qué es simulado; hay un test que impide afirmar lo no demostrado | implementada | `web/src/components/Origins.tsx`, `tests/test_checklist_honestidad.py` | — | la lista se mantiene a mano |
+| C-13 | Reconciliar el hemograma de astronautas reales consigo mismo (absoluto = % × leucocitos) encuentra 1 fila de 28 que no cierra (un error de captura probable en datos públicos de NASA); con 3 extracciones de base la banda personal es tan ancha que ninguna persona sale de ella pese a una caída mediana de linfocitos de −24 % en R+1 | medida (mixta) | acta FB-024 `41f0413d…`, `NOTA-FB-024.md`, `tests/test_hematologia_i4.py` | **REAL, astronautas (n = 4, Inspiration4, OSD-569)** | civiles, sin muestras en vuelo, sin causalidad; «sin alarma» ≠ «sin efecto» |
+| C-14 | La nave muestra el entorno REAL de la tripulación en vivo (órbita de la ISS, protones GOES, rayos X) y declara `disponible:false` si una fuente cae | implementada y testeada con respuestas reales guardadas | `src/ingesta/entorno.py`, `tests/fixtures/entorno/`, S-26, S-27 | REAL (NASA/NOAA) | la posición de la ISS es derivada de elementos orbitales, no telemetría |
 | C-12 | FB-014 (sueño/HRV × Kp) REFUTADA; FB-016 A (sueño corto → cansancio) SOSTENIDA | medida | `NOTA-FB-014.md`, `NOTA-FB-016.md` | REAL | LifeSnaps no son astronautas |
 
 (Las cifras de C-07/C-08/C-12 se citan de las notas; antes de usarlas en el informe, **releer la nota** — regla de oro del proyecto.)
@@ -81,6 +83,8 @@ Cada acta se preregistró con SHA-256 **antes** de correr; el hash de cada una s
 | Zenodo 8018238 (S-13) | cohorte independiente | sha256 en los runners | validación fuera de muestra (solo 5 ventanas largas) |
 | GFZ Kp (S-09), NOAA SWPC (S-xx) | clima espacial | verificado | La Tormenta; FB-014 |
 | Utah agua (S-12) | consumo real de agua | verificado | FB-012 |
+| NASA OSDR OSD-569 CBC (S-24) y catálogo OSDR (S-25) | hemograma real de 4 astronautas; 52 estudios humanos | sha256 del CSV; instantánea fechada | C-13, atlas de la sala Frontier |
+| ISS en vivo y GOES (S-26, S-27) | entorno real | fixtures reales | C-14 |
 | MIT-BIH reg. 100 (S-20) | ECG real | sha256 + licencia ODC-By leída | monitor de constantes (C-01) |
 | Ewert & Stromgren (P-01…P-09) | balance de masa del astronauta de referencia | citas textuales en `docs/parametros-publicos.md` | hábitat simulado y NILM |
 | Barger 2014; Hughson 2012; NASA HRP hueso; McBrayer et al. (S-21, S-22, S-05, S-23) | hechos de vuelo y retardo | cifras copiadas de PubMed/PDF | «Expected in flight» y «Earth link» |

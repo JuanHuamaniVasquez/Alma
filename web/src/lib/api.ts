@@ -92,3 +92,12 @@ export type NilmBook = { banner: Banner; ejecutada: boolean; hash_acta?: string;
 
 export type EProcess = { banner: Banner; alfa: number; umbral: number; s: number; curva: number[]; escalon_dia: number; ejecutada: boolean; hash_acta?: string | null;
   entrenamiento?: Record<string, { k: number; n: number; fpr_entrenamiento: number; potencia_h2: number; apto: boolean }> | null; veredictos?: Record<string, string> | null };
+
+export type Entorno = { banner: Banner; aviso: string;
+  iss: { disponible: boolean; lat?: number; lon?: number; alt_km?: number; vel_kms?: number; visibilidad?: string; sol_lat?: number; sol_lon?: number; ts_utc?: string; a_la_luz?: boolean };
+  protones: { disponible: boolean; pfu?: number; max_ventana_pfu?: number; tormenta_s1_o_mas?: boolean; umbral_s1_pfu?: number; ts_utc?: string; serie?: number[] };
+  rayosx: { disponible: boolean; clase?: string; max_ventana?: string; ts_utc?: string } };
+export type Astronautas = { banner: Banner; ejecutada: boolean; hash_acta?: string; fuente?: string; n_personas?: number; tiempos?: string[]; aviso?: string;
+  conciliacion?: { valores: number; filas: number; de_filas: number };
+  tabla?: Record<string, { dentro: number; arriba: number; abajo: number; sin_datos: number; sospechoso: number; mediana_cambio_pct: number | null; n: number }>; veredictos?: Record<string, string | number | { valores: number; filas: number }> };
+export type Osdr = { capturado_utc: string; n: number; n_crew: number; nota: string; estudios: { accession: string; titulo: string; liberado: string | null; ensayos: string[]; mision: string | null; tipo: "crew" | "cells"; url: string }[] };
