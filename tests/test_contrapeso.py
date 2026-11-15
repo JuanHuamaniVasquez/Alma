@@ -107,3 +107,52 @@ def test_la_salida_es_un_dc08_valido_y_reproducible():
     c = dia(suministro=TRIPULACION * O2_PERSONA + 0.30)
     assert DC08Cierre.model_validate(c.model_dump()) == c
     assert dia(suministro=TRIPULACION * O2_PERSONA + 0.30) == c  # determinista
+
+
+# --- red teaming (docs/red-team.md, ataque 1): errores correlacionados ------------------------------
+def _dia_con(correlaciones, suministro=TRIPULACION * O2_PERSONA):
+    return cierre_de_conservacion(
+        dia_habitat=7, bucle=Bucle.AIRE,
+        entradas=[Corriente("suministro_OGA", suministro, 0.02, SIM)], salidas=consumo(),
+        delta_almacen=Corriente("delta_atmosfera", 0.0, 0.01, SIM),
+        perdida_declarada=Corriente("venteo_declarado", 0.0, 0.0, SIM), correlaciones=correlaciones)
+
+
+CONSUMOS = [f"consumo_astronauta_{i}" for i in range(TRIPULACION)]
+PARES_CONSUMO = [(a, b, 1.0) for i, a in enumerate(CONSUMOS) for b in CONSUMOS[i + 1:]]
+
+
+def test_sin_correlaciones_el_resultado_es_el_independiente_de_siempre():
+    assert _dia_con(()).incertidumbre_propagada == pytest.approx(dia().incertidumbre_propagada)
+
+
+def test_el_mismo_manifiesto_para_todos_los_astronautas_suma_errores_y_la_cuadratura_subestima():
+    indep, comun = _dia_con(()), _dia_con(PARES_CONSUMO)  # ρ=1: el error del manifiesto es compartido
+    assert comun.incertidumbre_propagada == pytest.approx(math.sqrt((TRIPULACION * SIGMA_PERSONA) ** 2 + 0.02 ** 2 + 0.01 ** 2))
+    assert comun.incertidumbre_propagada > 1.8 * indep.incertidumbre_propagada
+    # un residuo de 0.15 kg: con σ independiente es una falsa alarma; con el error compartido declarado, no
+    leve = TRIPULACION * O2_PERSONA + 0.15
+    assert _dia_con((), leve).veredicto is Veredicto.NO_CIERRA
+    assert _dia_con(PARES_CONSUMO, leve).veredicto is Veredicto.CIERRA
+
+
+def test_un_error_comun_entre_entrada_y_salida_se_cancela_en_el_residuo():
+    # mismo tipo de sensor en el suministro y en un consumo: el sesgo compartido resta, no suma
+    a = _dia_con([("suministro_OGA", "consumo_astronauta_0", 1.0)])
+    assert a.incertidumbre_propagada < _dia_con(()).incertidumbre_propagada
+
+
+def test_la_fuga_grande_se_detecta_incluso_en_el_peor_caso_de_correlacion():
+    c = _dia_con(PARES_CONSUMO, TRIPULACION * O2_PERSONA + 0.30)
+    assert c.veredicto is Veredicto.NO_CIERRA and c.residuo_conservacion > 2 * c.incertidumbre_propagada
+
+
+def test_correlaciones_invalidas_se_rechazan():
+    base = dict(dia_habitat=1, bucle=Bucle.AIRE, entradas=[Corriente("a", 1.0, 0.1, SIM)], salidas=[Corriente("b", 1.0, 0.1, SIM)],
+                delta_almacen=Corriente("d", 0.0, 0.0, SIM), perdida_declarada=Corriente("p", 0.0, 0.0, SIM))
+    with pytest.raises(ValueError, match="inexistentes"):
+        cierre_de_conservacion(**base, correlaciones=[("a", "zzz", 0.5)])
+    with pytest.raises(ValueError, match=r"\[−1, 1\]"):
+        cierre_de_conservacion(**base, correlaciones=[("a", "b", 1.5)])
+    with pytest.raises(ValueError, match="repetida"):
+        cierre_de_conservacion(**base, correlaciones=[("a", "b", 0.5), ("b", "a", 0.5)])
