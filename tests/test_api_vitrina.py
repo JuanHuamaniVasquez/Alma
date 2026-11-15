@@ -57,3 +57,21 @@ def test_tormenta_hereda_banner_simulado():
 def test_solo_lectura():
     for u in ("fundicion", "actas", "demo-kill", "tormenta"):
         assert APIClient().post(f"/api/{u}/", {}).status_code == 405
+
+
+@pytest.mark.django_db
+def test_sembrar_demo_es_simulado_reproducible_y_la_fuga_abre_solo_el_aire_del_dia_11():
+    from django.core.management import call_command
+    call_command("sembrar_demo")
+    call_command("sembrar_demo")                                       # idempotente (solo-anexar)
+    d = get("/api/libro/dias/").json()
+    assert d["dias"] == list(range(1, 15)) and d["ultimo"] == 14 and d["banner"] == "SIMULADO"
+    dia11, dia3 = get("/api/libro/dia/11/").json(), get("/api/libro/dia/3/").json()
+    assert dia11["presupuestos"]["aire"]["cierra"] is False and dia11["presupuestos"]["agua"]["cierra"] is True
+    assert dia3["cierra"] is True and set(dia3["presupuestos"]) == {"aire", "agua"}   # los otros 7 no existen: ausencia = dato
+
+
+@pytest.mark.django_db
+def test_libro_vacio_no_inventa_dias():
+    d = get("/api/libro/dias/").json()
+    assert d["dias"] == [] and d["ultimo"] is None

@@ -1,0 +1,37 @@
+{
+ "libro": {
+  "id": "dc54bdc65ce845d5",
+  "texto": "Day 14. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/14 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/dc54bdc65ce845d5.mp3"
+ },
+ "tormenta": {
+  "id": "cc62a6186544e7c7",
+  "texto": "Planetary K index is 2.00, read from NOAA's Space Weather Prediction Center.",
+  "fuente": "swpc · 2026-11-15T00:00:00Z · sha256 dd83a93b",
+  "banner": "REAL",
+  "audio": "/voice/cc62a6186544e7c7.mp3"
+ },
+ "demo_kill": {
+  "id": "a0d5104e363d84c3",
+  "texto": "The manifest detector looked at the leak day and saw nothing. Its score was 0.53 sigma. The conservation law found 0.3 kilograms missing, and the loop does not close. On the control day, with no leak, the loop closes. The preregistration hash was published before the run.",
+  "fuente": "FB-005-D1 · sha256 e0d28c09",
+  "banner": "SIMULADO",
+  "audio": "/voice/a0d5104e363d84c3.mp3"
+ },
+ "fundicion": {
+  "id": "23af43fdff111956",
+  "texto": "The foundry has minted 5 hypothesis cards: 2 refuted, 1 sustained, and 1 compiled into a new detector. Refuted cards are published exactly like the sustained ones.",
+  "fuente": "/api/fundicion · DC-12",
+  "banner": "REAL",
+  "audio": "/voice/23af43fdff111956.mp3"
+ },
+ "actas": {
+  "id": "5c03b4360fdd0aeb",
+  "texto": "21 experiments were preregistered with a SHA-256 hash before they ran. 16 have been executed, each exactly once. Failures are part of the record.",
+  "fuente": "/api/actas · GO-2",
+  "banner": "REAL",
+  "audio": "/voice/5c03b4360fdd0aeb.mp3"
+ }
+}

@@ -68,6 +68,14 @@ class LibroDia(SoloLectura):
         })
 
 
+class LibroDias(SoloLectura):
+    """Qué días tiene el libro (la vitrina abre en el último). Sin libro: lista vacía, no un día inventado."""
+
+    def get(self, request):
+        dias = sorted(set(LineaLibro.objects.values_list("dia_habitat", flat=True)))
+        return Response({"banner": banner_de(list(LineaLibro.objects.all()[:LIMITE_MAX])), "dias": dias, "ultimo": dias[-1] if dias else None})
+
+
 class Alarmas(SoloLectura):
     def get(self, request):
         qs = Alarma.objects.order_by("-ts_utc")

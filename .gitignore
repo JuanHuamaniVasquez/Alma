@@ -10,3 +10,8 @@ graphify-out/cache/
 node_modules/
 .next/
 data/externos/
+
+# voz de ALMA: modelo Kokoro-82M (Apache-2.0), se descarga, no se versiona
+data/voz_modelo/
+web/node_modules/
+web/.next/

@@ -63,6 +63,7 @@
 
 ## M3 · La vitrina (P1 — Dev C)
 
+- [ ] **M3.0 Cimientos de la vitrina (UI en inglés)** — *EN CURSO: hechos (c) narrador+voz Kokoro (`src/superficies/narrador.py`, `scripts/voz_alma.py`, 5 audios en `web/public/voice/`), (d) `sembrar_demo` (X-13), traje Z-2 optimizado (17 MB→0,8 MB); falta verificar (a)/(b) en navegador (npm del registro con timeouts).* (a) `web/` Next.js+TS: sistema de diseño (tokens grafito/marfil/naranja señal, Instrument Serif + grotesk + IBM Plex Mono; sin cian-IA), barra de 44 px, sello REAL/SIMULADO + hash, recibo de papel; (b) astronauta 3D = NASA Z-2 (NASA-3D-Resources, sin copyright) optimizado con Blender, three.js; (c) **voz de ALMA**: narrador DETERMINISTA (`src/superficies/narrador.py`: frase = plantilla + dato de la API + fuente; jamás texto libre), pre-render con Kokoro-82M (Apache-2.0, local) a `web/public/voice/`, subtítulos siempre visibles; (d) `sembrar_demo` (días de hábitat SIMULADOS con banner) para LA SALA/EL RESIDUO. Evidencia: tests + capturas revisadas en Chrome. — Dev C
 - [ ] **M3.1 LA SALA**: silueta del hábitat como paciente + anillo de los 9 presupuestos; consume DC-04 agregado + DC-05 activas + DC-08 (CIERRA/NO CIERRA). *Regla dura: jamás contenido individual.*
 - [ ] **M3.2 EL RESIDUO**: corriente observado vs predicho, bandas σ, nacimiento de alertas; consume DC-06. *Regla dura: banner REAL/SIMULADO siempre visible.*
 - [ ] **M3.3 LA TORMENTA**: motor de escenarios + actividad solar real en vivo (SWPC). *Regla dura: banner "UNIVERSO SIMULADO — DÍA N" cuando aplique.*
