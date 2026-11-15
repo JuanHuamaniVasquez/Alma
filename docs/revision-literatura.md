@@ -1,6 +1,6 @@
-# Revisión de literatura (M5.5, versión 1) — qué existe y qué podemos afirmar
+# Revisión de literatura (M5.5 v1 + M5.5b) — qué existe y qué podemos afirmar
 
-> **Alcance honesto:** 6 consultas de búsqueda web estructuradas (2026-11-15), no una revisión sistemática: **no se consultó PubMed, IEEE Xplore ni Scholar directamente** (M5.5b). «No encontré X» **no** significa «X no existe». Cada identificador citado abajo fue **verificado contra Crossref** (o la página del editor/arXiv) el mismo día; un DOI que supuse de memoria y resultó ser de otro artículo se corrigió antes de citarlo.
+> **Alcance honesto:** v1 = 6 consultas web (2026-11-15). **M5.5b (misma fecha) = búsqueda directa por API en PubMed (E-utilities, 13 consultas) y NTRS (API pública, 8 consultas)**; **IEEE Xplore y Google Scholar NO se consultaron** (sin acceso programático abierto): el preprint debe decirlo. Sigue sin ser una revisión sistemática (sin doble cribado ni protocolo PRISMA). «No encontré X» **no** significa «X no existe». Cada identificador citado abajo fue **verificado contra Crossref** (o la página del editor/arXiv) el mismo día; un DOI que supuse de memoria y resultó ser de otro artículo se corrigió antes de citarlo.
 
 ## Consultas
 | # | Consulta (resumen) | Qué devolvió |
@@ -31,3 +31,21 @@
 2. **No afirmamos «primer sistema…»**: no tenemos una revisión que lo respalde.
 3. **Lo que sí defendemos (y es verificable en el repo):** una *práctica*, no un algoritmo — cada componente del sistema se falsó con un acta hasheada **antes** de correr, los resultados negativos se publican (FB-010, FB-014, FB-015, FB-016 B, FB-020, FB-020-v2), el «verde» lleva recibo con su potencia (DC-14), y la demo kill contrapone un detector contra el manifiesto y otro contra una ley en el mismo día. En las búsquedas no apareció una **aplicación explícita de reconciliación de datos a ECLSS de hábitat tripulado con la unidad del manifiesto como piso de detección**, pero eso es ausencia de evidencia, no evidencia de ausencia.
 4. **Antes de cualquier afirmación de novedad en el preprint:** M5.5b (PubMed, IEEE Xplore, Scholar y NTRS directos, con los mismos términos) y mostrar el resultado de esa búsqueda.
+
+## M5.5b · Búsqueda directa (PubMed + NTRS, 2026-11-15) y su efecto sobre lo que afirmamos
+Las consultas estrictas con todos los conceptos a la vez devolvieron casi nada (reconciliación + espacio: 0; CUSUM + wearable + línea base: 0; N-of-1 + astronauta: 7, todos estudios de caso de rendimiento sensorimotor 1993–2010, **ningún diseño N-of-1 de salud**). Las consultas más amplias sí devolvieron literatura relevante, que **cambia nuestra declaración**:
+
+| Hallazgo | Identificador (verificado en Crossref/NTRS) | Efecto |
+|---|---|---|
+| El **balance de masa de la nave como herramienta de diagnóstico** ya existe en NASA (aire de cabina, contaminantes traza) — Kayatin 2021 | NTRS 20210016640 (público) | **Quita cualquier insinuación de que el diagnóstico por balance de masa en naves es nuevo.** Lo nuestro es otra cosa: cierre diario por bucle con la **incertidumbre del manifiesto como piso de detección** y su contraste contra un detector de manifiesto |
+| Un **CUSUM individual** sobre una respuesta fisiológica personal (presión arterial) — Cornélissen et al. 1997 | doi:10.3109/03091909709031156 | **El CUSUM personal sobre series fisiológicas no es nuevo** (hace casi 30 años) |
+| **Líneas base personales + wearables para detectar desviaciones** es un área activa — Cacheda 2026; Krieger 2026 | doi:10.1177/20552076261477919 · doi:10.3389/fdgth.2026.1998814 | No es nuevo; cada vez más común |
+| Monitoreo de astronautas con wearables: Gupta 2025 (revisión), Roda 2018 (biosensores), Bellisle 2020 (IVA); NASA Astroskin (HERA) | doi:10.1016/j.lssr.2025.06.011 · doi:10.1016/j.bios.2018.03.062 · doi:10.1109/EMBC44109.2020.9175674 · NTRS 20190000238 | Contexto y prototipos analógicos; la parte de **detección con recibo y potencia declarada** no apareció |
+| Kp/geomagnético × HRV: **32 resultados** en PubMed; efectos reportados en cohortes (Zilli Vieira 2022, Normative Aging Study; Alabdulgader 2018; Mattoni 2020) y un experimento de laboratorio aleatorizado (Gurfinkel 2018) | doi:10.1016/j.scitotenv.2022.156235 · doi:10.1038/s41598-018-20932-x · doi:10.1007/s00421-020-04369-7 · doi:10.1007/s00484-017-1460-8 | Nuestro nulo FB-014 (51 personas, desplazamiento circular intrapersona, Kp global) **no contradice** esos trabajos (otro diseño, otra cohorte y no descartamos efectos pequeños), pero **no podemos presentarlo como «la tormenta no afecta»**: es un nulo acotado |
+| Kp × **sueño**: 14 resultados, ninguno midió sueño de wearable contra Kp (temas de ritmo circadiano e hipomagnetismo, bipolaridad, etc.) | PubMed (consulta B4) | Sin hallazgo directo; el nulo de FB-014 en sueño tampoco tiene comparador directo |
+| Reconciliación de datos / error grueso en soporte vital: 0 en PubMed y 0 en NTRS; fallo de sensores en soporte vital sí aparece como detección de fallos (NTRS 20110024002 BSP, 19960017281) | NTRS | Hay literatura NASA de **detección de fallos** en sensores; **no apareció** reconciliación formal de balances sobre ECLSS tripulado |
+
+### Declaración de novedad v2 (sustituye al punto 3 de arriba)
+- **Se retira** cualquier lectura de «aplicar balance de masa a una nave» como novedad (Kayatin 2021) y de «CUSUM personal sobre fisiología» (Cornélissen 1997).
+- **Lo que queda como contribución defendible es de método de trabajo, no de algoritmo:** (a) una cadena completa de preregistro con hash antes de correr y una sola ejecución por acta; (b) publicación sistemática de resultados negativos propios (FB-010, FB-014, FB-015, FB-016 B, FB-020, FB-020-v2); (c) el «verde con recibo» (potencia/MDE declarados dados los días observados); (d) la demo contra un detector de manifiesto con el cierre diario como contraste.
+- **No se afirma** que (d) sea nuevo: solo que **no apareció** en PubMed ni NTRS. Ausencia en una búsqueda sin IEEE/Scholar y sin protocolo PRISMA no es evidencia de ausencia.
