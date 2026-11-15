@@ -42,8 +42,8 @@ await page.click('button[aria-label^="Wake ALMA"]');
 await page.waitForFunction(() => !document.querySelector('button[aria-label^="Wake ALMA"]'), { timeout: 5000 });
 check("la puerta se abre con un clic", true);
 await esperar("p[aria-live]", 30000);
-await dormir(1500);
-check("ALMA muestra su subtítulo", (await page.$eval("p[aria-live]", (e) => e.textContent.length)) > 20);
+await page.waitForFunction(() => (document.querySelector("p[aria-live]")?.textContent.length ?? 0) > 20, { timeout: 15000 }).then(() => check("ALMA muestra su subtítulo", true), () => check("ALMA muestra su subtítulo", false));   // el subtítulo crece con el audio: con carga alta tarda
+await page.waitForFunction(() => window.__audio.some((a) => a.ok && a.src.includes("/voice/")), { timeout: 15000 }).catch(() => {});
 const audio = await page.evaluate(() => window.__audio);
 check("el audio de ALMA arranca tras el clic (política de autoplay)", audio.some((a) => a.ok && a.src.includes("/voice/")), JSON.stringify(audio));
 
@@ -63,7 +63,8 @@ check("el marcador Mood abre su recibo", true);
 const antes = await page.$eval('button[disabled], button:disabled', (e) => e.textContent.trim().toLowerCase()).catch(() => "");
 check("«Send» está desactivado hasta elegir un valor", antes.startsWith("send"));
 await dormir(700);
-await page.click('[role="radio"][title="Good"]');
+await page.evaluate(() => document.querySelector('[role="radio"][title="Good"]').click());   // clic de DOM: el recibo se anima (inclinado y recortado) y un clic por coordenadas puede errar
+await page.waitForFunction(() => { const b = [...document.querySelectorAll("button")].find((x) => x.textContent.trim() === "Send"); return b && !b.disabled; }, { timeout: 5000 });   // esperar a que el valor elegido habilite «Send»
 await page.evaluate(() => [...document.querySelectorAll("button")].find((b) => b.textContent.trim() === "Send").click());
 await esperarTexto("Saved.", 8000);
 check("el ánimo se envía con valor 4 y duración medida > 0", enviado?.valor === 4 && enviado.duracion_respuesta_s > 0 && /^crew-[0-9a-f]{8}$/.test(enviado.persona_id), JSON.stringify(enviado));

@@ -35,7 +35,8 @@ export default function MedicalModule() {
   useEffect(() => { get<{ indicadores: Indicator[] }>("/api/indicadores/").then((d) => setInds(d?.indicadores ?? [])); }, []);
   useEffect(() => { if (day != null) get<LedgerDay>(`/api/libro/dia/${day}/`).then(setLedger); setPicked(null); }, [day]);
   useEffect(() => { if (mode === "books" && day != null && has(`libro-${day}`)) say(`libro-${day}`); }, [day, mode, has(`libro-${day ?? 0}`)]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { if (mode === "body" && has("indicadores")) say("indicadores"); setPicked(null); setPickedInd(null); }, [mode, has("indicadores")]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { setPicked(null); setPickedInd(null); }, [mode]);                       // al cambiar de modo se cierran los recibos; NO al cargar la voz
+  useEffect(() => { if (mode === "body" && has("indicadores")) say("indicadores"); }, [mode, has("indicadores")]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const label = BUDGETS.find(([id]) => id === picked)?.[1] ?? "";
   const line = ledger?.habitat.find((h) => h.presupuesto_id === picked) ?? null;
