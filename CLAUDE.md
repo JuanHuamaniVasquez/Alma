@@ -141,3 +141,7 @@ Detalle y registros: `docs/politica-de-datos.md`. Resumen: **nada simulado sin e
 - Al cerrar cada sesión Claude puede escribir **máximo 2 propuestas** en `docs/propuestas.md` con el formato de DOC-01 §7 (ID, mejora, UNA capa destino, qué compra, ancla verificada, costo, prueba si es claim). Estado inicial: PROPUESTA.
 - Nada se implementa en la misma sesión ni salta la cola. El humano acepta o rechaza por escrito; el rechazo también se registra.
 - Huecos que Claude vea durante la sesión se señalan y su solución entra como propuesta, nunca como código fuera de la cola.
+
+## 14 · Alcance congelado (decisión del humano, 2026-11-15)
+
+Hasta cerrar **M2.8** (evaluación preregistrada sobre datos reales) **no se añaden módulos nuevos**. Prioridad: LB-1, MO-6 (El Contrapeso, = conciliación de datos aplicada a un hábitat tripulado), MO-1…MO-3 y GO-2. LA FUNDICIÓN queda en segundo plano salvo tarjetas con fuente real. Las ideas nuevas entran por `docs/propuestas.md`, no por código. Registro de decisiones: `docs/decisiones.md`. Parámetros públicos de la simulación: `docs/parametros-publicos.md`.

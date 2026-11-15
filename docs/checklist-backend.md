@@ -50,7 +50,7 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 
 ## 3 · Capa 0 · Ingesta — `src/ingesta/` · app `apps.ingesta`
 
-- [ ] **IN-1** normaliza telemetría de sensores → DC-01. **[!] Bloqueado: no hay fuente real de datos de wearables/hábitat identificada.** Hay que buscar datasets abiertos reales (política de datos §1.2) antes de escribir el adaptador.
+- [ ] **IN-1** normaliza telemetría de sensores → DC-01. **Desbloqueado para validar el método:** LifeSnaps (S-07, verificado; **no son astronautas**) trae sueño, pulso, HRV, temperatura y ánimo diarios (M2.7). Para hábitat sigue sin haber telemetría real abierta.
 - [ ] **IN-2** autorreporte 3 toques → DC-02 (la ausencia también es dato). Necesita el endpoint de captura (Django/DRF) y no datos externos; los datos serán reales cuando haya usuarios.
 - [~] **IN-3** clima espacial en vivo → DC-03/DC-13.
   - [x] SWPC Kp (feed 1), rayos X (feed 4) → DC-03 `lectura_clima_espacial`, banner REAL, hash, crudo archivado (M0.4, MP-3).
@@ -78,7 +78,7 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 - [ ] **FB-002 reproducible: 10/10 detecciones, preaviso mediano 21 días** (semillas 20261113/14/15) — test de regresión permanente (M2.3). **El script no está en el repo; hay que traerlo o reconstruirlo desde el acta preregistrada, sin inventar el resultado.**
 - [ ] **MO-4** matriz co-deriva (planta × chip × humano) · FB-003 (M2.4).
 - [ ] **MO-5** integrador lento del agua (TOC/WRS) · FB-004 (M2.5).
-- [ ] **MO-6 El Contrapeso**: cierre de conservación agua/aire/energía → DC-08, `CIERRA / NO CIERRA` el mismo día (M1.2). **P0.**
+- [ ] **MO-6 El Contrapeso** (= *conciliación de datos aplicada a un hábitat tripulado*, D-09): cierre de conservación agua/aire/energía → DC-08, `CIERRA / NO CIERRA` el mismo día (M1.2). **P0.** La simulación se parametriza con `docs/parametros-publicos.md` (siempre SIMULADA).
 - [ ] **MO-7** forma diaria del hábitat → DC-09 (FB-006, P2) · [ ] **MO-8** demografía de testigos → DC-11 (FB-008, P2).
 
 ## 6 · Capa 3 · Fábrica / LA FUNDICIÓN — `src/fabrica/` · app `apps.fabrica`
