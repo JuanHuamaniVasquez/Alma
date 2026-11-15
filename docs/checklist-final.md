@@ -45,6 +45,13 @@
 | 6 | **Hábitat 3D** (modelo de la ISS de NASA) con los bucles de aire y agua iluminados | alto | Licencia NASA 3D Resources |
 | 7 | **Exportar la cápsula en PDF** con enlace al repositorio | bajo | |
 
+## D2 · Peticiones del equipo anotadas (2026-11-15, aún sin hacer)
+| # | Petición | Idea de solución | Esfuerzo |
+|---|---|---|---|
+| P1 | **ALMA como panel lateral en todas las vistas:** al terminar de hablar, el subtítulo/ficha se recoge a un lado (como un *sidebar*) y luego muestra su información **sin tapar** el contenido | Un cajón fijo a la derecha (colapsable) con el historial de lo dicho, fuente y sello; el contenido de cada sala reserva ese ancho en vez de quedar debajo de una banda; el orbe sigue abajo a la izquierda | medio |
+| P2 | **Buscador + paginación + demás elementos en cada vista donde corresponda**, con **búsqueda por voz y un reporte hablado (en inglés)** | Un componente común de lista (búsqueda, filtros, paginación, voz) reutilizado en La Fundición (tarjetas), Machine Room (libro/día), The Storm (historial de lecturas), Budget y Capsule (filtro); más una **paleta de comandos global** (Ctrl+K + micrófono) que busca en todas las salas; el «reporte» = ALMA resume el resultado con su vocabulario cerrado (ampliado a tarjetas, libro y lecturas) | alto |
+| P3 | **Aclarar por qué tantas vistas dicen SIMULATED** (¿no trabajamos con datos reales abiertos de NASA?) | Respondido en el README («Real vs simulated»): no existen datos abiertos de un hábitat tripulado ni de fisiología de astronautas; lo real es lo que sí existe. Posible mejora: subir la parte real con más feeds (DONKI, OSDR cuando OS-892 publique) y mostrar en cada sala un indicador «x% real / y% simulado» | bajo–medio |
+
 ## E · Bloqueado por datos o acceso (no depende del código)
 - [ ] **M2.22 / GLOBEM:** solicitar acceso (PhysioNet) → con los datos, acta FB-020-v3.
 - [ ] **IEEE Xplore y Google Scholar** en la revisión de literatura (no tienen acceso programático abierto).
