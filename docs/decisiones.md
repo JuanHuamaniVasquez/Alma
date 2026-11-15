@@ -21,6 +21,8 @@
 | D-15 | 2026-11-15 | **Claude lidera la ejecución técnica**; norte: un proyecto de nivel de avance científico (preregistrado, reproducible, datos reales, nulos publicados). Se sigue el orden de la cola | humano | `CLAUDE.md` §15 |
 | D-16 | 2026-11-15 | **El Contrapeso propaga la incertidumbre en cuadratura** (errores independientes, supuesto declarado) y cierra con \|residuo\| ≤ 2·σ_propagada; sus fixtures son SIMULADOS y parametrizados con números públicos de NASA | Claude (bajo D-15) | `src/motor/contrapeso.py` |
 | D-17 | 2026-11-15 | **Primer experimento del proyecto:** FB-005-D1 (demo kill del Contrapeso) preregistrada con hash antes de escribir el runner y ejecutada una sola vez; predicción confirmada. No sustituye a FB-005 (400 corridas) | Claude (bajo D-15) | `7d53d7a`, `docs/actas/RESULTADOS.jsonl` |
+| D-18 | 2026-11-15 | **La σ de un sensor solo existe con fuente verificada**; si es de otro dispositivo se declara PROXY. Sin σ verificada el indicador no se emite | Claude (bajo D-15) | `src/ingesta/incertidumbre.py` |
+| D-19 | 2026-11-15 | **DC-02 no se emite desde LifeSnaps** (el dataset no trae `duracion_respuesta_s`). Si se quiere usar ánimo de datasets sin ese metadato, requiere un cambio de contrato (a decidir por el humano) | Claude (bajo D-15) | `src/ingesta/lifesnaps.py` |
 
 ## Decisiones pendientes del humano
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).

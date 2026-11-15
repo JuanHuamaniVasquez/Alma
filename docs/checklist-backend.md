@@ -14,7 +14,7 @@
 7. **Stack cerrado**: Django (+DRF) · PostgreSQL · Next.js; dominio puro en `src/` (sin Django), una app Django por módulo. Frontend (Next) viene después del backend.
 8. **Lo que el jurado compra**: LA SALA + detectores con recibo + preregistros públicos con hash; el lab como **métrica** (tarjetas nacidas → refutadas → sostenidas → detectores nuevos).
 
-**Cosas que NO sé o no he leído (honestidad):** DOC-02 (apéndices B/C: actas FB-001…008 y anclas C-1…C-23), DOC-03 (pantallas y banco del jurado) y DOC-04 (contrato E/S del lab) **no los he leído enteros**; hoy los conozco por `CLAUDE.md` y DOC-01. Antes de implementar FUNDICIÓN o las falsaciones los abriré. Los scripts de FB-001/FB-002 que `CLAUDE.md` dice que "ya existen" **no están en este repo**.
+**Lectura completada el 2026-11-15:** DOC-02 y DOC-04 leídos enteros. **Sigue sin leer DOC-03** (pantallas y banco del jurado). Lo que cambió al leerlos: (1) FB-001, FB-002 y FB-005 dependen de «el banco Monte Carlo de FB-002», que **no está en este repo**, y tampoco sus actas ni scripts: M2.3 y M2.6 siguen bloqueados hasta que el humano los aporte; (2) la tesis del producto es medir **sin wearables**, leyendo la telemetría del hábitat: **LifeSnaps (wearables) solo valida D1**; P8/P9/P11 no tienen datos reales; (3) DOC-04 §10 prohíbe construir M-L1…M-L5 ahora; (4) DC-12 y su puerta de «fuente con identificador» ya coinciden con lo implementado.
 
 ## 1 · Resumen de estado
 
@@ -26,7 +26,7 @@
 | M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
 | M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
 
-Tests: **147 pytest verdes**. `sysmap check`: nada peor que la línea base.
+Tests: **155 pytest verdes**. `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
 
@@ -50,7 +50,7 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 
 ## 3 · Capa 0 · Ingesta — `src/ingesta/` · app `apps.ingesta`
 
-- [ ] **IN-1** normaliza telemetría de sensores → DC-01. **Desbloqueado para validar el método:** LifeSnaps (S-07, verificado; **no son astronautas**) trae sueño, pulso, HRV, temperatura y ánimo diarios (M2.7). Para hábitat sigue sin haber telemetría real abierta.
+- [~] **IN-1** normaliza telemetría de sensores → DC-01. **Hecho (M2.7):** adaptador de LifeSnaps (S-07; **no son astronautas**) para `fc` y `sueño`, con σ de sensor solo con fuente verificada (proxy Charge 2, S-10), ausencias registradas, 88 días reales consecutivos. **Falta:** temperatura/presión/glucosa (sin σ verificada), ánimo (DC-02 exige duración de respuesta). Para hábitat sigue sin haber telemetría real abierta.
 - [ ] **IN-2** autorreporte 3 toques → DC-02 (la ausencia también es dato). Necesita el endpoint de captura (Django/DRF) y no datos externos; los datos serán reales cuando haya usuarios.
 - [~] **IN-3** clima espacial en vivo → DC-03/DC-13.
   - [x] SWPC Kp (feed 1), rayos X (feed 4) → DC-03 `lectura_clima_espacial`, banner REAL, hash, crudo archivado (M0.4, MP-3).
