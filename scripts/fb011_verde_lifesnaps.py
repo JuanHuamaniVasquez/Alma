@@ -5,15 +5,14 @@ Uso:  uv run python scripts/fb011_verde_lifesnaps.py
 import hashlib
 import json
 import sys
-from collections import defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ))
 
+from src.ingesta.series import series_de  # noqa: E402
 from src.contratos.comunes import Indicador, IndicadorSensor  # noqa: E402
-from src.contratos.dc01_sensores import CalidadDato  # noqa: E402
 from src.gobernanza.preregistro import exigir_preregistro  # noqa: E402
 from src.ingesta.incertidumbre import sigma_de  # noqa: E402
 from src.ingesta.lifesnaps import cargar  # noqa: E402
@@ -22,14 +21,6 @@ from src.motor.evaluacion import H_FB009, evaluar_verde, veredictos_verde  # noq
 ACTA = "FB-011"
 CSV = RAIZ / "data/externos/lifesnaps/rais_anonymized/csv_rais_anonymized/daily_fitbit_sema_df_unprocessed.csv"
 TABLA = RAIZ / "data/calibracion/tabla_potencia.json"
-
-
-def series_de(registros, indicador):
-    por = defaultdict(list)
-    for r in registros:
-        if r.indicador is indicador and r.calidad is CalidadDato.OK:
-            por[r.persona_id].append((r.ts_utc.date(), r.valor))
-    return dict(por)
 
 
 def imprimir(titulo, r):

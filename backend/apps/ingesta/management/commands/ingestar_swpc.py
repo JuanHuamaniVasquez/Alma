@@ -16,8 +16,8 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument("feeds", nargs="*", default=list(FEEDS))
 
-    def handle(self, *args, feeds, **opts):
-        for nombre in feeds:
+    def handle(self, *args, **opts):
+        for nombre in opts["feeds"]:
             if nombre not in FEEDS:
                 self.stderr.write(f"feed desconocido: {nombre} (válidos: {', '.join(FEEDS)})")
                 continue

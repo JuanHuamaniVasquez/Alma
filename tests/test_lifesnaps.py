@@ -89,3 +89,19 @@ def test_el_extracto_es_un_subconjunto_literal_del_dataset_completo():
     completo = {(r["id"], r["date"]): r for r in csv.DictReader(COMPLETO.open(encoding="utf-8"))}
     for fila in leer_diario(EXTRACTO):
         assert completo[(fila["id"], fila["date"])] == fila
+
+
+def test_series_de_solo_cuenta_calidad_ok_y_agrupa_por_persona():
+    from datetime import UTC, datetime
+
+    from src.contratos.comunes import Banner, IndicadorSensor
+    from src.contratos.dc01_sensores import CalidadDato, DC01Sensor
+    from src.ingesta.series import series_de
+
+    def r(p, d, v, calidad=CalidadDato.OK, ind=IndicadorSensor.SUENO):
+        return DC01Sensor(persona_id=p, ts_utc=datetime(2026, 1, d, tzinfo=UTC), indicador=ind, valor=v, unidad="min",
+                          incertidumbre_sensor=None if v is None else 1.0, calidad=calidad, fuente="t", banner=Banner.REAL)
+    regs = [r("pa1", 1, 400.0), r("pa1", 2, 420.0), r("pa1", 3, None, CalidadDato.AUSENTE), r("pa1", 4, 10000.0, CalidadDato.SOSPECHOSO),
+            r("pb2", 1, 380.0), r("pb2", 1, 70.0, ind=IndicadorSensor.FC)]
+    s = series_de(regs, IndicadorSensor.SUENO)
+    assert s == {"pa1": [(datetime(2026, 1, 1).date(), 400.0), (datetime(2026, 1, 2).date(), 420.0)], "pb2": [(datetime(2026, 1, 1).date(), 380.0)]}

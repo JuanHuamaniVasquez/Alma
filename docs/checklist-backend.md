@@ -11,94 +11,64 @@
 4. **El motor detecta sin causa**: modelo nulo personal (línea base de 14 días) → residuo (2σ, agudo) → CUSUM bilateral (deriva lenta). El **piso de detección lo fija la incertidumbre del manifiesto**, no el sensor (hallazgo v4). Los cierres de conservación (**El Contrapeso**) comprueban agua/aire/energía contra la ley física.
 5. **Los 3 mandamientos**: (1) nada lee de sensores directo; (2) **nada se prueba sin preregistro con hash SHA-256 ANTES de correr**; (3) **colores solo con regla contestable** — toda alarma lleva recibo (regla exacta, semilla, hash), si la regla no se cumple se retira sola, y todo registro/pantalla lleva banner **REAL/SIMULADO**.
 6. **Política de datos del humano**: nada simulado sin etiqueta, nada inventado; todo dato real con fuente enlazada; sin dato real el ítem se **bloquea**, no se simula.
-7. **Stack cerrado**: Django (+DRF) · PostgreSQL · Next.js; dominio puro en `src/` (sin Django), una app Django por módulo. Frontend (Next) viene después del backend.
+7. **Stack cerrado**: Django (+DRF) · PostgreSQL · Next.js; dominio puro en `src/` (sin Django), una app Django por módulo. El frontend (`web/`, Next, en inglés) ya existe.
 8. **Lo que el jurado compra**: LA SALA + detectores con recibo + preregistros públicos con hash; el lab como **métrica** (tarjetas nacidas → refutadas → sostenidas → detectores nuevos).
 
 **Lectura completada el 2026-11-15: DOC-01, DOC-02, DOC-03 y DOC-04 leídos enteros, más el bestiario, el radar y el LEEME.** La coherencia documento ⇄ código la comprueba una máquina (`tests/test_doc_vs_codigo.py`: campos y enums de los 13 contratos + que los 36 módulos de DOC-01 §2 estén en este mapa). Las afirmaciones heredadas con su estado real están en `docs/afirmaciones-por-verificar.md`. Lo que cambió al leerlos: (1) FB-001, FB-002 y FB-005 dependen de «el banco Monte Carlo de FB-002», que **no está en este repo**, y tampoco sus actas ni scripts: M2.3 y M2.6 siguen bloqueados hasta que el humano los aporte; (2) la tesis del producto es medir **sin wearables**, leyendo la telemetría del hábitat: **LifeSnaps (wearables) solo valida D1**; P8/P9/P11 no tienen datos reales; (3) DOC-04 §10 prohíbe construir M-L1…M-L5 ahora; (4) DC-12 y su puerta de «fuente con identificador» ya coinciden con lo implementado.
 
-## 1 · Resumen de estado
+## 1 · Resumen de estado (actualizado 2026-11-15, tras la vitrina)
 
-| Bloque | Hecho | Falta |
+| Bloque | Hecho (con evidencia en TASKS.md) | Falta |
 |---|---|---|
-| M0 Base | M0.1 stack · M0.2 repo · M0.3 contratos · M0.4 IN-3 (parcial) · M0.5 (parcial: GO-2 automatizado) · M0.6 andamio · M0.7 v0.2.1 · M0.8 banner heredado · M0.9 auditoría · M0.10 correcciones · M0.11 DC-13 · M0.13 persistencia | M0.5 (cierre de FB-001…004) · M0.12 citas→id · M0.14 alertas |
-| M1 Libro + Contrapeso | M1.1 (núcleo, parcial) · M1.2 Contrapeso · M1.3 API · M1.4 demo kill (FB-005-D1, confirmada) | M1.1 con datos reales, FB-005 completa (400 corridas, M2.6) |
-| M2 Motor | M2.1 MO-1 · M2.2 MO-2/MO-3 · M2.7 adaptador LifeSnaps · **M2.8 evaluación preregistrada FB-009** · M2.10 verde con potencia (DC-14, FB-011) · M2.14 blanqueado AR(1) (FB-010) | FB-002 (M2.3), MO-4, MO-5, IN-4 (M2.6), M2.10 verde con potencia, M2.15 validación independiente |
-| M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
-| M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
+| M0 Base | Stack, repo, contratos DC-01…DC-14 (DOC-01 **v0.2.8**), ingesta SWPC (Kp, rayos X, alertas → `tormenta_solar`), banner heredado, GO-2 automatizado, DOIs verificados (S-16) | DONKI y OSDR en vivo; ingesta periódica programada |
+| M1 Libro + Contrapeso | LB-1 con persistencia y API, Contrapeso (ρ sensible, M2.17b), FB-005-D1, libro real de `tiempo` (LifeSnaps) | Los otros 7 presupuestos: **bloqueados por falta de dato real** (se muestran vacíos) |
+| M2 Motor | MO-1/2/3, banco IN-4 (3 anomalías, Monte Carlo, adversario), MO-4 (FB-003R), MO-5 (FB-004R), verde con potencia DC-14, canal de varianza (MP-15, FB-020), réplica de FB-002 (**no replicó, 8/10**, D-35) | M2.22 (validar el canal robusto: necesita ≥300 ventanas independientes) |
+| M3 Vitrina | `web/` (Next 15, inglés): 8 salas, voz de ALMA determinista, escenarios de tormenta simulados | Ensayo humano; pulido visual con feedback |
+| M4 Fundición | 5 tarjetas DC-12, 1 detector circulado, Faro F-001, Adversario, cápsulas DC-07 | MP-15/M2.22 para el detector de varianza |
+| M5 Entrega | Checklist de honestidad ejecutable, borradores de formulario/video/ruta/preprint, revisión de literatura (PubMed+NTRS) | URLs, video, ensayo, IEEE/Scholar, revisión humana |
 
-Tests: **284 pytest verdes**. `sysmap check`: nada peor que la línea base.
+Tests: **373 pytest verdes** (HEAD en `git log`). `sysmap check`: nada peor que la línea base.
 
-## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
+## 2 · Contratos de datos (DC-01…DC-14) — `src/contratos/`
 
-| Contrato | Es | Schema+tests | Persistencia (Postgres) | Notas |
-|---|---|---|---|---|
-| DC-01 | Canal A, sensores | [x] | [ ] | ausencia = `valor` vacío solo si `calidad=ausente` (v0.2.1) |
-| DC-02 | Canal B, autorreporte | [x] | [ ] | idem con `registro_ausencia` |
-| DC-03 | Canal C, eventos físicos | [x] | [x] | + `lectura_clima_espacial` y `banner` (v0.2.1); banner coherente con la fuente |
-| DC-04 | Libro GPV (9 presupuestos) | [x] | [ ] | `incertidumbre_del_manifiesto` > 0; `estado_linea` (v0.2) |
-| DC-05 | Alarma con recibo | [x] | [ ] | sin `regla_exacta` no hay alarma |
-| DC-06 | Stream de residuo | [x] | [ ] | residuo = observado − predicho (verificado) |
-| DC-07 | Cápsula exportable | [x] | [ ] | sin `limites` no exporta |
-| DC-08 | Cierre de conservación | [x] | [ ] | residuo = entradas − salidas − Δalmacén − pérdida; el umbral CIERRA/NO CIERRA es lógica de MO-6 |
-| DC-09 | Forma diaria del hábitat | [x] | [ ] | amplitud ≥ 1 |
-| DC-10 | Errores y contagio | [x] | [ ] | brote ⇔ más de `k_brote` descendientes |
-| DC-11 | Ficha de vida de sensor | [x] | [ ] | |
-| DC-12 | Tarjeta de la Fundición | [x] | [ ] | fuente con id válido obligatoria; hash desde `en_prueba` |
-| DC-13 | Intento de ingesta (v0.2.2) | [x] | [x] | el fallo del feed es dato |
+Todos con schema y tests (`tests/test_contratos.py`, coherencia con DOC-01 en `tests/test_doc_vs_codigo.py`). Persistencia en Postgres: **DC-03, DC-04, DC-05, DC-06, DC-08, DC-13, DC-14**. DC-01/02 viven como adaptadores de dominio (no se persisten sensores crudos); DC-07 se construye bajo demanda desde las actas (`/api/capsulas/`); DC-12 en `data/fundicion/*.jsonl` (solo-anexar); DC-09/10/11 solo schema (sin experimento que los alimente todavía).
 
-Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable una vez fijado (anti-HARKing; requiere persistencia); `banner` en DC-04/05/06/10/11/12 (hoy se hereda, regla de DOC-01 v0.2.1).
+## 3 · Capa 0 · Ingesta — `src/ingesta/`
 
-## 3 · Capa 0 · Ingesta — `src/ingesta/` · app `apps.ingesta`
-
-- [~] **IN-1** normaliza telemetría de sensores → DC-01. **Hecho (M2.7):** adaptador de LifeSnaps (S-07; **no son astronautas**) para `fc` y `sueño`, con σ de sensor solo con fuente verificada (proxy Charge 2, S-10), ausencias registradas, 88 días reales consecutivos. **Falta:** temperatura/presión/glucosa (sin σ verificada), ánimo (DC-02 exige duración de respuesta). Para hábitat sigue sin haber telemetría real abierta.
-- [ ] **IN-2** autorreporte 3 toques → DC-02 (la ausencia también es dato). Necesita el endpoint de captura (Django/DRF) y no datos externos; los datos serán reales cuando haya usuarios.
-- [~] **IN-3** clima espacial en vivo → DC-03/DC-13.
-  - [x] SWPC Kp (feed 1), rayos X (feed 4) → DC-03 `lectura_clima_espacial`, banner REAL, hash, crudo archivado (M0.4, MP-3).
-  - [x] Alertas oficiales (`products/alerts.json`): se archivan; [ ] **clasificarlas a `tormenta_solar` (M0.14, bloqueado: falta citar la guía de mensajes de SWPC)**.
-  - [x] Compuerta de admisión: rechaza sin banner / sin fuente con id / simulado sin semilla pública.
-  - [x] Archivo de lecturas crudas solo-anexar + manifiesto (`data/lecturas/`).
-  - [x] Ficha de verdad OS-892 verificada contra su lectura cruda.
-  - [ ] Plasma y campo magnético (`rtsw_wind_1m`, `rtsw_mag_1m`) y protones → LA TORMENTA (M3.3).
-  - [ ] **DONKI** (declarado en DOC-01, sin endpoint verificado) · [ ] **OSDR en vivo** (solo hay un registro estático de OS-892; OS-892 no tiene archivos de datos).
-  - [x] Persistido en Postgres (`EventoClimaEspacial`, `IntentoIngesta`, CHECK en BD) + `manage.py ingestar_swpc` (M0.13); archivo sin duplicados.
-  - [ ] Programar la ingesta periódica (cron/tarea); hoy se corre a mano con `scripts/ingestar_swpc.py`.
-- [ ] **IN-4** Banco de Falsaciones: replay, Monte Carlo, premortem, **modo adversario**, inyección de 3 anomalías (deriva coherente / flujo no contabilizado / fuga física). Todo **SIMULADO** con banner y semilla pública (registro X-02). El script existente no está en el repo (M2.6).
+- [x] **IN-1** adaptadores reales: LifeSnaps (S-07), Zenodo 8018238 (S-13), Utah agua (S-12); series por persona en `series.py`.
+- [ ] **IN-2** autorreporte en 3 toques → DC-02 (necesita endpoint de captura; sin usuarios no hay dato real).
+- [~] **IN-3** SWPC operativo (Kp, rayos X, alertas oficiales Kp ≥ 5; compuerta de admisión; archivo crudo con hash; persistido). Pendiente: DONKI, OSDR en vivo, plasma/campo magnético, programar la ingesta (hoy `manage.py ingestar_swpc`).
+- [x] **IN-4** banco de falsaciones (`src/motor/banco.py`, `scripts/banco.py`), adversario (`adversario.py`) y escenarios de tormenta (`escenarios.py`, X-14). Todo SIMULADO y etiquetado.
 
 ## 4 · Capa 1 · Libro — `src/libro/` · app `apps.libro`
 
-- [ ] **LB-1** los 9 presupuestos sobre DC-04; **el libro debe cerrar** (M1.1). Entradas DC-01/02/03; salida: residuos contables. **P0 antes que detectores nuevos.**
-- [ ] `estado_linea` (limpio/sospechoso/cuarentena) que viaja con la línea y marca descendientes (GO-6).
-- [ ] Cálculo/recálculo de `incertidumbre_del_manifiesto` (la fija MO-8).
-- [ ] Persistencia de DC-04 y trazabilidad `fuente_linea` → DC-01/02/03.
+- [x] **LB-1** DC-04 con `estado_linea`, persistencia solo-anexar, cierre por presupuesto; `sembrar_demo` (X-13: aire y agua con ancla pública). [x] libro real de `tiempo` (M1.1).
+- [ ] Los demás presupuestos (energía, dosis, ritmo, carga, inmunidad, conducta): sin ancla real → bloqueados, no simulados.
 
 ## 5 · Capa 2 · Motor — `src/motor/` · app `apps.motor`
 
-- [~] **MO-1** modelo nulo personal (M2.1): **hecho** — línea base de 14 días, modo aprendizaje honesto, ausencias sin rellenar, líneas base versionadas y solo-anexar con deriva acumulada (**enchufe de M-L1**, caso α Centauri, D-26). **Falta** — **priors OSDR**: [!] necesitan datos reales con archivos; OS-892 no los tiene.
-- [x] **MO-2** residuo, sorpresa a 2σ → DC-06 · [x] **MO-3** CUSUM **bilateral**, h **calibrado** (FPR 1 % en 14 d) → DC-05 con recibo ejecutable y retiro automático (M2.2). Hueco de DC-05 **resuelto** (D-30: `indicador` XOR `presupuesto_id`).
-- [ ] **FB-002 reproducible: 10/10 detecciones, preaviso mediano 21 días** (semillas 20261113/14/15) — test de regresión permanente (M2.3). **El script no está en el repo; hay que traerlo o reconstruirlo desde el acta preregistrada, sin inventar el resultado.**
-- [ ] **MO-4** matriz co-deriva (planta × chip × humano) · FB-003 (M2.4).
-- [ ] **MO-5** integrador lento del agua (TOC/WRS) · FB-004 (M2.5).
-- [x] **MO-6 El Contrapeso** (**núcleo hecho, M1.2**: cierre con σ propagada, bilateral, pérdida no declarada no existe; fixtures SIMULADOS X-05; falta DC-08 en la base de datos y FB-005) (= *conciliación de datos aplicada a un hábitat tripulado*, D-09): cierre de conservación agua/aire/energía → DC-08, `CIERRA / NO CIERRA` el mismo día (M1.2). **P0.** La simulación se parametriza con `docs/parametros-publicos.md` (siempre SIMULADA).
-- [ ] **MO-7** forma diaria del hábitat → DC-09 (FB-006, P2) · [ ] **MO-8** demografía de testigos → DC-11 (FB-008, P2).
+- [x] MO-1 modelo nulo · MO-2 residuo 2σ · MO-3 CUSUM bilateral con h calibrado y retiro automático · MO-6 Contrapeso (FB-005-D1; ρ sensible) · MO-4 triangulación (FB-003R) · MO-5 integrador del agua (FB-004R, caudal real de Utah).
+- [~] FB-002: **documentado, no replicado** (FB-015-v2: 8/10; D-35). Regresión permanente en `tests/test_banco_ocio_v2.py`.
+- [~] Canal de varianza (MP-15): contrato y módulo hechos; **refutado en datos reales (FPR 9,0 %, FB-020)**; candidato robusto C4 sin validar (FB-020-v2, M2.22). No emite verde ni alarma reales.
+- [~] MO-8: solo el prior de MTBF de Jones 2019 (M2.11). [ ] MO-7 forma diaria: sin iniciar.
 
-## 6 · Capa 3 · Fábrica / LA FUNDICIÓN — `src/fabrica/` · app `apps.fabrica`
+## 6 · Capa 3 · Fábrica / LA FUNDICIÓN — `src/fabrica/`
 
-- [ ] **FA-1** kanban de H-cards (señal refutadora ANTES de probar) · [ ] **FA-2** N-of-1 A-B-A-B · [ ] **FA-3** cápsula DC-07 (sin límites no exporta).
-- [ ] **FA-4 El Faro**: predicciones fechadas registradas antes del dato, calificadas en público (M4.3). **Meta del submit: 1.**
-- [ ] **LA FUNDICIÓN**: minería de residuo → tarjetas DC-12 (puerta que rechaza sin mecanismo/fuente/precio) (M4.1); **≥5 tarjetas** con fuente con identificador y hash ANTES de probar (M4.2); **El Adversario** (tripulación sintética que evade detectores — SIMULADO, documentar 1 escape) (M4.4); circulación: tarjeta sostenida → detector nuevo (M4.5).
-- Ancla real disponible para tarjetas: NASA HRP (riesgo óseo 1–1,5 %/mes), OS-892 (cita 1–2 %), bibliografía con identificador en `docs/auditoria-de-fuentes.md`.
+- [x] FA-1 mesa de tarjetas (`mesa.py`) · FA-3 cápsulas DC-07 (`capsula.py`) · FA-4 El Faro (`faro.py`, F-001 fechada).
+- [x] 5 tarjetas DC-12 (2 refutadas, 1 sostenida, 1 sin datos, 1 en prueba), 1 detector circulado (`umbral_personal`, DC-05 v0.2.7).
+- [ ] FA-2 N-of-1 A-B-A-B: especificado, sin implementar.
 
-## 7 · Capa 4 · Superficies — `src/superficies/` · app `apps.superficies`
+## 7 · Capa 4 · Superficies — `src/superficies/` · `backend/apps/superficies` · `web/`
 
-- [x] **Endpoints REST** DC-04/05/06/08 (M1.3, solo lectura, privacidad probada por mutación). **Regla dura: jamás exponen contenido individual, solo agregados y estados** (privacidad como arquitectura; el contenido individual no cruza de Capa 3 a Capa 4).
-- [ ] SU-1 alertas con recibo · SU-2 tablero del comandante (agregados) · SU-3 sello semanal (regla `arbitro.proveedor ≠ operador`) · SU-4 miner de premortems.
-- [ ] SU-5 frontend Next.js (LA SALA, EL RESIDUO, LA MESA, LA TORMENTA, LA CÁPSULA, EL PRESUPUESTO): **después del backend**.
+- [x] **API de solo lectura** (13 rutas GET): libro, días, alarmas, residuo, cierres, verdes, fundición, actas, demo-kill, tormenta, escenario, cápsulas. Privacidad por mutación; banner en toda respuesta.
+- [x] **Narrador de ALMA** determinista (`narrador.py`): plantilla + dato + fuente; jamás texto libre. Audio con Kokoro-82M local (`scripts/voz_alma.py`).
+- [x] **SU-5 frontend** `web/`: Medical Module, Machine Room, The Leak, The Vault, The Foundry, The Storm, The Budget, The Capsule. Checklist de honestidad: `tests/test_checklist_honestidad.py`.
+- [~] **SU-1** alertas con recibo y **SU-2** tablero (agregados): cubiertos por el recibo de papel y las salas de `web/`; no son módulos aparte.
+- [ ] SU-3 sello semanal · SU-4 minería de premortems (diseñados, sin implementar).
 
-## 8 · Gobernanza — `src/…` / `docs/actas/` · app `apps.gobernanza`
+## 8 · Gobernanza — `src/gobernanza/` · `docs/actas/`
 
-- [~] **GO-2 preregistro con hash SHA-256 ANTES de correr**: **automatizado** (`src/gobernanza/preregistro.py`: hash de bytes exactos, índice solo-anexar, compuerta `exigir_preregistro`, detección de edición posterior). FB-005…FB-008 re-registradas (101 tests). **[!] M0.5 sigue abierta:** los hashes de DOC-02 Ap. B no son reproducibles; FB-001/002 sin acta ni script; FB-003/004 sin acta redactada. [ ] Enlazar el hash del acta a la alarma DC-05 (`hash_preregistro`).
-- [ ] **GO-6** epidemiología del error: caso con linaje, cuarentena, R0 por fuente, acta de brote (DC-10; FB-007).
-- [ ] GO-1 árbitro externo (humano, pendiente; mientras tanto el árbitro es matemático: hash + semilla) · GO-3, GO-4, GO-5, GO-7 son proceso, no código.
+- [x] **GO-2**: hash de bytes exactos, índice solo-anexar, `exigir_preregistro` en cada runner; 21 actas, 16 ejecutadas una vez. [ ] GO-6 epidemiología del error (DC-10, FB-007). [ ] GO-1 árbitro externo: humano. GO-3, GO-4, GO-5 y GO-7 son proceso, no código (GO-7, el MODO FRONTERA, declarado en DOC-01).
 
 ## 8b · Contenido curado (K-1…K-6) — se mina, no se programa
 
@@ -111,18 +81,14 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 | K-5 | Banco de anclas citadas (~45 fuentes verificadas) | [~] 23 anclas en DOC-02 Ap. C + banco del bestiario §7 + 19 identificadores verificados (`auditoria-de-fuentes.md`) + fuentes S-01…S-10; **no consolidado** en un solo registro de ~45 |
 | K-6 | Ideas dormidas (10 de 17) con razón de muerte escrita | [ ] **no está en el repo**; solo se las menciona. Hay que pedirlas al humano o reconstruirlas |
 
-## 9 · Transversal — reglas y tests que ya las hacen cumplir
+## 9 · Transversal — reglas que ya hacen cumplir los tests
 
-- [x] Flujo unidireccional del dominio y dominio sin Django (`tests/test_arquitectura.py`).
-- [x] Una app Django por módulo; Postgres real conectado (`tests/test_base_de_datos.py`).
-- [x] Contratos que rechazan campos ajenos, timestamps no-UTC, NaN/inf, personas con identidad real (`tests/test_contratos.py`).
-- [x] Herencia de banner: un derivado nunca asciende a REAL en silencio (`banner_heredado`).
+- [x] Flujo unidireccional y dominio sin Django (`test_arquitectura.py`) · Postgres real (`test_base_de_datos.py`) · contratos estrictos (`test_contratos.py`).
+- [x] Banner heredado, nunca ascendido en silencio · privacidad en la API (con prueba de mutación) · banner en toda respuesta.
+- [x] Checklist de honestidad ejecutable (14 comprobaciones) · actas intactas · la UI no afirma «10/10».
 - [x] Auditoría de fuentes repetible (`scripts/verificar_fuentes.py --red`).
-- [x] Test de privacidad en la API: ningún id ni valor individual en las respuestas (con prueba de mutación).
-- [x] Banner REAL/SIMULADO en toda respuesta de la API (heredado de las filas).
 
 ## 10 · Propuestas y decisiones abiertas
 
-- MP-3 archivo de lecturas crudas — **aceptada, implementada** (M0.4) · MP-4 registro de intentos — **aceptada, implementada** (DC-13, M0.11).
-- MP-1 predicción conformal (bandas en DC-06) y MP-2 BOCPD — PROPUESTA en DOC-01 §7, sin aceptar.
-- Pendiente tuyo: confirmar interpretación de DC-12 (`precio` = {datos, cómputo, días}; `valor_si_cierta` lista de DC-xx) y decidir si `banner` se declara en los derivados o se hereda.
+- Aceptadas e implementadas: MP-3, MP-4, MP-5, MP-14, MP-15 (con su refutación parcial). MP-1 (conformal) y MP-2 (BOCPD): PROPUESTA sin aceptar.
+- Pendiente del humano: URLs del repo y PDF, video, ensayo, elegir voz, tramitar acceso a GLOBEM (M2.22), revisar los borradores antes de enviar.

@@ -3,15 +3,14 @@ Uso:  uv run python scripts/fb020v2_canal_robusto.py"""
 import hashlib
 import json
 import sys
-from collections import defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ))
 
+from src.ingesta.series import series_de  # noqa: E402
 from src.contratos.comunes import IndicadorSensor  # noqa: E402
-from src.contratos.dc01_sensores import CalidadDato  # noqa: E402
 from src.gobernanza.preregistro import exigir_preregistro  # noqa: E402
 from src.ingesta import fatiga_zenodo, lifesnaps  # noqa: E402
 from src.motor.evaluacion_varianza import candidato, evaluar, seleccionar, veredictos_v2  # noqa: E402
@@ -22,14 +21,6 @@ ZEN = RAIZ / "data/externos/zenodo_8018238"
 SHAS = {LS: "82c84ee495be4b0ff636a8a44271ffb124e2358d9dd52012b529b897f3d54963",
         ZEN / "day_activity_features.csv": "004c31d0875782088d7351f500189c06d700dd707f8a20e24c397159036515f3",
         ZEN / "screener_survey.csv": "01b0ea479577db1d4aa8afad8e7b5540632979352acfbb26405e360b8ae01eac"}
-
-
-def series_de(registros, indicador):
-    por = defaultdict(list)
-    for r in registros:
-        if r.indicador is indicador and r.calidad is CalidadDato.OK:
-            por[r.persona_id].append((r.ts_utc.date(), r.valor))
-    return dict(por)
 
 
 def main() -> int:

@@ -5,7 +5,7 @@
 uv run python backend/manage.py runserver 127.0.0.1:8000     # backend (Postgres via .env)
 cd web && pnpm build && pnpm start                           # frontend on :3000 (production build: faster and steadier than `pnpm dev`)
 uv run python backend/manage.py sembrar_demo                 # idempotent
-uv run --with kokoro-onnx --with soundfile python scripts/voz_alma.py   # only if the data changed
+uv run --with kokoro-onnx --with soundfile python scripts/voz_alma.py   # only if the data changed; env ALMA_VOICE (default af_heart) and ALMA_FX=0 (clean voice) — see .env.example
 uv run pytest -q                                              # must be green (372+)
 ```
 Open `http://localhost:3000`, click once to wake ALMA (this also allows audio). Everything works offline (model, fonts, voice, last Sun snapshot).
