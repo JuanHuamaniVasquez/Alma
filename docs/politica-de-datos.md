@@ -28,7 +28,7 @@ Fuentes por buscar (datos con archivos reales para el motor y las tarjetas): se 
 
 | ID | Qué es | Por qué existe | Dónde | Etiqueta |
 |---|---|---|---|---|
-| X-01 | Casos negativos de tests (registros construidos a propósito inválidos: sin banner, sin fuente, sin semilla, sin `regla_exacta`…) | Los tests de rechazo exigidos por TASKS.md M0.3/M0.4 necesitan entradas inválidas; no son datos de salud | `tests/` | Nombre de test `*_rechaza_*`; no se persisten ni se muestran |
+| X-01 | Instancias **estructurales** de test: registros válidos construidos para ejercitar cada schema (`tests/test_contratos.py`) y casos negativos a propósito inválidos (sin banner, sin fuente, sin semilla, sin `regla_exacta`…) | Los tests de validación y de rechazo exigidos por TASKS.md M0.3/M0.4 necesitan entradas; **no son datos de salud**, no se persisten ni se muestran. Lo único real en ellas es la fuente OS-892 de DC-12 | `tests/` | Nombre de test `*_rechaza_*`; no se persisten ni se muestran |
 | X-02 | Banco de Falsaciones IN-4: universo simulado, inyección de anomalías, modo adversario | Es el método de falsación del diseño (DOC-01/DOC-02): detectar anomalías conocidas exige sembrarlas | `src/motor`, `scripts/` | Banner `UNIVERSO SIMULADO — DÍA N` + semilla pública en toda salida |
 | X-03 | FB-001/FB-002: tripulación sintética de las falsaciones ya ejecutadas | Falsaciones preregistradas del diseño (DOC-02 Ap. B), con semillas 20261113/14/15 | `scripts/` | Banner SIMULADO; los resultados se citan como "en silicio", nunca como datos reales |
 | X-04 | LA TORMENTA: escenarios de perturbación | Motor de escenarios del diseño (DOC-03) | `src/superficies` | Banner `UNIVERSO SIMULADO — DÍA N`; el modo en vivo usa solo SWPC real |
