@@ -1,6 +1,6 @@
 # Propuestas de Claude (CLAUDE.md §13) — formato DOC-01 §7
 
-> Estado: MP-3 y MP-4 **ACEPTADAS e implementadas**; MP-5 y MP-6 **ACEPTADAS (2026-11-15, D-14)**, en cola como M2.10 y M4.6. No se implementan hasta que el humano las acepte o rechace por escrito (el rechazo también se registra). Máximo 2 por sesión.
+> Estado: MP-3 y MP-4 **ACEPTADAS e implementadas**; MP-5 y MP-6 **ACEPTADAS (2026-11-15, D-14)**, en cola como M2.10 y M4.6; MP-7 y MP-8 **ACEPTADAS (2026-11-15, D-22)**, en cola como M4.7 y M2.11. No se implementan hasta que el humano las acepte o rechace por escrito (el rechazo también se registra). Máximo 2 por sesión.
 
 ## Sesión 2026-11-15
 

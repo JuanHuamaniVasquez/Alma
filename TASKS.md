@@ -46,7 +46,7 @@
 - [ ] **M2.8 Evaluación preregistrada sobre LifeSnaps (opción B del paper)**: acta nueva con hash ANTES de correr (umbrales, métricas, semillas públicas); FPR sobre datos reales sin inyección y latencia con inyección etiquetada SIMULADO (híbrido). *Hecho: acta registrada, runner que llama a `exigir_preregistro`, resultados publicados aunque sean feos.* — Dev B
 - [ ] **M2.9 Cierre del tiempo (1440 min) como compuerta de calidad de LB-1 `tiempo`** (fila añadida antes de implementar; idea I-02 con prueba exploratoria ya hecha): sobre LifeSnaps, 84,8 % de los días cierran a 1440 ±1 min (identidad contable del export de Fitbit, **no** ley fisiológica). *Hecho: regla en el libro que marca `estado_linea=sospechoso` a los días que no cierran, con tests sobre filas reales del dataset.* — Dev A
 - [ ] **M2.10 Verde con potencia (MP-5, aceptada 2026-11-15)**: todo «sin anomalías» publica su efecto mínimo detectable (MDE) y su potencia; campos nuevos en el recibo (cambio de contrato → DOC-01 v0.2.4). *Hecho: sobre LifeSnaps (real) con desplazamientos inyectados etiquetados SIMULADO de tamaño = MDE declarado, la detección observada ≥ la potencia declarada; si no, se publica la refutación.* **Antes de correr: acta preregistrada.** — Dev B
-- [ ] **M2.11 Prior empírico del error de manifiesto (MP-8, propuesta pendiente de aceptación)**: transcribir con cita la tabla de MTBF estimado vs de vuelo de Jones 2019 y muestrear de ahí el error del manifiesto en FB-005 completa (M2.6). *Hecho: acta preregistrada ANTES; resultado publicado aunque el Contrapeso pierda su ventaja.* — Dev B
+- [ ] **M2.11 Prior empírico del error de manifiesto (MP-8, aceptada 2026-11-15)**: transcribir con cita la tabla de MTBF estimado vs de vuelo de Jones 2019 y muestrear de ahí el error del manifiesto en FB-005 completa (M2.6). *Hecho: acta preregistrada ANTES; resultado publicado aunque el Contrapeso pierda su ventaja.* — Dev B
 
 ## M3 · La vitrina (P1 — Dev C)
 
@@ -65,6 +65,7 @@
 - [ ] **M4.4 El Adversario**: generar una tripulación sintética enferma que **evade los detectores** actuales y documentar **1 escape** que entra como pregunta/fila nueva. *Hecho: el escape está escrito en acta y abrió una fila en TASKS.md (regla 4).*
 - [ ] **M4.5 (si alcanza) La circulación**: tarjeta sostenida → detector DC-xx nuevo registrado en el Guardián. *Hecho: el detector nuevo aparece con su fila y su alarma con recibo.*
 - [ ] **M4.6 Tarjeta DC-12 exploratoria sueño/HRV × Kp (MP-6, aceptada 2026-11-15)**: LifeSnaps (S-07) × Kp de GFZ (S-09), sensibilidad personal, contraste por permutaciones de fechas con semilla pública. *Hecho: acta preregistrada ANTES de mirar los datos; tarjeta con fuentes con identificador; resultado publicado aunque sea nulo (la tarjeta muere o se sostiene según su regla).* Mecanismo: «hipotético» (McCraty 2017, PMC5551208, evidencia débil). — Dev B
+- [ ] **M4.7 Tarjeta DC-12 «carga ósea ↔ fallo del procesador de orina» (MP-7, aceptada 2026-11-15)**: acoplamiento cuerpo → máquina documentado en Jones 2019 (NTRS 20190027319, citando a Do 2016). Fuentes con identificador NTRS (admitido desde DOC-01 v0.2.4). *Hecho: tarjeta registrada en estado `sin_datos` (no hay datos abiertos de calcio urinario ni de telemetría del UPA) con preregistro y su señal refutadora; pasa la puerta DC-12.* — Dev B
 
 ## M5 · Submit (14-nov — DOC-03 §9)
 
