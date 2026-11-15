@@ -55,7 +55,7 @@
 ## D3 · FRONTERA (M6, 2026-11-15) — originalidad científica
 
 Ver `TASKS.md` M6.0–M6.11. Orden: M6.0 literatura → M6.1 e-proceso → M6.3 consistencia → M6.2 NILM → M6.4 privacidad ε → M6.5/6.6 indicadores y órganos → M6.7 % real/simulado → M6.8 pulido 3D → M6.9–11 soporte visual.
-- [x] M6.0 · [x] M6.1 (FB-021: garantía 5× optimista, nulo publicado) · [ ] M6.2 · [x] M6.3 (FB-022: acoplamientos reales sí, clasificador refutado) · [x] M6.4 (libro de privacidad) · [ ] M6.5 · [ ] M6.6 · [ ] M6.7 · [ ] M6.8 · [ ] M6.9 · [ ] M6.10 · [ ] M6.11
+- [x] M6.0 · [x] M6.1 (FB-021: garantía 5× optimista, nulo publicado) · [ ] M6.2 · [x] M6.3 (FB-022: acoplamientos reales sí, clasificador refutado) · [x] M6.4 (libro de privacidad) · [ ] M6.5 · [x] M6.6 (órganos con el estado de su recibo) · [x] M6.7 (procedencia por sala) · [ ] M6.8 · [ ] M6.9 · [ ] M6.10 · [ ] M6.11
 - Honestidad: ninguna novedad se afirma hasta M6.0; todo dato REAL es de personas civiles (no astronautas); lo simulado lleva banner y fila en `docs/politica-de-datos.md` §3.
 
 ## E · Bloqueado por datos o acceso (no depende del código)

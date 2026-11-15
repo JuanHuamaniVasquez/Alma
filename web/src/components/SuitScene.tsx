@@ -161,7 +161,8 @@ const HAIR = /short0|bob0|ponytail|long0|afro|braid|eyebrow|eyelash/;
 
 /** Capa de anatomía: esqueleto y órganos PROCEDURALES (proporciones estándar sobre la altura H; ilustrativo, no un escaneo ni un diagnóstico).
  *  Cada indicador cae sobre su órgano: sueño/ánimo → cerebro, temperatura → cuello/tronco, fc → corazón, presión → arteria braquial, glucosa → páncreas/estómago. */
-function Anatomy({ H, picked, onPick }: { H: number; picked: string | null; onPick: (id: string) => void }) {
+type OrganState = "ok" | "alarm" | "channel" | "blocked";
+function Anatomy({ H, picked, onPick, states }: { H: number; picked: string | null; onPick: (id: string) => void; states: Record<string, OrganState> }) {
   const P = (x: number, y: number, z = 0) => new THREE.Vector3(x * H, y * H, z * H);
   const J = useMemo(() => ({
     head: P(0, 0.935, 0.005), neck: P(0, 0.865), chest: P(0, 0.73), pelvis: P(0, 0.52),
@@ -182,7 +183,14 @@ function Anatomy({ H, picked, onPick }: { H: number; picked: string | null; onPi
         onClick={id ? (e) => { e.stopPropagation(); if (!view.moved) onPick(id); } : undefined}
         onPointerOver={id ? () => { document.body.style.cursor = "pointer"; } : undefined} onPointerOut={id ? () => { document.body.style.cursor = ""; } : undefined}>
         <sphereGeometry args={[r * H, 20, 16]} />
-        <meshStandardMaterial color={on ? "#ff7a3a" : color} roughness={0.45} emissive={on ? "#ff5a1f" : color} emissiveIntensity={on ? 0.9 : 0.18} />
+        {(() => {                                                       // el color del órgano ES el estado de su recibo: verde con recibo · naranja alarma · gris sin sensor verificado
+          const st = id ? states[id] : undefined;
+          if (on) return <meshStandardMaterial color="#ff7a3a" roughness={0.45} emissive="#ff5a1f" emissiveIntensity={0.9} />;
+          if (st === "blocked") return <meshStandardMaterial color="#6b6258" roughness={0.8} transparent opacity={0.55} />;
+          if (st === "alarm") return <meshStandardMaterial color={color} roughness={0.45} emissive="#ff5a1f" emissiveIntensity={0.7} />;
+          if (st === "ok") return <meshStandardMaterial color={color} roughness={0.45} emissive="#6fae7a" emissiveIntensity={0.32} />;
+          return <meshStandardMaterial color={color} roughness={0.45} emissive={color} emissiveIntensity={0.18} />;
+        })()}
       </mesh>
     );
   };
@@ -246,7 +254,7 @@ function prepCrew(m: THREE.Object3D) {
 
 /** El tripulante DENTRO de la nave: humano GENERADO por script en Blender (MPFB; piel, ojos, pelo y dientes de assets CC0) con el mono de vuelo hecho a medida.
  *  Capas: «uniform» (con mono) o «body» (solo el cuerpo). Personaje FICTICIO: combinación de parámetros, nunca una persona real. */
-function CrewGLB({ name, layer, pickedInd, onPickInd, ...props }: { name: string; layer: Layer; pickedInd: string | null; onPickInd: (id: string) => void; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
+function CrewGLB({ name, layer, pickedInd, onPickInd, states, ...props }: { name: string; layer: Layer; pickedInd: string | null; onPickInd: (id: string) => void; states: Record<string, OrganState>; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
   const { scene } = useGLTF(`/models/crew_${name}.glb`);
   const { model, H } = useMemo(() => {
     const m = scene.clone(true);
@@ -266,7 +274,7 @@ function CrewGLB({ name, layer, pickedInd, onPickInd, ...props }: { name: string
     });
   }, [layer, model, props.holo]);
   const anchors = useMemo(() => anchorsFor(H), [H]);
-  return <Body anchors={anchors} {...props}><primitive object={model} />{layer === "anatomy" && <group userData={{ noholo: true }}><Anatomy H={H} picked={pickedInd} onPick={onPickInd} /></group>}</Body>;
+  return <Body anchors={anchors} {...props}><primitive object={model} />{layer === "anatomy" && <group userData={{ noholo: true }}><Anatomy H={H} picked={pickedInd} onPick={onPickInd} states={states} /></group>}</Body>;
 }
 
 /** La bahía holográfica: peana con anillos, haz de luz vertical y anillos de barrido en el suelo. Solo luz (aditivo): sin geometría pesada. */
@@ -347,6 +355,7 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
   const { active, progress } = useProgress();
   const ready = !active && progress >= 100;
   const indState = (i?: Indicator) => (!i || i.bloqueado ? "blocked" : i.canal === "autorreporte" ? "channel" : i.crew ? (i.crew === "alarma" ? "alarm" : i.crew === "verde" ? "ok" : "channel") : (i.alarma ?? 0) > 0 ? "alarm" : "ok");
+  const organStates: Record<string, OrganState> = Object.fromEntries(indicators.map((i) => [i.indicador, indState(i) as OrganState]));
   const stateOf = (id: string): State => { const p = ledger?.presupuestos[id]; return !p ? "absent" : p.cierra ? "closes" : "open"; };
   return (
     <div className="absolute inset-0 cursor-grab touch-none active:cursor-grabbing" onPointerDown={(e) => { drag.pts.set(e.pointerId, [e.clientX, e.clientY]); view.moved = false; drag.start = [e.clientX, e.clientY]; drag.pinch = 0; }}
@@ -370,7 +379,7 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
         <pointLight position={[0, 0.2, 1.6]} intensity={0.8} color="#ffb47a" distance={4} />
         <Rig />
         {holo && <Bay />}
-        {outfit === "eva" ? <Suspense fallback={null}><Suit helmet={helmet} crew={look.indicativo} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense> : <Suspense fallback={null}><CrewGLB name={look.indicativo} layer={layer} pickedInd={pickedInd} onPickInd={onPickInd} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense>}
+        {outfit === "eva" ? <Suspense fallback={null}><Suit helmet={helmet} crew={look.indicativo} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense> : <Suspense fallback={null}><CrewGLB name={look.indicativo} layer={layer} pickedInd={pickedInd} onPickInd={onPickInd} states={organStates} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense>}
         <ContactShadows position={[0, 0, 0]} opacity={0.7} scale={4} blur={2.4} far={1.6} />
         {mode === "books" && BUDGETS.map(([id], i) => <Ring key={id} i={i} id={id} state={stateOf(id)} onPick={onPick} active={picked === id} labels={labels} />)}
       </Canvas>
