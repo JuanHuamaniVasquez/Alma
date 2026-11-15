@@ -13,9 +13,11 @@ export const ROOMS = [
   { href: "/vault", n: "04", name: "The Vault" },
   { href: "/foundry", n: "05", name: "The Foundry" },
   { href: "/storm", n: "06", name: "The Storm" },
+  { href: "/budget", n: "07", name: "The Budget" },
+  { href: "/capsule", n: "08", name: "The Capsule" },
 ] as const;
 
-const LEDGER_ROOMS = ["/", "/machine", "/kill"]; // salas que muestran el universo simulado del hábitat; las demás llevan su propio sello
+const LEDGER_ROOMS = ["/", "/machine", "/kill", "/budget"]; // salas que muestran el universo simulado del hábitat; las demás llevan su propio sello
 
 export function TopBar() {
   const path = usePathname(), router = useRouter();

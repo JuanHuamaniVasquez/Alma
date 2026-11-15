@@ -106,3 +106,11 @@ def residuo(d: dict) -> Linea:
         texto = (f"The largest surprise is {nombre} on {fecha}: {abs(m['residuo']):.3f} kilograms from the plan, {z:.2f} sigma. "
                  f"The cumulative sum stands at {abs(m['cusum_acumulado']):.2f} of its {H_MEDIA:.2f} threshold. A surprise flag is not an alarm.")
     return Linea("residuo", texto, f"/api/residuo · DC-06 · {fecha}", d["banner"])
+
+
+def escenario(d: dict) -> Linea:
+    """LA TORMENTA simulada: lo dice como simulación, con receta y semilla públicas; jamás se mezcla con el Kp real."""
+    horas = (len(d["eventos"]) - 1) * d["paso_horas"]
+    texto = (f"Simulated scenario. A {d['escala']} storm builds to a K index of {d['pico_kp']:.2f} and fades over {horas} hours. "
+             f"Nothing here is real. The recipe and the public seed are printed, so anyone can regenerate it.")
+    return Linea(f"escenario-{d['escala']}", texto, f"simulator · seed {d['semilla']} · sha256 {_corto(d['eventos'][0]['hash_lectura_cruda'])}", "SIMULADO")

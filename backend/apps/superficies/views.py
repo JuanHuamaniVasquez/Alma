@@ -205,3 +205,31 @@ class Tormenta(SoloLectura):
             "ts_utc_fin": e.ts_utc_fin.isoformat().replace("+00:00", "Z"), "tipo": e.tipo, "fuente": e.fuente,
             "parametros": e.parametros, "hash_lectura_cruda": e.hash_lectura_cruda, "banner": e.banner,
         } for e in filas]})
+
+
+class TormentaEscenario(SoloLectura):
+    """Escenario SIMULADO de tormenta geomagnética (IN-4, X-14): determinista, con receta y semilla públicas. No escribe en la base."""
+
+    def get(self, request, escala: str):
+        from src.motor.escenarios import PASO_H, RECETA, RECETA_EN, UMBRAL_KP, tormenta
+        if escala not in UMBRAL_KP:
+            raise Http404("escala desconocida (G1…G5)")
+        semilla = 20261113
+        dias = sorted(set(LineaLibro.objects.values_list("dia_habitat", flat=True)))
+        dia = dias[-1] if dias else 1
+        ev = tormenta(escala, semilla)
+        return Response({
+            "banner": Banner.SIMULADO.value, "aviso": f"UNIVERSO SIMULADO — DÍA {dia}", "dia_habitat": dia, "escala": escala,
+            "semilla": semilla, "receta": RECETA, "receta_en": RECETA_EN, "paso_horas": PASO_H, "pico_kp": UMBRAL_KP[escala],
+            "eventos": [{
+                "evento_id": e.evento_id, "ts_utc_inicio": e.ts_utc_inicio.isoformat().replace("+00:00", "Z"), "tipo": e.tipo.value,
+                "fuente": e.fuente.value, "parametros": e.parametros, "hash_lectura_cruda": e.hash_lectura_cruda, "banner": e.banner.value,
+            } for e in ev]})
+
+
+class Capsulas(SoloLectura):
+    """FA-3 / DC-07: cápsulas exportables de las tarjetas resueltas. Sin límites declarados no hay cápsula (el contrato lo impide)."""
+
+    def get(self, request):
+        from src.fabrica.capsula import capsulas
+        return Response({"capsulas": [c.model_dump(mode="json") for c in capsulas(Path(settings.RAIZ))]})

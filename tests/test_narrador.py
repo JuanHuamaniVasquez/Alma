@@ -47,3 +47,11 @@ def test_la_ausencia_se_dice_no_se_inventa():
 def test_si_la_demo_no_se_comporta_como_se_preregistro_alma_lo_dice():
     roto = {**DEMO, "fuga": {**DEMO["fuga"], "B_ley": {"veredicto": "CIERRA"}}}
     assert "did not behave as preregistered" in n.demo_kill(roto).texto
+
+
+def test_escenario_se_dice_como_simulado_y_sin_numeros_ajenos():
+    d = {"escala": "G3", "pico_kp": 7.0, "paso_horas": 3, "semilla": 20261113,
+         "eventos": [{"hash_lectura_cruda": "cd" * 32}] * 12}
+    l = n.escenario(d)
+    assert l.banner == "SIMULADO" and l.clave == "escenario-G3" and "Nothing here is real" in l.texto
+    assert numeros(l.texto) == {3, 7, 33}                                  # G3, Kp 7.00, 11 pasos × 3 h

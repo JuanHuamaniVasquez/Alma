@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Schibsted_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { TopBar } from "@/components/TopBar";
 import { AlmaProvider } from "@/components/Alma";
 import { ShipProvider } from "@/components/Ship";
 
-const display = Instrument_Serif({ subsets: ["latin"], weight: "400", variable: "--font-display" });
-const sans = Schibsted_Grotesk({ subsets: ["latin"], variable: "--font-sans" });
-const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
+// Tipografías LOCALES (OFL: Instrument Serif, Schibsted Grotesk, IBM Plex Mono; subconjunto latino): la demo no depende de internet.
+const display = localFont({ src: "../fonts/instrument-serif-400.woff2", weight: "400", variable: "--font-display" });
+const sans = localFont({ src: "../fonts/schibsted-grotesk-var.woff2", weight: "400 900", variable: "--font-sans" });
+const mono = localFont({ src: [{ path: "../fonts/plex-mono-400.woff2", weight: "400" }, { path: "../fonts/plex-mono-500.woff2", weight: "500" }], variable: "--font-mono" });
 
 export const metadata: Metadata = {
   title: "ALMA — a ship that keeps its own books",

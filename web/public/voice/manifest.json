@@ -34,6 +34,41 @@
   "banner": "SIMULADO",
   "audio": "/voice/493cdc99f7863690.mp3"
  },
+ "escenario-G1": {
+  "id": "47ef8b69ba9f8228",
+  "texto": "Simulated scenario. A G1 storm builds to a K index of 5.00 and fades over 33 hours. Nothing here is real. The recipe and the public seed are printed, so anyone can regenerate it.",
+  "fuente": "simulator · seed 20261113 · sha256 db631123",
+  "banner": "SIMULADO",
+  "audio": "/voice/47ef8b69ba9f8228.mp3"
+ },
+ "escenario-G2": {
+  "id": "39e8cbf8bdc28cd2",
+  "texto": "Simulated scenario. A G2 storm builds to a K index of 6.00 and fades over 33 hours. Nothing here is real. The recipe and the public seed are printed, so anyone can regenerate it.",
+  "fuente": "simulator · seed 20261113 · sha256 2881cd99",
+  "banner": "SIMULADO",
+  "audio": "/voice/39e8cbf8bdc28cd2.mp3"
+ },
+ "escenario-G3": {
+  "id": "922bf5ef30db3da2",
+  "texto": "Simulated scenario. A G3 storm builds to a K index of 7.00 and fades over 33 hours. Nothing here is real. The recipe and the public seed are printed, so anyone can regenerate it.",
+  "fuente": "simulator · seed 20261113 · sha256 f117a624",
+  "banner": "SIMULADO",
+  "audio": "/voice/922bf5ef30db3da2.mp3"
+ },
+ "escenario-G4": {
+  "id": "a92157aba143cdc2",
+  "texto": "Simulated scenario. A G4 storm builds to a K index of 8.00 and fades over 33 hours. Nothing here is real. The recipe and the public seed are printed, so anyone can regenerate it.",
+  "fuente": "simulator · seed 20261113 · sha256 c3edc73c",
+  "banner": "SIMULADO",
+  "audio": "/voice/a92157aba143cdc2.mp3"
+ },
+ "escenario-G5": {
+  "id": "3120ed59cc44bdca",
+  "texto": "Simulated scenario. A G5 storm builds to a K index of 9.00 and fades over 33 hours. Nothing here is real. The recipe and the public seed are printed, so anyone can regenerate it.",
+  "fuente": "simulator · seed 20261113 · sha256 f3651f7d",
+  "banner": "SIMULADO",
+  "audio": "/voice/3120ed59cc44bdca.mp3"
+ },
  "libro-1": {
   "id": "1bbf985781316311",
   "texto": "Day 1. All 2 books close within their stated uncertainty.",

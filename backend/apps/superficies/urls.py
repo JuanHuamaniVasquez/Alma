@@ -11,6 +11,8 @@ urlpatterns = [
     path("verdes/", views.Verdes.as_view(), name="verdes"),
     path("fundicion/", views.Fundicion.as_view(), name="fundicion"),
     path("actas/", views.Actas.as_view(), name="actas"),
+    path("capsulas/", views.Capsulas.as_view(), name="capsulas"),
     path("demo-kill/", views.DemoKill.as_view(), name="demo-kill"),
     path("tormenta/", views.Tormenta.as_view(), name="tormenta"),
+    path("tormenta/escenario/<str:escala>/", views.TormentaEscenario.as_view(), name="tormenta-escenario"),
 ]

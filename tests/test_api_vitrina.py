@@ -95,3 +95,30 @@ def test_sembrar_demo_siembra_el_residuo_dc06_y_la_fuga_es_la_unica_sorpresa():
 def test_narrador_residuo_sin_datos_dice_la_ausencia():
     from src.superficies import narrador
     assert "absence" in narrador.residuo({"banner": "REAL", "habitat": []}).texto
+
+
+# --- inyector de escenarios de LA TORMENTA (UNIVERSO SIMULADO, X-14) -------------------------------------
+def test_escenarios_pico_exacto_determinismo_y_banner_simulado():
+    from src.motor.escenarios import UMBRAL_KP, tormenta
+    for g, umbral in UMBRAL_KP.items():
+        s = tormenta(g)
+        kps = [e.parametros["kp"] for e in s]
+        assert len(s) == 12 and max(kps) == umbral and kps.count(umbral) == 1       # el pico es el umbral NOAA, una sola vez
+        assert all(e.banner.value == "SIMULADO" and e.fuente.value == "simulador" and e.tipo.value == "inyeccion_escenario" for e in s)
+        assert all(0.0 <= k <= 9.0 for k in kps) and kps[0] < 5 and kps[-1] < kps[4]  # empieza en calma y decae
+    assert [e.model_dump() for e in tormenta("G3")] == [e.model_dump() for e in tormenta("G3")]
+    assert tormenta("G3")[0].hash_lectura_cruda != tormenta("G4")[0].hash_lectura_cruda   # el hash cubre la serie completa
+    with pytest.raises(ValueError):
+        tormenta("G9")
+
+
+@pytest.mark.django_db
+def test_api_escenario_es_simulada_reproducible_y_no_toca_la_base():
+    from apps.ingesta.models import EventoClimaEspacial
+    antes = EventoClimaEspacial.objects.count()
+    d = get("/api/tormenta/escenario/G3/").json()
+    assert d["banner"] == "SIMULADO" and d["escala"] == "G3" and d["pico_kp"] == 7.0 and d["semilla"] == 20261113
+    assert len(d["eventos"]) == 12 and "N(0, 0.2)" in d["receta"] and "receta_en" in d and d["aviso"].startswith("UNIVERSO SIMULADO")
+    assert d == get("/api/tormenta/escenario/G3/").json()
+    assert get("/api/tormenta/escenario/G7/").status_code == 404
+    assert EventoClimaEspacial.objects.count() == antes                             # solo lectura: nada se escribe

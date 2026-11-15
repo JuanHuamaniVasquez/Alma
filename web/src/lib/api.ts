@@ -54,3 +54,10 @@ export type ResidualPoint = {
 export type Residuals = { banner: Banner; habitat: ResidualPoint[] };
 
 export type SpaceEvent = { evento_id: string; ts_utc_inicio: string; tipo: string; fuente: string; parametros: { kp?: number }; hash_lectura_cruda: string; banner: Banner };
+
+export type Scenario = { banner: Banner; aviso: string; dia_habitat: number; escala: string; semilla: number; receta: string; receta_en: string; paso_horas: number; pico_kp: number; eventos: SpaceEvent[] };
+
+export type Capsule = {
+  version: string; banner: Banner; hipotesis: string; prueba_protocolo: string; preregistro: { hash: string; semilla: number };
+  numeros: Record<string, number | string>; senal_refutadora: string; veredicto: string; limites: string;
+};
