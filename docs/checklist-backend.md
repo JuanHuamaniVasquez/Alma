@@ -20,13 +20,13 @@
 
 | Bloque | Hecho | Falta |
 |---|---|---|
-| M0 Base | M0.1 stack · M0.2 repo · M0.3 contratos · M0.4 IN-3 (parcial) · M0.5 (parcial: GO-2 automatizado) · M0.6 andamio · M0.7 v0.2.1 · M0.8 banner heredado · M0.9 auditoría · M0.10 correcciones · M0.11 DC-13 | M0.5 (cierre de FB-001…004) · M0.12 citas→id · M0.13 persistencia · M0.14 alertas |
+| M0 Base | M0.1 stack · M0.2 repo · M0.3 contratos · M0.4 IN-3 (parcial) · M0.5 (parcial: GO-2 automatizado) · M0.6 andamio · M0.7 v0.2.1 · M0.8 banner heredado · M0.9 auditoría · M0.10 correcciones · M0.11 DC-13 · M0.13 persistencia | M0.5 (cierre de FB-001…004) · M0.12 citas→id · M0.14 alertas |
 | M1 Libro + Contrapeso | — | LB-1, MO-6, endpoints REST, FB-005 |
 | M2 Motor | — | MO-1…MO-3, FB-002, MO-4, MO-5, IN-4 |
 | M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
 | M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
 
-Tests: **101 pytest verdes**. `sysmap check`: nada peor que la línea base.
+Tests: **112 pytest verdes**. `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
 
@@ -34,7 +34,7 @@ Tests: **101 pytest verdes**. `sysmap check`: nada peor que la línea base.
 |---|---|---|---|---|
 | DC-01 | Canal A, sensores | [x] | [ ] | ausencia = `valor` vacío solo si `calidad=ausente` (v0.2.1) |
 | DC-02 | Canal B, autorreporte | [x] | [ ] | idem con `registro_ausencia` |
-| DC-03 | Canal C, eventos físicos | [x] | [ ] M0.13 | + `lectura_clima_espacial` y `banner` (v0.2.1); banner coherente con la fuente |
+| DC-03 | Canal C, eventos físicos | [x] | [x] | + `lectura_clima_espacial` y `banner` (v0.2.1); banner coherente con la fuente |
 | DC-04 | Libro GPV (9 presupuestos) | [x] | [ ] | `incertidumbre_del_manifiesto` > 0; `estado_linea` (v0.2) |
 | DC-05 | Alarma con recibo | [x] | [ ] | sin `regla_exacta` no hay alarma |
 | DC-06 | Stream de residuo | [x] | [ ] | residuo = observado − predicho (verificado) |
@@ -44,7 +44,7 @@ Tests: **101 pytest verdes**. `sysmap check`: nada peor que la línea base.
 | DC-10 | Errores y contagio | [x] | [ ] | brote ⇔ más de `k_brote` descendientes |
 | DC-11 | Ficha de vida de sensor | [x] | [ ] | |
 | DC-12 | Tarjeta de la Fundición | [x] | [ ] | fuente con id válido obligatoria; hash desde `en_prueba` |
-| DC-13 | Intento de ingesta (v0.2.2) | [x] | [ ] M0.13 | el fallo del feed es dato |
+| DC-13 | Intento de ingesta (v0.2.2) | [x] | [x] | el fallo del feed es dato |
 
 Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable una vez fijado (anti-HARKing; requiere persistencia); `banner` en DC-04/05/06/10/11/12 (hoy se hereda, regla de DOC-01 v0.2.1).
 
@@ -60,7 +60,7 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
   - [x] Ficha de verdad OS-892 verificada contra su lectura cruda.
   - [ ] Plasma y campo magnético (`rtsw_wind_1m`, `rtsw_mag_1m`) y protones → LA TORMENTA (M3.3).
   - [ ] **DONKI** (declarado en DOC-01, sin endpoint verificado) · [ ] **OSDR en vivo** (solo hay un registro estático de OS-892; OS-892 no tiene archivos de datos).
-  - [ ] Persistir en Postgres + `manage.py ingestar_swpc` (M0.13).
+  - [x] Persistido en Postgres (`EventoClimaEspacial`, `IntentoIngesta`, CHECK en BD) + `manage.py ingestar_swpc` (M0.13); archivo sin duplicados.
   - [ ] Programar la ingesta periódica (cron/tarea); hoy se corre a mano con `scripts/ingestar_swpc.py`.
 - [ ] **IN-4** Banco de Falsaciones: replay, Monte Carlo, premortem, **modo adversario**, inyección de 3 anomalías (deriva coherente / flujo no contabilizado / fuga física). Todo **SIMULADO** con banner y semilla pública (registro X-02). El script existente no está en el repo (M2.6).
 

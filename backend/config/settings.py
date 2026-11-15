@@ -1,5 +1,6 @@
 """Configuración de ALMA. Todo secreto viene del entorno (.env, no versionado)."""
 import os
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -7,6 +8,8 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 RAIZ = BASE_DIR.parent
 load_dotenv(RAIZ / ".env")
+if str(RAIZ) not in sys.path:  # el dominio puro (src/) cuelga de la raíz del repo
+    sys.path.insert(0, str(RAIZ))
 
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 DEBUG = os.environ.get("DJANGO_DEBUG", "0") == "1"

@@ -16,6 +16,18 @@ def sha256_hex(cuerpo: bytes) -> str:
     return hashlib.sha256(cuerpo).hexdigest()
 
 
+def buscar_archivada(cuerpo: bytes, raiz: Path) -> Path | None:
+    """Si exactamente esta lectura cruda ya está archivada (mismo SHA-256), devuelve su archivo."""
+    manifiesto = raiz / "data" / "lecturas" / "manifiesto.jsonl"
+    if not manifiesto.exists():
+        return None
+    h = sha256_hex(cuerpo)
+    for linea in manifiesto.read_text(encoding="utf-8").splitlines():
+        if linea.strip() and json.loads(linea)["hash_sha256"] == h:
+            return raiz / "data" / "lecturas" / json.loads(linea)["archivo"]
+    return None
+
+
 def archivar(cuerpo: bytes, *, fuente: str, nombre: str, url: str, ts: datetime, raiz: Path) -> tuple[Path, str]:
     """Guarda `data/lecturas/{fuente}_{nombre}_{ts}.json` y anexa una línea al manifiesto JSONL."""
     ts = ts.astimezone(UTC)

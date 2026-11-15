@@ -17,7 +17,7 @@ from src.contratos.comunes import Banner
 from src.contratos.dc03_eventos import DC03Evento, FuenteEvento
 from src.contratos.dc13_intento_ingesta import DC13Intento, ResultadoIntento
 
-from .archivo import archivar, sha256_hex
+from .archivo import archivar, buscar_archivada, sha256_hex
 from .swpc import alertas_a_registros, kp_a_eventos, normalizar_tabla, xrays_a_eventos
 
 BASE = "https://services.swpc.noaa.gov/"
@@ -100,6 +100,9 @@ def ingestar(feed: Feed, *, fetch: Callable[[str], Respuesta], ahora: datetime, 
         _, omitidas = alertas_a_registros(filas)
         if omitidas == len(filas):
             return fallo(r.status, "ninguna alerta interpretable en la respuesta")
-    ruta, hash_archivo = archivar(r.cuerpo, fuente="swpc", nombre=feed.nombre, url=feed.url, ts=ahora, raiz=raiz)
-    assert hash_archivo == hash_
+    # MP-3: si SWPC aún publica exactamente la misma lectura, se reutiliza el crudo ya archivado.
+    ruta = buscar_archivada(r.cuerpo, raiz)
+    if ruta is None:
+        ruta, hash_archivo = archivar(r.cuerpo, fuente="swpc", nombre=feed.nombre, url=feed.url, ts=ahora, raiz=raiz)
+        assert hash_archivo == hash_
     return ResultadoIngesta(intento(ResultadoIntento.OK, r.status, hash_=hash_), tuple(eventos), omitidas, len(filas), ruta)

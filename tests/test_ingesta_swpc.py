@@ -12,7 +12,7 @@ import pytest
 
 from src.contratos import SEMILLAS_PUBLICAS, Banner
 from src.contratos.dc03_eventos import DC03Evento
-from src.ingesta.archivo import sha256_hex
+from src.ingesta.archivo import archivar, sha256_hex
 from src.ingesta.cliente import FEEDS, Respuesta, ingestar
 from src.ingesta.compuerta import RegistroRechazado, admitir, cargar_ficha_os892
 from src.ingesta.swpc import alertas_a_registros, kp_a_eventos, normalizar_tabla
@@ -66,8 +66,8 @@ def test_archivo_es_solo_anexar_y_deja_manifiesto(tmp_path):
     ingestar(FEEDS["kp"], fetch=servir(_real("kp")), ahora=AHORA, raiz=tmp_path)
     linea = json.loads((tmp_path / "data" / "lecturas" / "manifiesto.jsonl").read_text().splitlines()[-1])
     assert linea["fuente"] == "swpc" and linea["banner"] == "REAL" and len(linea["hash_sha256"]) == 64
-    with pytest.raises(FileExistsError):
-        ingestar(FEEDS["kp"], fetch=servir(_real("kp")), ahora=AHORA, raiz=tmp_path)
+    with pytest.raises(FileExistsError):  # archivar nunca reescribe un archivo existente
+        archivar(b"otro contenido", fuente="swpc", nombre="kp", url="https://x.test", ts=AHORA, raiz=tmp_path)
 
 
 # --- el fallo del feed es dato (DC-13) -----------------------------------------------------
@@ -152,3 +152,12 @@ def test_ficha_os892_se_rechaza_si_su_lectura_cruda_no_cuadra(tmp_path):
     (tmp_path / ficha["respuesta_cruda"]).write_bytes(b"{}")  # crudo alterado
     with pytest.raises(RegistroRechazado, match="hash"):
         cargar_ficha_os892(tmp_path)
+
+
+def test_la_misma_lectura_no_se_archiva_dos_veces(tmp_path):
+    cuerpo = _real("kp")
+    a = ingestar(FEEDS["kp"], fetch=servir(cuerpo), ahora=AHORA, raiz=tmp_path)
+    b = ingestar(FEEDS["kp"], fetch=servir(cuerpo), ahora=AHORA.replace(hour=15), raiz=tmp_path)
+    assert b.archivo == a.archivo and b.intento.hash_lectura_cruda == a.intento.hash_lectura_cruda
+    assert len(list((tmp_path / "data" / "lecturas").glob("swpc_kp_*.json"))) == 1  # sin duplicar
+    assert len((tmp_path / "data" / "lecturas" / "manifiesto.jsonl").read_text().splitlines()) == 1
