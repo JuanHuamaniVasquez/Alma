@@ -76,3 +76,38 @@ class CierreConservacion(models.Model):
             models.UniqueConstraint(fields=["dia_habitat", "bucle"], name="dc08_un_cierre_por_bucle_y_dia"),
             models.CheckConstraint(condition=Q(perdida_declarada__gte=0), name="dc08_perdida_no_negativa"),
         ]
+
+
+class ReciboVerde(models.Model):
+    """DC-14 · recibo de verde. Las CHECK repiten el contrato: un verde declara potencia y MDE; `sin_datos_suficientes` no declara nada."""
+    recibo_id = models.CharField(max_length=100, unique=True)
+    ts_utc = models.DateTimeField(db_index=True)
+    sujeto = models.CharField(max_length=64, db_index=True)
+    presupuesto_id = models.CharField(max_length=20, null=True)
+    indicador = models.CharField(max_length=20, null=True)
+    estado = models.CharField(max_length=24, choices=[("verde", "verde"), ("sin_datos_suficientes", "sin_datos_suficientes"), ("retirado", "retirado")])
+    ventana_dias = models.PositiveSmallIntegerField()
+    dias_validos = models.PositiveSmallIntegerField()
+    detector = models.CharField(max_length=12)
+    k = models.FloatField()
+    h = models.FloatField()
+    potencia_declarada = models.FloatField(null=True)
+    mde_sigma = models.FloatField(null=True)
+    mde_fisico = models.FloatField(null=True)
+    unidad = models.CharField(max_length=20)
+    supuesto = models.TextField()
+    regla_exacta = models.TextField()
+    semilla = models.BigIntegerField()
+    hash_preregistro = models.CharField(max_length=64)
+    banner = models.CharField(max_length=10, choices=BANNER)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(condition=(Q(presupuesto_id__isnull=False, indicador__isnull=True)
+                                              | Q(presupuesto_id__isnull=True, indicador__isnull=False)), name="dc14_presupuesto_xor_indicador"),
+            models.CheckConstraint(condition=Q(dias_validos__lte=models.F("ventana_dias")), name="dc14_dias_validos_en_ventana"),
+            models.CheckConstraint(condition=(Q(estado="sin_datos_suficientes", potencia_declarada__isnull=True, mde_sigma__isnull=True, mde_fisico__isnull=True)
+                                              | (~Q(estado="sin_datos_suficientes") & Q(potencia_declarada__isnull=False, mde_sigma__isnull=False, mde_fisico__isnull=False))),
+                                   name="dc14_verde_declara_y_sin_datos_no"),
+            models.CheckConstraint(condition=Q(hash_preregistro__regex=r"^[0-9a-f]{64}$"), name="dc14_hash_preregistro_sha256"),
+        ]

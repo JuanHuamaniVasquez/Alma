@@ -27,3 +27,14 @@ def guardar_cierre(c: DC08Cierre) -> CierreConservacion:
         dia_habitat=c.dia_habitat, bucle=c.bucle.value, entradas=c.entradas, salidas=c.salidas, delta_almacen=c.delta_almacen,
         perdida_declarada=c.perdida_declarada, residuo_conservacion=c.residuo_conservacion,
         incertidumbre_propagada=c.incertidumbre_propagada, veredicto=c.veredicto.value, banner=c.banner.value)
+
+
+def guardar_recibo_verde(r, banner=None):
+    """Guarda un DC-14 (el banner ya viaja en el contrato)."""
+    from .models import ReciboVerde
+    return ReciboVerde.objects.create(
+        recibo_id=r.recibo_id, ts_utc=r.ts_utc, sujeto=r.sujeto, presupuesto_id=r.presupuesto_id.value if r.presupuesto_id else None,
+        indicador=r.indicador.value if r.indicador else None, estado=r.estado.value, ventana_dias=r.ventana_dias, dias_validos=r.dias_validos,
+        detector=r.detector.value, k=r.k, h=r.h, potencia_declarada=r.potencia_declarada, mde_sigma=r.mde_sigma, mde_fisico=r.mde_fisico,
+        unidad=r.unidad, supuesto=r.supuesto, regla_exacta=r.regla_exacta, semilla=r.semilla, hash_preregistro=r.hash_preregistro,
+        banner=r.banner.value)

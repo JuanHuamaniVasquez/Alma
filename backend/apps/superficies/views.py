@@ -17,7 +17,7 @@ from rest_framework.views import APIView
 
 from apps.libro.models import LineaLibro
 from apps.libro.repositorio import a_dominio
-from apps.motor.models import Alarma, CierreConservacion, ResiduoStream
+from apps.motor.models import Alarma, CierreConservacion, ReciboVerde, ResiduoStream
 from src.contratos.comunes import HABITAT, Banner
 
 LIMITE_MAX = 1000
@@ -105,3 +105,23 @@ class CierresDia(SoloLectura):
             "perdida_declarada": c.perdida_declarada, "residuo_conservacion": c.residuo_conservacion,
             "incertidumbre_propagada": c.incertidumbre_propagada, "veredicto": c.veredicto, "banner": c.banner,
         } for c in filas]})
+
+
+class Verdes(SoloLectura):
+    """DC-14: del hábitat, el detalle completo; del cuerpo, SOLO agregados (estado, cobertura, MDE en σ): sin ids ni valores físicos."""
+
+    def get(self, request):
+        filas = list(ReciboVerde.objects.order_by("-ts_utc")[:LIMITE_MAX])
+        habitat = [{
+            "ts_utc": r.ts_utc.isoformat().replace("+00:00", "Z"), "presupuesto_id": r.presupuesto_id, "indicador": r.indicador,
+            "estado": r.estado, "dias_validos": r.dias_validos, "ventana_dias": r.ventana_dias, "potencia_declarada": r.potencia_declarada,
+            "mde_sigma": r.mde_sigma, "mde_fisico": r.mde_fisico, "unidad": r.unidad, "supuesto": r.supuesto,
+            "regla_exacta": r.regla_exacta, "semilla": r.semilla, "hash_preregistro": r.hash_preregistro, "banner": r.banner,
+        } for r in filas if r.sujeto == HABITAT]
+        cuerpo = [r for r in filas if r.sujeto != HABITAT]
+        por_estado = Counter(r.estado for r in cuerpo)
+        mdes = sorted(r.mde_sigma for r in cuerpo if r.mde_sigma is not None)
+        return Response({"banner": banner_de(filas), "habitat": habitat, "cuerpo_agregado": {
+            "recibos": len(cuerpo), "por_estado": dict(por_estado),
+            "cobertura_media": (sum(r.dias_validos / r.ventana_dias for r in cuerpo) / len(cuerpo)) if cuerpo else None,
+            "mde_sigma_mediana": mdes[len(mdes) // 2] if mdes else None}})
