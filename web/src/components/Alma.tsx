@@ -4,7 +4,7 @@ import type { Banner } from "@/lib/api";
 import { Stamp } from "./Stamp";
 
 type Entry = { id: string; texto: string; fuente: string; banner: Banner; audio: string };
-type Ctx = { say: (key: string) => void; stop: () => void; has: (key: string) => boolean; line: Entry | null; shown: string; speaking: boolean; muted: boolean; setMuted: (m: boolean) => void };
+type Ctx = { say: (key: string, force?: boolean) => void; stop: () => void; has: (key: string) => boolean; line: Entry | null; shown: string; speaking: boolean; muted: boolean; setMuted: (m: boolean) => void };
 const AlmaCtx = createContext<Ctx>({ say() {}, stop() {}, has: () => false, line: null, shown: "", speaking: false, muted: false, setMuted() {} });
 export const useAlma = () => useContext(AlmaCtx);
 
@@ -20,17 +20,24 @@ export function AlmaProvider({ children }: { children: React.ReactNode }) {
   const [awake, setAwake] = useState(false);
   const [muted, setMutedState] = useState(false);
   const audio = useRef<HTMLAudioElement | null>(null);
+  const awakeRef = useRef(false);                       // ¿ya hubo un clic? Antes de él el navegador bloquea el audio
+  const pending = useRef<string | null>(null);           // lo que ALMA quiso decir antes de despertar: se dice al despertar
+  const current = useRef<{ key: string; t: number } | null>(null);
   const raf = useRef<number>(0);
 
-  useEffect(() => { if (new URLSearchParams(window.location.search).has("awake")) setAwake(true); }, []); // ?awake salta la puerta (capturas, grabaciones)
+  useEffect(() => { if (new URLSearchParams(window.location.search).has("awake")) { awakeRef.current = true; setAwake(true); } }, []); // ?awake salta la puerta (capturas, grabaciones)
   useEffect(() => { try { setMutedState(localStorage.getItem("alma-muted") === "1"); } catch { /* sin almacenamiento: sigue con sonido */ } }, []);
   const setMuted = useCallback((m: boolean) => { setMutedState(m); if (audio.current) audio.current.muted = m; try { localStorage.setItem("alma-muted", m ? "1" : "0"); } catch { /* idem */ } }, []);
   useEffect(() => { fetch("/voice/manifest.json").then((r) => (r.ok ? r.json() : {})).then(setBook).catch(() => setBook({})); }, []);
 
   const stop = useCallback(() => { cancelAnimationFrame(raf.current); audio.current?.pause(); setSpeaking(false); }, []);
-  const say = useCallback((key: string) => {
+  const say = useCallback((key: string, force = false) => {
     const e = book[key];
     if (!e) return;
+    if (!awakeRef.current) { pending.current = key; setLine(e); setShown(e.texto); return; }   // sin gesto no se puede reproducir: se encola
+    const c = current.current;
+    if (!force && c && c.key === key && Date.now() - c.t < 1500) return;                     // doble disparo de efectos: no reiniciar la frase
+    current.current = { key, t: Date.now() };
     stop(); setLine(e); setShown("");
     const a = new Audio(e.audio); a.muted = muted; audio.current = a;            // en silencio el audio corre igual: los subtítulos se sincronizan con él
     const tick = () => {
@@ -47,7 +54,7 @@ export function AlmaProvider({ children }: { children: React.ReactNode }) {
   return (
     <AlmaCtx.Provider value={{ say, stop, has: (k) => k in book, line, shown, speaking, muted, setMuted }}>
       {children}
-      {!awake && <WakeGate onWake={() => setAwake(true)} />}
+      {!awake && <WakeGate onWake={() => { awakeRef.current = true; setAwake(true); const k = pending.current; pending.current = null; if (k) say(k, true); }} />}
     </AlmaCtx.Provider>
   );
 }
@@ -73,7 +80,7 @@ export function AlmaDock({ room }: { room?: string }) {
   const idle = !line;
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-bg from-55% via-bg/80 to-transparent pb-6 pl-6 pt-14"><div className="flex max-w-[54rem] items-end gap-4">
-      <button onClick={() => room && say(room)} disabled={!room || !has(room)} aria-label="Ask ALMA to speak"
+      <button onClick={() => room && say(room, true)} disabled={!room || !has(room)} aria-label="Ask ALMA to speak"
         className="pointer-events-auto relative mb-1 h-11 w-11 shrink-0 rounded-full outline-offset-4 disabled:opacity-40"
         style={{ background: "radial-gradient(circle at 35% 30%, #fff6e4, #e9b877 45%, #7a3a14 100%)",
                  boxShadow: speaking ? "0 0 38px 10px rgb(255 140 60 / .45)" : "0 0 22px 3px rgb(255 140 60 / .18)", transition: "box-shadow .4s" }}>
