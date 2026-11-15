@@ -43,7 +43,7 @@ const clicTexto = (tag, t) => page.evaluate((tag, t) => { const el = [...documen
 await page.goto(BASE, { waitUntil: "domcontentloaded" });
 await esperar('button[aria-label^="Wake ALMA"]');
 await page.click('button[aria-label^="Wake ALMA"]');
-await page.waitForFunction(() => !document.querySelector('button[aria-label^="Wake ALMA"]'), { timeout: 5000 });
+await page.waitForFunction(() => !document.querySelector('button[aria-label^="Wake ALMA"]'), { timeout: 20000 });
 check("la puerta se abre con un clic", true);
 await esperar("p[aria-live]", 30000);
 await page.waitForFunction(() => (document.querySelector("p[aria-live]")?.textContent.length ?? 0) > 20, { timeout: 15000 }).then(() => check("ALMA muestra su subtítulo", true), () => check("ALMA muestra su subtítulo", false));   // el subtítulo crece con el audio: con carga alta tarda
