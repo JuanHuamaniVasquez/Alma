@@ -23,6 +23,7 @@
 | S-04 | NASA HRP — hazards y risks | https://www.nasa.gov/hrp/hazards/ · https://www.nasa.gov/hrp/risks/ | confirmar | 2026-11-15 | Leídas; descriptivas, sin datos |
 | S-05 | NASA HRP — Risk of Spaceflight-Induced Bone Changes | https://www.nasa.gov/reference/risk-of-spaceflight-induced-bone-changes/ | confirmar | 2026-11-15 | **Verificada por Claude.** Cita textual: "on average, bones lose between 1% and 1.5% of their density each month during four-to-six-month missions". **Ancla primaria** de la cifra ósea; la cita 1–2 % de OS-892 es el ancla secundaria |
 | S-06 | Bibliografía con identificador (19 citas) | ver `docs/auditoria-de-fuentes.md` §1 | — | 2026-11-15 | Verificadas contra NCBI, Crossref, arXiv y NTRS con `scripts/verificar_fuentes.py` |
+| S-07 | **LifeSnaps** — 4 meses, 71 participantes, Fitbit (sueño, pulso, actividad) + autorreportes (ánimo). **No son astronautas** | DOI https://doi.org/10.1038/s41597-022-01764-x · datos: https://zenodo.org/records/7229547 (`rais_anonymized.zip`, 615 037 493 bytes) | CC-BY 4.0 (Crossref y Zenodo) | 2026-11-15 | Fuente verificada por metadatos (Crossref, Zenodo; md5 oficial `726afe263ab4b900a721eac19b2ca13a`). Archivo local en `data/externos/lifesnaps/` (fuera de git): **descarga en curso; sin verificar su checksum todavía**. Uso previsto: validar línea base personal + CUSUM sobre datos reales (M2.7/M2.8) |
 
 Fuentes por buscar (datos con archivos reales para el motor y las tarjetas): se añaden aquí **cuando se encuentren**, con licencia, fecha de acceso y hash del archivo.
 
