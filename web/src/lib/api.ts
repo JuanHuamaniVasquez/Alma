@@ -36,7 +36,8 @@ export type DemoKill = {
 };
 export type DKDay = { fuga_kg: number; A_manifiesto: { z: number; alarma: boolean }; B_ley: { residuo_kg: number; sigma_propagada_kg: number; veredicto: string } };
 
-export type Acta = { acta: string; hash_sha256: string; registrada_utc: string; semillas: number[]; estado: string; ejecutada: boolean; veredictos: unknown; banner: string | null };
+export type Acta = { acta: string; hash_sha256: string; registrada_utc: string; semillas: number[]; estado: string; ejecutada: boolean; veredictos: unknown; banner: string | null;
+  en: { title: string; summary: string; outcome: string; data: string; tags: string[] } | null };
 export type Tarjeta = {
   tarjeta_id: string; estado: string; preregistro_hash: string; fuentes: unknown[];
   en: { title: string; prediction: string; refuter: string; mechanism: string; result: string } | null;

@@ -4,9 +4,11 @@ import type { Banner } from "@/lib/api";
 import { Stamp } from "./Stamp";
 
 type Entry = { id: string; texto: string; fuente: string; banner: Banner; audio: string };
-type Ctx = { say: (key: string, force?: boolean) => void; stop: () => void; has: (key: string) => boolean; line: Entry | null; shown: string; speaking: boolean; muted: boolean; setMuted: (m: boolean) => void; subs: Subs; setSubs: (s: Subs) => void };
+type Ctx = { say: (key: string, force?: boolean) => void; stop: () => void; has: (key: string) => boolean; line: Entry | null; shown: string; speaking: boolean; muted: boolean; setMuted: (m: boolean) => void; subs: Subs; setSubs: (s: Subs) => void;
+  /** Compone una respuesta encadenando clips pre-generados (vocabulario cerrado). `text` es lo que se lee en pantalla; `onDone` se llama al terminar de hablar. */
+  sayClips: (keys: string[], text: string, onDone?: () => void) => void };
 type Subs = "full" | "off";
-const AlmaCtx = createContext<Ctx>({ say() {}, stop() {}, has: () => false, line: null, shown: "", speaking: false, muted: false, setMuted() {}, subs: "full", setSubs() {} });
+const AlmaCtx = createContext<Ctx>({ say() {}, stop() {}, has: () => false, line: null, shown: "", speaking: false, muted: false, setMuted() {}, subs: "full", setSubs() {}, sayClips() {} });
 export const useAlma = () => useContext(AlmaCtx);
 
 /**
@@ -15,6 +17,7 @@ export const useAlma = () => useContext(AlmaCtx);
  */
 export function AlmaProvider({ children }: { children: React.ReactNode }) {
   const [book, setBook] = useState<Record<string, Entry>>({});
+  const [clipBook, setClipBook] = useState<Record<string, { texto: string; audio: string }>>({});
   const [line, setLine] = useState<Entry | null>(null);
   const [shown, setShown] = useState("");
   const [speaking, setSpeaking] = useState(false);
@@ -25,6 +28,7 @@ export function AlmaProvider({ children }: { children: React.ReactNode }) {
   const awakeRef = useRef(false);                       // ¿ya hubo un clic? Antes de él el navegador bloquea el audio
   const pending = useRef<string | null>(null);           // lo que ALMA quiso decir antes de despertar: se dice al despertar
   const current = useRef<{ key: string; t: number } | null>(null);
+  const chain = useRef(0);                                // identifica la cadena de clips vigente: una respuesta nueva anula la anterior por completo
   const raf = useRef<number>(0);
 
   useEffect(() => { if (new URLSearchParams(window.location.search).has("awake")) { awakeRef.current = true; setAwake(true); } }, []); // ?awake salta la puerta (capturas, grabaciones)
@@ -34,7 +38,7 @@ export function AlmaProvider({ children }: { children: React.ReactNode }) {
   const setMuted = useCallback((m: boolean) => { setMutedState(m); if (audio.current) audio.current.muted = m; try { localStorage.setItem("alma-muted", m ? "1" : "0"); } catch { /* idem */ } }, []);
   useEffect(() => { fetch("/voice/manifest.json").then((r) => (r.ok ? r.json() : {})).then(setBook).catch(() => setBook({})); }, []);
 
-  const stop = useCallback(() => { cancelAnimationFrame(raf.current); audio.current?.pause(); setSpeaking(false); }, []);
+  const stop = useCallback(() => { chain.current++; cancelAnimationFrame(raf.current); audio.current?.pause(); setSpeaking(false); }, []);
   const say = useCallback((key: string, force = false) => {
     const e = book[key];
     if (!e) return;
@@ -44,19 +48,38 @@ export function AlmaProvider({ children }: { children: React.ReactNode }) {
     current.current = { key, t: Date.now() };
     stop(); setLine(e); setShown("");
     const a = new Audio(e.audio); a.muted = muted; audio.current = a;            // en silencio el audio corre igual: los subtítulos se sincronizan con él
+    const mine = chain.current;                                                  // si llega otra respuesta, esta ya no toca el texto ni el estado
     const tick = () => {
+      if (chain.current !== mine) return;
       const f = a.duration ? Math.min(1, a.currentTime / (a.duration * 0.96)) : 0;
       setShown(e.texto.slice(0, Math.ceil(e.texto.length * f)));
       if (!a.ended) raf.current = requestAnimationFrame(tick);
     };
-    a.onplay = () => { setSpeaking(true); raf.current = requestAnimationFrame(tick); };
-    a.onended = () => { setSpeaking(false); setShown(e.texto); };
-    a.onerror = () => { setShown(e.texto); };                      // sin audio: el subtítulo aparece entero
-    a.play().catch(() => setShown(e.texto));
+    a.onplay = () => { if (chain.current !== mine) return; setSpeaking(true); raf.current = requestAnimationFrame(tick); };
+    a.onended = () => { if (chain.current !== mine) return; setSpeaking(false); setShown(e.texto); };
+    a.onerror = () => { if (chain.current === mine) setShown(e.texto); };       // sin audio: el subtítulo aparece entero
+    a.play().catch(() => { if (chain.current === mine) setShown(e.texto); });
   }, [book, stop, muted]);
 
+  useEffect(() => { fetch("/voice/search/manifest.json").then((r) => (r.ok ? r.json() : {})).then(setClipBook).catch(() => setClipBook({})); }, []);
+  const sayClips = useCallback((keys: string[], text: string, onDone?: () => void) => {
+    stop();
+    const e: Entry = { id: "search", texto: text, fuente: "vault search · fixed phrases + your results", banner: "REAL", audio: "" };
+    setLine(e); setShown(text);                                                   // el texto sale entero al instante; el audio lo acompaña
+    const lista = keys.map((k) => clipBook[k]).filter(Boolean);
+    if (!awakeRef.current || !lista.length) { onDone?.(); return; }
+    let i = 0; const mine = chain.current; setSpeaking(true);
+    const next = () => {
+      if (chain.current !== mine) return;                                       // interrumpida por otra respuesta: ni un clip más
+      if (i >= lista.length) { setSpeaking(false); onDone?.(); return; }
+      const a = new Audio(lista[i++].audio); a.muted = muted; audio.current = a;
+      a.onended = next; a.onerror = next; a.play().catch(next);
+    };
+    next();
+  }, [clipBook, stop, muted]);
+
   return (
-    <AlmaCtx.Provider value={{ say, stop, has: (k) => k in book, line, shown, speaking, muted, setMuted, subs, setSubs }}>
+    <AlmaCtx.Provider value={{ say, stop, has: (k) => k in book, line, shown, speaking, muted, setMuted, subs, setSubs, sayClips }}>
       {children}
       {!awake && <WakeGate onWake={() => { awakeRef.current = true; setAwake(true); const k = pending.current; pending.current = null; if (k) say(k, true); }} />}
     </AlmaCtx.Provider>

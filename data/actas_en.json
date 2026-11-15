@@ -1,0 +1,320 @@
+{
+ "_nota": "Resúmenes en inglés de la vitrina (hechos por Claude, derivados de cada acta y su NOTA); el acta en español y sus números mandan. `outcome` es MI lectura global de cada acta, no un campo del acta.",
+ "actas": {
+  "FB-005": {
+   "title": "The Conservation Loop (full run)",
+   "summary": "Sealed, not yet run: the full test of whether a conservation-of-mass check catches a hidden leak earlier than a manifest check, over 400 simulated runs per scenario.",
+   "outcome": "not_run",
+   "data": "simulated",
+   "tags": [
+    "conservation",
+    "mass balance",
+    "leak",
+    "manifest",
+    "air",
+    "water",
+    "contrapeso"
+   ]
+  },
+  "FB-006": {
+   "title": "The Habitat Dreams",
+   "summary": "Sealed, not yet run: whether the daily shape of the habitat's consumption curves reveals a shared change in the crew's rest before the personal detector does.",
+   "outcome": "not_run",
+   "data": "simulated",
+   "tags": [
+    "rest",
+    "sleep",
+    "daily shape",
+    "habitat",
+    "curves",
+    "consumption"
+   ]
+  },
+  "FB-007": {
+   "title": "The Immune System",
+   "summary": "Sealed, not yet run: whether an error injected into the ledger is traced to at least 90 percent of the numbers it contaminates with under 5 percent false quarantine.",
+   "outcome": "not_run",
+   "data": "simulated",
+   "tags": [
+    "error",
+    "contagion",
+    "lineage",
+    "quarantine",
+    "ledger",
+    "sensor"
+   ]
+  },
+  "FB-008": {
+   "title": "Witness Demography",
+   "summary": "Sealed, not yet run: whether computing the manifest's uncertainty from each sensor's age beats using a fixed constant.",
+   "outcome": "not_run",
+   "data": "simulated",
+   "tags": [
+    "sensor",
+    "age",
+    "uncertainty",
+    "reliability",
+    "lifetimes",
+    "manifest"
+   ]
+  },
+  "FB-005-D1": {
+   "title": "The Leak demo",
+   "summary": "One simulated day with a 0.30 kilogram hidden leak and one control day. The manifest detector stays silent; the conservation law says the loop does not close. Prediction confirmed.",
+   "outcome": "sustained",
+   "data": "simulated",
+   "tags": [
+    "leak",
+    "conservation",
+    "mass balance",
+    "demo",
+    "manifest",
+    "kill demo",
+    "air",
+    "water"
+   ]
+  },
+  "FB-009": {
+   "title": "The motor on real wearable data",
+   "summary": "Does the personal-baseline detector keep its promised false-alarm rate on real wearable data? Sleep: none in 97 windows. Pulse: 7 of 144 (4.9 percent), because daily pulse is autocorrelated.",
+   "outcome": "mixed",
+   "data": "real+simulated",
+   "tags": [
+    "false alarms",
+    "cusum",
+    "baseline",
+    "pulse",
+    "heart rate",
+    "sleep",
+    "lifesnaps",
+    "autocorrelation"
+   ]
+  },
+  "FB-010": {
+   "title": "Whitening the pulse detector",
+   "summary": "Whitening the pulse series with an AR(1) filter lowered false alarms in sample, but the control also passed, so it could not be shown out of sample. A design flaw, published.",
+   "outcome": "inconclusive",
+   "data": "real+simulated",
+   "tags": [
+    "whitening",
+    "autocorrelation",
+    "pulse",
+    "heart rate",
+    "false alarms",
+    "cusum",
+    "design flaw"
+   ]
+  },
+  "FB-011": {
+   "title": "Does a green keep its promise?",
+   "summary": "Does the power a green receipt declares hold on real data? Yes for sleep. My prediction that it would fail for pulse was refuted.",
+   "outcome": "mixed",
+   "data": "real+simulated",
+   "tags": [
+    "green",
+    "receipt",
+    "power",
+    "minimum detectable effect",
+    "sleep",
+    "pulse"
+   ]
+  },
+  "FB-012": {
+   "title": "Real household water demand",
+   "summary": "Real daily water use of 31 households in Utah: the day-to-day variability is large (median coefficient of variation 0.53). Autocorrelation and between-household correlation were inconclusive.",
+   "outcome": "mixed",
+   "data": "real",
+   "tags": [
+    "water",
+    "demand",
+    "variability",
+    "utah",
+    "households",
+    "flow",
+    "correlation"
+   ]
+  },
+  "FB-013": {
+   "title": "Independent cohort validation",
+   "summary": "Does the pulse false-alarm problem replicate in another cohort and device? It did not (2 of 66). The whitening test was inconclusive; statistical power held at 89.4 percent.",
+   "outcome": "mixed",
+   "data": "real+simulated",
+   "tags": [
+    "replication",
+    "independent",
+    "pulse",
+    "heart rate",
+    "whitening",
+    "zenodo",
+    "cohort",
+    "false alarms"
+   ]
+  },
+  "FB-014": {
+   "title": "Solar storms, sleep and HRV",
+   "summary": "Is sleep or heart-rate variability related to geomagnetic activity (Kp) in 51 real people? No: the statistic fell inside the null. Small effects are not excluded.",
+   "outcome": "refuted",
+   "data": "real",
+   "tags": [
+    "solar storm",
+    "geomagnetic",
+    "kp",
+    "sleep",
+    "hrv",
+    "heart rate variability",
+    "space weather",
+    "null result"
+   ]
+  },
+  "FB-015": {
+   "title": "First replication of the 10 of 10 result",
+   "summary": "An independent replication of the earlier 10 of 10 detection result, with a prediction out of sample. Not replicated: the specification was wrong, and it is published as such.",
+   "outcome": "not_replicated",
+   "data": "simulated",
+   "tags": [
+    "replication",
+    "10 of 10",
+    "fb-002",
+    "leisure",
+    "mood",
+    "not replicated",
+    "early warning"
+   ]
+  },
+  "FB-015-v2": {
+   "title": "Rebuilt replication of 10 of 10",
+   "summary": "A rebuilt replication: 6 of 7 table cells reproduced, but detection reached 8 of 10, not 10 of 10. Documented, not replicated.",
+   "outcome": "partial",
+   "data": "simulated",
+   "tags": [
+    "replication",
+    "10 of 10",
+    "8 of 10",
+    "leisure",
+    "mood",
+    "early warning",
+    "documented not replicated"
+   ]
+  },
+  "FB-016": {
+   "title": "Short sleep and tension",
+   "summary": "Two body-to-body cards on real data. Short sleep leads to tiredness: sustained (+7.9 points, 27 people). Tension leads to lower HRV: refuted (13 people, low power).",
+   "outcome": "mixed",
+   "data": "real",
+   "tags": [
+    "sleep",
+    "tiredness",
+    "tension",
+    "anxiety",
+    "hrv",
+    "self-report",
+    "lifesnaps",
+    "card"
+   ]
+  },
+  "FB-017": {
+   "title": "Bone loss and the urine processor",
+   "summary": "A specification, not an analysis: bone-loss calcium could clog the ISS urine processor. No public mission-level data exist, so nothing was simulated.",
+   "outcome": "no_data",
+   "data": "none",
+   "tags": [
+    "bone loss",
+    "calcium",
+    "urine processor",
+    "iss",
+    "upa",
+    "no data",
+    "card",
+    "osdr"
+   ]
+  },
+  "FB-003R": {
+   "title": "Three witnesses",
+   "summary": "Can three witnesses (world, sensor, human) tell who is wrong? Accuracy: world 1.00, sensor 0.88, human 0.91, nothing 0.83; the nothing case missed its target (0.83 below 0.85).",
+   "outcome": "mixed",
+   "data": "simulated",
+   "tags": [
+    "triangulation",
+    "witnesses",
+    "sensor",
+    "attribution",
+    "accuracy",
+    "leak",
+    "storage"
+   ]
+  },
+  "FB-004R": {
+   "title": "Slow water integrator",
+   "summary": "Normalising a slow water detector by measured flow cut false alarms from 91 percent to 4.8 percent on real Utah flow, and detected a small drift 99.8 percent of the time.",
+   "outcome": "sustained",
+   "data": "real+simulated",
+   "tags": [
+    "water",
+    "integrator",
+    "flow",
+    "normalisation",
+    "false alarms",
+    "drift",
+    "utah"
+   ]
+  },
+  "FB-018": {
+   "title": "The Adversary",
+   "summary": "Is there an input that evades the CUSUM? Yes: a zigzag with the same mean and more variance is caught 1.8 percent of the time. The first variance detector reached only 67 percent.",
+   "outcome": "mixed",
+   "data": "simulated",
+   "tags": [
+    "adversary",
+    "evasion",
+    "zigzag",
+    "variance",
+    "cusum",
+    "blind spot"
+   ]
+  },
+  "FB-019": {
+   "title": "Detector or information limit?",
+   "summary": "Is the zigzag blind spot a detector problem or an information limit? Information: with a 14-day baseline even the best test catches 40 percent; with 28 days, 95 percent.",
+   "outcome": "sustained",
+   "data": "simulated",
+   "tags": [
+    "zigzag",
+    "variance",
+    "information limit",
+    "baseline",
+    "28 days",
+    "power"
+   ]
+  },
+  "FB-020": {
+   "title": "Variance channel on real data",
+   "summary": "Does the variance channel work on real wearable series? It sees the zigzag (99 percent) but raised 9.0 percent false alarms, far above the 3 percent limit. Refuted; disabled for alarms.",
+   "outcome": "refuted",
+   "data": "real+simulated",
+   "tags": [
+    "variance",
+    "channel",
+    "false alarms",
+    "zigzag",
+    "real data",
+    "sleep",
+    "refuted"
+   ]
+  },
+  "FB-020-v2": {
+   "title": "Robust variance channel",
+   "summary": "A robust variant (median absolute deviation) was fitted on one cohort and validated on another, but the validation had only 5 windows: inconclusive. Needs more independent data.",
+   "outcome": "inconclusive",
+   "data": "real+simulated",
+   "tags": [
+    "variance",
+    "robust",
+    "mad",
+    "validation",
+    "out of sample",
+    "inconclusive",
+    "zenodo"
+   ]
+  }
+ }
+}

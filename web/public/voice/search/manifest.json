@@ -1,0 +1,322 @@
+{
+ "i_found": {
+  "texto": "I found",
+  "audio": "/voice/search/i_found.mp3"
+ },
+ "experiment": {
+  "texto": "experiment.",
+  "audio": "/voice/search/experiment.mp3"
+ },
+ "experiments": {
+  "texto": "experiments.",
+  "audio": "/voice/search/experiments.mp3"
+ },
+ "best": {
+  "texto": "The best match is",
+  "audio": "/voice/search/best.mp3"
+ },
+ "then": {
+  "texto": "Then",
+  "audio": "/voice/search/then.mp3"
+ },
+ "none": {
+  "texto": "I found nothing like that in the vault.",
+  "audio": "/voice/search/none.mp3"
+ },
+ "closest": {
+  "texto": "The closest are",
+  "audio": "/voice/search/closest.mp3"
+ },
+ "try": {
+  "texto": "Try a topic, a verdict, or an experiment number.",
+  "audio": "/voice/search/try.mp3"
+ },
+ "opening": {
+  "texto": "Opening",
+  "audio": "/voice/search/opening.mp3"
+ },
+ "no_id": {
+  "texto": "There is no experiment with that number.",
+  "audio": "/voice/search/no_id.mp3"
+ },
+ "going": {
+  "texto": "Going to",
+  "audio": "/voice/search/going.mp3"
+ },
+ "verifying": {
+  "texto": "Recomputing every hash in your browser.",
+  "audio": "/voice/search/verifying.mp3"
+ },
+ "cleared": {
+  "texto": "Showing the whole vault.",
+  "audio": "/voice/search/cleared.mp3"
+ },
+ "showing": {
+  "texto": "Showing",
+  "audio": "/voice/search/showing.mp3"
+ },
+ "heard_nothing": {
+  "texto": "I did not catch that. You can type instead.",
+  "audio": "/voice/search/heard_nothing.mp3"
+ },
+ "help": {
+  "texto": "You can say: show refuted experiments, find solar storms, open F B zero two zero, verify everything, or go to the foundry.",
+  "audio": "/voice/search/help.mp3"
+ },
+ "and": {
+  "texto": "and",
+  "audio": "/voice/search/and.mp3"
+ },
+ "n_0": {
+  "texto": "zero",
+  "audio": "/voice/search/n_0.mp3"
+ },
+ "n_1": {
+  "texto": "one",
+  "audio": "/voice/search/n_1.mp3"
+ },
+ "n_2": {
+  "texto": "two",
+  "audio": "/voice/search/n_2.mp3"
+ },
+ "n_3": {
+  "texto": "three",
+  "audio": "/voice/search/n_3.mp3"
+ },
+ "n_4": {
+  "texto": "four",
+  "audio": "/voice/search/n_4.mp3"
+ },
+ "n_5": {
+  "texto": "five",
+  "audio": "/voice/search/n_5.mp3"
+ },
+ "n_6": {
+  "texto": "six",
+  "audio": "/voice/search/n_6.mp3"
+ },
+ "n_7": {
+  "texto": "seven",
+  "audio": "/voice/search/n_7.mp3"
+ },
+ "n_8": {
+  "texto": "eight",
+  "audio": "/voice/search/n_8.mp3"
+ },
+ "n_9": {
+  "texto": "nine",
+  "audio": "/voice/search/n_9.mp3"
+ },
+ "n_10": {
+  "texto": "ten",
+  "audio": "/voice/search/n_10.mp3"
+ },
+ "n_11": {
+  "texto": "eleven",
+  "audio": "/voice/search/n_11.mp3"
+ },
+ "n_12": {
+  "texto": "twelve",
+  "audio": "/voice/search/n_12.mp3"
+ },
+ "n_13": {
+  "texto": "thirteen",
+  "audio": "/voice/search/n_13.mp3"
+ },
+ "n_14": {
+  "texto": "fourteen",
+  "audio": "/voice/search/n_14.mp3"
+ },
+ "n_15": {
+  "texto": "fifteen",
+  "audio": "/voice/search/n_15.mp3"
+ },
+ "n_16": {
+  "texto": "sixteen",
+  "audio": "/voice/search/n_16.mp3"
+ },
+ "n_17": {
+  "texto": "seventeen",
+  "audio": "/voice/search/n_17.mp3"
+ },
+ "n_18": {
+  "texto": "eighteen",
+  "audio": "/voice/search/n_18.mp3"
+ },
+ "n_19": {
+  "texto": "nineteen",
+  "audio": "/voice/search/n_19.mp3"
+ },
+ "n_20": {
+  "texto": "twenty",
+  "audio": "/voice/search/n_20.mp3"
+ },
+ "n_21": {
+  "texto": "twenty-one",
+  "audio": "/voice/search/n_21.mp3"
+ },
+ "n_22": {
+  "texto": "twenty-two",
+  "audio": "/voice/search/n_22.mp3"
+ },
+ "n_23": {
+  "texto": "twenty-three",
+  "audio": "/voice/search/n_23.mp3"
+ },
+ "n_24": {
+  "texto": "twenty-four",
+  "audio": "/voice/search/n_24.mp3"
+ },
+ "n_25": {
+  "texto": "twenty-five",
+  "audio": "/voice/search/n_25.mp3"
+ },
+ "o_refuted": {
+  "texto": "refuted",
+  "audio": "/voice/search/o_refuted.mp3"
+ },
+ "o_sustained": {
+  "texto": "sustained",
+  "audio": "/voice/search/o_sustained.mp3"
+ },
+ "o_mixed": {
+  "texto": "mixed results",
+  "audio": "/voice/search/o_mixed.mp3"
+ },
+ "o_inconclusive": {
+  "texto": "inconclusive",
+  "audio": "/voice/search/o_inconclusive.mp3"
+ },
+ "o_partial": {
+  "texto": "partial",
+  "audio": "/voice/search/o_partial.mp3"
+ },
+ "o_not_replicated": {
+  "texto": "not replicated",
+  "audio": "/voice/search/o_not_replicated.mp3"
+ },
+ "o_not_run": {
+  "texto": "sealed, not yet run",
+  "audio": "/voice/search/o_not_run.mp3"
+ },
+ "o_no_data": {
+  "texto": "no data",
+  "audio": "/voice/search/o_no_data.mp3"
+ },
+ "room_medical": {
+  "texto": "the Medical Module",
+  "audio": "/voice/search/room_medical.mp3"
+ },
+ "room_machine": {
+  "texto": "the Machine Room",
+  "audio": "/voice/search/room_machine.mp3"
+ },
+ "room_kill": {
+  "texto": "the Leak",
+  "audio": "/voice/search/room_kill.mp3"
+ },
+ "room_vault": {
+  "texto": "the Vault",
+  "audio": "/voice/search/room_vault.mp3"
+ },
+ "room_foundry": {
+  "texto": "the Foundry",
+  "audio": "/voice/search/room_foundry.mp3"
+ },
+ "room_storm": {
+  "texto": "the Storm",
+  "audio": "/voice/search/room_storm.mp3"
+ },
+ "room_budget": {
+  "texto": "the Budget",
+  "audio": "/voice/search/room_budget.mp3"
+ },
+ "room_capsule": {
+  "texto": "the Capsule",
+  "audio": "/voice/search/room_capsule.mp3"
+ },
+ "id_FB-005": {
+  "texto": "F B zero zero five",
+  "audio": "/voice/search/id_FB-005.mp3"
+ },
+ "id_FB-006": {
+  "texto": "F B zero zero six",
+  "audio": "/voice/search/id_FB-006.mp3"
+ },
+ "id_FB-007": {
+  "texto": "F B zero zero seven",
+  "audio": "/voice/search/id_FB-007.mp3"
+ },
+ "id_FB-008": {
+  "texto": "F B zero zero eight",
+  "audio": "/voice/search/id_FB-008.mp3"
+ },
+ "id_FB-005-D1": {
+  "texto": "F B zero zero five, D one",
+  "audio": "/voice/search/id_FB-005-D1.mp3"
+ },
+ "id_FB-009": {
+  "texto": "F B zero zero nine",
+  "audio": "/voice/search/id_FB-009.mp3"
+ },
+ "id_FB-010": {
+  "texto": "F B zero one zero",
+  "audio": "/voice/search/id_FB-010.mp3"
+ },
+ "id_FB-011": {
+  "texto": "F B zero one one",
+  "audio": "/voice/search/id_FB-011.mp3"
+ },
+ "id_FB-012": {
+  "texto": "F B zero one two",
+  "audio": "/voice/search/id_FB-012.mp3"
+ },
+ "id_FB-013": {
+  "texto": "F B zero one three",
+  "audio": "/voice/search/id_FB-013.mp3"
+ },
+ "id_FB-014": {
+  "texto": "F B zero one four",
+  "audio": "/voice/search/id_FB-014.mp3"
+ },
+ "id_FB-015": {
+  "texto": "F B zero one five",
+  "audio": "/voice/search/id_FB-015.mp3"
+ },
+ "id_FB-015-v2": {
+  "texto": "F B zero one five, version two",
+  "audio": "/voice/search/id_FB-015-v2.mp3"
+ },
+ "id_FB-016": {
+  "texto": "F B zero one six",
+  "audio": "/voice/search/id_FB-016.mp3"
+ },
+ "id_FB-017": {
+  "texto": "F B zero one seven",
+  "audio": "/voice/search/id_FB-017.mp3"
+ },
+ "id_FB-003R": {
+  "texto": "F B zero zero three R",
+  "audio": "/voice/search/id_FB-003R.mp3"
+ },
+ "id_FB-004R": {
+  "texto": "F B zero zero four R",
+  "audio": "/voice/search/id_FB-004R.mp3"
+ },
+ "id_FB-018": {
+  "texto": "F B zero one eight",
+  "audio": "/voice/search/id_FB-018.mp3"
+ },
+ "id_FB-019": {
+  "texto": "F B zero one nine",
+  "audio": "/voice/search/id_FB-019.mp3"
+ },
+ "id_FB-020": {
+  "texto": "F B zero two zero",
+  "audio": "/voice/search/id_FB-020.mp3"
+ },
+ "id_FB-020-v2": {
+  "texto": "F B zero two zero, version two",
+  "audio": "/voice/search/id_FB-020-v2.mp3"
+ }
+}

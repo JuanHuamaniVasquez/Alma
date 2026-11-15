@@ -18,7 +18,7 @@
 ## B · Verificación técnica justo antes de grabar
 - [ ] `scripts/demo.sh` arranca sin errores (migra, siembra, API :8000, vitrina :3000).
 - [ ] `uv run pytest -q` en verde (386+ tests).
-- [ ] `cd web && pnpm e2e` → 15/15 (con los dos servidores arriba; no escribe en la base).
+- [ ] `cd web && pnpm test:unit` (6) y `pnpm e2e` → 25/25 (con los dos servidores arriba; no escribe en la base).
 - [ ] `sysmap --root . check` → «nothing worse than the baseline».
 - [ ] `git status` limpio; `git ls-files | grep "\.env$"` no devuelve nada.
 - [ ] Capturar la base limpia de reportes de ánimo si quieres empezar «sin reportes» (`Autorreporte` vacío) antes del video.
@@ -30,14 +30,15 @@
 - [x] Checklist de honestidad ejecutable, README, `scripts/demo.sh`, higiene del repo.
 - [x] **Ronda «poco tiempo»:** subtítulos compactos (se desvanecen a los 5 s; interruptor *subtitles on/off*; el sello y la fuente siguen visibles) · **ALMA habla al tocar** un anillo, un marcador del cuerpo o el astronauta · **«Verifícalo tú mismo»** en La Bóveda (recalcula el SHA-256 de cada acta en tu navegador).
 - [x] **Tripulación de 5** (versión estilizada): selector, dentro/fuera, estado corporal de un sustituto real y anónimo mostrado solo como estado y rotulado «stand-in».
+- [x] **Buscador por voz en La Bóveda**: escribir o hablar; ALMA responde con su voz componiendo clips de un vocabulario cerrado (80 clips: ids, números, veredictos, salas); la búsqueda tolera erratas y sinónimos; sin resultados dice lo más parecido; «open F B zero two zero», «show refuted experiments», «go to the foundry», «verify everything». Pruebas: `pnpm test:unit` (6) y e2e (25, con reconocimiento simulado).
 - [x] Arreglos de audio: la voz pedida antes del primer clic se encola; sin reinicios por doble disparo; el recibo ya no se cierra solo.
 
 ## D · Siguiente ronda (si hay tiempo; de más a menos impacto ante el jurado)
 | # | Idea | Esfuerzo | Nota |
 |---|---|---|---|
 | 1 | **Intenta engañar a ALMA** (el jurado dibuja una anomalía y ve qué detector la caza; incluye el zigzag que el CUSUM no ve) | medio | Reutiliza el Adversario (FB-018) |
-| 2 | **Buscador en La Bóveda** con filtros, paginación y «no encontré X; lo más parecido es…» | medio | Base para la voz |
-| 3 | **Preguntas habladas/escritas** respondidas solo desde nuestras actas, tarjetas y libro, con fuente (el modelo, si se usa, solo interpreta la pregunta) | alto | Reconocimiento de voz local para funcionar sin red |
+| 2 | ~~Buscador en La Bóveda~~ **HECHO**: texto + voz, filtros, paginación, «nothing like that; the closest are…», abrir un acta o ir a una sala hablando | — | La voz usa el reconocimiento del navegador (Chrome envía el audio a Google). Pendiente 2b: reconocimiento LOCAL (Whisper) para funcionar sin red |
+| 3 | **Preguntas habladas/escritas** respondidas solo desde nuestras actas, tarjetas y libro, con fuente (el modelo, si se usa, solo interpreta la pregunta) | alto | Ya existe la base (intérprete `web/src/lib/search.ts`); falta ampliarlo a tarjetas, libro y literatura, y a todas las salas |
 | 4 | ~~Tripulación de 5~~ **HECHO (versión estilizada)**: 5 ficticios con indicativo, rol y color; dentro (uniforme + cara) y fuera (Z-2). Falta: realismo (ver D4b) | — | Decidido: 5. El simulador y `sembrar_demo` usan 5; FB-005-D1 conserva sus 4 (acta sellada) |
 | 4b | **Mejorar el realismo de los tripulantes**: descargar «Universal Base Characters» de Quaternius (CC0, itch.io: requiere navegador) y yo lo integro con uniforme | medio | Lo descargas tú y lo dejas en `web/public/models/`; yo adapto cara/uniforme/colores |
 | 5 | **Repetición de misión** (deslizador de los 14 días con ALMA narrando) | medio | |

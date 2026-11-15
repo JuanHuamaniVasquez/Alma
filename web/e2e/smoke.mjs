@@ -25,6 +25,10 @@ await page.evaluateOnNewDocument(() => {                         // registra cad
     return r;
   };
 });
+await page.evaluateOnNewDocument(() => {                         // SpeechRecognition falso: devuelve lo que se le pida en window.__say
+  class FakeSR { start() { setTimeout(() => { const t = window.__say ?? ""; this.onresult?.({ results: [Object.assign([{ transcript: t }], { isFinal: true })] }); this.onend?.(); }, 150); } stop() { this.onend?.(); } }
+  window.webkitSpeechRecognition = FakeSR; window.SpeechRecognition = FakeSR;   // Chrome recientes exponen también el nombre estándar
+});
 let enviado = null;
 await page.setRequestInterception(true);
 page.on("request", (req) => {
@@ -121,6 +125,29 @@ await page.goto(`${BASE}/vault`, { waitUntil: "domcontentloaded" });
 await esperarTexto("Verify all", 30000);
 await clicTexto("button", "Verify all");
 await page.waitForFunction(() => { const m = document.body.innerText.match(/(\d+) of (\d+) recomputed hashes match/i); return m && m[1] === m[2] && Number(m[2]) >= 20; }, { timeout: 60000 }).then(() => check("las actas recalculadas en el navegador coinciden TODAS con su hash sellado", true), async () => check("las actas recalculadas en el navegador coinciden TODAS con su hash sellado", false, (await texto()).match(/\d+ of \d+ recomputed[^\n]*/i)?.[0] ?? "sin resultado"));
+
+// 5c · La Bóveda: buscar escribiendo y HABLANDO; ALMA responde con su voz y navega
+const filas = () => page.$$eval("ul.divide-y > li", (l) => l.length);
+const sonados = () => page.evaluate(() => window.__audio.length);
+await page.goto(`${BASE}/vault`, { waitUntil: "domcontentloaded" });
+await esperar('button[aria-label^="Wake ALMA"]');
+await page.click('button[aria-label^="Wake ALMA"]');                  // recarga = puerta otra vez: sin clic real el navegador no deja sonar
+await esperarTexto("of 21 shown", 30000);
+await page.type('input[aria-label="Search the vault"]', "solar storms");
+await page.keyboard.press("Enter");
+await esperarTexto("I found", 8000).catch(() => {});
+check("escribir «solar storms» encuentra FB-014 y ALMA responde", (await texto()).includes("FB-014") && (await filas()) >= 1);
+await page.evaluate(() => { window.__say = "show refuted experiments"; document.querySelector('button[aria-label="Search by voice"]').click(); });
+await page.waitForFunction(() => /\b2 of 21 shown/i.test(document.body.innerText), { timeout: 8000 }).then(() => check("por voz: «show refuted experiments» filtra a los 2 refutados", true), () => check("por voz: «show refuted experiments» filtra a los 2 refutados", false));
+await page.evaluate(() => { window.__say = "open F B zero two zero"; document.querySelector('button[aria-label="Search by voice"]').click(); });
+await page.waitForFunction(() => document.querySelector('li button[aria-expanded="true"]')?.innerText.includes("FB-020"), { timeout: 8000 }).then(() => check("por voz: «open F B zero two zero» abre el acta FB-020", true), () => check("por voz: «open F B zero two zero» abre el acta FB-020", false));
+const sonadosAntes = await sonados();
+await page.evaluate(() => { window.__say = "find xylophone banana"; document.querySelector('button[aria-label="Search by voice"]').click(); });
+await esperarTexto("I found nothing like that", 8000).catch(() => {});
+{ const t1 = (await texto()).toLowerCase(); const habló = await page.waitForFunction((n) => window.__audio.length > n, { timeout: 8000 }, sonadosAntes).then(() => true, () => false);
+  check("lo que no existe: ALMA dice «nothing like that» y habla", t1.includes("nothing here matches") && habló, `texto=${t1.includes("nothing here matches")} audio=${habló}`); }
+await page.evaluate(() => { window.__say = "go to the foundry"; document.querySelector('button[aria-label="Search by voice"]').click(); });
+await page.waitForFunction(() => location.pathname === "/foundry", { timeout: 20000 }).then(() => check("por voz: «go to the foundry» te lleva a La Fundición", true), () => check("por voz: «go to the foundry» te lleva a La Fundición", false));
 
 // 6 · Fundición y cápsulas
 await page.goto(`${BASE}/foundry`, { waitUntil: "domcontentloaded" });

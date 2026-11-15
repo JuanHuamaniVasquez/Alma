@@ -247,3 +247,16 @@ def test_tripulacion_solo_estados_sin_ids_y_con_aviso_de_sustituto():
     assert all(t["estado"] == {"fc": "verde", "sueño": "verde"} for t in d["tripulacion"])
     assert "persona-" not in r.content.decode()                                                      # el id del sustituto no sale
     assert d == get("/api/tripulacion/").json()                                                      # semilla pública: siempre los mismos sustitutos
+
+
+def test_toda_acta_tiene_resumen_en_ingles_buscable_y_coherente_con_su_estado():
+    d = get("/api/actas/").json()["actas"]
+    resultados = {json.loads(l)["acta"] for l in (RAIZ / "docs/actas/RESULTADOS.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()}
+    validos = {"refuted", "sustained", "mixed", "inconclusive", "partial", "not_replicated", "not_run", "no_data"}
+    for a in d:
+        e = a["en"]
+        assert e and e["title"] and len(e["summary"]) > 40 and e["tags"] and e["outcome"] in validos and e["data"] in {"real", "simulated", "real+simulated", "none"}, a["acta"]
+        if a["acta"] not in resultados:                       # sellada y no ejecutada ⇒ nunca un resultado inventado
+            assert e["outcome"] in {"not_run", "no_data"}, a["acta"]
+        else:
+            assert e["outcome"] not in {"not_run"}, a["acta"]

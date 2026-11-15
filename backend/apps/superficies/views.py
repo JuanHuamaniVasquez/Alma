@@ -166,11 +166,12 @@ class Actas(SoloLectura):
     def get(self, request):
         raiz = Path(settings.RAIZ) / "docs/actas"
         resultados = {r.get("acta"): r for r in _jsonl(raiz / "RESULTADOS.jsonl")}
+        en = json.loads((Path(settings.RAIZ) / "data/actas_en.json").read_text(encoding="utf-8"))["actas"]   # resúmenes en inglés (derivados)
         actas = [{
             "acta": a["acta"], "hash_sha256": a["hash_sha256"], "registrada_utc": a["registrada_utc"], "semillas": a["semillas"],
             "estado": a["estado"], "ejecutada": a["acta"] in resultados,
             "veredictos": (resultados.get(a["acta"]) or {}).get("veredictos"),
-            "banner": (resultados.get(a["acta"]) or {}).get("banner"),
+            "banner": (resultados.get(a["acta"]) or {}).get("banner"), "en": en.get(a["acta"]),
         } for a in _jsonl(raiz / "INDEX.jsonl")]
         return Response({"actas": actas})
 
