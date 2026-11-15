@@ -9,3 +9,4 @@ graphify-out/cache/
 .env
 node_modules/
 .next/
+data/externos/

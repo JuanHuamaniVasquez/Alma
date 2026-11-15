@@ -26,7 +26,7 @@
 
 ## M1 · El libro + El Contrapeso (P0 — Dev A)
 
-- [ ] **M1.1 LB-1**: los 9 presupuestos (aire, agua, energia, dosis, ritmo, carga, inmunidad, conducta, tiempo) sobre DC-04; el libro debe cerrar. *Hecho: fixture de 14 días sin anomalías → libro cierra, `residuo_contable` dentro de `incertidumbre_del_manifiesto`.*
+- [ ] **M1.1 LB-1**: los 9 presupuestos (aire, agua, energia, dosis, ritmo, carga, inmunidad, conducta, tiempo) sobre DC-04; el libro debe cerrar. *Hecho: fixture de 14 días sin anomalías → libro cierra, `residuo_contable` dentro de `incertidumbre_del_manifiesto`.* **[PARCIAL 2026-11-15 — NO cerrada: falta el fixture REAL de 14 días]** Hecho: núcleo en `src/libro/libro.py` (residuo = observada − esperada y cierre |r| ≤ 2σ, DOC-01 v0.2.3 por decisión del humano; cierre diario; día vacío no cierra; cuarentena aparte; solo-anexar), 120 tests pytest verdes, commit pendiente. **Bloqueado por datos:** hace falta un libro real de 14 días (ver M2.7)
 - [ ] **M1.2 MO-6 · El Contrapeso**: cierre de conservación agua/aire/energía → DC-08 (residuo = entradas − salidas − Δalmacén − pérdida declarada, con incertidumbre propagada). *Hecho: fixture con fuga no contabilizada produce veredicto `NO CIERRA` el mismo día; fixture limpio produce `CIERRA`.*
 - [ ] **M1.3 Endpoints REST** que exponen DC-04 / DC-05 / DC-06 (lo que consumirá la vitrina). *Hecho: test de integración HTTP verde; el endpoint nunca expone contenido individual.*
 - [ ] **M1.4 FB-005 · demo kill**: dos columnas — detector contra el manifiesto (debe quedar CIEGO ante flujo no contabilizado) vs detector de ley (debe alarmar). *Hecho: acta ejecutada con hash publicado ANTES de correr; 1/1 corrida con semilla pública; la columna A verde y la B alarmada en el mismo fixture.*
@@ -39,6 +39,8 @@
 - [ ] **M2.4 FB-003 · triangulación de 3 testigos** (MO-4: planta × chip × humano — ¿quién miente?). *Hecho: acta ejecutada con hash ANTES; diagnóstico correcto del testigo corrupto en el fixture.*
 - [ ] **M2.5 FB-004 · integrador lento del agua** (MO-5: TOC como censo colectivo, con la normalización MP-3 integrada en el diseño). *Hecho: acta con hash ANTES; resultado publicado aunque sea feo.*
 - [ ] **M2.6 IN-4 Banco de Falsaciones materializado**: replay histórico, Monte Carlo, inyección de los 3 tipos de anomalía (deriva coherente / flujo no contabilizado / fuga física) y **modo adversario**. *Hecho: cada corrida imprime banner UNIVERSO SIMULADO — DÍA N + semilla; las 3 clases de anomalía se inyectan y se detectan/no-detectan según diseño.*
+- [ ] **M2.7 Adaptador IN-1 sobre datos reales abiertos: LifeSnaps → DC-01/DC-02** (fila añadida antes de implementar; dataset verificado: Zenodo 7229547, CC-BY 4.0, 71 participantes × 4 meses; sueño, pulso, ánimo). *Hecho: loader que lee el zip verificado por checksum, mapea a DC-01/DC-02 con banner REAL y la fuente enlazada, y rechaza filas sin valor (la ausencia se registra, no se rellena); tests con filas REALES del dataset.* — Dev B
+- [ ] **M2.8 Evaluación preregistrada sobre LifeSnaps (opción B del paper)**: acta nueva con hash ANTES de correr (umbrales, métricas, semillas públicas); FPR sobre datos reales sin inyección y latencia con inyección etiquetada SIMULADO (híbrido). *Hecho: acta registrada, runner que llama a `exigir_preregistro`, resultados publicados aunque sean feos.* — Dev B
 
 ## M3 · La vitrina (P1 — Dev C)
 
@@ -63,6 +65,8 @@
 - [ ] **M5.2 Video 30-60 s** (guion de 4 líneas: problema 10 s → método 15 s → demo 20 s → reproducibilidad 15 s).
 - [ ] **M5.3 Dry run del pitch** con la demo abierta (ensayo 2, sin notas).
 - [ ] **M5.4 Checklist de honestidad**: todos los datos en pantalla con banner; todas las alarmas con recibo; FB-002 10/10 corriendo en vivo o su test visible.
+- [ ] **M5.5 Revisión sistemática de literatura** (fila añadida antes de implementar; ver `docs/evaluacion-paper.md` §5): PubMed, NTRS, IEEE, Scholar; balance de masa/ECLSS, líneas base personales, CUSUM en wearables, N-of-1 en espacio. *Hecho: tabla de trabajos relacionados con identificador verificado por `verificar_fuentes.py` y declaración de novedad acotada.* — humano + Claude
+- [ ] **M5.6 Preprint reproducible** (tras M2.8 y FB-005): afirmaciones preregistradas, limitaciones primero, repo como material suplementario. *Hecho: manuscrito con todas las cifras trazables a un acta y a un commit.* — humano + Claude
 
 ## Bloqueado / decisiones pendientes del humano (no son ítems de código)
 

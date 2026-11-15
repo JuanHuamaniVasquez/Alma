@@ -1,4 +1,4 @@
-# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.2)
+# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.3)
 
 > **Qué es este documento:** el contrato de ingeniería del proyecto. Define las capas del sistema, el registro oficial de módulos, los contratos de datos campo a campo, el protocolo de cambios y la cola de mejoras propuestas. Es el antídoto contra el vibe coding: nada se construye sin fila en el registro, y toda mejora futura tiene exactamente un hogar.
 > **Reglas del documento:** (1) nada se codea sin su fila en el registro §2; (2) toda mejora nueva entra por el protocolo §5 y queda como PROPUESTA en §7 hasta ser aceptada; (3) los contratos §3 se versionan con el mapa — cambiar un contrato es cambiar de versión del mapa.
@@ -6,6 +6,7 @@
 > **v0.1 → v0.2 (11-nov, aprobación del equipo):** se aplicó el parche del Apéndice A de DOC-02 (MO-6…MO-8, GO-6, DC-08…DC-11, filas de trazabilidad §6, semillas nuevas, columna `estado_linea` en DC-04) y, del mismo golpe, las adiciones aprobadas de DOC-04 · LA FUNDICIÓN (**DC-12 Contrato de Fundición, FA-4 El Faro, GO-7 MODO FRONTERA, cola M-L1…M-L5** como roadmap de frontera).
 > **v0.2 → v0.2.1 (2026-11-15, decisión del humano; cambio de contrato → bump según §5):** (1) DC-03 `tipo` gana `lectura_clima_espacial` (cada lectura exitosa de SWPC entra como lectura; `tormenta_solar` queda para eventos declarados oficialmente — sin umbral en la ingesta: la ingesta registra, el detector califica) y DC-03 gana `banner`; (2) DC-01/DC-02: la ausencia admite `valor` vacío, solo en ausencia y en ambos sentidos; (3) DC-12: `preregistro_hash` obligatorio desde `en_prueba`; (4) regla de herencia de banner en derivados (convención general).
 > **v0.2.1 → v0.2.2 (2026-11-15, MP-4 aceptada por el humano; cambio de contrato → bump según §5):** nuevo contrato **DC-13 · Registro de intento de ingesta** (el fallo de un feed es dato: separa «sin evento» de «no pudimos mirar»).
+> **v0.2.2 → v0.2.3 (2026-11-15, decisión del humano; cambio de contrato → bump según §5):** DC-04 fija la fórmula `residuo_contable = emision_observada − emision_esperada` y la regla de cierre de línea `|residuo_contable| ≤ 2 · incertidumbre_del_manifiesto` (mismo umbral que `dos_sigma`). Es una decisión de diseño aún **sin validar con datos reales**.
 
 ---
 
@@ -199,7 +200,7 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | `emision_esperada` | float | El manifiesto: lo que creemos que emite/consume |
 | `incertidumbre_del_manifiesto` | float (σ) | **La columna que fija el piso de detección** (hallazgo v4): no el sensor, el manifiesto |
 | `emision_observada` | float | |
-| `residuo_contable` | float | Si el libro no cierra, hay una pregunta que hacer |
+| `residuo_contable` | float | `emision_observada − emision_esperada` (v0.2.3). Si el libro no cierra, hay una pregunta que hacer |
 | `fuente_linea` | ref DC-01/02/03 | Trazabilidad de cada entrada |
 
 > **Columna añadida en v0.2 (P10, GO-6):** `estado_linea` (enum: limpio · sospechoso · cuarentena) — el estado sanitario del dato viaja con la línea; un error detectado marca a sus descendientes sin borrar nada.
@@ -370,6 +371,7 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | D7-β canal temporal | MO-7 | DC-09 | FB-006 (preregistrada) | 20261112 | T1 (DISEÑADO) |
 | IN-3 lectura continua clima espacial | IN-3 | DC-03 (`lectura_clima_espacial`) | — (ingesta, no experimento) | — | T3 (datos reales en vivo) |
 | MP-4 registro de intentos de ingesta | IN-3 | DC-13 | — (ingesta, no experimento) | — | T3 (la ausencia del feed es dato) |
+| LB-1 regla de cierre del libro (residuo = observada − esperada; cierra si \|r\| ≤ 2σ) | LB-1 | DC-04 | — (decisión de diseño; se falsa con FB-005 y datos reales) | — | T1 (sin validar) |
 
 Familias de casos (contenido para FA-1): FM-1 emisor no contabilizado · FM-2 ventana de estrés viral · FM-3 sueño×hueso (reanclada con Swanson 2017/2018 — C-18/C-19) · FM-4 ventana post-EVA · FM-5 CO₂→cefalea (calibración) · FM-6 ejercicio×IL-6 · FM-7 jardín como tripulante · FM-8 farmacia como sensor · FM-9 disforia de segunda mitad · FM-10 el síndrome Pandorum (PROPUESTA — anclas C-20…C-23 de DOC-02: cascada sueño → ocio → farmacia → conducta, sin leer jamás contenido).
 
@@ -417,7 +419,7 @@ Cada fila sigue el protocolo §5: una capa destino, ancla verificada, prueba cua
 
 ## Cómo vive este documento
 
-- Se versiona como todo el proyecto (**v0.2.2 hoy**: parche Apéndice A de DOC-02 + adiciones de DOC-04 aplicados el 11-nov; próximo bump cuando cambie un contrato DC-x o se acepte/rechace una MP).
+- Se versiona como todo el proyecto (**v0.2.3 hoy**: parche Apéndice A de DOC-02 + adiciones de DOC-04 aplicados el 11-nov; próximo bump cuando cambie un contrato DC-x o se acepte/rechace una MP).
 - Cada acta FB-xxx nueva añade su fila en §6 el mismo día que se ejecuta.
 - Cada mejora propuesta entra como fila en §7 con estado PROPUESTA; el rechazo también se escribe (como las 10 ideas dormidas: nada muere sin razón).
 - Antes de cada sesión de código se abre §2; después de cada sesión se actualiza el estado de las filas tocadas. El mapa es el primer punto ciego programado del software: sabe dónde está todo, y por eso sabe qué falta.
