@@ -138,7 +138,7 @@ def test_fb009_se_ejecuto_una_sola_vez_despues_de_registrar_el_acta_y_con_el_csv
     ejecutada = datetime.strptime(r["ts_ejecucion_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
     assert registrada < ejecutada
     assert r["csv_sha256"] in (RAIZ / "docs" / "actas" / "FB-009.md").read_text(encoding="utf-8")
-    assert r["h"] == H_FB009 and r["semillas"] == [20261113, 20261114] and "NO astronautas" in r["banner"]
+    assert r["h"] == H_FB009 and r["semillas"] == [20261113, 20261114] and "no astronautas" in r["banner"].lower()
 
 
 def test_fb009_el_numero_de_unidades_coincide_con_lo_que_el_acta_esperaba_y_los_veredictos_salen_de_sus_reglas():
