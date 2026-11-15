@@ -59,3 +59,5 @@ Fuentes por buscar (datos con archivos reales para el motor y las tarjetas): se 
 | X-14 | **Escenarios de tormenta SIMULADOS** (G1–G5): 12 lecturas de Kp cada 3 h con pico exacto en el umbral NOAA (`src/motor/escenarios.py`, `/api/tormenta/escenario/<G>/`) | LA TORMENTA debe poder inyectar una anomalía en el universo simulado sin tocar los datos reales | `src/motor/` | Banner `UNIVERSO SIMULADO — DÍA N`; evento DC-03 `inyeccion_escenario`/`simulador`; semilla 20261113; receta y hash en la respuesta; no se escribe en la BD ni se mezcla con el Kp real (S-15) |
 
 > Si el código necesita algo simulado o inventado que no esté aquí: **detenerse, añadir la fila y avisar al humano** antes de escribirlo.
+
+> **Nota de archivo (2026-11-15):** las lecturas crudas de SWPC (`data/lecturas/swpc_*.json`) generadas desde ahora NO se versionan (con `ingestar_swpc --cada` crecerían sin límite); `data/lecturas/manifiesto.jsonl` (hash de cada lectura) sí. Las ocho ya versionadas siguen en el repositorio como evidencia.

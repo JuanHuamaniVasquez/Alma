@@ -15,3 +15,6 @@ data/externos/
 data/voz_modelo/
 web/node_modules/
 web/.next/
+
+# lecturas crudas NUEVAS de SWPC (crecen sin límite con `ingestar_swpc --cada`): el manifiesto con sus hashes sí se versiona; las ya versionadas siguen
+data/lecturas/swpc_*.json
