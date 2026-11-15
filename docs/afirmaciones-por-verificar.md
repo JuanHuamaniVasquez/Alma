@@ -18,7 +18,7 @@
 | A-11 | «El hábitat de la demo: días 1–14 normales, fuga en el día 15, circuito de agua» (DOC-03 §4) | ~ | Mi demo FB-005-D1 es **de O₂, un día y un control**. El guion de DOC-03 (15 días, agua) lo cubre M2.6/M3.4 con el banco |
 | A-12 | OS-892: pérdida ósea «1–2 %/mes» (bestiario) | ✓ (como cita) | Cita literal en la API de OSDR; ancla primaria NASA HRP 1–1,5 %/mes (ver `auditoria-de-fuentes.md`) |
 | A-13 | «0,83 kg O₂/día y ≈1 kg CO₂/día por persona» (bestiario) | ✓ | NASA ICES: 0,84–0,89 kg O₂ y 1,01–1,08 kg CO₂ (`parametros-publicos.md` P-02, P-03) |
-| A-14 | «NASA STD-3001: 600 mSv carrera; OCHMO-TB-020: 250 mSv/evento; Hassler 2014: 1,84/0,64 mSv/día» (bestiario) | ✗ | Pendiente de M0.12 (citas por nombre → identificador) |
+| A-14 | «NASA STD-3001: 600 mSv carrera; OCHMO-TB-020: 250 mSv/evento; Hassler 2014: 1,84/0,64 mSv/día» (bestiario) | ✗ parcial | M0.12 resolvió los DOI de Hassler 2014 (Science), Frost, Mehta y Parsons & Townsend (S-16); **las cifras (1,84/0,64 mSv/día; 600 mSv; 250 mSv) siguen sin leerse en el paper**, y NASA-STD-3001/OCHMO-TB-020 no tienen URL verificada |
 | A-15 | «19 de 49 astronautas con cefalea; CO₂ < 2,5 mmHg (OCHMO-TB-004)» (bestiario, DOC-04) | ✗ | Pendiente de M0.12 |
 | A-16 | «Biosphere 2: O₂ 20,9 %→14 %, el hormigón absorbió el CO₂ (Severinghaus 1994)» (bestiario) | ✗ | Pendiente de M0.12 |
 | A-17 | «Proxima b: planeta en zona habitable, periodo ≈11,2 días, masa del orden de la Tierra (Anglada-Escudé 2016, *Nature*)» (DOC-04 §7) | ✓ | Paper existente, doi:[10.1038/nature19106](https://doi.org/10.1038/nature19106) (Crossref). Periodo ≈11,2 d y masa mínima ≈1,3 M⊕ según prensa consistente (sin abrir el paper primario); un análisis posterior da ≈1,17 M⊕ |
