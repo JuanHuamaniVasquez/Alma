@@ -12,6 +12,7 @@ class Detector(StrEnum):
     DOS_SIGMA = "dos_sigma"
     CUSUM = "cusum"
     UMBRAL_PERSONAL = "umbral_personal"  # v0.2.7 (MP-14): regla fija contra una referencia personal
+    F_VARIANZA = "f_varianza"  # v0.2.8 (MP-15): razón de varianzas (vigilancia / línea base de 28 d); ve el zigzag que el CUSUM de media no ve
 
 
 class Sentido(StrEnum):

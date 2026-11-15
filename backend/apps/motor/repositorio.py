@@ -35,6 +35,6 @@ def guardar_recibo_verde(r, banner=None):
     return ReciboVerde.objects.create(
         recibo_id=r.recibo_id, ts_utc=r.ts_utc, sujeto=r.sujeto, presupuesto_id=r.presupuesto_id.value if r.presupuesto_id else None,
         indicador=r.indicador.value if r.indicador else None, estado=r.estado.value, ventana_dias=r.ventana_dias, dias_validos=r.dias_validos,
-        detector=r.detector.value, k=r.k, h=r.h, potencia_declarada=r.potencia_declarada, mde_sigma=r.mde_sigma, mde_fisico=r.mde_fisico,
+        canal=r.canal.value, detector=r.detector.value, k=r.k, h=r.h, potencia_declarada=r.potencia_declarada, mde_sigma=r.mde_sigma, mde_fisico=r.mde_fisico,
         unidad=r.unidad, supuesto=r.supuesto, regla_exacta=r.regla_exacta, semilla=r.semilla, hash_preregistro=r.hash_preregistro,
         banner=r.banner.value)

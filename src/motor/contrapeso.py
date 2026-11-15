@@ -111,3 +111,21 @@ def sentido(cierre: DC08Cierre, k: float = K_CIERRE) -> Sentido:
 def abre_investigacion(cierre: DC08Cierre) -> bool:
     """NO CIERRA abre investigación D6 el mismo día (DOC-01, DC-08)."""
     return cierre.veredicto is Veredicto.NO_CIERRA
+
+
+def sensibilidad_rho(*, rhos: Sequence[float], pares: Sequence[tuple[str, str]], **cierre) -> list[dict]:
+    """M2.17b · ρ como supuesto SENSIBLE: recalcula el cierre con la misma correlación ρ en todos los `pares` para cada ρ del barrido.
+
+    Devuelve por ρ la σ propagada, la razón σ(ρ)/σ(0) y el veredicto, para que se vea cuándo el veredicto depende del supuesto.
+    El soporte empírico de ρ≈0,1–0,15 es la demanda de agua real de Utah (FB-012, S-12: ρ entre hogares 0,126, INCONCLUSA):
+    es un orden de magnitud, no un valor medido en un hábitat. Sin `correlaciones` en `cierre` (se declaran aquí).
+    """
+    if "correlaciones" in cierre:
+        raise ValueError("las correlaciones se declaran con `rhos` y `pares`")
+    base = cierre_de_conservacion(**cierre).incertidumbre_propagada
+    filas = []
+    for rho in rhos:
+        c = cierre_de_conservacion(**cierre, correlaciones=[(a, b, rho) for a, b in pares])
+        filas.append({"rho": rho, "sigma": c.incertidumbre_propagada,
+                      "razon_vs_independiente": c.incertidumbre_propagada / base if base else math.inf, "veredicto": c.veredicto})
+    return filas

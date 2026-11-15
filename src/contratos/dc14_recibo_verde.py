@@ -1,4 +1,4 @@
-"""DC-14 · Recibo de verde — «el verde sin recibo no aparece» (DOC-01 v0.2.6, MP-5 / M2.10).
+"""DC-14 · Recibo de verde — «el verde sin recibo no aparece» (DOC-01 v0.2.6, MP-5 / M2.10; canal de varianza v0.2.8, MP-15).
 
 Un «sin anomalías» NO es evidencia de ausencia (Altman & Bland 1995, BMJ, doi:10.1136/bmj.311.7003.485): solo dice qué
 habría visto el detector. El recibo declara el efecto mínimo detectable (MDE) y la potencia **dados los días válidos
@@ -21,10 +21,17 @@ class EstadoVerde(StrEnum):
     RETIRADO = "retirado"  # la regla ya no se cumple al reevaluar con datos corregidos
 
 
+class Canal(StrEnum):
+    """Qué cambio vigila el recibo (v0.2.8, MP-15): el CUSUM de media es ciego al zigzag (misma media, más varianza); la varianza tiene su propio recibo."""
+    MEDIA = "media"
+    VARIANZA = "varianza"
+
+
 class Detector(StrEnum):
-    """Detectores admitidos en un recibo de verde (DOC-01 v0.2.7): solo los estadísticos; `umbral_personal` es de contexto y NO sustenta un verde."""
+    """Detectores admitidos en un recibo de verde (DOC-01 v0.2.8): solo los estadísticos; `umbral_personal` es de contexto y NO sustenta un verde."""
     DOS_SIGMA = "dos_sigma"
     CUSUM = "cusum"
+    F_VARIANZA = "f_varianza"
 
 
 class DC14ReciboVerde(Contrato):
@@ -33,6 +40,7 @@ class DC14ReciboVerde(Contrato):
     sujeto: Sujeto
     presupuesto_id: Presupuesto | None = None   # exactamente uno, como DC-05 (v0.2.5)
     indicador: Indicador | None = None
+    canal: Canal = Canal.MEDIA                   # v0.2.8: por defecto el canal de media (compatibilidad con v0.2.6/7)
     estado: EstadoVerde
     ventana_dias: Annotated[int, Field(ge=1)]
     dias_validos: Annotated[int, Field(ge=0)]    # la cobertura (dias_validos / ventana_dias) viaja con el recibo
@@ -53,6 +61,8 @@ class DC14ReciboVerde(Contrato):
     def _coherencia(self):
         if (self.presupuesto_id is None) == (self.indicador is None):
             raise ValueError("exactamente uno de presupuesto_id o indicador")
+        if (self.canal is Canal.VARIANZA) != (self.detector is Detector.F_VARIANZA):
+            raise ValueError("el canal de varianza usa el detector f_varianza, y solo él")
         if self.dias_validos > self.ventana_dias:
             raise ValueError("dias_validos no puede superar la ventana")
         declara = (self.potencia_declarada, self.mde_sigma, self.mde_fisico)

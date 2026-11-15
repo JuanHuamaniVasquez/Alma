@@ -1,4 +1,4 @@
-# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.7)
+# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.8)
 
 > **Qué es este documento:** el contrato de ingeniería del proyecto. Define las capas del sistema, el registro oficial de módulos, los contratos de datos campo a campo, el protocolo de cambios y la cola de mejoras propuestas. Es el antídoto contra el vibe coding: nada se construye sin fila en el registro, y toda mejora futura tiene exactamente un hogar.
 > **Reglas del documento:** (1) nada se codea sin su fila en el registro §2; (2) toda mejora nueva entra por el protocolo §5 y queda como PROPUESTA en §7 hasta ser aceptada; (3) los contratos §3 se versionan con el mapa — cambiar un contrato es cambiar de versión del mapa.
@@ -11,6 +11,7 @@
 > **v0.2.4 → v0.2.5 (2026-11-15, D-30; cambio de contrato → bump según §5):** DC-05 admite `indicador` **como alternativa exclusiva** a `presupuesto_id` (mismo patrón que DC-06): las alarmas de indicadores sin presupuesto documentado (pulso, temperatura…) llevan recibo sin inventar un presupuesto. Se evaluaron y descartaron: mapear indicador→presupuesto (inventa el del pulso), un 10.º presupuesto «cuerpo» (altera el vocabulario central) y dejar esas alarmas sin recibo.
 > **v0.2.5 → v0.2.6 (2026-11-15, MP-5 aceptada; cambio de contrato → bump según §5):** nuevo contrato **DC-14 · Recibo de verde** («el verde sin recibo no aparece»): un «sin anomalías» declara su efecto mínimo detectable y su potencia **condicionados a los días válidos observados**, en σ y en unidades físicas; con pocos datos el estado es `sin_datos_suficientes`. Ancla: Altman & Bland 1995, *BMJ*, doi:10.1136/bmj.311.7003.485.
 > **v0.2.6 → v0.2.7 (2026-11-15, MP-14 autorizada por el humano; cambio de contrato → bump según §5):** DC-05 `detector` gana **`umbral_personal`** (regla fija contra un valor de referencia personal, p. ej. «sueño < su mediana de la línea base»). Motivo: la tarjeta DC-12 `sueno-corto-cansancio` (sostenida en FB-016 A) no puede circular como detector con solo `dos_sigma`/`cusum` (M4.5). La alarma sigue exigiendo recibo completo (`regla_exacta` ejecutable, semilla, hash de preregistro). **Límite declarado:** la regla probada en FB-016 marca ≈ la mitad de las noches; su uso es de contexto, no de alarma crítica, hasta una acta que fije un umbral más selectivo. DC-14 no cambia (el verde solo admite `dos_sigma`/`cusum`).
+> **v0.2.7 → v0.2.8 (2026-11-15, MP-15 aceptada por el humano; cambio de contrato → bump según §5):** DC-05 y DC-14 ganan el detector **`f_varianza`** (razón de varianzas vigilancia/línea base de 28 días) y DC-14 gana el campo **`canal`** (`media` por defecto · `varianza`). Motivo: FB-018/FB-019 mostraron que un zigzag de la misma media escapa al CUSUM (1,8 %) y que el techo es de información: con 28 días de base F detecta el 95 % del zigzag de 2σ. El canal de varianza lleva su propio recibo: con < 28 días de base o < 14 de vigilancia es `sin_datos_suficientes`, nunca verde. Validación en datos reales: FB-020 (la regla de muerte es FPR real > 3 %).
 
 ---
 
@@ -215,7 +216,7 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 |---|---|---|
 | `alarma_id`, `ts_utc` | — | |
 | `presupuesto_id` / `indicador` | enum (como DC-04) / enum (como DC-06) | **Exactamente uno** (v0.2.5): presupuesto si tiene presupuesto documentado; si no, indicador |
-| `detector` | enum: dos_sigma · cusum · umbral_personal | Y el sentido (alza/caída — bilateral obligatorio) |
+| `detector` | enum: dos_sigma · cusum · umbral_personal · f_varianza | Y el sentido (alza/caída — bilateral obligatorio) |
 | `umbral`, `valor_cruzado` | float | |
 | `regla_exacta` | texto ejecutable | Si la regla no se cumple, la alarma se retira sola |
 | `semilla` | int | La semilla que reproduce la corrida |
@@ -333,9 +334,10 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 |---|---|---|
 | `recibo_id`, `ts_utc`, `sujeto` | — | `ts_utc` = fin de la ventana |
 | `presupuesto_id` / `indicador` | enum (como DC-04) / enum (como DC-06) | **Exactamente uno**, igual que DC-05 |
+| `canal` | enum: media · varianza | v0.2.8 (MP-15): por defecto `media`; el canal de varianza exige ≥ 28 días de línea base y 14 de vigilancia |
 | `estado` | enum: verde · sin_datos_suficientes · retirado | `sin_datos_suficientes` no declara nada; `retirado` = la regla alarmó al reevaluar con datos corregidos |
 | `ventana_dias`, `dias_validos` | int | La **cobertura** viaja con el recibo (la ausencia es dato) |
-| `detector` | enum: dos_sigma · cusum | |
+| `detector` | enum: dos_sigma · cusum · f_varianza | `f_varianza` solo con `canal = varianza` |
 | `k`, `h` | float | Parámetros del CUSUM; `h` calibrado, no artesanal |
 | `potencia_declarada` | float (0–1) | Solo si `verde` |
 | `mde_sigma` | float (σ) | Efecto mínimo detectable con esa potencia **dados los `dias_validos`**; solo si `verde` |

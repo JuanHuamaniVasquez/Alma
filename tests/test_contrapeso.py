@@ -156,3 +156,19 @@ def test_correlaciones_invalidas_se_rechazan():
         cierre_de_conservacion(**base, correlaciones=[("a", "b", 1.5)])
     with pytest.raises(ValueError, match="repetida"):
         cierre_de_conservacion(**base, correlaciones=[("a", "b", 0.5), ("b", "a", 0.5)])
+
+
+# --- M2.17b: ρ como supuesto sensible (ρ≈0,1–0,15, Utah S-12 / FB-012) ------------------------------
+def test_sensibilidad_rho_barrido_y_veredicto_que_depende_del_supuesto():
+    from src.motor.contrapeso import sensibilidad_rho
+    pares = [(a, b) for i, a in enumerate(CONSUMOS) for b in CONSUMOS[i + 1:]]
+    base = dict(dia_habitat=7, bucle=Bucle.AIRE, salidas=consumo(), delta_almacen=Corriente("delta_atmosfera", 0.0, 0.01, SIM),
+                perdida_declarada=Corriente("venteo_declarado", 0.0, 0.0, SIM))
+    tabla = sensibilidad_rho(rhos=[0.0, 0.1, 0.15, 1.0], pares=pares, **base,
+                             entradas=[Corriente("suministro_OGA", TRIPULACION * O2_PERSONA + 0.15, 0.02, SIM)])
+    sigmas = [f["sigma"] for f in tabla]
+    assert sigmas == sorted(sigmas) and tabla[0]["razon_vs_independiente"] == pytest.approx(1.0)  # monótona en ρ
+    assert 1.0 < tabla[1]["razon_vs_independiente"] < tabla[2]["razon_vs_independiente"] < tabla[3]["razon_vs_independiente"]
+    assert tabla[0]["veredicto"] is Veredicto.NO_CIERRA and tabla[3]["veredicto"] is Veredicto.CIERRA  # el veredicto cambia con el supuesto
+    with pytest.raises(ValueError):
+        sensibilidad_rho(rhos=[0.1], pares=pares, correlaciones=[], **base, entradas=[Corriente("s", 1.0, 0.1, SIM)])

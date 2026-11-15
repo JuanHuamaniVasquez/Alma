@@ -1,4 +1,4 @@
-"""Los 14 contratos de datos DC-01…DC-14 (DOC-01 §3, v0.2.7). Dominio puro: sin Django."""
+"""Los 14 contratos de datos DC-01…DC-14 (DOC-01 §3, v0.2.8). Dominio puro: sin Django."""
 from .comunes import SEMILLAS_PUBLICAS, Banner, banner_heredado
 from .dc01_sensores import DC01Sensor
 from .dc02_autorreporte import DC02Autorreporte
