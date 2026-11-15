@@ -345,3 +345,22 @@ class Nilm(SoloLectura):
             curvas.setdefault(str(c["delta"]), []).append({"paso_h": c["paso_h"], "exactitud": c["exactitud"]})
         return Response({"banner": Banner.SIMULADO.value, "ejecutada": True, "hash_acta": r["hash_acta"], "azar": 0.2, "sigma_rel": r["sigma_rel"], "n_por_celda": r["n_por_celda"],
                          "curvas": {d: sorted(v, key=lambda x: x["paso_h"]) for d, v in curvas.items()}, "veredictos": r["veredictos"]})
+
+
+class EProceso(SoloLectura):
+    """M6.1 · FB-021: la garantía anytime-valid y lo que pasó con datos reales. Lee el registro sellado + una curva DEMOSTRATIVA SIMULADA (semilla pública)."""
+
+    def get(self, request):
+        import json
+        import random
+
+        from src.motor.eproceso import ALFA, mezcla
+        ruta = Path(settings.BASE_DIR).parent / "docs" / "actas" / "RESULTADOS.jsonl"
+        r = next((x for x in (json.loads(l) for l in ruta.read_text(encoding="utf-8").splitlines() if l) if x.get("acta") == "FB-021"), None)
+        rng = random.Random(20261113)
+        z = [rng.gauss(0, 1) for _ in range(4)] + [rng.gauss(3.2, 1) for _ in range(10)]       # SIMULADO: 4 días sin cambio y un escalón de 3,2σ
+        s = (r or {}).get("s_congelado", 1.5)
+        return Response({"banner": Banner.SIMULADO.value, "alfa": ALFA, "umbral": 1 / ALFA, "s": s, "curva": [round(m, 4) for m in mezcla(z, s)], "escalon_dia": 5,
+                         "ejecutada": r is not None, "hash_acta": (r or {}).get("hash_acta"),
+                         "entrenamiento": (r or {}).get("entrenamiento", {}).get("tabla"), "veredictos": (r or {}).get("veredictos"),
+                         "banner_resultados": "REAL (LifeSnaps, no astronautas) + escalón SIMULADO"})

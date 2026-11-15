@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Room } from "@/components/Room";
 import { Stamp } from "@/components/Stamp";
-import { BUDGETS, get, type ResidualPoint, type Residuals } from "@/lib/api";
+import { BUDGETS, get, type EProcess, type ResidualPoint, type Residuals } from "@/lib/api";
 
 const W = 1000, H = 170, MID = H / 2, PX = 20, CLAMP = 3.8; // 20 px por σ; la cinta cubre ±3,8σ
 const H_CUSUM = 10.01;
@@ -11,6 +11,8 @@ const label = (id: string) => BUDGETS.find(([b]) => b === id)?.[1] ?? id;
 /** 02 · MACHINE ROOM — «What did the engine see?» Lo prometido (el manifiesto) frente a lo observado: dos cintas de sismógrafo. */
 export default function MachineRoom() {
   const [r, setR] = useState<Residuals | null>(null);
+  const [ep, setEp] = useState<EProcess | null>(null);
+  useEffect(() => { get<EProcess>("/api/eproceso/").then(setEp); }, []);
   const [pick, setPick] = useState<{ id: string; i: number } | null>(null);
   useEffect(() => {
     get<Residuals>("/api/residuo/?limite=500").then((d) => {
@@ -43,6 +45,7 @@ export default function MachineRoom() {
             </section>
           ))}
         </div>
+        {ep && <EProcessCard ep={ep} />}
         {sel && pick && <Slip p={sel} day={pick.i + 1} name={label(pick.id)} onClose={() => setPick(null)} />}
       </div>
     </Room>
@@ -98,5 +101,34 @@ function Slip({ p, day, name, onClose }: { p: ResidualPoint; day: number; name: 
       <p className="mt-2 text-[11px] font-medium">→ {p.bandera === "normal" ? "NORMAL: inside the lane." : p.bandera === "sorpresa" ? "SURPRISE: a flag, not yet an alarm." : "DRIFT."}</p>
       <div className="mt-5 flex items-center justify-between"><span className="text-[10px] uppercase tracking-[0.14em] text-paper-dim">source · /api/residuo · DC-06</span><Stamp banner={p.banner} /></div>
     </aside>
+  );
+}
+
+/** M6.1 · Una alarma con garantía matemática… y lo que midió la realidad. La curva es DEMOSTRATIVA (simulada); la tabla es de datos reales (LifeSnaps, no astronautas). */
+function EProcessCard({ ep }: { ep: EProcess }) {
+  const W2 = 700, H2 = 150, L = 34, n = ep.curva.length, X = (i: number) => L + (i / Math.max(n - 1, 1)) * (W2 - L - 14), Y = (m: number) => H2 - 22 - (Math.max(0, Math.min(2.3, Math.log10(Math.max(m, 1)))) / 2.3) * (H2 - 34);
+  return (
+    <section className="mt-16 max-w-4xl pb-16" data-testid="eprocess-card">
+      <div className="flex items-baseline gap-4"><h2 className="font-display text-3xl">An alarm with a guarantee</h2><Stamp banner={ep.banner} /></div>
+      <p className="mt-3 max-w-2xl text-ink-dim">Watch the evidence pile up. When it crosses {ep.umbral}, the alarm may fire — and the maths says a false alarm happens at most {Math.round(ep.alfa * 100)}% of the time, <em>if</em> the assumptions hold. This curve is a simulation: four quiet days, then a 3.2σ shift.</p>
+      <svg viewBox={`0 0 ${W2} ${H2}`} className="mt-5 w-full" role="img" aria-label="Evidence process crossing the alarm threshold">
+        <line x1={L} x2={W2 - 14} y1={Y(ep.umbral)} y2={Y(ep.umbral)} stroke="var(--color-signal)" strokeDasharray="4 5" /><text x={L + 4} y={Y(ep.umbral) - 5} fill="var(--color-signal)" fontSize="10" fontFamily="var(--font-mono)">ALARM · evidence ≥ {ep.umbral}</text>
+        <line x1={L} x2={W2 - 14} y1={Y(1)} y2={Y(1)} stroke="var(--color-ink)" strokeOpacity=".4" /><text x={L - 6} y={Y(1) + 3} textAnchor="end" fill="var(--color-ink-faint)" fontSize="9" fontFamily="var(--font-mono)">1</text>
+        <line x1={X(ep.escalon_dia - 1)} x2={X(ep.escalon_dia - 1)} y1={10} y2={H2 - 22} stroke="var(--color-ink)" strokeOpacity=".25" strokeDasharray="2 4" /><text x={X(ep.escalon_dia - 1) + 4} y={20} fill="var(--color-ink-faint)" fontSize="9" fontFamily="var(--font-mono)">change begins</text>
+        <polyline fill="none" stroke="var(--color-ink)" strokeWidth="2" points={ep.curva.map((m, i) => `${X(i)},${Y(m)}`).join(" ")} />
+        {ep.curva.map((m, i) => <circle key={i} cx={X(i)} cy={Y(m)} r={m >= ep.umbral ? 4 : 2.4} fill={m >= ep.umbral ? "var(--color-signal)" : "var(--color-ink)"} />)}
+        {ep.curva.map((_, i) => <text key={i} x={X(i)} y={H2 - 6} textAnchor="middle" fill="var(--color-ink-faint)" fontSize="9" fontFamily="var(--font-mono)">{i + 1}</text>)}
+      </svg>
+      {ep.ejecutada && ep.entrenamiento && (
+        <div className="mt-6 bg-paper px-6 py-5 font-mono text-[12px] text-paper-ink shadow-[0_24px_50px_-14px_rgb(0_0_0/.8)]">
+          <p className="font-display text-2xl">What reality said</p>
+          <p className="mt-1 text-[11px] text-paper-dim">Real wearable data, everyday people, not astronauts · sealed record {ep.hash_acta?.slice(0, 8)}…</p>
+          <table className="mt-3 w-full text-right"><thead><tr className="text-left text-[10px] uppercase tracking-[0.14em] text-paper-dim"><th className="font-normal">safety margin (s)</th><th className="text-right font-normal">false alarms (asked ≤1%)</th><th className="text-right font-normal">sensitivity at 2σ</th></tr></thead>
+            <tbody>{Object.entries(ep.entrenamiento).map(([s, v]) => (
+              <tr key={s} className={`border-t border-paper-dim/30 ${ep.s === Number(s) ? "font-medium" : ""}`}><td className="py-1.5 text-left">{s}{ep.s === Number(s) ? " · chosen" : ""}</td><td className={v.fpr_entrenamiento > 0.011 ? "text-[#c2410c]" : ""}>{(100 * v.fpr_entrenamiento).toFixed(2)}% ({v.k}/{v.n})</td><td>{Math.round(100 * v.potencia_h2)}%</td></tr>))}</tbody></table>
+          <p className="mt-3 border-t border-paper-ink/60 pt-3 text-[11px]">Taken at face value (s = 1) the guarantee failed fivefold on real data. Widening it until it holds costs sensitivity (99% → 71%). The out-of-sample check had only 5 windows: inconclusive. The method is not ours; the measured gap is.</p>
+        </div>
+      )}
+    </section>
   );
 }

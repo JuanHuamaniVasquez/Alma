@@ -11,6 +11,7 @@ urlpatterns = [
     path("verdes/", views.Verdes.as_view(), name="verdes"),
     path("indicadores/", views.Indicadores.as_view(), name="indicadores"),
     path("tripulacion/", views.Tripulacion.as_view(), name="tripulacion"),
+    path("eproceso/", views.EProceso.as_view(), name="eproceso"),
     path("nilm/", views.Nilm.as_view(), name="nilm"),
     path("privacidad/", views.Privacidad.as_view(), name="privacidad"),
     path("animo/", captura.Animo.as_view(), name="animo"),

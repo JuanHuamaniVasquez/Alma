@@ -89,3 +89,6 @@ export type PrivacyBook = { banner: Banner; n_tripulacion: number; epsilon_total
 
 export type NilmBook = { banner: Banner; ejecutada: boolean; hash_acta?: string; azar?: number; sigma_rel?: number; n_por_celda?: number;
   curvas?: Record<string, { paso_h: number; exactitud: number }[]>; veredictos?: Record<string, string | number | null> };
+
+export type EProcess = { banner: Banner; alfa: number; umbral: number; s: number; curva: number[]; escalon_dia: number; ejecutada: boolean; hash_acta?: string | null;
+  entrenamiento?: Record<string, { k: number; n: number; fpr_entrenamiento: number; potencia_h2: number; apto: boolean }> | null; veredictos?: Record<string, string> | null };

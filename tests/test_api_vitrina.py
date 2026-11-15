@@ -260,3 +260,20 @@ def test_toda_acta_tiene_resumen_en_ingles_buscable_y_coherente_con_su_estado():
             assert e["outcome"] in {"not_run", "no_data"}, a["acta"]
         else:
             assert e["outcome"] not in {"not_run"}, a["acta"]
+
+
+def test_m6_eproceso_y_nilm_leen_el_registro_sellado():
+    """M6.1/M6.2 · las tarjetas de frontera leen los resultados SELLADOS (no recalculan) y lo simulado lleva su banner."""
+    e = get("/api/eproceso/").json()
+    assert e["banner"] == "SIMULADO" and e["umbral"] == 100 and len(e["curva"]) == 14 and e["curva"][-1] >= e["umbral"]
+    assert e["ejecutada"] and e["entrenamiento"]["1.0"]["fpr_entrenamiento"] > 0.04          # la garantía teórica falló en datos reales (FB-021)
+    n = get("/api/nilm/").json()
+    assert n["banner"] == "SIMULADO" and n["azar"] == 0.2 and n["veredictos"]["H1"] == "REFUTADA"
+    assert all(c["exactitud"] > 0.15 for cs in n["curvas"].values() for c in cs)
+
+
+@pytest.mark.django_db
+def test_m6_privacidad_no_publica_el_conteo_exacto():
+    p = get("/api/privacidad/").json()
+    assert p["epsilon_total"] == 2.0 and p["epsilon_restante"] >= 0 and p["cierra"] and "verdadero" not in json.dumps(p)   # el conteo exacto nunca sale
+    assert all("valor_publicado" in a and a["mecanismo"] == "Laplace" for a in p["asientos"])
