@@ -1,0 +1,55 @@
+% ALMA / TONO-LAB — informe IEEE (esqueleto SIN redactar). Compilar: pdflatex main && bibtex main && pdflatex main && pdflatex main
+% Orden: lo mejor primero. Cada sección dice su fuente; copiar cifras de NOTA-FB-xxx.md, no de memoria.
+\documentclass[conference]{IEEEtran}
+\usepackage{graphicx,booktabs,hyperref,amsmath}
+\begin{document}
+\title{ALMA: A Health Monitor That Says When It Cannot See --- Preregistered Falsification for Crewed Habitats}
+\author{\IEEEauthorblockN{Team ALMA (NASA Space Apps 2026)}\IEEEauthorblockA{Challenge: Create Health Monitoring Software for Astronauts on Space Missions}}
+\maketitle
+
+\begin{abstract}
+% <=200 palabras. Fuente: docs/preprint/manuscript.md (Abstract) + INVENTARIO-IEEE.md C-01..C-21.
+% Debe contener: mensaje unico; conservacion vs manifiesto (SIMULADO); piso de deteccion en astronautas reales (n=4); 29 actas con hash previo; fallos publicados.
+\end{abstract}
+
+\begin{IEEEkeywords}
+astronaut health, personal baseline, conservation of mass, preregistration, negative results
+\end{IEEEkeywords}
+
+\section{Introduction}
+% Reto NASA, ausencia de datos abiertos por persona, pregunta guia. Fuente: INVENTARIO-IEEE.md fila Introduccion; docs/radar-nasa.md.
+
+\section{Main Results (Strongest First)}
+\subsection{Conservation catches what the manifest cannot (simulated universe)}
+% FB-003R, FB-005; src/motor/contrapeso.py; /kill. Banner SIMULADO obligatorio. Figura: captura /kill.
+\subsection{The detection floor in real astronaut blood work (n=4)}
+% FB-024, FB-025 (C-13, C-15); NOTA-FB-024/025.md. Limite: n=4, exploratorio.
+\subsection{Every alarm has a receipt; every experiment a prior hash}
+% DC-05, DC-14; docs/actas/; tests/test_orden_de_actas.py (C-09, C-11).
+\subsection{A laboratory that generates and closes its own hypotheses}
+% generador.py; FB-026, FB-027, FB-028 (C-16, C-19, C-20, C-21). Tabla de veredictos.
+
+\section{System}
+% Capas ingesta->libro->motor->fabrica->superficies; contratos DC-01..DC-14; tres mandamientos. Fuente: DOC-01 sec.2-3, README.md.
+
+\section{Methods}
+% Linea base personal, 2-sigma, CUSUM, conservacion, e-proceso (Shin--Ramdas--Rinaldo arXiv:2203.03532), MDE (DC-14), preregistro SHA-256, nulos por permutacion.
+
+\section{Negative Results and Our Own Errors}
+% INVENTARIO-IEEE.md sec.6 (FB-002 8/10 no replicado, FB-020, FB-021 5x, FB-022, FB-023, FB-027 polaridad).
+
+\section{Discussion and Limits}
+% INVENTARIO-IEEE.md sec.9 (lo que NO se afirma).
+
+\section{Reproducibility}
+% Semillas 20261113, 20261114, 20261115, 20261111, 20261112; hashes en docs/actas/; comandos de docs/entrega/PLAN-DE-ENTREGA.md sec.0.
+
+\section{Ethics}
+% Civiles anonimos, tripulacion ficticia, privacidad epsilon (C-06). Fuente: docs/politica-de-datos.md sec.12.
+
+\section{Future Work}
+% FB-026 H2 en cohorte con rmssd; M6.5; M2.22; NILM con datos de cabina reales.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+\end{document}

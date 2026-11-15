@@ -1,0 +1,2 @@
+# Informe IEEE (LaTeX)
+Esqueleto en `main.tex` (clase `IEEEtran`, conferencia). Sin redactar a propósito: cada sección trae en comentarios su fuente. Compilar en local (`pdflatex main && bibtex main && pdflatex main && pdflatex main`) o subir la carpeta a Overleaf. El borrador en inglés de 1 220 palabras está en `../../preprint/manuscript.md`. Plan completo y orden «lo mejor primero»: `../../entrega/PLAN-DE-ENTREGA.md`.
