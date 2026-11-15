@@ -345,6 +345,21 @@
     "breathing",
     "refuted classifier"
    ]
+  },
+  "FB-023": {
+   "title": "Who is breathing extra? Splitting the cabin air into bodies",
+   "summary": "A simulation of whether an unexplained CO2 excess in a five-person cabin can be pinned on one crew member from their sleep schedules. It works only when shifts are staggered (at chance when everyone sleeps together) and is weaker than hoped: 71% right at a 20% excess with 4-hour offsets. Detecting 'someone emits more' comes long before knowing who.",
+   "outcome": "partial",
+   "data": "simulated",
+   "tags": [
+    "cabin",
+    "co2",
+    "attribution",
+    "identifiability",
+    "schedules",
+    "simulation",
+    "body"
+   ]
   }
  }
 }

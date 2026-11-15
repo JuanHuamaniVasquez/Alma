@@ -14,7 +14,7 @@ const MAP: Record<string, { real: string[]; sim: string[] }> = {
   "/capsule": { real: ["Results exported from preregistered tests on real data"], sim: ["Anything produced by simulation is labelled on its own capsule"] },
 };
 
-export function Provenance() {
+export function Origins() {
   const path = usePathname() ?? "/";
   const [open, setOpen] = useState(false);
   const m = MAP[path];

@@ -65,3 +65,6 @@ Fuentes por buscar (datos con archivos reales para el motor y las tarjetas): se 
 
 ### X-16 · Tripulación 3D generada (M3.11)
 Los 5 cuerpos de `web/public/models/crew_*.glb` son personajes FICTICIOS generados por script (`scripts/blender/crew_build.py`) con MPFB/MakeHuman (assets CC0: piel, pelo, ojos, dientes). Uniforme y franja de color hechos por script. No son personas reales. Crédito: MakeHuman Community / MPFB.
+
+### X-17 · Simulación de identificabilidad del NILM de cabina (M6.2 / FB-023)
+Rejilla de 4 220 corridas SIMULADAS (5 tripulantes ficticios, CO₂ de referencia 1,01 kg/persona/día de Ewert & Stromgren, ruido 6,9 % anclado a la diferencia publicada entre protocolos). Todo registro y pantalla que la use lleva banner SIMULADO; no hay datos de cabina tripulada por persona (política §12). Código: `src/motor/nilm_cabina.py`.

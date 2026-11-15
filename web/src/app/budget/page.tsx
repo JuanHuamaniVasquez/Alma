@@ -4,7 +4,7 @@ import { DayTicks } from "@/components/DayTicks";
 import { Room } from "@/components/Room";
 import { useShip } from "@/components/Ship";
 import { Stamp } from "@/components/Stamp";
-import { BUDGETS, get, type LedgerDay, type LedgerDays, type PrivacyBook } from "@/lib/api";
+import { BUDGETS, get, type LedgerDay, type LedgerDays, type PrivacyBook, type NilmBook } from "@/lib/api";
 
 /** 07 · THE BUDGET — «Do the ship's books close?» Cuentas, nunca gráficas de personas. Un libro sin datos reales de ancla NO se simula: se muestra vacío. */
 export default function Budget() {
@@ -13,7 +13,8 @@ export default function Budget() {
   const [open, setOpen] = useState<Set<number>>(new Set());
   const [ledger, setLedger] = useState<LedgerDay | null>(null);
   const [priv, setPriv] = useState<PrivacyBook | null>(null);
-  useEffect(() => { get<PrivacyBook>("/api/privacidad/").then(setPriv); }, []);
+  const [nilm, setNilm] = useState<NilmBook | null>(null);
+  useEffect(() => { get<PrivacyBook>("/api/privacidad/").then(setPriv); get<NilmBook>("/api/nilm/").then(setNilm); }, []);
   useEffect(() => {
     get<LedgerDays>("/api/libro/dias/").then(async (d) => {
       if (!d || d.ultimo == null) return;
@@ -73,6 +74,31 @@ export default function Budget() {
             <p className="mt-3 border-t border-paper-ink/60 pt-3 text-[11px]">Exact counts never leave the server. ε = 2.0 is an illustrative budget, not a NASA policy. Tested: an attacker with exact counts recovers a crew member every time; with ε = 0.5 per query, they are wrong more than 12% of the time (<code>tests/test_privacidad.py</code>).</p>
           </div>
         )}
+        {nilm?.ejecutada && nilm.curvas && (() => {
+          const W = 520, H = 190, L = 44, B = 28, xs = [0, 1, 2, 4], X = (h: number) => L + (h / 4) * (W - L - 52), Y = (v: number) => H - B - v * (H - B - 12);
+          const tone: Record<string, string> = { "0.05": "#8a8174", "0.1": "#6b4a2b", "0.2": "#1a1612" };
+          return (
+            <div className="mt-8 bg-paper px-8 pb-6 pt-5 font-mono text-[12.5px] text-paper-ink shadow-[0_24px_50px_-14px_rgb(0_0_0/.8)]" data-testid="nilm-book">
+              <div className="flex items-baseline justify-between border-b border-paper-ink/60 pb-3">
+                <span className="font-display text-3xl">Book ⊕ · Who is breathing extra?</span>
+                <Stamp banner={nilm.banner} />
+              </div>
+              <p className="mt-3 max-w-2xl text-[12px] leading-relaxed">The air book shows the cabin&apos;s total. If one crew member emits more than the manifest says, the book notices — but not who. Staggering sleep shifts lets us split the excess across bodies. Simulated: no open data exists for a crewed cabin, person by person.</p>
+              <svg viewBox={`0 0 ${W} ${H}`} className="mt-4 w-full max-w-xl" role="img" aria-label="Attribution accuracy against shift offset">
+                {[0, 0.5, 1].map((g) => <g key={g}><line x1={L} x2={W - 40} y1={Y(g)} y2={Y(g)} stroke="#1a1612" strokeOpacity={0.15} /><text x={L - 6} y={Y(g) + 4} textAnchor="end" fontSize="10" fill="#6b6257">{Math.round(g * 100)}%</text></g>)}
+                <line x1={L} x2={W - 40} y1={Y(nilm.azar ?? 0.2)} y2={Y(nilm.azar ?? 0.2)} stroke="#c2410c" strokeDasharray="4 4" /><text x={W - 14} y={Y(nilm.azar ?? 0.2) - 5} textAnchor="end" fontSize="10" fill="#c2410c">chance 20%</text>
+                {xs.map((h) => <text key={h} x={X(h)} y={H - 10} textAnchor="middle" fontSize="10" fill="#6b6257">{h} h</text>)}
+                {Object.entries(nilm.curvas).map(([d, pts]) => (
+                  <g key={d}><polyline fill="none" stroke={tone[d] ?? "#1a1612"} strokeWidth={2} points={pts.map((p) => `${X(p.paso_h)},${Y(p.exactitud)}`).join(" ")} />
+                    {pts.map((p) => <circle key={p.paso_h} cx={X(p.paso_h)} cy={Y(p.exactitud)} r={3} fill={tone[d] ?? "#1a1612"} />)}
+                    <text x={X(4) + 4} y={Y(pts[pts.length - 1].exactitud) + 3} fontSize="10" fill={tone[d] ?? "#1a1612"}>+{Math.round(Number(d) * 100)}%</text></g>
+                ))}
+              </svg>
+              <p className="mt-1 text-[11px] uppercase tracking-[0.14em] text-paper-dim">x: hours between crew shift starts · y: right person named · {nilm.n_por_celda} runs per point</p>
+              <p className="mt-3 border-t border-paper-ink/60 pt-3 text-[11px]">Result, sealed before running (<code>FB-023</code>, hash {nilm.hash_acta?.slice(0, 8)}…): identical schedules sit at chance, as they must; with staggered shifts accuracy rises, but only to {Math.round(100 * (nilm.curvas["0.2"]?.at(-1)?.exactitud ?? 0))}% at a 20% excess — weaker than the 80% we predicted. “Someone emits more” is detectable long before “who”.</p>
+            </div>
+          );
+        })()}
       </div>
       {days.length > 0 && day != null && <DayTicks days={days} day={day} open={open} onPick={setDay} />}
     </Room>

@@ -328,3 +328,20 @@ class Privacidad(SoloLectura):
                 libro.liberar_conteo(etiqueta, sum(e[ind] == "alarma" for e in est), len(est), 0.5)
         return Response({"banner": datos["banner"], "n_tripulacion": len(datos["tripulacion"]), **libro.estado(),
                          "nota": "Each published count spends ε. Exact counts never leave the server: with 5 people, an exact aggregate and one subtraction reveal an individual."})
+
+
+class Nilm(SoloLectura):
+    """M6.2 · Resultado de FB-023 (SIMULADO, X-17): exactitud de atribuir un exceso de CO₂ a un tripulante según el desfase de turnos. Lee el registro sellado, no recalcula."""
+
+    def get(self, request):
+        import json
+        ruta = Path(settings.BASE_DIR).parent / "docs" / "actas" / "RESULTADOS.jsonl"
+        lineas = [json.loads(l) for l in ruta.read_text(encoding="utf-8").splitlines() if l]
+        r = next((x for x in lineas if x.get("acta") == "FB-023"), None)
+        if r is None:
+            return Response({"banner": Banner.SIMULADO.value, "ejecutada": False})
+        curvas: dict[str, list] = {}
+        for k, c in r["celdas"].items():
+            curvas.setdefault(str(c["delta"]), []).append({"paso_h": c["paso_h"], "exactitud": c["exactitud"]})
+        return Response({"banner": Banner.SIMULADO.value, "ejecutada": True, "hash_acta": r["hash_acta"], "azar": 0.2, "sigma_rel": r["sigma_rel"], "n_por_celda": r["n_por_celda"],
+                         "curvas": {d: sorted(v, key=lambda x: x["paso_h"]) for d, v in curvas.items()}, "veredictos": r["veredictos"]})

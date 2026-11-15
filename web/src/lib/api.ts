@@ -86,3 +86,6 @@ export const CREW_STATE_EN: Record<string, string> = { verde: "a green with a re
 
 export type PrivacyBook = { banner: Banner; n_tripulacion: number; epsilon_total: number; epsilon_gastado: number; epsilon_restante: number; cierra: boolean; nota: string;
   asientos: { etiqueta: string; epsilon: number; mecanismo: string; sensibilidad: number; n: number; valor_publicado: number }[] };
+
+export type NilmBook = { banner: Banner; ejecutada: boolean; hash_acta?: string; azar?: number; sigma_rel?: number; n_por_celda?: number;
+  curvas?: Record<string, { paso_h: number; exactitud: number }[]>; veredictos?: Record<string, string | number | null> };
