@@ -31,6 +31,12 @@ def test_banda_conocida():
     assert banda([5.0]) is None
 
 
-def test_sin_datos_si_la_base_queda_en_uno(filas):
-    r = evaluar(filas, O.PRE, O.POST)
-    assert all(v["estado"] in {"dentro", "arriba", "abajo", "sin_datos", "sospechoso"} for v in r.values())
+def test_sin_datos_si_la_base_queda_en_uno_y_alarma_si_sale_de_la_banda():
+    """Con 2 de las 3 extracciones previas sospechosas la base queda en 1 punto → `sin_datos`; con base buena, un valor lejano sale de la banda y uno cercano no."""
+    from src.ingesta.osdr_cbc import Fila
+    mk = lambda t, x, sosp=(): Fila("P", t, {"hb": x}, frozenset(sosp))                                  # noqa: E731
+    pobre = [mk("L-92", 14.0, ("hb",)), mk("L-44", 14.2, ("hb",)), mk("L-3", 14.1), mk("R+1", 14.1)]
+    assert evaluar(pobre, ("L-92", "L-44", "L-3"), ("R+1",), analitos=("hb",))[("P", "hb", "R+1")]["estado"] == "sin_datos"
+    buena = lambda x: [mk("L-92", 14.0), mk("L-44", 14.2), mk("L-3", 14.4), mk("R+1", x)]               # noqa: E731
+    assert evaluar(buena(14.3), ("L-92", "L-44", "L-3"), ("R+1",), analitos=("hb",))[("P", "hb", "R+1")]["estado"] == "dentro"
+    assert evaluar(buena(20.0), ("L-92", "L-44", "L-3"), ("R+1",), analitos=("hb",))[("P", "hb", "R+1")]["estado"] == "arriba"

@@ -320,3 +320,24 @@ def test_m7_astronautas_solo_agregados_y_osdr_catalogo():
     assert not any(c in json.dumps(a) for c in ("C001", "C002", "C003", "C004"))            # ninguna serie ni id de persona cruza a la superficie
     o = get("/api/osdr/").json()
     assert o["n"] >= 50 and o["n_crew"] >= 10 and any(e["accession"] == "OSD-569" for e in o["estudios"])
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize("url", ["libro/dias/", "alarmas/", "residuo/", "verdes/", "indicadores/", "tripulacion/", "fundicion/", "actas/", "capsulas/", "demo-kill/", "tormenta/",
+                                 "tormenta/escenario/G3/", "privacidad/", "nilm/", "eproceso/", "esperado/", "enlace/", "astronautas/", "osdr/"])
+def test_toda_respuesta_de_la_api_lleva_banner_real_o_simulado(url):
+    """Mandamiento 3 (auditoría 2026-11-15): banner en la respuesta, o en cada elemento de su lista principal. (`entorno/` y `ecg/` se prueban aparte: red/archivo local.)"""
+    d = get("/api/" + url).json()
+    if "banner" in d:
+        assert str(d["banner"]).split()[0] in {"REAL", "SIMULADO", "UNIVERSO"}
+        return
+    listas = [v for v in d.values() if isinstance(v, list) and v and isinstance(v[0], dict)]
+    assert listas and all("banner" in x for x in listas[0]), f"{url} sin banner"
+
+
+def test_frontera_deriva_colores_y_cifras_del_registro_sellado():
+    from apps.superficies.views import _veredicto_agregado as vg
+    assert vg({"H1": "SOSTENIDA", "H2": "VÁLIDO"}) == "held" and vg({"H1": "REFUTADA", "H2": "NO CONCLUYENTE"}) == "failed" and vg({"H1": "SOSTENIDA", "H2": "REFUTADA"}) == "mixed"
+    f = {x["id"]: x for x in get("/api/frontera/").json()["fichas"]}
+    assert f["FB-021"]["numeros"]["fpr_s1_pct"] == 5.06 and f["FB-024"]["numeros"]["filas"] == 1 and f["FB-023"]["numeros"]["mejor_pct"] == 71
+    assert all(x["verdict"] in {"held", "failed", "mixed", "measured", "open"} for x in f.values())

@@ -153,6 +153,7 @@ class Fundicion(SoloLectura):
         detectores = mesa.leer_detectores(raiz / "data/fundicion/detectores.jsonl")
         en = json.loads((raiz / "data/fundicion/en.json").read_text(encoding="utf-8"))  # texto en inglés de la vitrina (derivado)
         return Response({
+            "banner": Banner.REAL.value,                     # toda fuente de toda tarjeta es dato REAL con identificador (LifeSnaps, Zenodo, Kp, OSDR…); si una fuera simulada, la tarjeta no pasaría la puerta DC-12
             "tablero": mesa.tablero(tarjetas, detectores),
             "tarjetas": [{**t.model_dump(mode="json"), "en": en["tarjetas"].get(str(t.tarjeta_id))} for t in tarjetas],
             "detectores": [{**d, "en": en["detectores"].get(d["detector"])} for d in detectores],
@@ -411,7 +412,7 @@ class Ecg(SoloLectura):
                          "aviso": "Real ECG of an anonymised hospital outpatient from a public database — not an astronaut. The detector is ours; its accuracy was measured against human beat annotations.",
                          "fs_envio": fs // 2, "duracion_s": len(c["x"]) // fs, "latidos_s": [round(p / fs, 3) for p in c["picos"]], "base": c["base"], "tendencia": c["tend"],
                          "calidad": {k: c["calidad"][k] for k in ("referencia", "detectados", "sensibilidad", "ppv")},
-                         "regla": "Surprise flag (not an alarm) when the 10-second pulse is more than 2σ (σ floor 2 bpm) from the first 5 minutes of this same recording."})
+                         "regla": "Descriptive display rule, NOT preregistered and NOT an alarm: a surprise flag when the 10-second pulse is more than 2σ (σ floor 2 bpm) from the first 5 minutes of this same recording."})
 
 
 class EsperadoEnVuelo(SoloLectura):
@@ -419,7 +420,7 @@ class EsperadoEnVuelo(SoloLectura):
 
     def get(self, request):
         import json
-        return Response(json.loads((Path(settings.BASE_DIR).parent / "data" / "referencias" / "esperado_en_vuelo.json").read_text(encoding="utf-8")))
+        return Response({"banner": Banner.REAL.value, **json.loads((Path(settings.BASE_DIR).parent / "data" / "referencias" / "esperado_en_vuelo.json").read_text(encoding="utf-8"))})
 
 
 class EnlaceTierra(SoloLectura):
@@ -472,4 +473,47 @@ class OsdrHumanos(SoloLectura):
 
     def get(self, request):
         import json
-        return Response(json.loads((Path(settings.BASE_DIR).parent / "data" / "referencias" / "osdr_humanos.json").read_text(encoding="utf-8")))
+        return Response({"banner": Banner.REAL.value, **json.loads((Path(settings.BASE_DIR).parent / "data" / "referencias" / "osdr_humanos.json").read_text(encoding="utf-8"))})
+
+
+def _veredicto_agregado(v: dict) -> str:
+    """Regla ÚNICA y pública para el color de una ficha: todas las hipótesis H* en SOSTENIDA/VÁLIDO → «held»; ninguna sostenida → «failed»; si no, «mixed». Se deriva del registro sellado, no se escribe a mano."""
+    est = [str(x) for k, x in v.items() if k.startswith("H") and isinstance(x, str) and k[1].isdigit() and not k.endswith("detalle")]
+    bien = [e for e in est if e.split()[0] in {"SOSTENIDA", "VÁLIDO", "VÁLIDA"}]
+    if est and len(bien) == len(est):
+        return "held"
+    return "failed" if not any(e == "SOSTENIDA" for e in est) else "mixed"
+
+
+class Frontera(SoloLectura):
+    """M7 · Las fichas de The Frontier: cifras y veredictos LEÍDOS de los registros sellados (RESULTADOS.jsonl), nunca escritos a mano en la interfaz."""
+
+    def get(self, request):
+        import json
+        ruta = Path(settings.BASE_DIR).parent / "docs" / "actas" / "RESULTADOS.jsonl"
+        r = {}
+        for l in ruta.read_text(encoding="utf-8").splitlines():
+            if l.strip():
+                j = json.loads(l); r.setdefault(j["acta"], j)
+        out = []
+        if (a := r.get("FB-021")):
+            t = a["entrenamiento"]["tabla"]
+            out.append({"id": "FB-021", "verdict": _veredicto_agregado(a["veredictos"]), "hash": a["hash_acta"][:8],
+                        "numeros": {"fpr_s1_pct": round(100 * t["1.0"]["fpr_entrenamiento"], 2), "pot_s1_pct": round(100 * t["1.0"]["potencia_h2"]), "s": a["s_congelado"], "pot_elegido_pct": round(100 * t[str(a["s_congelado"])]["potencia_h2"])}})
+        if (a := r.get("FB-022")):
+            c = a["clasificacion"]["2.0"]
+            out.append({"id": "FB-022", "verdict": _veredicto_agregado(a["veredictos"]), "hash": a["hash_acta"][:8],
+                        "numeros": {"exactitud_pct": round(100 * c["exactitud_balanceada"]), "reales_marcados_pct": round(100 * c["reales_incoherentes"])}})
+        if (a := r.get("FB-023")):
+            out.append({"id": "FB-023", "verdict": _veredicto_agregado(a["veredictos"]), "hash": a["hash_acta"][:8], "numeros": {"mejor_pct": round(100 * a["celdas"]["4|0.2"]["exactitud"])}})
+        if (a := r.get("FB-024")):
+            out.append({"id": "FB-024", "verdict": _veredicto_agregado(a["veredictos"]), "hash": a["hash_acta"][:8],
+                        "numeros": {"filas": len(a["conciliacion"]["filas"]), "de": 28, "linfocitos_r1_pct": round(a["tabla"]["abs_lymphocytes|R+1"]["mediana_cambio_pct"])}})
+        if (a := r.get("FB-025")):
+            out.append({"id": "FB-025", "verdict": _veredicto_agregado(a["veredictos"]), "hash": a["hash_acta"][:8], "numeros": {"piso_linfocitos_pct": round(a["piso_pct"]["abs_lymphocytes"])}})
+        try:
+            q = _ecg()["calidad"]
+            out.append({"id": "ECG", "verdict": "measured", "hash": None, "numeros": {"hallados": q["detectados"], "referencia": q["referencia"], "sensibilidad_pct": round(100 * q["sensibilidad"], 2)}})
+        except Exception as e:                                                          # noqa: BLE001  sin el archivo local no hay ficha (la ausencia es dato)
+            out.append({"id": "ECG", "verdict": "open", "hash": None, "numeros": {}, "error": type(e).__name__})
+        return Response({"banner": Banner.REAL.value, "regla_color": "held = todas las hipótesis sostenidas; failed = ninguna; mixed = el resto (derivado del registro sellado)", "fichas": out})

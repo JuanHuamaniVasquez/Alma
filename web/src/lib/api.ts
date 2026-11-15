@@ -101,3 +101,5 @@ export type Astronautas = { banner: Banner; ejecutada: boolean; hash_acta?: stri
   conciliacion?: { valores: number; filas: number; de_filas: number };
   tabla?: Record<string, { dentro: number; arriba: number; abajo: number; sin_datos: number; sospechoso: number; mediana_cambio_pct: number | null; n: number }>; veredictos?: Record<string, string | number | { valores: number; filas: number }> };
 export type Osdr = { capturado_utc: string; n: number; n_crew: number; nota: string; estudios: { accession: string; titulo: string; liberado: string | null; ensayos: string[]; mision: string | null; tipo: "crew" | "cells"; url: string }[] };
+
+export type Frontera = { banner: Banner; regla_color: string; fichas: { id: string; verdict: "held" | "failed" | "mixed" | "measured" | "open"; hash: string | null; numeros: Record<string, number> }[] };

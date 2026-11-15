@@ -11,6 +11,7 @@ urlpatterns = [
     path("verdes/", views.Verdes.as_view(), name="verdes"),
     path("indicadores/", views.Indicadores.as_view(), name="indicadores"),
     path("tripulacion/", views.Tripulacion.as_view(), name="tripulacion"),
+    path("frontera/", views.Frontera.as_view(), name="frontera"),
     path("entorno/", views.Entorno.as_view(), name="entorno"),
     path("astronautas/", views.AstronautasHematologia.as_view(), name="astronautas"),
     path("osdr/", views.OsdrHumanos.as_view(), name="osdr"),

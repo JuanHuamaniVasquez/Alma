@@ -156,6 +156,10 @@ sysmap --root . check                  # structural map: nothing worse than the 
 ```
 `tests/test_checklist_honestidad.py` is an executable checklist: every response and every screen declares REAL or SIMULATED; every line ALMA says has a source and audio; the acts are intact; every persisted alarm has a full receipt; every capsule declares limits; the UI never claims "10/10"; the narrator imports no language model.
 
+### Tests that need local data
+
+A fresh clone runs **fewer** tests: five test files skip themselves when their real dataset is absent (`data/externos/` is not in git). To run everything, download the sources listed in `docs/politica-de-datos.md` (LifeSnaps S-07, Zenodo 8018238 S-13, MIT-BIH record 100 S-20, NASA OSDR OSD-569 S-24) and check each file against the SHA-256 in the code. `pytest -rs` shows which tests were skipped and why.
+
 ## Known limits
 - **No astronaut data.** Real data are everyday people and public space-weather feeds; the habitat is a labelled simulation.
 - The **variance channel failed** its real-data test (9.0 % false alarms) and does not emit alarms; the **"10 of 10" detection result did not replicate** (8 of 10); several validations are **inconclusive by sample size**.

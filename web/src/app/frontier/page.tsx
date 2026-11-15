@@ -3,20 +3,20 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Room } from "@/components/Room";
 import { Stamp } from "@/components/Stamp";
-import { get, type Astronautas, type Entorno, type NilmBook, type Osdr } from "@/lib/api";
+import { get, type Astronautas, type Entorno, type Frontera, type Osdr } from "@/lib/api";
 
 /** 09 · THE FRONTIER — lo que la nave sabe AHORA (datos reales NASA/NOAA), lo que NASA ya publicó de cuerpos de astronautas, y lo que probamos más allá del reto (con sus nulos). */
 export default function Frontier() {
   const [env, setEnv] = useState<Entorno | null>(null);
   const [astro, setAstro] = useState<Astronautas | null>(null);
   const [osdr, setOsdr] = useState<Osdr | null>(null);
-  const [nilm, setNilm] = useState<NilmBook | null>(null);
+  const [fr, setFr] = useState<Frontera | null>(null);
   const trail = useRef<[number, number][]>([]);
   const [, bump] = useState(0);
   useEffect(() => {
     const load = () => get<Entorno>("/api/entorno/").then((d) => { if (d?.iss.disponible && d.iss.lat != null && d.iss.lon != null) { trail.current = [...trail.current.slice(-40), [d.iss.lon, d.iss.lat]]; } setEnv(d); bump((x) => x + 1); });
     load(); const id = setInterval(load, 30000);
-    get<Astronautas>("/api/astronautas/").then(setAstro); get<Osdr>("/api/osdr/").then(setOsdr); get<NilmBook>("/api/nilm/").then(setNilm);
+    get<Astronautas>("/api/astronautas/").then(setAstro); get<Osdr>("/api/osdr/").then(setOsdr); get<Frontera>("/api/frontera/").then(setFr);
     return () => clearInterval(id);
   }, []);
   return (
@@ -27,7 +27,7 @@ export default function Frontier() {
         {env && <LiveEnvironment env={env} trail={trail.current} />}
         {astro?.ejecutada && <RealAstronauts a={astro} />}
         {osdr && <Atlas o={osdr} />}
-        <Tiles nilm={nilm} />
+        <Tiles fr={fr} />
         <Gaps />
       </div>
     </Room>
@@ -137,8 +137,8 @@ function RealAstronauts({ a }: { a: Astronautas }) {
           })}
         </svg>
         <div className="space-y-4 text-[13px] leading-snug text-ink-dim">
-          <p><span className="font-display text-4xl text-ink">−24%</span> median fall in lymphocytes on landing day…</p>
-          <p><span className="font-display text-4xl text-ink">{outside} of {total}</span> person-measurements left their personal band. <em>Why?</em> With only three baseline samples the band is so wide it could not see even that fall. <strong className="text-ink">No alarm is not no effect</strong> — the rule the ship applies to itself everywhere.</p>
+          <p><span className="font-display text-4xl text-ink">{(t["abs_lymphocytes|R+1"]?.mediana_cambio_pct ?? 0) > 0 ? "+" : "−"}{Math.abs(Math.round(t["abs_lymphocytes|R+1"]?.mediana_cambio_pct ?? 0))}%</span> median change in lymphocytes on landing day…</p>
+          <p><span className="font-display text-4xl text-ink">{outside} of {total}</span> person-measurements left their personal band. <em>Why?</em> With only three baseline samples the band is so wide it could not see a change that size. <strong className="text-ink">No alarm is not no effect</strong> — the rule the ship applies to itself everywhere.</p>
           {a.conciliacion && <p><span className="font-display text-4xl text-ink">{a.conciliacion.filas} of {a.conciliacion.de_filas}</span> blood counts did not add up with themselves (absolute count ≠ percentage × white cells): a likely data-entry error in a public NASA file, found just by checking the book against itself.</p>}
         </div>
       </div>
@@ -173,26 +173,28 @@ function Atlas({ o }: { o: Osdr }) {
 }
 
 /* ---------- 4 · lo que probamos (honesto) ---------- */
-type Tile = { id: string; title: string; verdict: "held" | "failed" | "mixed" | "open"; head: string; body: string; where: string; href: string };
-function Tiles({ nilm }: { nilm: NilmBook | null }) {
-  const best = nilm?.curvas?.["0.2"]?.at(-1)?.exactitud;
+type Tile = { id: string; title: string; verdict: "held" | "failed" | "mixed" | "measured" | "open"; head: string; body: string; where: string; href: string; hash?: string | null };
+function Tiles({ fr }: { fr: Frontera | null }) {
+  const n = (id: string) => fr?.fichas.find((f) => f.id === id);
+  const v = (id: string): Tile["verdict"] => n(id)?.verdict ?? "open";
+  const x = (id: string, k: string) => n(id)?.numeros[k];
   const tiles: Tile[] = [
-    { id: "FB-021", title: "An alarm with a guarantee", verdict: "mixed", head: "5× too optimistic", body: "A false-alarm bound that holds under daily peeking failed on real wearables: asked for 1%, got 5%. Widening it fixes the alarms and costs sensitivity (99% → 71%).", where: "Machine Room", href: "/machine" },
-    { id: "FB-022", title: "Body or sensor?", verdict: "failed", head: "couplings real, classifier refuted", body: "Temperature, breathing and HRV move with resting pulse in most people, out of sample. A rule to tell a broken sensor from a changed body flagged 44% of untouched real data.", where: "Notes in the Vault", href: "/vault" },
-    { id: "FB-023", title: "Who is breathing extra?", verdict: "mixed", head: best != null ? `${Math.round(best * 100)}% at best (simulated)` : "simulated", body: "Splitting the cabin's CO₂ into bodies works only if people sleep at different hours (at chance if they sleep together) — and is weaker than we predicted.", where: "The Budget", href: "/budget" },
-    { id: "ε", title: "Privacy as a budget", verdict: "held", head: "5 people can't hide in an average", body: "With a crew of five, an exact average plus one subtraction names someone. Every number that leaves spends privacy; when it is gone, nothing more is published.", where: "The Budget", href: "/budget" },
-    { id: "FB-024", title: "Real astronauts' blood", verdict: "mixed", head: "1 of 28 blood counts doesn't add up", body: "A personal-baseline band on four real astronauts could not see a 24% lymphocyte fall. Pooling the group's variation (FB-025) narrows the band by ~30%, yet the floor stays near ±70%: day-to-day variation is that large.", where: "above", href: "#astronauts" },
-    { id: "ECG", title: "Vitals monitor · real ECG", verdict: "held", head: "99.96% of beats found", body: "Our own R-peak detector against 2,273 human-annotated beats of a real 30-minute ECG: 2,272 found, none invented. Includes 'expected in flight' (with DOIs) and an Earth-link blackout switch.", where: "Medical Module", href: "/" },
+    { id: "FB-021", title: "An alarm with a guarantee", verdict: v("FB-021"), hash: n("FB-021")?.hash, head: x("FB-021", "fpr_s1_pct") != null ? `${x("FB-021", "fpr_s1_pct")}% false alarms, asked ≤1%` : "—", body: `A false-alarm bound that holds under daily peeking, tried on real wearables. Widening it until it holds costs sensitivity (${x("FB-021", "pot_s1_pct") ?? "?"}% → ${x("FB-021", "pot_elegido_pct") ?? "?"}% at 2σ).`, where: "Machine Room", href: "/machine" },
+    { id: "FB-022", title: "Body or sensor?", verdict: v("FB-022"), hash: n("FB-022")?.hash, head: x("FB-022", "exactitud_pct") != null ? `classifier right ${x("FB-022", "exactitud_pct")}% of the time` : "—", body: `Temperature, breathing and HRV really do move with resting pulse out of sample. The rule to tell a broken sensor from a changed body flagged ${x("FB-022", "reales_marcados_pct") ?? "?"}% of untouched real data.`, where: "Notes in the Vault", href: "/vault" },
+    { id: "FB-023", title: "Who is breathing extra?", verdict: v("FB-023"), hash: n("FB-023")?.hash, head: x("FB-023", "mejor_pct") != null ? `${x("FB-023", "mejor_pct")}% at best (simulated)` : "—", body: "Splitting the cabin's CO₂ into bodies works only if people sleep at different hours (chance when they sleep together), and is weaker than predicted.", where: "The Budget", href: "/budget" },
+    { id: "ε", title: "Privacy as a budget", verdict: "measured", head: "5 people can't hide in an average", body: "With a crew of five, an exact average plus one subtraction names someone. Every number that leaves spends privacy; when it is gone, nothing more is published. Checked by a test, not by a sealed act.", where: "The Budget", href: "/budget" },
+    { id: "FB-024", title: "Real astronauts' blood", verdict: v("FB-024"), hash: n("FB-024")?.hash, head: x("FB-024", "filas") != null ? `${x("FB-024", "filas")} of ${x("FB-024", "de")} blood counts don't add up` : "—", body: `A personal band on four real astronauts could not see a ${Math.abs(x("FB-024", "linfocitos_r1_pct") ?? 0)}% lymphocyte fall. Pooling the group's variation (FB-025) narrows it, yet the floor stays near ±${x("FB-025", "piso_linfocitos_pct") ?? "?"}%.`, where: "above", href: "#astronauts" },
+    { id: "ECG", title: "Vitals monitor · real ECG", verdict: v("ECG"), head: x("ECG", "sensibilidad_pct") != null ? `${x("ECG", "sensibilidad_pct")}% of beats found` : "needs the local ECG file", body: `Our R-peak detector against ${x("ECG", "referencia")?.toLocaleString("en-US") ?? "?"} human-annotated beats of a real ECG: ${x("ECG", "hallados")?.toLocaleString("en-US") ?? "?"} found, none invented. Includes 'expected in flight' (with DOIs) and an Earth-link switch.`, where: "Medical Module", href: "/" },
   ];
-  const col = { held: "#9fbf9f", failed: "var(--color-signal)", mixed: "#ffb45c", open: "#8a8174" } as const;
-  const lab = { held: "held", failed: "refuted", mixed: "mixed", open: "open" } as const;
+  const col = { held: "#d8d0c0", failed: "var(--color-signal)", mixed: "#ffb45c", measured: "#c9c1b2", open: "#8a8174" } as const;
+  const lab = { held: "all held", failed: "none held", mixed: "mixed", measured: "measured", open: "open" } as const;
   return (
     <Section title="What we tested beyond the brief" id="lab">
-      <p className="mt-4 max-w-3xl text-ink-dim">Each idea was sealed with a hash before it ran, and is shown with its honest result.</p>
+      <p className="mt-4 max-w-3xl text-ink-dim">Each idea was sealed with a hash before it ran. Numbers and labels below are read from the sealed record, not typed: <em>all held</em> = every hypothesis held, <em>none held</em> = none did, <em>mixed</em> = the rest. (No green here: green is reserved for receipts.)</p>
       <div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {tiles.map((t) => (
           <article key={t.id} className="flex flex-col border border-line p-5">
-            <div className="flex items-baseline justify-between"><span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">{t.id}</span><span className="font-mono text-[10px] uppercase tracking-[0.2em]" style={{ color: col[t.verdict] }}>{lab[t.verdict]}</span></div>
+            <div className="flex items-baseline justify-between"><span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">{t.id}{t.hash ? ` · ${t.hash}…` : ""}</span><span className="font-mono text-[10px] uppercase tracking-[0.2em]" style={{ color: col[t.verdict] }}>{lab[t.verdict]}</span></div>
             <h3 className="mt-2 font-display text-2xl leading-tight">{t.title}</h3>
             <p className="mt-2 font-display text-xl" style={{ color: col[t.verdict] }}>{t.head}</p>
             <p className="mt-2 flex-1 text-[13px] leading-snug text-ink-dim">{t.body}</p>

@@ -20,10 +20,26 @@ URL_XR = "https://services.swpc.noaa.gov/json/goes/primary/xrays-1-day.json"
 UMBRAL_S1_PFU = 10.0
 
 
+_ULT_ARCHIVO: dict[str, float] = {}
+ARCHIVO_CADA_S = 600.0      # una lectura cruda archivada por fuente cada 10 min (la fuente cambia cada minuto; sin tope llenaría el disco)
+ULTIMOS_HASHES: dict[str, str] = {}
+
+
 def _get(url: str, t: float = 8.0):
+    """Lee la fuente; el cuerpo CRUDO se hashea siempre y se archiva (MP-3, `src/ingesta/archivo.py`) con tope temporal: mandamiento 1 — ninguna lectura sin hash ni archivo."""
+    import time
+    from pathlib import Path
+
+    from . import archivo
     req = urllib.request.Request(url, headers={"User-Agent": "ALMA-TONO-LAB/0.1 (student project; contact: repo issues)"})
     with urllib.request.urlopen(req, timeout=t) as r:                      # noqa: S310 (URL fija, https)
-        return json.load(r)
+        cuerpo = r.read()
+    ULTIMOS_HASHES[url] = archivo.sha256_hex(cuerpo)
+    if time.time() - _ULT_ARCHIVO.get(url, 0.0) >= ARCHIVO_CADA_S:
+        nombre = url.rsplit("/", 1)[-1].replace(".json", "") or "iss"
+        archivo.archivar(cuerpo, fuente="entorno", nombre=nombre, url=url, ts=archivo.ahora_utc(), raiz=Path(__file__).resolve().parents[2] / "data" / "entorno_vivo")      # carpeta propia (ignorada por git): el manifiesto de SWPC no se ensucia
+        _ULT_ARCHIVO[url] = time.time()
+    return json.loads(cuerpo)
 
 
 def clase_xrays(flujo: float) -> str:
@@ -37,7 +53,7 @@ def iss(datos: dict | None = None) -> dict:
     d = datos if datos is not None else _get(URL_ISS)
     return {"disponible": True, "lat": round(d["latitude"], 2), "lon": round(d["longitude"], 2), "alt_km": round(d["altitude"], 1), "vel_kms": round(d["velocity"] / 3600, 2),
             "visibilidad": d["visibility"], "sol_lat": round(d["solar_lat"], 2), "sol_lon": round(d["solar_lon"], 2),
-            "ts_utc": datetime.fromtimestamp(d["timestamp"], UTC).strftime("%Y-%m-%dT%H:%M:%SZ"), "fuente": URL_ISS,
+            "ts_utc": datetime.fromtimestamp(d["timestamp"], UTC).strftime("%Y-%m-%dT%H:%M:%SZ"), "fuente": URL_ISS, "hash_lectura_cruda": ULTIMOS_HASHES.get(URL_ISS),
             "a_la_luz": d["visibility"] == "daylight"}
 
 
@@ -45,14 +61,14 @@ def protones(serie: list | None = None) -> dict:
     s = serie if serie is not None else [x for x in _get(URL_PROT) if x.get("energy") == ">=10 MeV"]
     u = s[-1]
     return {"disponible": True, "pfu": u["flux"], "ts_utc": u["time_tag"], "max_ventana_pfu": max(x["flux"] for x in s), "n_lecturas": len(s),
-            "tormenta_s1_o_mas": u["flux"] >= UMBRAL_S1_PFU, "umbral_s1_pfu": UMBRAL_S1_PFU, "satelite": u.get("satellite"), "fuente": URL_PROT,
+            "tormenta_s1_o_mas": u["flux"] >= UMBRAL_S1_PFU, "umbral_s1_pfu": UMBRAL_S1_PFU, "satelite": u.get("satellite"), "fuente": URL_PROT, "hash_lectura_cruda": ULTIMOS_HASHES.get(URL_PROT),
             "serie": [round(x["flux"], 3) for x in s]}
 
 
 def rayosx(serie: list | None = None) -> dict:
     s = serie if serie is not None else [x for x in _get(URL_XR) if x.get("energy") == "0.1-0.8nm"]
     u = s[-1]
-    return {"disponible": True, "flujo_wm2": u["flux"], "clase": clase_xrays(u["flux"]), "ts_utc": u["time_tag"], "max_ventana": clase_xrays(max(x["flux"] for x in s)), "fuente": URL_XR}
+    return {"disponible": True, "flujo_wm2": u["flux"], "clase": clase_xrays(u["flux"]), "ts_utc": u["time_tag"], "max_ventana": clase_xrays(max(x["flux"] for x in s)), "fuente": URL_XR, "hash_lectura_cruda": ULTIMOS_HASHES.get(URL_XR)}
 
 
 def seguro(f: Callable[[], dict], fuente: str) -> dict:

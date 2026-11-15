@@ -77,7 +77,7 @@ export function VitalsMonitor({ onClose }: { onClose: () => void }) {
       {tab === "link" && link && (
         <div className="mt-3 normal-case tracking-normal" data-testid="link-tab">
           <div className="flex items-center justify-between"><p className="text-[10px] uppercase tracking-[0.18em] text-ink-faint">Link to Earth</p>
-            <button onClick={() => setOnline(!online)} aria-pressed={online} className="border border-ink-faint/50 px-3 py-1 text-[10px] uppercase tracking-[0.18em] hover:text-ink" style={{ color: online ? "#9fbf9f" : "var(--color-signal)" }}>{online ? "connected" : "no contact"}</button></div>
+            <button onClick={() => setOnline(!online)} aria-pressed={online} className="border border-ink-faint/50 px-3 py-1 text-[10px] uppercase tracking-[0.18em] hover:text-ink" style={{ color: online ? "var(--color-ink-dim)" : "var(--color-signal)" }}>{online ? "connected" : "no contact"}</button></div>
           <label className="mt-3 block text-[10px] uppercase tracking-[0.16em] text-ink-faint">one-way delay · {delay} min (published range {link.retardo_min[0]}–{link.retardo_min[1]} min)
             <input type="range" min={link.retardo_min[0]} max={link.retardo_min[1]} value={delay} onChange={(e) => setDelay(Number(e.target.value))} className="mt-1 w-full accent-[#ffb45c]" aria-label="One-way delay in minutes" /></label>
           <p className="mt-3 text-[12px] leading-snug text-ink">{online ? `A question to ground control is answered after about ${2 * delay} minutes.` : "Ground cannot answer. The Guardian keeps deciding on board."}</p>
@@ -94,17 +94,17 @@ export function VitalsMonitor({ onClose }: { onClose: () => void }) {
       <div className="mt-3 grid grid-cols-3 gap-3">
         <div><p className="text-[9px] uppercase tracking-[0.18em] text-ink-faint">pulse</p><p className="font-display text-4xl leading-none" style={{ color: cur.bandera === "sorpresa" ? "var(--color-signal)" : undefined }}>{Math.round(cur.lpm)}<span className="ml-1 text-[10px] text-ink-faint">bpm</span></p></div>
         <div><p className="text-[9px] uppercase tracking-[0.18em] text-ink-faint">HRV · RMSSD</p><p className="font-display text-4xl leading-none">{Math.round(cur.rmssd)}<span className="ml-1 text-[10px] text-ink-faint">ms</span></p></div>
-        <div><p className="text-[9px] uppercase tracking-[0.18em] text-ink-faint">state</p><p className="mt-1 text-[12px] uppercase tracking-[0.12em]" style={{ color: cur.bandera === "sorpresa" ? "var(--color-signal)" : "#9fbf9f" }}>{cur.bandera === "sorpresa" ? "surprise" : "inside baseline"}</p></div>
+        <div><p className="text-[9px] uppercase tracking-[0.18em] text-ink-faint">state</p><p className="mt-1 text-[12px] uppercase tracking-[0.12em]" style={{ color: cur.bandera === "sorpresa" ? "var(--color-signal)" : "var(--color-ink-dim)" }}>{cur.bandera === "sorpresa" ? "surprise" : "inside own band"}</p></div>
       </div>
       <svg viewBox={`0 0 ${TW} ${TH}`} className="mt-3 w-full" role="img" aria-label="Pulse trend with personal baseline band">
         <rect x={tx(0)} width={tx(ecg.base.ventana_s) - tx(0)} y={0} height={TH} fill="#efe8da" opacity="0.06" />
-        <rect x={0} width={TW} y={ty(ecg.base.media + 2 * ecg.base.sd)} height={ty(ecg.base.media - 2 * ecg.base.sd) - ty(ecg.base.media + 2 * ecg.base.sd)} fill="#9fbf9f" opacity="0.16" />
+        <rect x={0} width={TW} y={ty(ecg.base.media + 2 * ecg.base.sd)} height={ty(ecg.base.media - 2 * ecg.base.sd) - ty(ecg.base.media + 2 * ecg.base.sd)} fill="#efe8da" opacity="0.10" />
         <polyline fill="none" stroke="#efe8da" strokeWidth="1" points={ecg.tendencia.map((d) => `${tx(d.t + 5)},${ty(d.lpm)}`).join(" ")} />
         {flags.map((d) => <circle key={d.t} cx={tx(d.t + 5)} cy={ty(d.lpm)} r="1.6" fill="var(--color-signal)" />)}
         <line x1={tx(now)} x2={tx(now)} y1={0} y2={TH} stroke="#ffb45c" strokeWidth="1" />
       </svg>
-      <p className="mt-1 text-[9px] uppercase tracking-[0.14em] text-ink-faint">green band = ±2σ of this person&apos;s first 5 min · {flags.length} of {ecg.tendencia.length} windows flagged</p>
-      <div className="mt-3 flex items-start justify-between gap-3 border-t border-ink-faint/25 pt-3"><p className="text-[10px] leading-snug text-ink-dim normal-case tracking-normal">{ecg.aviso} Beat detector vs human annotation: {(100 * ecg.calidad.sensibilidad).toFixed(2)}% found, {(100 * ecg.calidad.ppv).toFixed(2)}% correct (n = {ecg.calidad.referencia}). A flag is a surprise, not an alarm: it has no receipt yet.</p><Stamp banner={ecg.banner} /></div>
+      <p className="mt-1 text-[9px] uppercase tracking-[0.14em] text-ink-faint">shaded band = ±2σ of this person&apos;s first 5 min (a display rule, not a preregistered test) · {flags.length} of {ecg.tendencia.length} windows flagged</p>
+      <div className="mt-3 flex items-start justify-between gap-3 border-t border-ink-faint/25 pt-3"><p className="text-[10px] leading-snug text-ink-dim normal-case tracking-normal">{ecg.aviso} Beat detector vs human annotation: {(100 * ecg.calidad.sensibilidad).toFixed(2)}% found, {(100 * ecg.calidad.ppv).toFixed(2)}% correct (n = {ecg.calidad.referencia}). A flag is a surprise, not an alarm: it has no receipt, no stated power, and its rule was not preregistered. Nothing here is shown green: green is reserved for receipts.</p><Stamp banner={ecg.banner} /></div>
       <p className="mt-2 text-[9px] text-ink-faint">{ecg.fuente} · doi:{ecg.doi} · {ecg.licencia}</p>
       </>)}
     </aside>
