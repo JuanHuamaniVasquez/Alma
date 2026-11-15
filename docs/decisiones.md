@@ -38,6 +38,7 @@
 | D-32 | 2026-11-15 | **FB-011 publicada:** la potencia declarada se cumple en datos reales (sueño y pulso) con el control negativo válido; **la predicción de fallo en pulso (H3) fue refutada y se publica** | Claude (bajo D-15) | `docs/actas/NOTA-FB-011.md` |
 | D-33 | 2026-11-15 | **FB-001/FB-002 sin originales:** se buscaron en la máquina; hay una reimplementación «equivalente» (descartada como sustituto) y el **PDF fundacional con los números y la Tabla 9**. Camino elegido: **réplica independiente con ajuste fuera de muestra** (MP-13) en vez de esperar o citar sin verificar; las alternativas están en `propuestas.md` | Claude (bajo D-15), a petición del humano | `docs/referencia-fb001-fb002.md` |
 | D-34 | 2026-11-15 | **Banco de mesa (MP-9):** protocolo escrito; se divide en 12a (software, ahora) y 12b (hardware, humano) | Claude (bajo D-15) | `docs/protocolo-banco-de-mesa.md` |
+| D-35 | 2026-11-15 | **FB-002 (10/10, 21 d) se reencuadra:** sin original, la réplica reconstruida (FB-015-v2) reproduce la estructura de la Tabla 9 (6/7) y el umbral de 200 min pero **no** el 10/10 (8/10). El pitch y CLAUDE.md §10 usan la etiqueta «documentado, no replicado» | Claude (bajo D-15), por resultado preregistrado | `NOTA-FB-015-v2.md` |
 
 ## Decisiones pendientes del humano
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).

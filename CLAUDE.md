@@ -120,6 +120,7 @@ data/             fixtures, extractos OS-892, fichas de verdad, salidas de corri
 Detalle completo: DOC-04 §9 y DOC-03 §8–§9. Resumen:
 
 - **FB-002 reproducible: 10/10 detecciones, preaviso mediano 21 días** (semillas 20261113/14/15) — test de regresión permanente.
+  - **Estado real (D-35, 2026-11-15):** el script original no existe. Réplica propia FB-015-v2: estructura de la Tabla 9 replicada (6/7), umbral ≈200 min, pero **8/10, no 10/10**. En el pitch: «documentado, no replicado». Regresión permanente: `tests/test_banco_ocio_v2.py`.
 - **LB-1 + El Contrapeso** (cierre de conservación agua/aire/energía) — P0 no negociable.
 - **FB-003 y FB-005 ejecutadas con hash publicado ANTES de correr**; demo kill en dos columnas (detector contra manifiesto: ciego / detector contra ley: alarma).
 - **LA SALA + EL RESIDUO vivos**; LA TORMENTA con SWPC en vivo.
