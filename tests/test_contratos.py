@@ -305,3 +305,20 @@ def test_dc13_banner_url_y_simulador():
         con("DC-13", banner="SIMULADO")  # swpc ⇒ REAL
     with pytest.raises(ValidationError):
         con("DC-13", fuente="simulador", banner="REAL")
+
+
+# --- v0.2.4: DC-12 admite NTRS y PMID como fuentes con identificador -----------------------------
+def test_dc12_acepta_fuentes_ntrs_y_pmid_validas():
+    assert con("DC-12", fuentes=[dict(id="20190027319", tipo="NTRS")])      # Jones 2019 (verificado)
+    assert con("DC-12", fuentes=[dict(id="2297206", tipo="PMID")])          # Guyatt 1990 (verificado)
+
+
+@pytest.mark.parametrize("fuente", [
+    dict(id="2019-0027319", tipo="NTRS"),   # no son 11 dígitos
+    dict(id="123", tipo="NTRS"),
+    dict(id="PMC8527385", tipo="PMID"),     # un PMC no es un PMID
+    dict(id="12", tipo="PMID"),
+])
+def test_dc12_rechaza_ntrs_y_pmid_mal_formados(fuente):
+    with pytest.raises(ValidationError):
+        con("DC-12", fuentes=[fuente])

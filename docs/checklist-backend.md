@@ -14,7 +14,7 @@
 7. **Stack cerrado**: Django (+DRF) · PostgreSQL · Next.js; dominio puro en `src/` (sin Django), una app Django por módulo. Frontend (Next) viene después del backend.
 8. **Lo que el jurado compra**: LA SALA + detectores con recibo + preregistros públicos con hash; el lab como **métrica** (tarjetas nacidas → refutadas → sostenidas → detectores nuevos).
 
-**Lectura completada el 2026-11-15:** DOC-02 y DOC-04 leídos enteros. **Sigue sin leer DOC-03** (pantallas y banco del jurado). Lo que cambió al leerlos: (1) FB-001, FB-002 y FB-005 dependen de «el banco Monte Carlo de FB-002», que **no está en este repo**, y tampoco sus actas ni scripts: M2.3 y M2.6 siguen bloqueados hasta que el humano los aporte; (2) la tesis del producto es medir **sin wearables**, leyendo la telemetría del hábitat: **LifeSnaps (wearables) solo valida D1**; P8/P9/P11 no tienen datos reales; (3) DOC-04 §10 prohíbe construir M-L1…M-L5 ahora; (4) DC-12 y su puerta de «fuente con identificador» ya coinciden con lo implementado.
+**Lectura completada el 2026-11-15: DOC-01, DOC-02, DOC-03 y DOC-04 leídos enteros, más el bestiario, el radar y el LEEME.** La coherencia documento ⇄ código la comprueba una máquina (`tests/test_doc_vs_codigo.py`: campos y enums de los 13 contratos + que los 36 módulos de DOC-01 §2 estén en este mapa). Las afirmaciones heredadas con su estado real están en `docs/afirmaciones-por-verificar.md`. Lo que cambió al leerlos: (1) FB-001, FB-002 y FB-005 dependen de «el banco Monte Carlo de FB-002», que **no está en este repo**, y tampoco sus actas ni scripts: M2.3 y M2.6 siguen bloqueados hasta que el humano los aporte; (2) la tesis del producto es medir **sin wearables**, leyendo la telemetría del hábitat: **LifeSnaps (wearables) solo valida D1**; P8/P9/P11 no tienen datos reales; (3) DOC-04 §10 prohíbe construir M-L1…M-L5 ahora; (4) DC-12 y su puerta de «fuente con identificador» ya coinciden con lo implementado.
 
 ## 1 · Resumen de estado
 
@@ -26,7 +26,7 @@
 | M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
 | M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
 
-Tests: **155 pytest verdes**. `sysmap check`: nada peor que la línea base.
+Tests: **188 pytest verdes**. `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
 
@@ -99,6 +99,17 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 - [~] **GO-2 preregistro con hash SHA-256 ANTES de correr**: **automatizado** (`src/gobernanza/preregistro.py`: hash de bytes exactos, índice solo-anexar, compuerta `exigir_preregistro`, detección de edición posterior). FB-005…FB-008 re-registradas (101 tests). **[!] M0.5 sigue abierta:** los hashes de DOC-02 Ap. B no son reproducibles; FB-001/002 sin acta ni script; FB-003/004 sin acta redactada. [ ] Enlazar el hash del acta a la alarma DC-05 (`hash_preregistro`).
 - [ ] **GO-6** epidemiología del error: caso con linaje, cuarentena, R0 por fuente, acta de brote (DC-10; FB-007).
 - [ ] GO-1 árbitro externo (humano, pendiente; mientras tanto el árbitro es matemático: hash + semilla) · GO-3, GO-4, GO-5, GO-7 son proceso, no código.
+
+## 8b · Contenido curado (K-1…K-6) — se mina, no se programa
+
+| ID | Qué es (DOC-01 §2) | Estado real en el repo (2026-11-15) |
+|---|---|---|
+| K-1 | Bestiario: familias de hipótesis minadas de ficción + clase real | [~] `docs/inventario-maestro-bestiario.md` presente; es **andamio** (BRONCE) y quedó **anterior a DOC-01 v0.2** (8 balances vs 9 presupuestos); lleva nota de verificación de unicidad |
+| K-2 | Familias de casos FM-1…FM-10 con ancla citada | [~] listadas en el bestiario y en DOC-01 §6; las anclas con identificador están verificadas en `auditoria-de-fuentes.md`; **faltan** las que solo se citan por nombre (M0.12) |
+| K-3 | Semillas públicas y reglas de reproducibilidad | [x] `SEMILLAS_PUBLICAS` en `src/contratos/comunes.py`, compuerta en `preregistro.py` y `compuerta.py` |
+| K-4 | Ficha de Verdad (8 CIENCIA REAL + 3 EXTRAPOLACIÓN) | [ ] **no está en el repo**; hay una ficha parcial (`data/OS-892-extracto.*`, verificada). Hay que reconstruirla con fuentes enlazadas |
+| K-5 | Banco de anclas citadas (~45 fuentes verificadas) | [~] 23 anclas en DOC-02 Ap. C + banco del bestiario §7 + 19 identificadores verificados (`auditoria-de-fuentes.md`) + fuentes S-01…S-10; **no consolidado** en un solo registro de ~45 |
+| K-6 | Ideas dormidas (10 de 17) con razón de muerte escrita | [ ] **no está en el repo**; solo se las menciona. Hay que pedirlas al humano o reconstruirlas |
 
 ## 9 · Transversal — reglas y tests que ya las hacen cumplir
 

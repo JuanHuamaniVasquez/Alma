@@ -1,4 +1,4 @@
-# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.3)
+# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.4)
 
 > **Qué es este documento:** el contrato de ingeniería del proyecto. Define las capas del sistema, el registro oficial de módulos, los contratos de datos campo a campo, el protocolo de cambios y la cola de mejoras propuestas. Es el antídoto contra el vibe coding: nada se construye sin fila en el registro, y toda mejora futura tiene exactamente un hogar.
 > **Reglas del documento:** (1) nada se codea sin su fila en el registro §2; (2) toda mejora nueva entra por el protocolo §5 y queda como PROPUESTA en §7 hasta ser aceptada; (3) los contratos §3 se versionan con el mapa — cambiar un contrato es cambiar de versión del mapa.
@@ -7,6 +7,7 @@
 > **v0.2 → v0.2.1 (2026-11-15, decisión del humano; cambio de contrato → bump según §5):** (1) DC-03 `tipo` gana `lectura_clima_espacial` (cada lectura exitosa de SWPC entra como lectura; `tormenta_solar` queda para eventos declarados oficialmente — sin umbral en la ingesta: la ingesta registra, el detector califica) y DC-03 gana `banner`; (2) DC-01/DC-02: la ausencia admite `valor` vacío, solo en ausencia y en ambos sentidos; (3) DC-12: `preregistro_hash` obligatorio desde `en_prueba`; (4) regla de herencia de banner en derivados (convención general).
 > **v0.2.1 → v0.2.2 (2026-11-15, MP-4 aceptada por el humano; cambio de contrato → bump según §5):** nuevo contrato **DC-13 · Registro de intento de ingesta** (el fallo de un feed es dato: separa «sin evento» de «no pudimos mirar»).
 > **v0.2.2 → v0.2.3 (2026-11-15, decisión del humano; cambio de contrato → bump según §5):** DC-04 fija la fórmula `residuo_contable = emision_observada − emision_esperada` y la regla de cierre de línea `|residuo_contable| ≤ 2 · incertidumbre_del_manifiesto` (mismo umbral que `dos_sigma`). Es una decisión de diseño aún **sin validar con datos reales**.
+> **v0.2.3 → v0.2.4 (2026-11-15, D-20; cambio de contrato → bump según §5):** DC-12 `fuentes[]` admite también **NTRS** (id de 11 dígitos) y **PMID**, además de accesión OSDR, DOI y lote. Motivo: DOC-04 §2 lista NTRS como cuerpo público con identificador y DOC-01 no lo admitía (contradicción entre documentos).
 
 ---
 
@@ -301,7 +302,7 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | `mecanismo` | ref biblioteca FA | Obligatorio; "correlación sin mecanismo" no pasa la puerta |
 | `prediccion` | texto falsable | Qué debería observarse, cuándo, con qué tamaño de efecto mínimo |
 | `senal_refutadora` | texto | Escrita antes de probar (heredada de las H-cards) |
-| `fuentes[]` | lista de ids externos | Accesión OSDR / DOI / lote con semilla. **Sin fuente cargada, la tarjeta no existe** |
+| `fuentes[]` | lista de ids externos | Accesión OSDR / DOI / NTRS / PMID / lote con semilla (v0.2.4). **Sin fuente cargada, la tarjeta no existe** |
 | `precio` | {datos, cómputo, días} | Incluye costo de instrumento vía DC-11 |
 | `valor_si_cierta` | detector(es) DC-xx nuevos | El único modo de pagar renta |
 | `estado` | enum: vivero · en_prueba · refutada · sostenida · sin_datos | Tres veredictos honestos + dos estados de trabajo |
@@ -419,7 +420,7 @@ Cada fila sigue el protocolo §5: una capa destino, ancla verificada, prueba cua
 
 ## Cómo vive este documento
 
-- Se versiona como todo el proyecto (**v0.2.3 hoy**: parche Apéndice A de DOC-02 + adiciones de DOC-04 aplicados el 11-nov; próximo bump cuando cambie un contrato DC-x o se acepte/rechace una MP).
+- Se versiona como todo el proyecto (**v0.2.4 hoy**: parche Apéndice A de DOC-02 + adiciones de DOC-04 aplicados el 11-nov; próximo bump cuando cambie un contrato DC-x o se acepte/rechace una MP).
 - Cada acta FB-xxx nueva añade su fila en §6 el mismo día que se ejecuta.
 - Cada mejora propuesta entra como fila en §7 con estado PROPUESTA; el rechazo también se escribe (como las 10 ideas dormidas: nada muere sin razón).
 - Antes de cada sesión de código se abre §2; después de cada sesión se actualiza el estado de las filas tocadas. El mapa es el primer punto ciego programado del software: sabe dónde está todo, y por eso sabe qué falta.

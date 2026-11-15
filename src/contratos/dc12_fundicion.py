@@ -20,11 +20,15 @@ from .comunes import Contrato, Sha256, Texto, TsUtc
 
 _OSDR = re.compile(r"^OSD?-\d+$")
 _DOI = re.compile(r"^10\.\d{4,9}/\S+$")
+_NTRS = re.compile(r"^\d{11}$")   # id de cita de NASA NTRS (p. ej. 20190027319)
+_PMID = re.compile(r"^\d{6,9}$")
 
 
 class TipoFuente(StrEnum):
     ACCESION_OSDR = "accesión OSDR"
     DOI = "DOI"
+    NTRS = "NTRS"   # DOC-04 §2 lista NTRS como cuerpo público con identificador (v0.2.4)
+    PMID = "PMID"
     LOTE = "lote"
 
 
@@ -39,6 +43,10 @@ class Fuente(Contrato):
             raise ValueError("accesión OSDR con forma OS-NNN u OSD-NNN")
         if self.tipo is TipoFuente.DOI and not _DOI.fullmatch(self.id):
             raise ValueError("DOI con forma 10.NNNN/…")
+        if self.tipo is TipoFuente.NTRS and not _NTRS.fullmatch(self.id):
+            raise ValueError("NTRS con 11 dígitos (p. ej. 20190027319)")
+        if self.tipo is TipoFuente.PMID and not _PMID.fullmatch(self.id):
+            raise ValueError("PMID numérico de 6 a 9 dígitos")
         if self.tipo is TipoFuente.LOTE and self.semilla is None:
             raise ValueError("un lote exige semilla")
         return self

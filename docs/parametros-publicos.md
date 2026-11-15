@@ -23,3 +23,16 @@
 ## Fuentes
 - Ewert, M. K. & Stromgren, C. (2019). *Astronaut Mass Balance for Long Duration Missions*. ICES-2019-126 · NTRS [20190027563](https://ntrs.nasa.gov/citations/20190027563).
 - *Developing a Daily Metabolic Rate Profile for Human Exploration Missions*. ICES 2021 · NTRS [20205010692](https://ntrs.nasa.gov/citations/20205010692).
+
+## Datos reales sobre «el manifiesto miente» (Jones 2019, NTRS 20190027319; leído en el PDF)
+
+| ID | Dato | Cita textual |
+|---|---|---|
+| P-11 | Error de los manifiestos de fiabilidad de la ISS | *«Of the 20 ORUs with different estimated and flight MTBFs, 14 had lower actual than estimated MTBFs. 7 of the 20 had failure rates between 1.9 and 6.3 times the original failure rates … 4 of the 20 ORUs had failure rates from 7.5 to 22 times the estimated failure rates. These were the four UPA ORUs…»* |
+| P-12 | **El cuerpo rompe la máquina** (acoplamiento documentado) | *«The ISS Urine Processor Assembly (UPA) distillation assembly failed due to precipitation of calcium sulfate due to unexpectedly high concentrations of calcium in astronaut urine, due to unanticipated astronaut bone loss in microgravity. (Do, 2016)»* |
+| P-13 | Peor componente | *«the worst in ISS life support is a pump in the urine processor. This single highly unreliable component increases the system failure rate to a disastrous level, 98%.»* |
+
+Límite: P-11 cuenta solo las ORU **cuyo MTBF de vuelo difiere del estimado** (no todas las ORU de la ISS). Es un ratio de tasas de fallo, no un error de consumo de recurso: sirve como **prior de lo equivocado que puede estar un manifiesto**, no como σ directa.
+
+## Consistencia interna (aritmética mía, **derivada**, rotulada así)
+Cociente de masas CO₂/O₂: Ewert 1,08/0,89 = **1,21** → RQ molar = 1,21 × (32,00/44,01) ≈ **0,88**; ICES 2021 Tabla 2: 1,01/0,84 = **1,20** → RQ ≈ **0,87**. Ambos quedan entre el RQ nominal (0,86) y el aeróbico (0,95), y el de más ejercicio (90 min) es mayor que el de menos: coherente con P-05. Las cifras de NASA son **consistentes entre sí**, lo que da confianza en usarlas como parámetros.

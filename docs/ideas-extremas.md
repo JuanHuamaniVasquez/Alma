@@ -53,5 +53,18 @@ Pensar tripulación + hábitat como un sistema termodinámico y usar el **desbal
 ### I-12 **Ley de conservación de la confianza**
 Si cada detector reparte una «masa de confianza» finita entre hipótesis, ninguna alarma puede aumentar su confianza sin que otra baje (suma conservada) → cierra el hueco de las alarmas que «siempre suben». **Sin ancla ni prueba definida:** idea para pensar, no para construir.
 
+## Segunda ola — nacida de lo VERIFICADO el 2026-11-15 (no de la imaginación)
+
+### I-13 ★ **El cuerpo rompe la máquina** — el caso real que justifica el libro único
+*Hecho verificado (Jones 2019, `parametros-publicos.md` P-12):* el procesador de orina de la ISS **falló** por precipitación de sulfato de calcio, por la **pérdida ósea de los astronautas** que nadie anticipó. Un acoplamiento **cuerpo → hardware** que ningún manifiesto de máquina previó: el manifiesto del UPA asumía una orina que el cuerpo en microgravedad ya no producía.
+*La idea:* en un libro único, el presupuesto `carga` (hueso) y el `agua` (carga del UPA) se pueden **cruzar**: el manifiesto de la máquina debería depender del estado fisiológico. Es el argumento más fuerte, **y con cita textual**, de por qué cuerpo y máquina van en el mismo libro. → **MP-7** (tarjeta DC-12; honesta: sin datos abiertos para probarla, estado `sin_datos`).
+
+### I-14 **La nave como cámara calorimétrica: firma vectorial del residuo O₂–CO₂**
+*Hecho verificado hoy:* las cifras de NASA son consistentes (RQ ≈ 0,88 y ≈ 0,87 implícitos; `parametros-publicos.md`). *La idea:* el residuo de conservación no es solo una magnitud, es un **vector** (ΔO₂, ΔCO₂, …): su **dirección** identifica la **clase** de la anomalía. Una fuga de O₂ mueve solo O₂; un fallo del depurador mueve solo CO₂; un cambio metabólico de la tripulación mueve ambos con pendiente ≈ RQ; un organismo vivo no declarado consume O₂ y emite CO₂ con su propio RQ. Convierte «NO CIERRA» en **«NO CIERRA y parece un cambio metabólico»**.
+*Precedentes (por verificar, no los he citado):* el aislamiento de fallos por firma de residuos (FDI) y la calorimetría indirecta de cuerpo entero son campos establecidos; lo propio sería aplicarlos al libro cuerpo+máquina con RQ de NASA. *Primera prueba:* en silicio, SIMULADO, acta preregistrada; **muere si las clases no se separan por encima del azar**. No entra a la cola mientras dure el alcance congelado (CLAUDE.md §14).
+
+### I-15 ★ **Prior empírico del «manifiesto mentiroso»** — arreglar la limitación de nuestra propia demo
+*Limitación declarada de FB-005-D1:* se idealizó el manifiesto como exacto. *Dato real que la corrige (P-11):* en la ISS, de 20 componentes cuyo MTBF de vuelo difería del estimado, 14 fueron peores, 7 entre 1,9 y 6,3× y 4 entre 7,5 y 22×. *La idea:* muestrear el error del manifiesto de ese prior real en las simulaciones de FB-005 (M2.6). → **MP-8**. Si El Contrapeso pierde su ventaja con un manifiesto realistamente equivocado, **lo publicamos**.
+
 ---
 **Reglas de este documento:** una idea sin prueba falsable no sube de aquí. Lo que sobreviva a su primera prueba entra a `docs/propuestas.md` y, si el humano la acepta, a la cola.

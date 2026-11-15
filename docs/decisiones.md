@@ -23,6 +23,10 @@
 | D-17 | 2026-11-15 | **Primer experimento del proyecto:** FB-005-D1 (demo kill del Contrapeso) preregistrada con hash antes de escribir el runner y ejecutada una sola vez; predicción confirmada. No sustituye a FB-005 (400 corridas) | Claude (bajo D-15) | `7d53d7a`, `docs/actas/RESULTADOS.jsonl` |
 | D-18 | 2026-11-15 | **La σ de un sensor solo existe con fuente verificada**; si es de otro dispositivo se declara PROXY. Sin σ verificada el indicador no se emite | Claude (bajo D-15) | `src/ingesta/incertidumbre.py` |
 | D-19 | 2026-11-15 | **DC-02 no se emite desde LifeSnaps** (el dataset no trae `duracion_respuesta_s`). Si se quiere usar ánimo de datasets sin ese metadato, requiere un cambio de contrato (a decidir por el humano) | Claude (bajo D-15) | `src/ingesta/lifesnaps.py` |
+| D-20 | 2026-11-15 | **DC-12 admite NTRS y PMID** como fuentes con identificador (DOC-01 → v0.2.4): DOC-04 §2 listaba NTRS y DOC-01 no lo admitía. Hallado al leer DOC-04 completo | Claude (bajo D-15) | `src/contratos/dc12_fundicion.py` |
+| D-21 | 2026-11-15 | **Coherencia documento ⇄ código comprobada por máquina** y registro de afirmaciones heredadas (`afirmaciones-por-verificar.md`): lo ✗/⚠ no se dice al jurado como hecho | Claude (bajo D-15), a petición del humano | `tests/test_doc_vs_codigo.py` |
 
 ## Decisiones pendientes del humano
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).
+- ¿Se aceptan **MP-7 y MP-8** (`docs/propuestas.md`)?
+- Aportar el **banco Monte Carlo, actas y scripts de FB-001/FB-002** (bloquean M2.3 y M2.6), la **Ficha de Verdad (K-4)** y las **ideas dormidas (K-6)**.

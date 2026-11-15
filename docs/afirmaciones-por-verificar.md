@@ -1,0 +1,23 @@
+# Afirmaciones heredadas de los documentos — estado de verificación (2026-11-15)
+
+> Cada afirmación factual que aparece en DOC-01…DOC-04 / bestiario / radar y que se usa ante el jurado, con su estado **real** tras buscarla en la fuente. ✓ = verificada contra la fuente (cita o dato leído) · ~ = verificada solo en parte · ✗ = no la pude verificar · ⚠ = contradice a la fuente.
+> Regla: lo ✗ y ⚠ **no se dice ante el jurado como hecho** hasta que se resuelva.
+
+| # | Afirmación (dónde) | Estado | Evidencia |
+|---|---|---|---|
+| A-01 | «El peor componente del soporte vital de la ISS es el procesador de orina» (DOC-02 C-4, DOC-03 §1) | ✓ | Jones 2019, NTRS [20190027319](https://ntrs.nasa.gov/citations/20190027319): *«the worst in ISS life support is a pump in the urine processor»* (leído en el PDF) |
+| A-02 | «Mantenimiento real +60 % sobre el diseño en la ISS (Russell 2007)» (DOC-03 §1, §7) | ~ | El paper existe: Russell et al., *Maintenance, reliability and policies for orbital space station life support systems*, RESS 2007, doi:[10.1016/j.ress.2006.04.020](https://doi.org/10.1016/j.ress.2006.04.020) (**el título en DOC-02 C-5 es otro: «…orbital space systems»**). La cifra «60,4 %» **no la pude leer** (resumen no accesible). **Sí está verificada** una cifra equivalente y más fuerte, de Jones 2019: *«Of the 20 ORUs with different estimated and flight MTBFs, 14 had lower actual than estimated MTBFs… 4 of the 20 ORUs had failure rates from 7.5 to 22 times the estimated failure rates»* |
+| A-03 | «Kp = 3,33 el 9-nov» (DOC-01 IN-3, DOC-03 §2) | ✓ | Archivo Kp de GFZ (CC BY 4.0): intervalo 2026-11-09 03:00 UTC → **3,333** |
+| A-04 | «98 % de recuperación de agua en la ISS (NASA, 2023)» (DOC-02 C-1) | ✓ (prensa) | Confirmada por múltiples medios (junio de 2023, tras añadir el Brine Processor Assembly; antes 93–94 %). **No abrí la nota primaria de NASA.** Matiz: es recuperación del agua de orina y sudor, **no de heces** |
+| A-05 | «NASA lista el monitoreo médico y ambiental como capacidad insuficiente en sus documentos de brechas tecnológicas (feb-2025)» (DOC-01 §8, DOC-03 §1) | ✗ | Búsqueda dirigida: **no hallé** una «Space Technology Gap List 2025»; solo material de brechas de capacidad de ECLSS/CHP en papers ICES. No decir «feb-2025» sin el documento |
+| A-06 | «NASA y Google prueban un robot médico autónomo (oct-2026)» (DOC-01 §8) | ✗ | No verificado. (El bestiario cita CMO-DA con Google Cloud, ago-2025: tampoco lo abrí) |
+| A-07 | «Gemelo digital de ECLSS autónoma: Gratius et al., AIAA 2024» (DOC-01 §8, DOC-02 §0.5) | ✗ | No verificado |
+| A-08 | FB-002 «10/10 detecciones, preaviso mediano 21 días» (DOC-03 §2, CLAUDE.md §10) | ✗ | Resultado de un script **que no está en el repo**; sin acta ni código no puedo reproducirlo. Es compromiso del submit (M2.3) |
+| A-09 | «Tenemos 8 actas FB-001…FB-008» (DOC-03 §2) | ⚠ | En el repo hay **4** (FB-005…008, re-registradas). FB-001/002 sin acta ni script; FB-003/004 «programadas» sin acta |
+| A-10 | Hash FB-005 `6c923ac5…2567b9b` en pantalla en la demo (DOC-03 §4) | ⚠ | **No se pudo reproducir** desde el texto del DOC. Decisión D-13: la referencia pública es el re-registro (`58d0ff17…`); en M3.4 se muestra el reproducible y se conserva el original como histórico |
+| A-11 | «El hábitat de la demo: días 1–14 normales, fuga en el día 15, circuito de agua» (DOC-03 §4) | ~ | Mi demo FB-005-D1 es **de O₂, un día y un control**. El guion de DOC-03 (15 días, agua) lo cubre M2.6/M3.4 con el banco |
+| A-12 | OS-892: pérdida ósea «1–2 %/mes» (bestiario) | ✓ (como cita) | Cita literal en la API de OSDR; ancla primaria NASA HRP 1–1,5 %/mes (ver `auditoria-de-fuentes.md`) |
+| A-13 | «0,83 kg O₂/día y ≈1 kg CO₂/día por persona» (bestiario) | ✓ | NASA ICES: 0,84–0,89 kg O₂ y 1,01–1,08 kg CO₂ (`parametros-publicos.md` P-02, P-03) |
+| A-14 | «NASA STD-3001: 600 mSv carrera; OCHMO-TB-020: 250 mSv/evento; Hassler 2014: 1,84/0,64 mSv/día» (bestiario) | ✗ | Pendiente de M0.12 (citas por nombre → identificador) |
+| A-15 | «19 de 49 astronautas con cefalea; CO₂ < 2,5 mmHg (OCHMO-TB-004)» (bestiario, DOC-04) | ✗ | Pendiente de M0.12 |
+| A-16 | «Biosphere 2: O₂ 20,9 %→14 %, el hormigón absorbió el CO₂ (Severinghaus 1994)» (bestiario) | ✗ | Pendiente de M0.12 |
