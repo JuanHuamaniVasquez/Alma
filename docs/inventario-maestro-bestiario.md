@@ -238,3 +238,7 @@ Elevación de elección libre: **"de 3 a 7 diamantes"**. Rúbrica de 6 puertas (
 - **Estado del puente v5→v6:** 1/3 ejecutada. Faltan: matriz co-deriva (D6) y TOC-brote (D7).
 
 **Radar honesto vs NASA (sin adulación):** capacidad total hoy **NASA 8,5 vs TONO-LAB 6,5** — ganan en datos (T3+ desde hace 25 años), hardware y fiabilidad. Empatamos en matemática (CUSUM/EWMA es de 1954 y está en su toolbox; no reclamamos invención). Vamos adelante SOLO en el nicho verificado: ensamblaje cuerpo+máquina en un balance (9 vs 3), estándar abierto + sello Plimsoll (9 vs 3), falsación con recibos (8 vs 6), velocidad (9 vs 4). **La única competición ganable hoy: los datos abiertos de NASA contra sus puntos ciegos** (OSDR → ensayo de mena; criterio de victoria T3 = que un tercero replique nuestros residuos con nuestras semillas). Límite del campo vs límite propio: el techo científico está más arriba de lo que NASA opera hoy; el nuestro es acceso — y todo lo que NASA abre gratis es nuestro laboratorio.
+
+---
+
+> **Nota de verificación (2026-11-15, Claude):** las afirmaciones de unicidad de este documento («nadie unifica…», «ningún paper o prototipo de NASA describe ese ensamblaje», «verificado en auditoría §8») **no las he podido verificar**, y una búsqueda dirigida halló precedentes parciales (ORACLE, proyecto PSU/NASA, conciliación de datos en ingeniería de procesos). Léelas como **hipótesis de posicionamiento**, no como hechos. Detalle y fuentes en `docs/evaluacion-paper.md` §7. Los puntajes del radar son autoevaluación.

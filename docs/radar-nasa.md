@@ -62,3 +62,7 @@
 *"El campo de conocimiento no tiene límite, solo el nuestro y lo que podemos hacer."*
 
 Correcto y medible: el techo del campo (medir cuerpos y máquinas en un solo balance, con preaviso útil y contestable) está muy por encima de lo que NASA opera HOY — ellos también vuelven a umbrales fijos y silos cuerpo/máquina. Nuestro límite no es el campo: es **acceso** (datos, hardware, publicaciones). Y el acceso tiene una puerta abierta que nadie usa a fondo: **todo lo que NASA abre gratis es nuestro laboratorio.** La frontera no se pide; se mina.
+
+---
+
+> **Nota de verificación (2026-11-15, Claude):** las afirmaciones de unicidad de este documento («nadie unifica…», «ningún paper o prototipo de NASA describe ese ensamblaje», «verificado en auditoría §8») **no las he podido verificar**, y una búsqueda dirigida halló precedentes parciales (ORACLE, proyecto PSU/NASA, conciliación de datos en ingeniería de procesos). Léelas como **hipótesis de posicionamiento**, no como hechos. Detalle y fuentes en `docs/evaluacion-paper.md` §7. Los puntajes del radar son autoevaluación.

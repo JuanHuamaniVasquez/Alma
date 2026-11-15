@@ -51,3 +51,23 @@
 - No reclamar novedad sin la revisión del §5.1.
 - No ejecutar nada sin acta registrada (la compuerta `exigir_preregistro` lo impide).
 - No cambiar un umbral después de ver resultados (eso es HARKing; sería un acta nueva `-v2`).
+
+## 7 · Posicionamiento: qué es común y qué podría ser original (búsqueda dirigida, 2026-11-15)
+
+> Misma salvedad: búsqueda rápida, **no sistemática**. «No encontré» ≠ «no existe». Las fuentes marcadas con enlace las verifiqué (Crossref / NTRS / arXiv / lectura de la página).
+
+| Pieza de ALMA | Qué encontré | Veredicto |
+|---|---|---|
+| **Línea base personal** del astronauta | Línea de trabajo activa: PSU/NASA ([pdx.edu](https://www.pdx.edu/news/when-911-millions-miles-away-psu-researcher-builds-ai-guardian-mars-missions)); ORACLE, signos vitales de tripulante como plataforma PHM (Fink et al., [Univ. de Arizona](https://experts.arizona.edu/en/publications/oracle-a-phm-test-validation-platform-for-anomaly-detection-in-cr/)); gemelos digitales de astronautas | **COMÚN.** Lo propio sería el CUSUM bilateral + el piso de detección fijado por el manifiesto + el protocolo preregistrado |
+| **Residuo de conservación / cierre de balance** (El Contrapeso) | Es el campo establecido de **conciliación de datos y detección de errores gruesos** de la ingeniería de procesos: Narasimhan & Jordache, *Data Reconciliation and Gross Error Detection* (Gulf, 1999/2000; capítulos en Crossref, p. ej. [10.1016/b978-088415255-2/50008-2](https://doi.org/10.1016/b978-088415255-2/50008-2)), con aplicación industrial a inventarios | **MÉTODO COMÚN.** Hay que citarlo y presentarlo como *aplicación*, no como invención. Su prueba estadística clásica vale estrictamente para restricciones lineales |
+| **Metabolismo ↔ balance de cabina** (O₂, CO₂, calor) | Conocido para diseño y planificación: Ewert, [NTRS 20190027563](https://ntrs.nasa.gov/citations/20190027563); perfil metabólico diario, [NTRS 20205010692](https://ntrs.nasa.gov/citations/20205010692) (ICES 2021); métodos de la era Apolo | **COMÚN** como modelo. Usarlo como **detector de salud individual dentro de un libro único**: no lo encontré, es la candidata a novedad |
+| **Cuerpo + máquina juntos** | Precedente parcial: ORACLE trata al tripulante como biosensor dentro de un sistema de salud del hábitat (prueba de concepto) | La afirmación «**nadie unifica**» (radar §2, bestiario §8) **no se sostiene tal cual**. Decir: «no encontré uno con un único libro de cierre y protocolo preregistrado» |
+| **Evaluación preregistrada con hash y semillas públicas** para detección de anomalías | No encontré ningún benchmark así. Sí está documentado que **los rankings de detectores de anomalías no son fiables** por decisiones de evaluación ([arXiv 2608.04613](https://arxiv.org/abs/2608.04613)) | **Candidata más fuerte a original y oportuna** |
+| Alarmas con recibo ejecutable; LA FUNDICIÓN (hipótesis → detector) | **No busqué todavía** | Sin veredicto; entra en M5.5 |
+
+**Cambios recomendados antes de seguir (ninguno obliga a rehacer el diseño):**
+1. **Reencuadrar, no renombrar:** el Contrapeso = *conciliación de datos aplicada a un hábitat tripulado*. Se cita la bibliografía y se conserva la idea.
+2. **El eje de originalidad a defender**: (a) el protocolo preregistrado y reproducible; (b) un único libro de cierre cuerpo + máquina; (c) el hallazgo «el piso de detección lo fija el manifiesto, no el sensor». Todo lo demás es soporte.
+3. **Suavizar las afirmaciones de unicidad** en los docs (notas de verificación añadidas a `radar-nasa.md` y `inventario-maestro-bestiario.md`).
+4. **Anclar la simulación a números públicos**: parametrizar el manifiesto de FB-005 con el perfil metabólico de NTRS 20205010692 y las cifras de Ewert. Sigue siendo SIMULADO, pero con parámetros citables.
+5. **Validar antes de construir más:** correr M2.7/M2.8 sobre datos reales (LifeSnaps) **antes** de añadir módulos. Congelar el alcance en LB-1 + Contrapeso + MO-1…MO-3 + preregistro; LA FUNDICIÓN queda en segundo plano hasta tener tarjetas con fuente real.
