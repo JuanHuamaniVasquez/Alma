@@ -21,12 +21,12 @@
 | Bloque | Hecho | Falta |
 |---|---|---|
 | M0 Base | M0.1 stack · M0.2 repo · M0.3 contratos · M0.4 IN-3 (parcial) · M0.5 (parcial: GO-2 automatizado) · M0.6 andamio · M0.7 v0.2.1 · M0.8 banner heredado · M0.9 auditoría · M0.10 correcciones · M0.11 DC-13 · M0.13 persistencia | M0.5 (cierre de FB-001…004) · M0.12 citas→id · M0.14 alertas |
-| M1 Libro + Contrapeso | — | LB-1, MO-6, endpoints REST, FB-005 |
+| M1 Libro + Contrapeso | M1.1 (núcleo, parcial) · M1.2 Contrapeso | M1.1 con datos reales, endpoints REST (M1.3), FB-005 (M1.4) |
 | M2 Motor | — | MO-1…MO-3, FB-002, MO-4, MO-5, IN-4 |
 | M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
 | M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
 
-Tests: **112 pytest verdes**. `sysmap check`: nada peor que la línea base.
+Tests: **130 pytest verdes**. `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
 
@@ -78,7 +78,7 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 - [ ] **FB-002 reproducible: 10/10 detecciones, preaviso mediano 21 días** (semillas 20261113/14/15) — test de regresión permanente (M2.3). **El script no está en el repo; hay que traerlo o reconstruirlo desde el acta preregistrada, sin inventar el resultado.**
 - [ ] **MO-4** matriz co-deriva (planta × chip × humano) · FB-003 (M2.4).
 - [ ] **MO-5** integrador lento del agua (TOC/WRS) · FB-004 (M2.5).
-- [ ] **MO-6 El Contrapeso** (= *conciliación de datos aplicada a un hábitat tripulado*, D-09): cierre de conservación agua/aire/energía → DC-08, `CIERRA / NO CIERRA` el mismo día (M1.2). **P0.** La simulación se parametriza con `docs/parametros-publicos.md` (siempre SIMULADA).
+- [x] **MO-6 El Contrapeso** (**núcleo hecho, M1.2**: cierre con σ propagada, bilateral, pérdida no declarada no existe; fixtures SIMULADOS X-05; falta DC-08 en la base de datos y FB-005) (= *conciliación de datos aplicada a un hábitat tripulado*, D-09): cierre de conservación agua/aire/energía → DC-08, `CIERRA / NO CIERRA` el mismo día (M1.2). **P0.** La simulación se parametriza con `docs/parametros-publicos.md` (siempre SIMULADA).
 - [ ] **MO-7** forma diaria del hábitat → DC-09 (FB-006, P2) · [ ] **MO-8** demografía de testigos → DC-11 (FB-008, P2).
 
 ## 6 · Capa 3 · Fábrica / LA FUNDICIÓN — `src/fabrica/` · app `apps.fabrica`
