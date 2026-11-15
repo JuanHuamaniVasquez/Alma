@@ -1,4 +1,4 @@
-"""M2.4 + M2.13 · FB-003: triangulación de 3 testigos y cuarta causa «modelo». SIMULADO. Una sola ejecución."""
+"""M2.4 + M2.13 · FB-003R: triangulación de 3 testigos y cuarta causa «modelo». SIMULADO. Una sola ejecución."""
 import json
 import random
 import sys
@@ -11,7 +11,7 @@ sys.path.insert(0, str(RAIZ))
 from src.gobernanza.preregistro import exigir_preregistro  # noqa: E402
 from src.motor.triangulacion import CAUSAS, acumulado, diagnosticar, diagnosticar_almacen, ingenuo, mundo  # noqa: E402
 
-ACTA, BASE = "FB-003", 20261113
+ACTA, BASE = "FB-003R", 20261113
 
 
 def main() -> int:
