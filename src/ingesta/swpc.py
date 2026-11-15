@@ -8,6 +8,7 @@ Nunca se rellena ni se interpola: una fila sin valor numérico se omite y se cue
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Any
@@ -92,3 +93,30 @@ def alertas_a_registros(filas: list[dict]) -> tuple[list[AlertaSwpc], int]:
             continue
         out.append(AlertaSwpc(f["product_id"], a_utc(f["issue_datetime"].replace(" ", "T")), f["message"]))
     return out, omitidas
+
+
+_TITULAR = re.compile(r"^ALERT:\s*Geomagnetic K-index of (\d)\b", re.MULTILINE)
+_UMBRAL = re.compile(r"^Threshold Reached:\s*(\d{4} \w{3} \d{2} \d{4}) UTC", re.MULTILINE)
+_ESCALA_G = re.compile(r"^Noaa Scale:\s*(G\d)\b", re.MULTILINE | re.IGNORECASE)
+KP_MINIMO_TORMENTA = 5  # NOAA Space Weather Scales: G1 = Kp 5 (https://www.swpc.noaa.gov/noaa-scales-explanation, leída 2026-11-15)
+
+
+def alerta_a_evento(alerta: AlertaSwpc, hash_lectura_cruda: str) -> DC03Evento | None:
+    """M0.14 · Solo un `ALERT: Geomagnetic K-index of N` (observado, no pronóstico) con N ≥ 5 declara un evento
+    `tormenta_solar`. Los avisos (WARNING/WATCH), las continuaciones, el flujo de electrones, las emisiones de radio
+    y los resúmenes NO lo son: devuelven None y siguen archivados tal cual. La escala G que el propio mensaje declara
+    debe coincidir con N (G = N − 4); si no, se rechaza (no se adivina)."""
+    m = _TITULAR.search(alerta.mensaje)
+    if not m:
+        return None
+    kp = int(m.group(1))
+    if kp < KP_MINIMO_TORMENTA:
+        return None
+    g = _ESCALA_G.search(alerta.mensaje)
+    if not g or int(g.group(1)[1:]) != kp - 4:
+        raise ValueError(f"alerta {alerta.product_id}: la escala G declarada no corresponde a Kp={kp}")
+    t = _UMBRAL.search(alerta.mensaje)
+    inicio = datetime.strptime(t.group(1), "%Y %b %d %H%M").replace(tzinfo=UTC) if t else alerta.emitida_utc
+    return DC03Evento(evento_id=f"swpc-alerta-{alerta.product_id}-{inicio:%Y%m%dT%H%MZ}", ts_utc_inicio=inicio, ts_utc_fin=inicio,
+                      tipo=TipoEvento.TORMENTA_SOLAR, fuente=FuenteEvento.SWPC, parametros={"kp": float(kp)},
+                      hash_lectura_cruda=hash_lectura_cruda, banner=Banner.REAL)
