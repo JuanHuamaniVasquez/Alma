@@ -52,6 +52,9 @@ VALIDOS = {
                   precio=dict(datos="OSDR", computo="local", dias=3), valor_si_cierta=["DC-13"],
                   estado="vivero"),
 }
+VALIDOS["DC-13"] = dict(intento_id="in-1", ts_utc=T, fuente="swpc",
+                        url="https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json",
+                        resultado="ok", http_status=200, hash_lectura_cruda=H, banner="REAL")
 # DC-12: valor_si_cierta apunta a detectores NUEVOS (DC-xx aún por crear), p. ej. DC-13.
 
 
@@ -76,8 +79,8 @@ def test_rechaza_campo_fuera_del_contrato(dc):
         con(dc, campo_inventado=1)
 
 
-def test_son_exactamente_12_contratos():
-    assert sorted(CONTRATOS) == sorted(VALIDOS) and len(CONTRATOS) == 12
+def test_son_exactamente_13_contratos():
+    assert sorted(CONTRATOS) == sorted(VALIDOS) and len(CONTRATOS) == 13
 
 
 def test_semillas_publicas():
@@ -264,3 +267,41 @@ def test_banner_heredado_nunca_asciende_a_real_en_silencio():
     assert banner_heredado(Banner.SIMULADO) is Banner.SIMULADO
     with pytest.raises(ValueError):
         banner_heredado()  # sin fuentes de ingesta no se puede afirmar REAL
+
+
+# --- DC-13 · registro de intento de ingesta (v0.2.2) ---------------------------------------
+def test_dc13_ok_exige_hash_y_prohibe_error():
+    with pytest.raises(ValidationError):
+        con("DC-13", hash_lectura_cruda=None)
+    with pytest.raises(ValidationError):
+        con("DC-13", error="boom")
+    with pytest.raises(ValidationError):
+        con("DC-13", http_status=500)
+
+
+def test_dc13_fallo_exige_error_y_prohibe_hash():
+    assert con("DC-13", resultado="fallo", http_status=404, hash_lectura_cruda=None, error="HTTP 404")
+    assert con("DC-13", resultado="fallo", http_status=None, hash_lectura_cruda=None, error="sin red")
+    with pytest.raises(ValidationError):
+        con("DC-13", resultado="fallo", http_status=404, hash_lectura_cruda=None, error=None)
+    with pytest.raises(ValidationError):
+        con("DC-13", resultado="fallo", http_status=404, error="HTTP 404")  # fallo con hash
+
+
+def test_dc13_vacio_respondio_pero_sin_registros():
+    assert con("DC-13", resultado="vacio", http_status=200, hash_lectura_cruda=None)
+    with pytest.raises(ValidationError):
+        con("DC-13", resultado="vacio", http_status=None, hash_lectura_cruda=None)
+    with pytest.raises(ValidationError):
+        con("DC-13", resultado="vacio", http_status=200)  # vacío con hash
+
+
+def test_dc13_banner_url_y_simulador():
+    with pytest.raises(ValidationError):
+        sin("DC-13", "banner")
+    with pytest.raises(ValidationError):
+        con("DC-13", url="ftp://x")
+    with pytest.raises(ValidationError):
+        con("DC-13", banner="SIMULADO")  # swpc ⇒ REAL
+    with pytest.raises(ValidationError):
+        con("DC-13", fuente="simulador", banner="REAL")

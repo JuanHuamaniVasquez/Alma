@@ -30,7 +30,7 @@ Esquema (convención general): `persona_id` siempre pseudónimo; timestamps ISO 
 
 **Herencia de banner (DOC-01 v0.2.1):** el banner de un registro derivado se computa trazando a sus fuentes de ingesta; si alguna entrada es SIMULADO, el derivado muestra SIMULADO; jamás se asciende a REAL en silencio. Ingesta: registra todo (sin umbrales); el detector califica con su recibo.
 
-## 4 · Contratos de datos DC-01…DC-12 — NO se improvisan
+## 4 · Contratos de datos DC-01…DC-13 — NO se improvisan
 
 Detalle campo a campo: **DOC-01 §3** (única fuente). Resumen operativo:
 
@@ -48,6 +48,7 @@ Detalle campo a campo: **DOC-01 §3** (única fuente). Resumen operativo:
 | DC-10 | Casos de error y contagio — sistema inmune (GO-6) | nodo_origen, clase_error, descendientes, estado (abierto/en_cuarentena/cerrado/corregido_estructural), r0_fuente, brote |
 | DC-11 | Ficha de vida de sensor (MO-8) | clase_sensor, calibraciones[], edad_dias, **`hazard_dia` (Weibull por clase)**, sigma_manifiesto_recomendada, estado (vivo/convaleciente/muerto) |
 | DC-12 | Contrato de Fundición — la tarjeta del lab | tarjeta_id, par_variables, **mecanismo (ref biblioteca FA — obligatorio)**, prediccion falsable, senal_refutadora, `fuentes[]` (accesión OSDR/DOI/lote con semilla — **sin fuente cargada la tarjeta no existe**), precio {datos, cómputo, días}, valor_si_cierta (detectores DC-xx nuevos), estado (vivero/en_prueba/refutada/sostenida/sin_datos), preregistro_hash, vencimiento |
+| DC-13 | Registro de intento de ingesta (v0.2.2) | intento_id, ts_utc, fuente, url, `resultado` (ok/fallo/vacio), http_status, `hash_lectura_cruda` (solo ok), `error` (solo fallo), `banner` |
 
 ## 5 · Estado real de los módulos (qué ya existe como script y qué no)
 
