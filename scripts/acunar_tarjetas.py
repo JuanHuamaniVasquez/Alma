@@ -59,6 +59,11 @@ def main() -> int:
         if str(t.tarjeta_id) not in existentes:
             mesa.registrar(ruta, t, nota)
     print(json.dumps(mesa.tablero(mesa.leer(ruta)), ensure_ascii=False))
+    from src.motor.umbral_personal import regla_exacta  # noqa: E402
+    tj = {str(x.tarjeta_id): x for x in mesa.leer(ruta)}[str(mesa.id_de("sueno-corto-cansancio"))]
+    rd = RAIZ / "data/fundicion/detectores.jsonl"
+    if not mesa.leer_detectores(rd):
+        mesa.registrar_detector(rd, tj, "umbral_personal", regla_exacta(0.0).replace("0.0", "<mediana_personal>"))
     f = RAIZ / "data/faro/predicciones.jsonl"
     p = faro.Prediccion("F-001", "OSDR publicará al menos 1 archivo de datos del experimento OS-892 antes del 2027-12-31.",
                         "Se califica VERDADERA si la API oficial https://osdr.nasa.gov/geode-py/ws/repo/experiments/OS-892 lista ≥ 1 elemento en `fields[0].files` en cualquier fecha ≤ 2027-12-31; FALSA si al 2028-01-01 sigue en 0.",

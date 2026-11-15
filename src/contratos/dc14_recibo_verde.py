@@ -13,13 +13,18 @@ from typing import Annotated
 from pydantic import Field, model_validator
 
 from .comunes import Banner, Contrato, Indicador, Presupuesto, Real, Sha256, SigmaPositiva, Sujeto, Texto, TsUtc
-from .dc05_alarma import Detector
 
 
 class EstadoVerde(StrEnum):
     VERDE = "verde"
     SIN_DATOS = "sin_datos_suficientes"
     RETIRADO = "retirado"  # la regla ya no se cumple al reevaluar con datos corregidos
+
+
+class Detector(StrEnum):
+    """Detectores admitidos en un recibo de verde (DOC-01 v0.2.7): solo los estadísticos; `umbral_personal` es de contexto y NO sustenta un verde."""
+    DOS_SIGMA = "dos_sigma"
+    CUSUM = "cusum"
 
 
 class DC14ReciboVerde(Contrato):

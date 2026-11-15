@@ -41,6 +41,7 @@
 | D-35 | 2026-11-15 | **FB-002 (10/10, 21 d) se reencuadra:** sin original, la réplica reconstruida (FB-015-v2) reproduce la estructura de la Tabla 9 (6/7) y el umbral de 200 min pero **no** el 10/10 (8/10). El pitch y CLAUDE.md §10 usan la etiqueta «documentado, no replicado» | Claude (bajo D-15), por resultado preregistrado | `NOTA-FB-015-v2.md` |
 | D-36 | 2026-11-15 | **M0.5 reencuadrada:** como los originales FB-001…FB-004 no existen, se cierra con lo cumplible (GO-2 automatizado + actas R reescritas con hash antes de correr). Las cifras originales de FB-001/FB-002 quedan «documentadas, no replicadas» | Claude (bajo D-15) | `TASKS.md` M0.5, `docs/referencia-fb001-fb002.md` |
 | D-37 | 2026-11-15 | **M2.12 cancelada** (solo software, sin hardware): los datos reales de un flujo medido vienen de S-12 y FB-004R | humano (instrucción) + Claude | `docs/protocolo-banco-de-mesa.md` |
+| D-38 | 2026-11-15 | **MP-14 aceptada por el humano:** DOC-01 v0.2.7, `umbral_personal` en DC-05; la FUNDICIÓN publica su primer detector (M4.5) con el límite de selectividad declarado | humano (autorización explícita) | `DOC-01` nota v0.2.6→v0.2.7, `src/motor/umbral_personal.py` |
 
 ## Decisiones pendientes del humano
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).

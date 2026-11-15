@@ -26,7 +26,15 @@ def test_las_cinco_tarjetas_pasan_la_puerta_y_tienen_hash_de_un_acta_registrada(
 def test_tablero_cuenta_nacidas_refutadas_sostenidas():
     t = mesa.tablero(TARJETAS)
     assert (t["nacidas"], t["refutada"], t["sostenida"], t["sin_datos"], t["en_prueba"]) == (5, 2, 1, 1, 1)
-    assert "detectores_nuevos" not in t and t["listas_para_detector"] == 1   # una sostenida NO es un detector (M4.5)
+    assert t["detectores_nuevos"] == 0 and t["listas_para_detector"] == 1   # sin registro, una sostenida NO es un detector
+    det = mesa.leer_detectores(RAIZ / "data/fundicion/detectores.jsonl")
+    assert mesa.tablero(TARJETAS, det)["detectores_nuevos"] == 1            # M4.5: circuló como detector `umbral_personal`
+    assert det[0]["detector"] == "umbral_personal" and det[0]["hash_preregistro"] == TARJETAS[1].preregistro_hash
+
+
+def test_solo_una_tarjeta_sostenida_puede_circular(tmp_path):
+    with pytest.raises(ValueError, match="sostenida"):
+        mesa.registrar_detector(tmp_path / "d.jsonl", TARJETAS[0], "umbral_personal", "r")   # kp-sueno-hrv está refutada
 
 
 @pytest.mark.parametrize("campo", ["mecanismo", "fuentes", "precio", "valor_si_cierta"])

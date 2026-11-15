@@ -1,0 +1,1 @@
+{"tarjeta_id": "f9af5667-837f-5a3f-a524-37a52bc8b748", "detector": "umbral_personal", "regla_exacta": "UMBRAL_PERSONAL mediana=<mediana_personal> :: ALARMA si x < mediana", "hash_preregistro": "ec4a82e04f4343a56974030f03f3148e9145fdcc3d82777a6afadc8d3dd8ae87"}

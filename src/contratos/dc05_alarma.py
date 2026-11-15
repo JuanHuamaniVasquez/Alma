@@ -11,6 +11,7 @@ from .comunes import Contrato, Indicador, Presupuesto, Real, Sha256, Texto, TsUt
 class Detector(StrEnum):
     DOS_SIGMA = "dos_sigma"
     CUSUM = "cusum"
+    UMBRAL_PERSONAL = "umbral_personal"  # v0.2.7 (MP-14): regla fija contra una referencia personal
 
 
 class Sentido(StrEnum):
