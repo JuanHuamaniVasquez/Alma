@@ -3,7 +3,9 @@ from __future__ import annotations
 
 from enum import StrEnum
 
-from .comunes import Contrato, Presupuesto, Real, Sha256, Texto, TsUtc
+from pydantic import model_validator
+
+from .comunes import Contrato, Indicador, Presupuesto, Real, Sha256, Texto, TsUtc
 
 
 class Detector(StrEnum):
@@ -25,7 +27,10 @@ class EstadoAlarma(StrEnum):
 class DC05Alarma(Contrato):
     alarma_id: Texto
     ts_utc: TsUtc
-    presupuesto_id: Presupuesto
+    # Exactamente uno (DOC-01 v0.2.5, D-30): `presupuesto_id` si el indicador tiene presupuesto documentado; si no, `indicador`.
+    # Mismo patrón que DC-06 (`indicador`/`presupuesto_id`). No se inventa un presupuesto para el pulso o la temperatura.
+    presupuesto_id: Presupuesto | None = None
+    indicador: Indicador | None = None
     detector: Detector
     sentido: Sentido
     umbral: Real
@@ -34,3 +39,9 @@ class DC05Alarma(Contrato):
     semilla: int
     hash_preregistro: Sha256  # enlace a GO-2
     estado: EstadoAlarma
+
+    @model_validator(mode="after")
+    def _presupuesto_o_indicador(self):
+        if (self.presupuesto_id is None) == (self.indicador is None):
+            raise ValueError("exactamente uno de presupuesto_id o indicador")
+        return self

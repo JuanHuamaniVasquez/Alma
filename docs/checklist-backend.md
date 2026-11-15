@@ -26,7 +26,7 @@
 | M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
 | M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
 
-Tests: **234 pytest verdes**. `sysmap check`: nada peor que la línea base.
+Tests: **236 pytest verdes**. `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
 
@@ -74,7 +74,7 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 ## 5 · Capa 2 · Motor — `src/motor/` · app `apps.motor`
 
 - [~] **MO-1** modelo nulo personal (M2.1): **hecho** — línea base de 14 días, modo aprendizaje honesto, ausencias sin rellenar, líneas base versionadas y solo-anexar con deriva acumulada (**enchufe de M-L1**, caso α Centauri, D-26). **Falta** — **priors OSDR**: [!] necesitan datos reales con archivos; OS-892 no los tiene.
-- [x] **MO-2** residuo, sorpresa a 2σ → DC-06 · [x] **MO-3** CUSUM **bilateral**, h **calibrado** (FPR 1 % en 14 d) → DC-05 con recibo ejecutable y retiro automático (M2.2). **Hueco:** `fc` sin presupuesto documentado (D-27).
+- [x] **MO-2** residuo, sorpresa a 2σ → DC-06 · [x] **MO-3** CUSUM **bilateral**, h **calibrado** (FPR 1 % en 14 d) → DC-05 con recibo ejecutable y retiro automático (M2.2). Hueco de DC-05 **resuelto** (D-30: `indicador` XOR `presupuesto_id`).
 - [ ] **FB-002 reproducible: 10/10 detecciones, preaviso mediano 21 días** (semillas 20261113/14/15) — test de regresión permanente (M2.3). **El script no está en el repo; hay que traerlo o reconstruirlo desde el acta preregistrada, sin inventar el resultado.**
 - [ ] **MO-4** matriz co-deriva (planta × chip × humano) · FB-003 (M2.4).
 - [ ] **MO-5** integrador lento del agua (TOC/WRS) · FB-004 (M2.5).

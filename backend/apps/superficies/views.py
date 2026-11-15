@@ -72,7 +72,7 @@ class Alarmas(SoloLectura):
         filas = list(qs[:LIMITE_MAX])
         return Response({"banner": banner_de(filas), "alarmas": [{
             "alarma_id": a.alarma_id, "ts_utc": a.ts_utc.isoformat().replace("+00:00", "Z"),
-            "presupuesto_id": a.presupuesto_id, "detector": a.detector, "sentido": a.sentido, "umbral": a.umbral,
+            "presupuesto_id": a.presupuesto_id, "indicador": a.indicador, "detector": a.detector, "sentido": a.sentido, "umbral": a.umbral,
             "valor_cruzado": a.valor_cruzado, "regla_exacta": a.regla_exacta, "semilla": a.semilla,
             "hash_preregistro": a.hash_preregistro, "estado": a.estado, "banner": a.banner,
         } for a in filas]})

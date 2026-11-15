@@ -1,4 +1,4 @@
-# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.4)
+# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.5)
 
 > **Qué es este documento:** el contrato de ingeniería del proyecto. Define las capas del sistema, el registro oficial de módulos, los contratos de datos campo a campo, el protocolo de cambios y la cola de mejoras propuestas. Es el antídoto contra el vibe coding: nada se construye sin fila en el registro, y toda mejora futura tiene exactamente un hogar.
 > **Reglas del documento:** (1) nada se codea sin su fila en el registro §2; (2) toda mejora nueva entra por el protocolo §5 y queda como PROPUESTA en §7 hasta ser aceptada; (3) los contratos §3 se versionan con el mapa — cambiar un contrato es cambiar de versión del mapa.
@@ -8,6 +8,7 @@
 > **v0.2.1 → v0.2.2 (2026-11-15, MP-4 aceptada por el humano; cambio de contrato → bump según §5):** nuevo contrato **DC-13 · Registro de intento de ingesta** (el fallo de un feed es dato: separa «sin evento» de «no pudimos mirar»).
 > **v0.2.2 → v0.2.3 (2026-11-15, decisión del humano; cambio de contrato → bump según §5):** DC-04 fija la fórmula `residuo_contable = emision_observada − emision_esperada` y la regla de cierre de línea `|residuo_contable| ≤ 2 · incertidumbre_del_manifiesto` (mismo umbral que `dos_sigma`). Es una decisión de diseño aún **sin validar con datos reales**.
 > **v0.2.3 → v0.2.4 (2026-11-15, D-20; cambio de contrato → bump según §5):** DC-12 `fuentes[]` admite también **NTRS** (id de 11 dígitos) y **PMID**, además de accesión OSDR, DOI y lote. Motivo: DOC-04 §2 lista NTRS como cuerpo público con identificador y DOC-01 no lo admitía (contradicción entre documentos).
+> **v0.2.4 → v0.2.5 (2026-11-15, D-30; cambio de contrato → bump según §5):** DC-05 admite `indicador` **como alternativa exclusiva** a `presupuesto_id` (mismo patrón que DC-06): las alarmas de indicadores sin presupuesto documentado (pulso, temperatura…) llevan recibo sin inventar un presupuesto. Se evaluaron y descartaron: mapear indicador→presupuesto (inventa el del pulso), un 10.º presupuesto «cuerpo» (altera el vocabulario central) y dejar esas alarmas sin recibo.
 
 ---
 
@@ -211,7 +212,7 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | Campo | Tipo | Nota |
 |---|---|---|
 | `alarma_id`, `ts_utc` | — | |
-| `presupuesto_id` | enum (como DC-04) | |
+| `presupuesto_id` / `indicador` | enum (como DC-04) / enum (como DC-06) | **Exactamente uno** (v0.2.5): presupuesto si tiene presupuesto documentado; si no, indicador |
 | `detector` | enum: dos_sigma · cusum | Y el sentido (alza/caída — bilateral obligatorio) |
 | `umbral`, `valor_cruzado` | float | |
 | `regla_exacta` | texto ejecutable | Si la regla no se cumple, la alarma se retira sola |
@@ -420,7 +421,7 @@ Cada fila sigue el protocolo §5: una capa destino, ancla verificada, prueba cua
 
 ## Cómo vive este documento
 
-- Se versiona como todo el proyecto (**v0.2.4 hoy**: parche Apéndice A de DOC-02 + adiciones de DOC-04 aplicados el 11-nov; próximo bump cuando cambie un contrato DC-x o se acepte/rechace una MP).
+- Se versiona como todo el proyecto (**v0.2.5 hoy**: parche Apéndice A de DOC-02 + adiciones de DOC-04 aplicados el 11-nov; próximo bump cuando cambie un contrato DC-x o se acepte/rechace una MP).
 - Cada acta FB-xxx nueva añade su fila en §6 el mismo día que se ejecuta.
 - Cada mejora propuesta entra como fila en §7 con estado PROPUESTA; el rechazo también se escribe (como las 10 ideas dormidas: nada muere sin razón).
 - Antes de cada sesión de código se abre §2; después de cada sesión se actualiza el estado de las filas tocadas. El mapa es el primer punto ciego programado del software: sabe dónde está todo, y por eso sabe qué falta.

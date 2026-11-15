@@ -322,3 +322,14 @@ def test_dc12_acepta_fuentes_ntrs_y_pmid_validas():
 def test_dc12_rechaza_ntrs_y_pmid_mal_formados(fuente):
     with pytest.raises(ValidationError):
         con("DC-12", fuentes=[fuente])
+
+
+# --- v0.2.5: DC-05 lleva presupuesto_id O indicador (exactamente uno) --------------------------------------
+def test_dc05_exactamente_uno_de_presupuesto_o_indicador():
+    assert con("DC-05", presupuesto_id=None, indicador="fc")
+    with pytest.raises(ValidationError):
+        con("DC-05", indicador="fc")                                  # los dos a la vez
+    with pytest.raises(ValidationError):
+        con("DC-05", presupuesto_id=None)                             # ninguno
+    with pytest.raises(ValidationError):
+        con("DC-05", presupuesto_id=None, indicador="oxigeno")        # indicador fuera del vocabulario

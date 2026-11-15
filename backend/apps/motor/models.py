@@ -13,7 +13,8 @@ class Alarma(models.Model):
     """DC-05."""
     alarma_id = models.CharField(max_length=100, unique=True)
     ts_utc = models.DateTimeField(db_index=True)
-    presupuesto_id = models.CharField(max_length=20)
+    presupuesto_id = models.CharField(max_length=20, null=True)   # exactamente uno de presupuesto_id / indicador (DOC-01 v0.2.5)
+    indicador = models.CharField(max_length=20, null=True)
     detector = models.CharField(max_length=12)
     sentido = models.CharField(max_length=8)
     umbral = models.FloatField()
@@ -28,6 +29,9 @@ class Alarma(models.Model):
         constraints = [
             models.CheckConstraint(condition=~Q(regla_exacta=""), name="dc05_regla_exacta_no_vacia"),
             models.CheckConstraint(condition=Q(hash_preregistro__regex=r"^[0-9a-f]{64}$"), name="dc05_hash_preregistro_sha256"),
+            models.CheckConstraint(condition=(Q(presupuesto_id__isnull=False, indicador__isnull=True)
+                                              | Q(presupuesto_id__isnull=True, indicador__isnull=False)),
+                                   name="dc05_presupuesto_xor_indicador"),
         ]
 
 

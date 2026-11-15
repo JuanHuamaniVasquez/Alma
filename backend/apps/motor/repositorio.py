@@ -8,7 +8,8 @@ from .models import Alarma, CierreConservacion, ResiduoStream
 
 def guardar_alarma(a: DC05Alarma, banner: Banner) -> Alarma:
     return Alarma.objects.create(
-        alarma_id=a.alarma_id, ts_utc=a.ts_utc, presupuesto_id=a.presupuesto_id.value, detector=a.detector.value,
+        alarma_id=a.alarma_id, ts_utc=a.ts_utc, presupuesto_id=a.presupuesto_id.value if a.presupuesto_id else None,
+        indicador=a.indicador.value if a.indicador else None, detector=a.detector.value,
         sentido=a.sentido.value, umbral=a.umbral, valor_cruzado=a.valor_cruzado, regla_exacta=a.regla_exacta,
         semilla=a.semilla, hash_preregistro=a.hash_preregistro, estado=a.estado.value, banner=banner.value)
 

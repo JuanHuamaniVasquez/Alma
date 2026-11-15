@@ -3,9 +3,9 @@
 Recibo = regla exacta ejecutable + semilla pública + hash del preregistro (GO-2). Si al reevaluar con los datos
 la regla ya no se cumple, la alarma se RETIRA sola.
 
-HUECO DE CONTRATO (decisión pendiente, D-27): DC-05 pide `presupuesto_id` y no `indicador`. Solo `sueño → ritmo`
-está documentado (DOC-02 §0.6). Para los demás indicadores (p. ej. `fc`) no hay presupuesto documentado: NO se
-inventa uno — se lanza `SinPresupuestoDocumentado`. Sus residuos siguen viajando en DC-06 (que admite `indicador`).
+DC-05 lleva `presupuesto_id` O `indicador` (DOC-01 v0.2.5, D-30). Solo `sueño → ritmo` está documentado (DOC-02 §0.6):
+si el indicador tiene presupuesto documentado se emite por presupuesto; si no (p. ej. `fc`), por indicador. Nunca se
+inventa un presupuesto.
 """
 from __future__ import annotations
 
@@ -20,22 +20,16 @@ from .modelo_nulo import AlarmaDetectada
 PRESUPUESTO_DOCUMENTADO = {Indicador.SUENO: Presupuesto.RITMO}
 
 
-class SinPresupuestoDocumentado(ValueError):
-    """DOC-02/DOC-01 no mapean ese indicador a un presupuesto: no se emite un DC-05 inventado."""
-
-
-def presupuesto_de(indicador: Indicador) -> Presupuesto:
-    try:
-        return PRESUPUESTO_DOCUMENTADO[indicador]
-    except KeyError:
-        raise SinPresupuestoDocumentado(
-            f"no hay presupuesto documentado para '{indicador.value}' (DC-05 no lleva `indicador`): decisión D-27") from None
+def presupuesto_de(indicador: Indicador) -> Presupuesto | None:
+    """El presupuesto documentado del indicador, o None si DOC-01/02 no lo mapean (entonces el DC-05 lleva el indicador)."""
+    return PRESUPUESTO_DOCUMENTADO.get(indicador)
 
 
 def a_dc05(alarma: AlarmaDetectada, *, indicador: Indicador, alarma_id: str, semilla: int, hash_preregistro: str) -> DC05Alarma:
+    presupuesto = presupuesto_de(indicador)
     return DC05Alarma(
         alarma_id=alarma_id, ts_utc=datetime.combine(alarma.fecha, datetime.min.time(), tzinfo=UTC),
-        presupuesto_id=presupuesto_de(indicador), detector=Detector.CUSUM, sentido=alarma.sentido, umbral=alarma.h,
+        presupuesto_id=presupuesto, indicador=None if presupuesto else indicador, detector=Detector.CUSUM, sentido=alarma.sentido, umbral=alarma.h,
         valor_cruzado=alarma.s_cruzado, regla_exacta=alarma.regla_exacta, semilla=semilla,
         hash_preregistro=hash_preregistro, estado=EstadoAlarma.ACTIVA)
 

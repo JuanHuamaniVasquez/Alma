@@ -18,7 +18,7 @@ from src.contratos.dc01_sensores import CalidadDato
 from src.contratos.dc05_alarma import EstadoAlarma, Sentido
 from src.ingesta.incertidumbre import sigma_de
 from src.ingesta.lifesnaps import cargar
-from src.motor.alertas import SinPresupuestoDocumentado, a_dc05, presupuesto_de, reevaluar
+from src.motor.alertas import a_dc05, presupuesto_de, reevaluar
 from src.motor.cusum import calibrar_h, ejecutar_regla, paso, regla_exacta
 from src.motor.linea_base import DIAS_BASE, HistorialLineasBase, LineaBase, estimar_linea_base
 from src.motor.modelo_nulo import ModeloNulo
@@ -177,11 +177,15 @@ def test_el_recibo_es_texto_que_se_puede_leer_y_ejecutar_sin_el_codigo_original(
         ejecutar_regla("regla inventada", [1.0])
 
 
-def test_sin_presupuesto_documentado_no_se_inventa_un_dc05():
+def test_sin_presupuesto_documentado_la_alarma_lleva_el_indicador_y_no_se_inventa_un_presupuesto():
     assert presupuesto_de(Indicador.SUENO).value == "ritmo"
+    a = _alarma_de_caida()
+    ritmo = a_dc05(a, indicador=Indicador.SUENO, alarma_id="a1", semilla=SEMILLAS_PUBLICAS[0], hash_preregistro=HASH)
+    assert ritmo.presupuesto_id.value == "ritmo" and ritmo.indicador is None
     for ind in (Indicador.FC, Indicador.TEMPERATURA, Indicador.ANIMO):
-        with pytest.raises(SinPresupuestoDocumentado, match="D-27"):
-            presupuesto_de(ind)
+        assert presupuesto_de(ind) is None
+        dc05 = a_dc05(a, indicador=ind, alarma_id="a2", semilla=SEMILLAS_PUBLICAS[0], hash_preregistro=HASH)
+        assert dc05.indicador is ind and dc05.presupuesto_id is None  # recibo completo, sin presupuesto inventado
 
 
 # --- el enchufe de M-L1: líneas base versionadas, solo-anexar, memoria de la primera ----------------

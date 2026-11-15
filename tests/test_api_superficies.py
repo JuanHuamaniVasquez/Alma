@@ -134,3 +134,22 @@ def test_la_base_rechaza_una_alarma_sin_regla_y_dos_lineas_iguales(datos):
                               valor_cruzado=2.0, regla_exacta="", semilla=1, hash_preregistro=H, estado="activa", banner="SIMULADO")
     with pytest.raises(IntegrityError), transaction.atomic():
         guardar_linea(linea("aire", "habitat", 10.0, 10.1), SIM)  # el libro es solo-anexar
+
+
+@pytest.mark.django_db
+def test_una_alarma_por_indicador_sin_presupuesto_inventado_sale_con_recibo_y_la_bd_exige_uno_solo(datos):
+    from django.db import IntegrityError, transaction
+
+    from apps.motor.models import Alarma
+    a = CONTRATOS["DC-05"].model_validate(dict(
+        alarma_id="al-fc", ts_utc=T, indicador="fc", detector="cusum", sentido="alza", umbral=10.0, valor_cruzado=10.4,
+        regla_exacta="CUSUM_BILATERAL k=0.5 h=10.0 mu=70.0 sigma=5.0 :: ...", semilla=20261113, hash_preregistro=H, estado="activa"))
+    guardar_alarma(a, SIM)
+    por_ind = [x for x in datos.get("/api/alarmas/").json()["alarmas"] if x["alarma_id"] == "al-fc"][0]
+    assert por_ind["indicador"] == "fc" and por_ind["presupuesto_id"] is None and por_ind["regla_exacta"] and por_ind["hash_preregistro"] == H
+    base = dict(alarma_id="x", ts_utc=T, detector="cusum", sentido="alza", umbral=1.0, valor_cruzado=2.0, regla_exacta="r",
+                semilla=1, hash_preregistro=H, estado="activa", banner="SIMULADO")
+    with pytest.raises(IntegrityError), transaction.atomic():
+        Alarma.objects.create(**base)                                           # ninguno
+    with pytest.raises(IntegrityError), transaction.atomic():
+        Alarma.objects.create(**{**base, "presupuesto_id": "aire", "indicador": "fc"})  # los dos
