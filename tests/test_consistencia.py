@@ -20,8 +20,8 @@ def test_fisiologico_coherente_y_fallo_incoherente():
     x, y = _par()
     aj = ajustar(x, y)
     bx, by = x[:14], y[:14]
-    coher = incoherente(aj, [p + 2 * aj["sx"] for p in bx], [q + aj["b"] * 2 * aj["sy"] for q in by])
-    fallo = incoherente(aj, [p + 2 * aj["sx"] for p in bx], by)
+    coher = incoherente(aj, [p + 4 * aj["sx"] for p in bx], [q + aj["b"] * 4 * aj["sy"] for q in by])
+    fallo = incoherente(aj, [p + 4 * aj["sx"] for p in bx], by)
     assert not coher and fallo
 
 

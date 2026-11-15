@@ -330,6 +330,21 @@
     "calibration",
     "inconclusive"
    ]
+  },
+  "FB-022": {
+   "title": "Body or sensor? Cross-signal consistency",
+   "summary": "Real wearables show genuine within-person couplings (nightly temperature, breathing and heart-rate variability move with resting pulse), held out of sample. But the rule built on them flagged 44% of real, untouched blocks as inconsistent and sorted body-versus-sensor events at only 66%: refuted as a classifier.",
+   "outcome": "mixed",
+   "data": "real+simulated",
+   "tags": [
+    "consistency",
+    "sensor fault",
+    "coupling",
+    "hrv",
+    "temperature",
+    "breathing",
+    "refuted classifier"
+   ]
   }
  }
 }
