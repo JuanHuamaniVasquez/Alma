@@ -132,13 +132,13 @@ const sonados = () => page.evaluate(() => window.__audio.length);
 await page.goto(`${BASE}/vault`, { waitUntil: "domcontentloaded" });
 await esperar('button[aria-label^="Wake ALMA"]');
 await page.click('button[aria-label^="Wake ALMA"]');                  // recarga = puerta otra vez: sin clic real el navegador no deja sonar
-await esperarTexto("of 21 shown", 30000);
+await esperarTexto("of 22 shown", 30000);
 await page.type('input[aria-label="Search the vault"]', "solar storms");
 await page.keyboard.press("Enter");
 await esperarTexto("I found", 8000).catch(() => {});
 check("escribir «solar storms» encuentra FB-014 y ALMA responde", (await texto()).includes("FB-014") && (await filas()) >= 1);
 await page.evaluate(() => { window.__say = "show refuted experiments"; document.querySelector('button[aria-label="Search by voice"]').click(); });
-await page.waitForFunction(() => /\b2 of 21 shown/i.test(document.body.innerText), { timeout: 8000 }).then(() => check("por voz: «show refuted experiments» filtra a los 2 refutados", true), () => check("por voz: «show refuted experiments» filtra a los 2 refutados", false));
+await page.waitForFunction(() => /\b2 of 22 shown/i.test(document.body.innerText), { timeout: 8000 }).then(() => check("por voz: «show refuted experiments» filtra a los 2 refutados", true), () => check("por voz: «show refuted experiments» filtra a los 2 refutados", false));
 await page.evaluate(() => { window.__say = "open F B zero two zero"; document.querySelector('button[aria-label="Search by voice"]').click(); });
 await page.waitForFunction(() => document.querySelector('li button[aria-expanded="true"]')?.innerText.includes("FB-020"), { timeout: 8000 }).then(() => check("por voz: «open F B zero two zero» abre el acta FB-020", true), () => check("por voz: «open F B zero two zero» abre el acta FB-020", false));
 const sonadosAntes = await sonados();

@@ -315,6 +315,21 @@
     "inconclusive",
     "zenodo"
    ]
+  },
+  "FB-021": {
+   "title": "Alarm with a false-alarm guarantee (e-process)",
+   "summary": "On real wearable data the textbook guarantee fails: asked for 1% false alarms, the raw method gave 5%. Calibrating it fixes the false alarms but costs sensitivity (99% to 71% at 2σ). The out-of-sample check had only 5 windows: inconclusive. The method is not ours; the measured gap between theory and real data is the result.",
+   "outcome": "inconclusive",
+   "data": "real+simulated",
+   "tags": [
+    "e-process",
+    "anytime-valid",
+    "false alarms",
+    "guarantee",
+    "wearables",
+    "calibration",
+    "inconclusive"
+   ]
   }
  }
 }
