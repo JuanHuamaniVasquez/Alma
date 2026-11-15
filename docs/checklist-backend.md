@@ -20,13 +20,13 @@
 
 | Bloque | Hecho | Falta |
 |---|---|---|
-| M0 Base | M0.1 stack · M0.2 repo · M0.3 contratos · M0.4 IN-3 (parcial) · M0.6 andamio · M0.7 v0.2.1 · M0.8 banner heredado · M0.9 auditoría · M0.10 correcciones · M0.11 DC-13 | M0.5 preregistros · M0.12 citas→id · M0.13 persistencia · M0.14 alertas |
+| M0 Base | M0.1 stack · M0.2 repo · M0.3 contratos · M0.4 IN-3 (parcial) · M0.5 (parcial: GO-2 automatizado) · M0.6 andamio · M0.7 v0.2.1 · M0.8 banner heredado · M0.9 auditoría · M0.10 correcciones · M0.11 DC-13 | M0.5 (cierre de FB-001…004) · M0.12 citas→id · M0.13 persistencia · M0.14 alertas |
 | M1 Libro + Contrapeso | — | LB-1, MO-6, endpoints REST, FB-005 |
 | M2 Motor | — | MO-1…MO-3, FB-002, MO-4, MO-5, IN-4 |
 | M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
 | M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
 
-Tests: **93 pytest verdes** (commit `f6d692a`). `sysmap check`: nada peor que la línea base.
+Tests: **101 pytest verdes**. `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
 
@@ -96,7 +96,7 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 
 ## 8 · Gobernanza — `src/…` / `docs/actas/` · app `apps.gobernanza`
 
-- [ ] **GO-2 preregistro con hash SHA-256 ANTES de correr**: hoy manual. (M0.5: recalcular los 8 hashes FB-001…FB-008 y que cuadren con DOC-02 Ap. B — **leer DOC-02 Ap. B primero**.) Automatizar: acta → hash → `docs/actas/` + alarma DC-05.
+- [~] **GO-2 preregistro con hash SHA-256 ANTES de correr**: **automatizado** (`src/gobernanza/preregistro.py`: hash de bytes exactos, índice solo-anexar, compuerta `exigir_preregistro`, detección de edición posterior). FB-005…FB-008 re-registradas (101 tests). **[!] M0.5 sigue abierta:** los hashes de DOC-02 Ap. B no son reproducibles; FB-001/002 sin acta ni script; FB-003/004 sin acta redactada. [ ] Enlazar el hash del acta a la alarma DC-05 (`hash_preregistro`).
 - [ ] **GO-6** epidemiología del error: caso con linaje, cuarentena, R0 por fuente, acta de brote (DC-10; FB-007).
 - [ ] GO-1 árbitro externo (humano, pendiente; mientras tanto el árbitro es matemático: hash + semilla) · GO-3, GO-4, GO-5, GO-7 son proceso, no código.
 
