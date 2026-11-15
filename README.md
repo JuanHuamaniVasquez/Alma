@@ -192,3 +192,7 @@ Every source, licence and simulated component: [`docs/politica-de-datos.md`](doc
 | Understand the contracts | `docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md` |
 | Check related work | [`docs/revision-literatura.md`](docs/revision-literatura.md) |
 | Decisions and the backlog | `docs/decisiones.md` · `TASKS.md` |
+
+
+## Team handoff
+Start with [`docs/entrega/PLAN-DE-ENTREGA.md`](docs/entrega/PLAN-DE-ENTREGA.md): ranking of the strongest results, video scripts (`docs/submit/video-guion.md`), IEEE LaTeX skeleton (`docs/informe/ieee/`), and the open work list.
