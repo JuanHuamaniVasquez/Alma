@@ -25,3 +25,4 @@ web/public/voice/search/*.txt
 # perfil aislado de Blender (extensiones, assets descargados): se regenera
 data/blender_user/
 data/modelos/*.blend
+*.blend1
