@@ -66,6 +66,12 @@ Navigate with the top bar or the ← → keys. Everything that talks has subtitl
 | ![The Foundry](docs/screenshots/06-the-foundry.jpg) | ![The Storm](docs/screenshots/07-the-storm.jpg) |
 | ![The Budget](docs/screenshots/08-the-budget.jpg) | ![The Capsule](docs/screenshots/09-the-capsule.jpg) |
 
+### Medical Module extras (M6)
+
+- **Layers:** Inside → Uniform · Body · **Anatomy** (skeleton and organs; each organ is an official indicator, coloured by its receipt: green ok · orange alarm · grey no verified sensor; tap one and ALMA speaks). Outside → Suit · **Anatomy** (the NASA Z-2 turns translucent), plus **Helmet on/off**.
+- **Vitals monitor · real ECG:** a real 30-minute ECG (PhysioNet MIT-BIH record 100, an anonymised hospital outpatient — not an astronaut) with pulse and HRV computed by our own R-peak detector (99.96% of 2,273 human-annotated beats found, 0 false). Tabs: **Expected in flight** (published numbers with DOI: Barger 2014, Hughson 2012, NASA HRP) and **Earth link** (a published 0–22 min delay; with no contact the Guardian keeps deciding on board).
+- Drag to rotate, scroll or pinch to zoom. "What is real here?" on every room.
+
 ## ALMA, the assistant
 - **Deterministic by design.** `src/superficies/narrador.py` turns API data into sentences (template + value + source + REAL/SIMULATED stamp). Same data → same words; it changes when the data, the day, the scenario or the room changes. Missing data produces an *absence* sentence, never an invention. A test forbids the narrator from importing any language model.
 - **Voice.** Pre-rendered with Kokoro-82M (local, Apache-2.0): 72 room lines (one per ledger day and book, per indicator, per crew member, per storm scale…). A queue plays lines requested before the first click; a new answer cancels the old one completely.
