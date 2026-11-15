@@ -1,0 +1,195 @@
+{
+ "fuente": "Jones, Harry W. (2019). High Reliability Requires More than Providing Spares. NASA NTRS 20190027319 (ICES). Tablas 2, 3 y 4.",
+ "url": "https://ntrs.nasa.gov/citations/20190027319",
+ "pdf_sha256": "d844941d6ebbbdc40a23a00ee51d759842ba749c3d42a925623b72e67a5a3fcd",
+ "acceso": "2026-11-15",
+ "licencia": "dominio público NASA (distribución PUBLIC en NTRS)",
+ "nota_censura": "Vida de vuelo = 70 000 h (≈ 8 años) sin fallo: según el propio método del paper (§C) es una COTA (censurada), no una vida medida",
+ "nota_alcance": "Solo se transcriben filas con AMBOS valores (MADS y vuelo) distintos entre sí o con vuelo medido; se omiten las filas sin dato de vuelo (iguales a MADS) y las sin estimación MADS. Las ORU del paper no son una muestra aleatoria de componentes: sesgo de selección posible.",
+ "filas": [
+  {
+   "sistema": "OGS",
+   "acronimo": "Hydrogen ORU",
+   "nombre": "Hydrogen pressure dome",
+   "mtbf_mads_h": 29551,
+   "mtbf_vuelo_h": 35000,
+   "vuelo_censurado": false
+  },
+  {
+   "sistema": "OGS",
+   "acronimo": "Controller",
+   "nombre": "Process controller",
+   "mtbf_mads_h": 75677,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "OGS",
+   "acronimo": "O ORU",
+   "nombre": "Oxygen outlet",
+   "mtbf_mads_h": 99252,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "OGS",
+   "acronimo": "H2 Sensor ORU",
+   "nombre": "Hydrogen sensor",
+   "mtbf_mads_h": 57803,
+   "mtbf_vuelo_h": 2600,
+   "vuelo_censurado": false
+  },
+  {
+   "sistema": "OGS",
+   "acronimo": "Pump ORU",
+   "nombre": "Pump inlet",
+   "mtbf_mads_h": 189433,
+   "mtbf_vuelo_h": 35000,
+   "vuelo_censurado": false
+  },
+  {
+   "sistema": "OGS",
+   "acronimo": "Inlet DI Bed ORU",
+   "nombre": "Inlet deionizing bed",
+   "mtbf_mads_h": 442487,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "OGS",
+   "acronimo": "Nitrogen Purge ORU",
+   "nombre": "Nitrogen purge",
+   "mtbf_mads_h": 140195,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "OGS",
+   "acronimo": "Water ORU",
+   "nombre": "Water",
+   "mtbf_mads_h": 37885,
+   "mtbf_vuelo_h": 38000,
+   "vuelo_censurado": false
+  },
+  {
+   "sistema": "UPA",
+   "acronimo": "WSTA",
+   "nombre": "Wastewater storage tank assembly",
+   "mtbf_mads_h": 82200,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "UPA",
+   "acronimo": "FCA",
+   "nombre": "Firmware controller assembly",
+   "mtbf_mads_h": 13453,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "UPA",
+   "acronimo": "SPA",
+   "nombre": "Separator plumbing assembly",
+   "mtbf_mads_h": 88993,
+   "mtbf_vuelo_h": 4000,
+   "vuelo_censurado": false
+  },
+  {
+   "sistema": "UPA",
+   "acronimo": "PCPA",
+   "nombre": "Pressure control and pump assembly",
+   "mtbf_mads_h": 59221,
+   "mtbf_vuelo_h": 3000,
+   "vuelo_censurado": false
+  },
+  {
+   "sistema": "UPA",
+   "acronimo": "DA",
+   "nombre": "Distillation assembly",
+   "mtbf_mads_h": 41376,
+   "mtbf_vuelo_h": 5500,
+   "vuelo_censurado": false
+  },
+  {
+   "sistema": "UPA",
+   "acronimo": "FCPA",
+   "nombre": "Fluids control and pump assembly",
+   "mtbf_mads_h": 22759,
+   "mtbf_vuelo_h": 1000,
+   "vuelo_censurado": false
+  },
+  {
+   "sistema": "WPA",
+   "acronimo": "CR",
+   "nombre": "Catalytic reactor",
+   "mtbf_mads_h": 27077,
+   "mtbf_vuelo_h": 14000,
+   "vuelo_censurado": false
+  },
+  {
+   "sistema": "WPA",
+   "acronimo": "GS",
+   "nombre": "Gas separator",
+   "mtbf_mads_h": 61182,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "WPA",
+   "acronimo": "MCV",
+   "nombre": "Microbial check valve",
+   "mtbf_mads_h": 178447,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "WPA",
+   "acronimo": "PS",
+   "nombre": "Pump separator",
+   "mtbf_mads_h": 39429,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "WPA",
+   "acronimo": "RHS",
+   "nombre": "Reactor health sensor",
+   "mtbf_mads_h": 134077,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "WPA",
+   "acronimo": "S",
+   "nombre": "Sensor separator",
+   "mtbf_mads_h": 184618,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "WPA",
+   "acronimo": "WD",
+   "nombre": "Water delivery",
+   "mtbf_mads_h": 81797,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "WPA",
+   "acronimo": "WW",
+   "nombre": "Waste water",
+   "mtbf_mads_h": 43669,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  },
+  {
+   "sistema": "WPA",
+   "acronimo": "WS",
+   "nombre": "Water storage",
+   "mtbf_mads_h": 40463,
+   "mtbf_vuelo_h": 70000,
+   "vuelo_censurado": true
+  }
+ ]
+}
