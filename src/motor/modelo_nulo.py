@@ -51,9 +51,14 @@ def _ts(d: date) -> datetime:
 
 class ModeloNulo:
     def __init__(self, persona_id: str, indicador: Indicador, sigma_sensor: float, *, dias_base: int = DIAS_BASE,
-                 k: float = K_REF, h: float | None = None) -> None:
+                 k: float = K_REF, h: float | None = None, phi: float = 0.0) -> None:
         self.persona_id, self.indicador, self.sigma_sensor = persona_id, indicador, sigma_sensor
         self.dias_base, self.k = dias_base, k
+        if not -0.95 < phi < 0.95:
+            raise ValueError("phi debe estar en (−0.95, 0.95)")
+        self.phi = phi  # 0 = sin blanquear (MO-3 original); ≠ 0 = CUSUM sobre residuos blanqueados AR(1) (MP-11)
+        self._ultimo: float | None = None   # último dato válido (contexto AR)
+        self._x0: float | None = None       # dato previo al segmento actual del CUSUM
         self.h = h if h is not None else calibrar_h(k=k, dias_base=dias_base)
         self.historial = HistorialLineasBase()
         self.ausencias = 0
@@ -72,18 +77,26 @@ class ModeloNulo:
             return Observacion(fecha, "ausente", confianza(len(self._base), self.dias_base))
         if self._linea is None:
             self._base.append((fecha, valor))
+            self._ultimo = valor
             lb = estimar_linea_base(self.persona_id, self.indicador.value, self._base, self.sigma_sensor, dias=self.dias_base)
             if lb is not None:
                 self._linea = lb
+                self._x0 = valor
                 self.historial.registrar(lb)
             return Observacion(fecha, "aprendizaje", confianza(len(self._base), self.dias_base))
         lb = self._linea
         residuo = valor - lb.media
-        z = residuo / lb.sigma_efectiva
+        z_crudo = residuo / lb.sigma_efectiva
+        if self.phi:
+            previo = self._ultimo - lb.media
+            z = (residuo - self.phi * previo) / (lb.sigma_efectiva * math.sqrt(1 - self.phi ** 2))
+        else:
+            z = z_crudo
+        self._ultimo = valor
         self._s_alza, self._s_caida = paso(self._s_alza, self._s_caida, z, self.k)
         self._desde_reinicio.append(valor)
         cruzo = max(self._s_alza, self._s_caida) >= self.h
-        bandera = Bandera.DERIVA if cruzo else Bandera.SORPRESA if abs(z) > UMBRAL_SORPRESA else Bandera.NORMAL
+        bandera = Bandera.DERIVA if cruzo else Bandera.SORPRESA if abs(z_crudo) > UMBRAL_SORPRESA else Bandera.NORMAL
         acumulado = self._s_alza if self._s_alza >= self._s_caida else -self._s_caida
         dc06 = DC06Residuo(sujeto=self.persona_id, ts_utc=_ts(fecha), indicador=self.indicador, observado=valor,
                            predicho=lb.media, residuo=residuo, sigma_efectiva=lb.sigma_efectiva,
@@ -92,7 +105,9 @@ class ModeloNulo:
         if cruzo:
             alza = self._s_alza >= self._s_caida
             alarma = AlarmaDetectada(fecha, Sentido.ALZA if alza else Sentido.CAIDA, self._s_alza if alza else self._s_caida,
-                                     self.h, regla_exacta(self.k, self.h, lb.media, lb.sigma_efectiva), tuple(self._desde_reinicio))
+                                     self.h, regla_exacta(self.k, self.h, lb.media, lb.sigma_efectiva, self.phi, self._x0 if self.phi else None),
+                                     tuple(self._desde_reinicio))
             self._s_alza = self._s_caida = 0.0
             self._desde_reinicio = []
+            self._x0 = valor
         return Observacion(fecha, "activo", 1.0, dc06, alarma)

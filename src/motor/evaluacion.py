@@ -43,11 +43,11 @@ class ResultadoUnidad:
 
 
 def ejecutar_unidad(persona: str, indicador: Indicador, sigma_sensor: float, base: list[tuple[date, float]],
-                    monitoreo: list[tuple[date, float]], h: float = H_FB009, delta: float = 0.0) -> ResultadoUnidad:
+                    monitoreo: list[tuple[date, float]], h: float = H_FB009, delta: float = 0.0, phi: float = 0.0) -> ResultadoUnidad:
     """Corre una unidad. `delta` > 0 RESTA delta·σ_efectiva (la de esta unidad) a todo el monitoreo (inyección SIMULADA, determinista)."""
     lb = estimar_linea_base(persona, indicador.value, base, sigma_sensor)
     assert lb is not None, "una unidad siempre tiene 14 datos de base"
-    modelo = ModeloNulo(persona, indicador, sigma_sensor, h=h)
+    modelo = ModeloNulo(persona, indicador, sigma_sensor, h=h, phi=phi)
     for d, v in base:
         modelo.observar(d, v)
     for i, (d, v) in enumerate(monitoreo, start=1):
@@ -96,25 +96,28 @@ def remuestreo_por_persona(por_persona: dict[str, tuple[int, int]], semilla: int
 
 # --- la evaluación completa -----------------------------------------------------------------------------
 def evaluar(series: dict[str, list[tuple[date, float]]], indicador: Indicador, sigma_sensor: float, *,
-            filtro: Callable[[float], bool] | None = None, h: float = H_FB009, deltas: Sequence[float] = DELTAS) -> dict:
+            filtro: Callable[[float], bool] | None = None, h: float = H_FB009, deltas: Sequence[float] = DELTAS,
+            phi: float = 0.0, personas: set[str] | None = None) -> dict:
     por_persona_unidades: dict[str, list] = defaultdict(list)
     for persona, serie in series.items():
+        if personas is not None and persona not in personas:
+            continue
         valida = [(d, v) for d, v in serie if filtro is None or filtro(v)]
         us = unidades(valida)
         if us:
             por_persona_unidades[persona] = us
     todas = [(p, u) for p, us in por_persona_unidades.items() for u in us]
     n = len(todas)
-    naturales = [ejecutar_unidad(p, indicador, sigma_sensor, b, m, h) for p, (b, m) in todas]
+    naturales = [ejecutar_unidad(p, indicador, sigma_sensor, b, m, h, phi=phi) for p, (b, m) in todas]
     x = sum(r.alarma for r in naturales)
     por_persona = {}
     for (p, _), r in zip(todas, naturales):
         a, u = por_persona.get(p, (0, 0))
         por_persona[p] = (a + r.alarma, u + 1)
-    primeras = [ejecutar_unidad(p, indicador, sigma_sensor, *us[0], h) for p, us in por_persona_unidades.items()]
+    primeras = [ejecutar_unidad(p, indicador, sigma_sensor, *us[0], h, phi=phi) for p, us in por_persona_unidades.items()]
     potencia = {}
     for d in deltas:
-        rs = [ejecutar_unidad(p, indicador, sigma_sensor, b, m, h, delta=d) for p, (b, m) in todas]
+        rs = [ejecutar_unidad(p, indicador, sigma_sensor, b, m, h, delta=d, phi=phi) for p, (b, m) in todas]
         dias = [r.dia_de_alarma for r in rs if r.alarma and r.sentido == "caída"]
         det = len(dias)
         potencia[str(d)] = {"detectadas": det, "de": n, "tasa": det / n if n else 0.0, "wilson95": wilson(det, n),
@@ -137,3 +140,25 @@ def veredictos(resultado: dict) -> dict:
     h1_refutada = m1["n"] > 0 and m1["alarmas"] >= m1["x_critico"]
     h2_sostenida = m3["de"] > 0 and m3["tasa"] >= UMBRAL_H2
     return {"H1": "REFUTADA" if h1_refutada else "NO REFUTADA", "H2": "SOSTENIDA" if h2_sostenida else "REFUTADA"}
+
+
+# --- MP-11 / FB-010: partición por personas y φ poblacional -----------------------------------------------
+PHI_MAX = 0.5
+
+
+def particion(persona_id: str) -> str:
+    """Partición determinista y fijada en FB-010: paridad de los primeros 8 hex de sha256(persona_id)."""
+    import hashlib
+    return "entrenamiento" if int(hashlib.sha256(persona_id.encode()).hexdigest()[:8], 16) % 2 == 0 else "prueba"
+
+
+def lag1(valores: Sequence[float]) -> float:
+    m = statistics.fmean(valores)
+    den = sum((v - m) ** 2 for v in valores)
+    return sum((valores[i] - m) * (valores[i + 1] - m) for i in range(len(valores) - 1)) / den if den else 0.0
+
+
+def estimar_phi(series: dict[str, list[tuple[date, float]]], *, filtro_personas: Callable[[str], bool]) -> float:
+    """φ poblacional: media de la autocorrelación lag-1 de las unidades de 28 días de las personas elegidas, acotada a ±PHI_MAX."""
+    ac = [lag1([v for _, v in b + m]) for p, serie in series.items() if filtro_personas(p) for b, m in unidades(serie)]
+    return max(-PHI_MAX, min(PHI_MAX, statistics.fmean(ac))) if ac else 0.0

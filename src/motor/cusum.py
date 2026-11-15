@@ -43,13 +43,24 @@ def calibrar_h(k: float = K_REF, dias_base: int = 14, dias_ventana: int = 14, fp
     return maximos[min(n_sim - 1, math.ceil((1 - fpr) * n_sim) - 1)] + 1e-9
 
 
-def regla_exacta(k: float, h: float, mu: float, sigma: float) -> str:
-    """Texto ejecutable e imprimible; usa repr de los floats para que el recibo reproduzca exactamente."""
-    return (f"CUSUM_BILATERAL k={k!r} h={h!r} mu={mu!r} sigma={sigma!r} :: z=(x-mu)/sigma; "
-            "S+=max(0,S+ + z-k); S-=max(0,S- - z-k); ALARMA si S+>=h (alza) o S->=h (caída)")
+def regla_exacta(k: float, h: float, mu: float, sigma: float, phi: float = 0.0, x0: float | None = None) -> str:
+    """Texto ejecutable e imprimible; usa repr de los floats para que el recibo reproduzca exactamente.
+
+    Con `phi` ≠ 0 el CUSUM vigila los residuos BLANQUEADOS AR(1) (MP-11): e = (x−mu) − phi·(xprev−mu), donde xprev
+    es `x0` para el primer dato del segmento y el dato anterior después.
+    """
+    cabecera = f"CUSUM_BILATERAL k={k!r} h={h!r} mu={mu!r} sigma={sigma!r}"
+    if phi:
+        if x0 is None:
+            raise ValueError("con phi ≠ 0 la regla necesita x0 (el dato previo al segmento)")
+        cabecera += f" phi={phi!r} x0={x0!r}"
+        z = "z=((x-mu)-phi*(xprev-mu))/(sigma*sqrt(1-phi^2))"
+    else:
+        z = "z=(x-mu)/sigma"
+    return f"{cabecera} :: {z}; S+=max(0,S+ + z-k); S-=max(0,S- - z-k); ALARMA si S+>=h (alza) o S->=h (caída)"
 
 
-_PATRON = re.compile(r"^CUSUM_BILATERAL k=(\S+) h=(\S+) mu=(\S+) sigma=(\S+) ::")
+_PATRON = re.compile(r"^CUSUM_BILATERAL k=(\S+) h=(\S+) mu=(\S+) sigma=(\S+)(?: phi=(\S+) x0=(\S+))? ::")
 
 
 @dataclass(frozen=True)
@@ -66,10 +77,17 @@ def ejecutar_regla(texto: str, valores: list[float]) -> ResultadoRegla:
     m = _PATRON.match(texto)
     if not m:
         raise ValueError("regla_exacta no interpretable")
-    k, h, mu, sigma = (float(x) for x in m.groups())
+    k, h, mu, sigma = (float(x) for x in m.groups()[:4])
+    phi = float(m.group(5)) if m.group(5) else 0.0
+    previo = float(m.group(6)) if m.group(6) else None
     s_alza = s_caida = 0.0
     for i, x in enumerate(valores):
-        s_alza, s_caida = paso(s_alza, s_caida, (x - mu) / sigma, k)
+        if phi:
+            z = ((x - mu) - phi * (previo - mu)) / (sigma * math.sqrt(1 - phi * phi))
+            previo = x
+        else:
+            z = (x - mu) / sigma
+        s_alza, s_caida = paso(s_alza, s_caida, z, k)
         if s_alza >= h or s_caida >= h:
             alza = s_alza >= s_caida
             return ResultadoRegla(True, i, "alza" if alza else "caída", s_alza if alza else s_caida)
