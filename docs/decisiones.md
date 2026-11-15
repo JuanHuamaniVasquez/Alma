@@ -31,6 +31,7 @@
 | D-25 | 2026-11-15 | **MP-9 (banco de mesa) y MP-10 (cuarta causa «modelo») aceptadas** por el humano («sigo tus propuestas y mejoras»). MP-9 queda bloqueada hasta que el humano monte el hardware | humano | `docs/propuestas.md`, `TASKS.md` M2.12/M2.13 |
 | D-26 | 2026-11-15 | **El caso de estudio sigue siendo α Centauri / Proxima b** (DOC-04 §7), como **horno de invariantes**, no como módulo: DOC-04 §10 prohíbe construir M-L1…M-L5 ahora. Se ancla en hechos verificados (A-17…A-19) y se diseña lo construido hoy para que **enchufe** (prueba de enchufe, DOC-04 Q6): p. ej., líneas base **versionadas y append-only** (enchufe de M-L1, el Archivo de Generaciones) | humano | `src/motor/linea_base.py` |
 | D-27 | 2026-11-15 | **El umbral del CUSUM se calibra, no se elige:** h = 10,01 para 1 % de falsas alarmas en 14 días con una base de 14 días (simulando el procedimiento completo, incluida la incertidumbre de estimar la base). Efecto mínimo detectable al 90 % ≈ 1,8σ en 14 días | Claude (bajo D-15) | `src/motor/cusum.py`, `docs/potencia-exploratoria.md` |
+| D-28 | 2026-11-15 | **FB-009 ejecutada y publicada tal cual:** H1 no refutada (sueño), H2 sostenida; **la descalibración del pulso (≈5×) se publica y motiva MP-11/FB-010**. La calibración de h es frágil ante autocorrelación (ρ = 0,2 triplica el FPR) | Claude (bajo D-15) | `docs/actas/NOTA-FB-009-posthoc.md`, `RESULTADOS.jsonl` |
 
 ## Decisiones pendientes del humano
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).

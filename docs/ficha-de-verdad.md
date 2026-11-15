@@ -26,5 +26,7 @@
 | 19 | FB-002: «10/10 detecciones, preaviso mediano 21 días» | **SIN VERIFICAR** | el script y el acta no están en el repo (`afirmaciones-por-verificar.md` A-08) |
 | 20 | «NASA lista el monitoreo médico como capacidad insuficiente (feb-2025)» | **SIN VERIFICAR** | no hallé el documento (A-05) |
 | 21 | «Nadie unifica cuerpo y máquina» | **SIN VERIFICAR** (probablemente falsa tal cual) | ORACLE es un precedente parcial (`evaluacion-paper.md` §7) |
+| 22 | El detector con h calibrado a 1 % de falsas alarmas **se transfiere a datos reales** | **EXTRAPOLACIÓN refutada en parte** | FB-009: en sueño 0/97 (pero por el piso del sensor proxy, que lo hace conservador); en pulso **4,9 % (≈5× el nominal)** por autocorrelación (ρ ≈ 0,18). `NOTA-FB-009-posthoc.md` |
+| 23 | «Detección del 100 % a 2σ» en 14 días | **CIENCIA REAL (dato) pero engañosa en σ** | en unidades físicas 2σ ≈ **204 min** de sueño (≈ 3,4 h) o ≈ 10,6 lpm; el MDE al 90 % ≈ 163 min de sueño está dictado por el proxy del sensor |
 
 **Cómo se usa ante el jurado:** las filas 1–10 se dicen con seguridad y fuente; 11–14 se dicen **con su etiqueta** («es una extrapolación»); 15–18 se presentan como diseño/inspiración; **19–21 no se dicen como hechos**.

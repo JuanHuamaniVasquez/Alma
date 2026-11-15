@@ -14,3 +14,6 @@
 **Lectura honesta:** con una línea base de 14 días y exigiendo 1 % de falsas alarmas, el **efecto mínimo detectable al 90 % de potencia es ≈ 1,8σ** en 14 días; un cambio de medio sigma, que a la persona le puede importar, **no se ve** en ese plazo. Es el costo de una base corta: más días de base o una ventana más larga bajan ese piso. Es exactamente el tipo de afirmación que MP-5 quiere hacer parte del recibo de todo «sin anomalías».
 
 **En datos reales (LifeSnaps, 1 participante, sueño; NO es evidencia, no está preregistrado):** línea base 405,8 min, SD intrapersonal 128,3 min, σ_sensor 102,2 min → σ_efectiva 132,8 min (**manda la persona, no el sensor**); 74 días activos, 99 ausencias, 0 alarmas. Una sola persona sin cambio conocido no dice nada sobre el FPR real: eso es M2.8.
+
+
+**Actualización 2026-11-15:** la evaluación preregistrada FB-009 sobre datos reales (`docs/actas/NOTA-FB-009-posthoc.md`) confirma la potencia de la simulación a 2σ (100 % real vs 95,7 % simulado) pero muestra que la **calibración de h es frágil** ante autocorrelación y que el piso del sensor proxy domina en sueño. La potencia debe leerse en unidades físicas.
