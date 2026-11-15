@@ -18,7 +18,7 @@ SPECS = {   # macro: gender 0=mujer 1=hombre · age 0.5=25 años (≈ 0.75 → 4
     "LYRA":   dict(macro=dict(gender=0.0, age=0.58, muscle=0.45, weight=0.42, height=0.5, proportions=0.6, race=dict(asian=0.75, caucasian=0.2, african=0.05)), pelo="Ponytail01", cejas="Eyebrow007", piel="young_asian_female", ojos=(0.26, 0.16, 0.09)),
     "ALTAIR": dict(macro=dict(gender=1.0, age=0.62, muscle=0.7, weight=0.58, height=0.58, proportions=0.5, race=dict(asian=0.0, caucasian=0.05, african=0.95)), pelo="Short04", cejas="Eyebrow001", piel="young_african_male", ojos=(0.24, 0.14, 0.08)),
     "CASTOR": dict(macro=dict(gender=0.0, age=0.7, muscle=0.4, weight=0.48, height=0.52, proportions=0.55, race=dict(asian=0.05, caucasian=0.9, african=0.05)), pelo="Bob01", cejas="Eyebrow010", piel="middleage_caucasian_female", ojos=(0.30, 0.45, 0.30)),
-    "RIGEL":  dict(macro=dict(gender=1.0, age=0.55, muscle=0.5, weight=0.45, height=0.55, proportions=0.52, race=dict(asian=0.2, caucasian=0.4, african=0.4)), pelo="Short03", cejas="Eyebrow005", piel="young_caucasian_male", ojos=(0.34, 0.34, 0.22)),
+    "RIGEL":  dict(macro=dict(gender=1.0, age=0.55, muscle=0.5, weight=0.45, height=0.55, proportions=0.52, race=dict(asian=0.2, caucasian=0.4, african=0.4)), pelo="Short03", cejas="Eyebrow005", piel="middleage_asian_male", ojos=(0.34, 0.34, 0.22)),
 }
 
 

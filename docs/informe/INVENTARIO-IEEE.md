@@ -125,7 +125,7 @@ Cada acta se preregistró con SHA-256 **antes** de correr; el hash de cada una s
 ## 8 · Referencias verificadas (Crossref/PubMed/lectura directa) y por verificar
 
 **Verificadas:** Ramdas, Grünwald, Vovk, Shafer 2023, *Stat. Sci.*, doi:10.1214/23-STS894 · Waudby-Smith et al. 2024, *Ann. Stat.*, doi:10.1214/24-AOS2408 · Moody & Mark 2001, *IEEE EMB Mag.*, doi:10.1109/51.932724 · Goldberger et al. 2000, *Circulation*, doi:10.1161/01.CIR.101.23.e215 · Barger et al. 2014, *Lancet Neurol*, doi:10.1016/S1474-4422(14)70122-X · Hughson et al. 2012, *J Appl Physiol*, doi:10.1152/japplphysiol.01196.2011 · McBrayer, Chai, Judd, NTRS 20220013418 · Yfantidou et al. 2022 (LifeSnaps), doi:10.1038/s41597-022-01764-x · Jones 2019, NTRS 20190027319 · Ewert & Stromgren 2019, ICES-2019-126 · Altman & Bland 1995, doi:10.1136/bmj.311.7003.485.
-**Encontradas por búsqueda, SIN verificar en Crossref todavía:** Shekhar & Ramdas, e-detectors, arXiv:2203.03532 · arXiv:2606.01960 (return-to-baseline e-processes) · NILMTK arXiv:1404.3878.
+**Verificadas en la API de arXiv (título, autores, fecha) el 2026-11-15:** Shin, Ramdas & Rinaldo, *E-detectors: a nonparametric framework for sequential change detection*, arXiv:2203.03532 (2022) — nota: el nombre «Shekhar» que figuraba antes en este inventario era erróneo; los autores son Shin, Ramdas y Rinaldo · Regis & Serra, *Return-to-Baseline Testing via Empirically Calibrated e-processes*, arXiv:2606.01960 (2026) · Batra, Kelly, Parson et al., *NILMTK*, arXiv:1404.3878 (2014). **Pendiente:** son preprints; confirmar si hay versión publicada antes de citar.
 **IEEE/Scholar no consultados** (declarado en `docs/revision-literatura.md`).
 
 ## 9 · Lo que el informe NO afirma (lista de límites que debe repetir)
@@ -135,7 +135,7 @@ No son astronautas (datos reales = civiles; la tripulación y el hábitat son fi
 ## 10 · Pendientes antes de escribir el informe (los decide el equipo)
 
 - Confirmar la **fecha límite real** de entrega (CLAUDE.md dice 14‑nov‑2026).
-- Decidir si M6.5 (respiración, rmssd, SpO₂ como indicadores) se hace: requiere verificar σ de sensor de Fitbit.
-- Revisar las referencias «sin verificar» (§8) y consultar IEEE Xplore / Google Scholar.
+- M6.5 (respiración, rmssd, SpO₂ como indicadores) sigue **bloqueado**: la búsqueda en PubMed (2026-11-15) no halló una validación del Fitbit Sense con error de medida utilizable para estas tres señales; sin σ verificada no se emiten (política de datos).
+- Consultar IEEE Xplore / Google Scholar (las referencias de §8 ya están verificadas; los preprints de arXiv pueden tener versión publicada).
 - Elegir qué resultados van en el cuerpo y cuáles en material suplementario (el repositorio completo).
 - Licencia del repositorio y URLs (repo, PDF v0.4) para el formulario.
