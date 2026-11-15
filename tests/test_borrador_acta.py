@@ -11,4 +11,13 @@ def test_el_borrador_lleva_los_umbrales_de_la_especificacion():
 def test_toda_hipotesis_con_especificacion_existe_en_la_biblioteca_y_esta_lista():
     claves = {m.clave for m in G.BIBLIOTECA}
     assert set(G.TEST_SPEC) <= claves
-    assert all(sp["signo"] in (-1, 1) and sp["efecto_min"] > 0 for sp in G.TEST_SPEC.values())
+    for sp in G.TEST_SPEC.values():
+        if sp.get("tipo") == "correlacion":
+            assert sp["sentido"] in {"neg", "pos", "bilateral"} and 0 < sp["rho_min"] < 1
+        else:
+            assert sp["signo"] in (-1, 1) and sp["efecto_min"] > 0
+
+
+def test_el_borrador_mixto_lleva_correlacion_binario_con_retardo_y_placebo_entre_personas():
+    t = G.borrador_acta("FB-Y", ["temp-eficiencia", "carga-rmssd-noche", "kp-respiracion"], semilla=20261113, sha_csv="0" * 64, alfa=0.0125, no_ceguera="n", predicciones="p")
+    assert "S ≤ −0.1" in t and "día D+1" in t and "|S| ≥ 0.1" in t and "ENTRE PERSONAS" in t and "desplazamiento circular" in t

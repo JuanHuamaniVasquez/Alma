@@ -48,6 +48,8 @@ BIBLIOTECA = (
               (LIFESNAPS, BARGER), "Diferencia intrapersonal de rmssd ≥ −0,05 sd o p > 0,025", ("DC-02", "DC-05"), "barajado intrapersona (10 000)", "FB-026"),
     Mecanismo("carga-rmssd", "A hard day, a quieter night", "Carga de entrenamiento intensa → menor variabilidad vagal esa noche (ancla por verificar en M5.5)", "actividad_intensa", "rmssd",
               (LIFESNAPS,), "Correlación de rangos intrapersonal mediana > −0,1 en prueba (mitad final de cada serie)", ("DC-05", "DC-14"), "Spearman intrapersona, mitad/mitad", "FB-026"),
+    Mecanismo("carga-rmssd-noche", "A hard day, a quieter NEXT night", "Carga de entrenamiento intensa → menor variabilidad vagal la NOCHE SIGUIENTE (recuperación; ancla por verificar en M5.5)", "actividad_intensa", "rmssd",
+              (LIFESNAPS,), "Diferencia intrapersonal de rmssd (día D+1) ≥ −0,05 sd o p > 0,0125 entre días intensos y el resto", ("DC-05", "DC-14"), "barajado intrapersona (10 000), pareo día D → día D+1"),
     Mecanismo("estres-eficiencia", "Stress score, worse sleep efficiency", "Estrés alto → sueño más fragmentado (ancla por verificar en M5.5)", "estres", "eficiencia_sueno",
               (LIFESNAPS,), "Correlación intrapersonal mediana > −0,1 en prueba", ("DC-05",), "Spearman intrapersona, mitad/mitad"),
     Mecanismo("temp-eficiencia", "Warmer skin at night, lighter sleep", "Temperatura nocturna de la muñeca más alta → peor eficiencia del sueño (termorregulación; ancla por verificar en M5.5)", "temp_noche", "eficiencia_sueno",
@@ -71,6 +73,7 @@ BIBLIOTECA = (
 EN = {
     "sueno-fc": ("Cutting sleep raises sympathetic activation, so resting pulse should be higher the next day.", "Within-person resting-pulse difference under 0.5 bpm, or p > 0.025, between short-sleep days and the rest."),
     "sueno-rmssd": ("Cutting sleep lowers vagal tone, so overnight heart-rate variability should fall.", "Within-person HRV difference no lower than −0.05 sd, or p > 0.025."),
+    "carga-rmssd-noche": ("A hard training day should leave less vagal activity the NEXT night (recovery).", "Within-person HRV difference on day D+1 no lower than −0.05 sd, or p > 0.0125."),
     "carga-rmssd": ("A hard training day should leave less vagal activity that night.", "Median within-person rank correlation above −0.1 on held-out days."),
     "estres-eficiencia": ("A high stress score should fragment the night: lower sleep efficiency.", "Median within-person correlation above −0.1 on held-out days."),
     "temp-eficiencia": ("A warmer wrist at night should mean lighter, less efficient sleep (thermoregulation).", "Median within-person correlation above −0.1 on held-out days."),
@@ -138,42 +141,65 @@ def generar(csv_ruta: Path) -> list[dict]:
 
 # Especificación EJECUTABLE de la prueba de cada candidato listo: la MISMA que usa el borrador del acta y el runner, de modo que lo preregistrado y lo ejecutado no pueden divergir.
 # x = 1 si la variable `causa` de ese día está por debajo (−) / por encima (+) de la mediana PERSONAL; y = `efecto`; contraste intrapersonal con barajado de etiquetas dentro de cada persona.
-TEST_SPEC = {
+TEST_SPEC = {   # tipo «binario» (por defecto): contraste por mediana personal con barajado; tipo «correlacion»: mediana de ρ en la mitad de prueba con nulo circular
     "sueno-fc": {"x_col": "minutesAsleep", "x_lado": "bajo", "y_col": "resting_hr", "estandarizar": False, "signo": +1, "efecto_min": 0.5, "unidad": "lpm",
                  "enunciado": "los días con sueño por debajo de su mediana personal tienen el pulso en reposo MÁS ALTO"},
     "sueno-rmssd": {"x_col": "minutesAsleep", "x_lado": "bajo", "y_col": "rmssd", "estandarizar": True, "signo": -1, "efecto_min": 0.05, "unidad": "sd",
                     "enunciado": "los días con sueño por debajo de su mediana personal tienen la rmssd MÁS BAJA"},
     "carga-rmssd": {"x_col": "very_active_minutes", "x_lado": "alto", "y_col": "rmssd", "estandarizar": True, "signo": -1, "efecto_min": 0.05, "unidad": "sd",
                     "enunciado": "los días con actividad intensa por encima de su mediana personal tienen la rmssd MÁS BAJA"},
+    "carga-rmssd-noche": {"x_col": "very_active_minutes", "x_lado": "alto", "y_col": "rmssd", "estandarizar": True, "signo": -1, "efecto_min": 0.05, "unidad": "sd", "lag_dias": 1,
+                          "enunciado": "los días con actividad intensa por encima de su mediana personal tienen la rmssd de la NOCHE SIGUIENTE (día D+1) MÁS BAJA"},
+    "temp-eficiencia": {"tipo": "correlacion", "x_col": "nightly_temperature", "y_col": "sleep_efficiency", "sentido": "neg", "rho_min": 0.10,
+                        "enunciado": "dentro de cada persona, una temperatura nocturna más alta se acompaña de una eficiencia del sueño MÁS BAJA"},
+    "estres-eficiencia": {"tipo": "correlacion", "x_col": "stress_score", "y_col": "sleep_efficiency", "sentido": "neg", "rho_min": 0.10,
+                          "enunciado": "dentro de cada persona, un puntaje de estrés más alto se acompaña de una eficiencia del sueño MÁS BAJA"},
+    "kp-respiracion": {"tipo": "correlacion", "x_col": "__kp__", "y_col": "full_sleep_breathing_rate", "sentido": "bilateral", "rho_min": 0.10,
+                       "enunciado": "dentro de cada persona, el Kp máximo del día se acompaña de un cambio de la frecuencia respiratoria nocturna (en cualquier sentido)"},
 }
 
 
-def borrador_acta(numero: str, claves: list[str], *, semilla: int, sha_csv: str, alfa: float, no_ceguera: str, predicciones: str, minimo_dias: int = 30, desplazamiento: int = 40) -> str:
-    """El generador REDACTA el borrador de preregistro de los candidatos elegidos (sin ejecutar nada). Un humano lo revisa y solo entonces se sella con hash."""
+def borrador_acta(numero: str, claves: list[str], *, semilla: int, sha_csv: str, alfa: float, no_ceguera: str, predicciones: str, minimo_dias: int = 30, desplazamiento: int = 40,
+                  n_perm: int = 2000, sha_extra: str = "") -> str:
+    """El generador REDACTA el borrador de preregistro de los candidatos elegidos (sin ejecutar nada). Un humano lo revisa y solo entonces se sella con hash.
+    Admite contrastes «binario» (mediana personal + barajado) y «correlacion» (mediana de ρ en la mitad de prueba + nulo circular); el control placebo usa la primera hipótesis."""
     m = {x.clave: x for x in BIBLIOTECA}
     h = []
     for i, c in enumerate(claves, start=1):
         sp = TEST_SPEC[c]
-        sentido = "≥" if sp["signo"] > 0 else "≤"
-        h.append(f"- **H{i} · {m[c].titulo} (`{c}`):** {sp['enunciado']}. **SOSTENIDA** si S {sentido} {sp['signo'] * sp['efecto_min']:g} {sp['unidad']} **y** p unilateral ≤ {alfa:g}; si no, **REFUTADA**. "
-                 f"Mecanismo y ancla: {m[c].mecanismo}. Señal que la mata (plantilla del vivero): {m[c].mata}.")
+        if sp.get("tipo") == "correlacion":
+            if sp["sentido"] == "bilateral":
+                regla = f"|S| ≥ {sp['rho_min']:g} **y** p bilateral ≤ {alfa:g}"
+            else:
+                regla = f"S {'≤ −' if sp['sentido'] == 'neg' else '≥ +'}{sp['rho_min']:g} **y** p unilateral ≤ {alfa:g}"
+            h.append(f"- **H{i} · {m[c].titulo} (`{c}`, correlación):** {sp['enunciado']}. **SOSTENIDA** si {regla} (S = mediana entre personas del ρ de Spearman en su mitad de PRUEBA); si no, **REFUTADA**. "
+                     f"Mecanismo y ancla: {m[c].mecanismo}. Señal que la mata (plantilla del vivero): {m[c].mata}.")
+        else:
+            sentido = "≥" if sp["signo"] > 0 else "≤"
+            lag = f" (pareo día D → día D+{sp['lag_dias']})" if sp.get("lag_dias") else ""
+            h.append(f"- **H{i} · {m[c].titulo} (`{c}`, binario{lag}):** {sp['enunciado']}. **SOSTENIDA** si S {sentido} {sp['signo'] * sp['efecto_min']:g} {sp['unidad']} **y** p unilateral ≤ {alfa:g}; si no, **REFUTADA**. "
+                     f"Mecanismo y ancla: {m[c].mecanismo}. Señal que la mata (plantilla del vivero): {m[c].mata}.")
     primera = claves[0]
     sp0 = TEST_SPEC[primera]
-    h.append(f"- **H{len(claves) + 1} · control placebo:** la prueba de H1 repetida con las etiquetas de «{sp0['x_col']}» DESPLAZADAS {desplazamiento} días dentro de cada persona (se conserva su distribución, se rompe la coincidencia temporal). "
-             f"**VÁLIDO** si el placebo NO cumple a la vez S {'≥' if sp0['signo'] > 0 else '≤'} {sp0['signo'] * sp0['efecto_min']:g} {sp0['unidad']} y p ≤ {alfa:g}; si lo cumple, el método «ve» efectos que no pueden existir y todo el acta es INVÁLIDA.")
-    return f"""# Acta de preregistro {numero} — Hipótesis GENERADAS por el laboratorio (vivero), contrastes intrapersonales sobre wearables reales
+    if sp0.get("tipo") == "correlacion":
+        h.append(f"- **H{len(claves) + 1} · control placebo ENTRE PERSONAS:** la prueba de H1 repetida emparejando la serie x de cada persona con la serie y de OTRA persona (la siguiente en orden de identificador), "
+                 f"truncadas a la longitud común de su mitad de prueba. **VÁLIDO** si el placebo NO cumple la regla de H1; si la cumple, el método «ve» acoplamientos entre personas que no pueden existir y todo el acta es INVÁLIDA.")
+    else:
+        h.append(f"- **H{len(claves) + 1} · control placebo:** la prueba de H1 con las etiquetas desplazadas {desplazamiento} días dentro de cada persona. **VÁLIDO** si NO cumple la regla de H1.")
+    diseno = (f"- Personas con ≥ {minimo_dias} días con ambas variables. **Contrastes binarios:** por persona `x = 1` si la variable causal de ese día está del lado indicado de su propia mediana; diferencia media de `y` entre x = 1 y x = 0 (estandarizada por la sd personal cuando la unidad es «sd»; ≥ 5 días por grupo); **S** = media entre personas; **p** unilateral por barajado de etiquetas DENTRO de cada persona (10 000 permutaciones). Con `lag_dias`, la `y` es la del día siguiente (fechas consecutivas).\n"
+              f"- **Contrastes de correlación:** por persona, serie ordenada por fecha; la primera mitad no se usa (se separa, no se ajusta nada) y en la **mitad de PRUEBA** (≥ 20 días) se calcula el ρ de Spearman; **S** = mediana entre personas. **p** por **desplazamiento circular** de `y` respecto de `x` dentro de cada persona ({n_perm} desplazamientos aleatorios ≥ 5 posiciones, semilla {semilla}): conserva la autocorrelación y rompe solo la coincidencia temporal. Kp = máximo diario de GFZ (S-09).\n"
+              f"- **α = {alfa:g}** por hipótesis (Bonferroni: 0,05 / {len(claves)}).")
+    return f"""# Acta de preregistro {numero} — Hipótesis GENERADAS por el laboratorio (vivero), segunda tanda: correlaciones intrapersonales y recuperación a un día
 
 > **Estado:** PREREGISTRADA, sin ejecutar · **Semilla pública:** {semilla} · **Borrador redactado por `src/fabrica/generador.py::borrador_acta` y revisado por Claude antes de sellarlo.**
 > **No-ceguera (declarada):** {no_ceguera}
-> **Etiqueta:** datos REALES de personas en vida cotidiana (LifeSnaps, sha256 `{sha_csv}`), **NO astronautas**.
+> **Etiqueta:** datos REALES de personas en vida cotidiana (LifeSnaps, sha256 `{sha_csv}`){sha_extra}, **NO astronautas**.
 
 ## Pregunta
-¿Se sostienen, con datos reales, las {len(claves)} hipótesis que el laboratorio generó cruzando mecanismos de la literatura con los datos que existen? Ninguna se eligió mirando un resultado: son los candidatos «listos» del vivero cuyo contraste es el intrapersonal binario (los demás candidatos listos —temperatura→eficiencia, Kp→respiración, estrés→eficiencia— usan otro estadístico y irán en otra acta).
+¿Se sostienen con datos reales las {len(claves)} hipótesis que el vivero dejaba «listas» tras FB-026 (más la carga contra la rmssd de la noche SIGUIENTE, que FB-026 no podía ver)? Ninguna se eligió mirando un resultado: son todas las candidatas listas del vivero, más la que FB-026 propuso como siguiente paso.
 
-## Diseño (código fijado: `src/fabrica/generador.py::TEST_SPEC`, `src/motor/intrapersona.py`, `scripts/fb026_vivero.py`)
-- Personas con ≥ {minimo_dias} días con ambas variables. Por persona: `x = 1` si la variable causal de ese día está del lado indicado de **su propia mediana**; la diferencia media de `y` entre días con x = 1 y x = 0 (estandarizada por la sd personal cuando la unidad es «sd»; se exigen ≥ 5 días por grupo).
-- **S** = media de esas diferencias entre personas. **p** unilateral por barajado de las etiquetas DENTRO de cada persona (10 000 permutaciones, semilla {semilla}).
-- **α = {alfa:g}** unilateral por hipótesis (Bonferroni: 0,05 / {len(claves)}).
+## Diseño (código fijado: `src/fabrica/generador.py::TEST_SPEC`, `src/motor/intrapersona.py`, `src/motor/correlacion_intrapersona.py`, `scripts/{numero.lower().replace('-', '')}_vivero2.py`)
+{diseno}
 
 ## Hipótesis y reglas (fijadas ANTES de correr)
 {chr(10).join(h)}
@@ -181,8 +207,8 @@ def borrador_acta(numero: str, claves: list[str], *, semilla: int, sha_csv: str,
 **Predicción mía (se publica aunque falle):** {predicciones}
 
 ## Reglas de proceso
-Una sola ejecución (`scripts/fb026_vivero.py`; se niega a correr sin acta intacta, con otro CSV, o dos veces); nada cambia tras ver resultados (un cambio exige `{numero}-v2`). Cada resultado se acuña después como tarjeta DC-12 con el hash de esta acta.
+Una sola ejecución (`scripts/{numero.lower().replace('-', '')}_vivero2.py`; se niega a correr sin acta intacta, con otros datos, o dos veces); nada cambia tras ver resultados (un cambio exige `{numero}-v2`). Cada resultado se acuña después como tarjeta DC-12 con el hash de esta acta.
 
 ## Lo que NO afirma
-Que sean astronautas; causalidad (son asociaciones intrapersonales); que «mediana personal» sea el mejor corte; que el pareo por fila (la noche que termina esa mañana ↔ el pulso/HRV de esa fila) coincida con el orden temporal exacto del dispositivo; que {len(claves)} pruebas con Bonferroni agoten el espacio de hipótesis.
+Que sean astronautas; causalidad; que el pareo por fila (la noche que termina esa mañana ↔ el valor de esa fila) coincida con el orden temporal exacto del dispositivo; que «mediana personal» o «mitad de prueba» sean los mejores cortes; que {len(claves)} pruebas con Bonferroni agoten el espacio de hipótesis.
 """
