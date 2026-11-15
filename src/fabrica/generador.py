@@ -67,6 +67,22 @@ BIBLIOTECA = (
 )
 
 
+# Texto de la vitrina (inglés; derivado de los campos en español, que mandan)
+EN = {
+    "sueno-fc": ("Cutting sleep raises sympathetic activation, so resting pulse should be higher the next day.", "Within-person resting-pulse difference under 0.5 bpm, or p > 0.025, between short-sleep days and the rest."),
+    "sueno-rmssd": ("Cutting sleep lowers vagal tone, so overnight heart-rate variability should fall.", "Within-person HRV difference no lower than −0.05 sd, or p > 0.025."),
+    "carga-rmssd": ("A hard training day should leave less vagal activity that night.", "Median within-person rank correlation above −0.1 on held-out days."),
+    "estres-eficiencia": ("A high stress score should fragment the night: lower sleep efficiency.", "Median within-person correlation above −0.1 on held-out days."),
+    "temp-eficiencia": ("A warmer wrist at night should mean lighter, less efficient sleep (thermoregulation).", "Median within-person correlation above −0.1 on held-out days."),
+    "kp-respiracion": ("Geomagnetic activity might shift nightly breathing rate (heliobiology; contested).", "The statistic falls inside the circular-shift null (p > 0.0125)."),
+    "hf-en-vuelo": ("Weightlessness should lower the high-frequency power of the beat-to-beat interval (Hughson 2012, six astronauts).", "High-frequency power not lower in flight than before flight in at least 4 of 6."),
+    "sueno-en-vuelo": ("Spaceflight should cut the sleep obtained (Barger 2014: 6.09 h on the ISS).", "In-flight minus ground difference no lower than −0.2 h."),
+    "retardo-estres": ("Delayed and blacked-out ground contact (0–22 min one-way, McBrayer 2022) should raise crew stress.", "No dose–response between delay and self-reported stress."),
+    "temp-fc": ("A warmer night should raise resting pulse (thermoregulation).", "Median rank correlation on held-out days below 0.20, or fewer than 65% of people positive."),
+    "resp-fc": ("Faster nightly breathing should come with a faster resting pulse (cardiorespiratory coupling).", "Median rank correlation on held-out days below 0.20, or fewer than 65% of people positive."),
+}
+
+
 def id_de(clave: str) -> str:
     return str(uuid.uuid5(NS, "vivero:" + clave))
 
@@ -111,6 +127,10 @@ def generar(csv_ruta: Path) -> list[dict]:
                      "ya_probada_en": m.ya_probada_en, "datos": {"pares": c["pares"], "personas_con_40_dias": c["personas"], "falta": c["falta"]},
                      "precio": {"datos": ("LifeSnaps cargado: %d pares, %d personas con ≥ 40 días" % (c["pares"], c["personas"])) if c["disponible"] else "no existe dato abierto: " + ", ".join(c["falta"]),
                                 "computo": m.precio_computo, "dias": 1 if listo else None},
-                     "siguiente": "Preregistrar el acta con hash ANTES de correr" if listo else ("Ya sellada y ejecutada: %s" % m.ya_probada_en if m.ya_probada_en else "Esperar a que el dato exista; no se simula")})
+                     "siguiente": "Preregistrar el acta con hash ANTES de correr" if listo else ("Ya sellada y ejecutada: %s" % m.ya_probada_en if m.ya_probada_en else "Esperar a que el dato exista; no se simula"),
+                     "en": {"mechanism": EN[m.clave][0], "kill": EN[m.clave][1],
+                            "price": (f"Real wearable data held: {c['pares']:,} person-days, {c['personas']} people with at least 40 days." if c["disponible"] else "No open data exists for: " + ", ".join(c["falta"]).replace("_", " ") + "."),
+                            "compute": ("About 1 day of compute." if listo else "Cannot be run today: we do not fill the gap with invented numbers."),
+                            "next": ("Seal the preregistration (hash) before running anything." if listo else f"Already sealed and run: {m.ya_probada_en}." if m.ya_probada_en else "Wait for the data to exist.")}})
     orden = {"listo": 0, "ya_probada": 1, "bloqueado": 2}
     return sorted(cand, key=lambda x: (orden[x["estado"]], -x["datos"]["pares"]))

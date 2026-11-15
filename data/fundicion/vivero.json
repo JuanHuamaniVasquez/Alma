@@ -1,5 +1,5 @@
 {
- "generado_utc": "2026-11-15T21:27:38Z",
+ "generado_utc": "2026-11-15T21:43:25Z",
  "n_mecanismos": 11,
  "fuente_datos": "LifeSnaps (Zenodo 7229547), conteos de pares REALES",
  "n_listos": 6,
@@ -42,7 +42,14 @@
     "computo": "barajado intrapersona (10 000)",
     "dias": 1
    },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+   "siguiente": "Preregistrar el acta con hash ANTES de correr",
+   "en": {
+    "mechanism": "Cutting sleep raises sympathetic activation, so resting pulse should be higher the next day.",
+    "kill": "Within-person resting-pulse difference under 0.5 bpm, or p > 0.025, between short-sleep days and the rest.",
+    "price": "Real wearable data held: 3,512 person-days, 48 people with at least 40 days.",
+    "compute": "About 1 day of compute.",
+    "next": "Seal the preregistration (hash) before running anything."
+   }
   },
   {
    "id": "c6f8ed81-b402-50ac-8c5e-ff6fccfdab17",
@@ -74,7 +81,14 @@
     "computo": "Spearman intrapersona, mitad/mitad",
     "dias": 1
    },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+   "siguiente": "Preregistrar el acta con hash ANTES de correr",
+   "en": {
+    "mechanism": "A warmer wrist at night should mean lighter, less efficient sleep (thermoregulation).",
+    "kill": "Median within-person correlation above −0.1 on held-out days.",
+    "price": "Real wearable data held: 3,356 person-days, 47 people with at least 40 days.",
+    "compute": "About 1 day of compute.",
+    "next": "Seal the preregistration (hash) before running anything."
+   }
   },
   {
    "id": "a1a62083-90dc-5cb0-ad4b-5a91510a35b2",
@@ -112,7 +126,14 @@
     "computo": "10 000 permutaciones circulares",
     "dias": 1
    },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+   "siguiente": "Preregistrar el acta con hash ANTES de correr",
+   "en": {
+    "mechanism": "Geomagnetic activity might shift nightly breathing rate (heliobiology; contested).",
+    "kill": "The statistic falls inside the circular-shift null (p > 0.0125).",
+    "price": "Real wearable data held: 2,495 person-days, 33 people with at least 40 days.",
+    "compute": "About 1 day of compute.",
+    "next": "Seal the preregistration (hash) before running anything."
+   }
   },
   {
    "id": "736ac56f-57c1-5f5b-88fe-aa8616eea06c",
@@ -145,7 +166,14 @@
     "computo": "Spearman intrapersona, mitad/mitad",
     "dias": 1
    },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+   "siguiente": "Preregistrar el acta con hash ANTES de correr",
+   "en": {
+    "mechanism": "A hard training day should leave less vagal activity that night.",
+    "kill": "Median within-person rank correlation above −0.1 on held-out days.",
+    "price": "Real wearable data held: 2,475 person-days, 33 people with at least 40 days.",
+    "compute": "About 1 day of compute.",
+    "next": "Seal the preregistration (hash) before running anything."
+   }
   },
   {
    "id": "174fe3b1-d778-5bfa-a06f-b5f9936cab92",
@@ -183,7 +211,14 @@
     "computo": "barajado intrapersona (10 000)",
     "dias": 1
    },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+   "siguiente": "Preregistrar el acta con hash ANTES de correr",
+   "en": {
+    "mechanism": "Cutting sleep lowers vagal tone, so overnight heart-rate variability should fall.",
+    "kill": "Within-person HRV difference no lower than −0.05 sd, or p > 0.025.",
+    "price": "Real wearable data held: 2,463 person-days, 33 people with at least 40 days.",
+    "compute": "About 1 day of compute.",
+    "next": "Seal the preregistration (hash) before running anything."
+   }
   },
   {
    "id": "77061d86-ebe4-5837-bc52-fd0d83628e4b",
@@ -215,7 +250,14 @@
     "computo": "Spearman intrapersona, mitad/mitad",
     "dias": 1
    },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr"
+   "siguiente": "Preregistrar el acta con hash ANTES de correr",
+   "en": {
+    "mechanism": "A high stress score should fragment the night: lower sleep efficiency.",
+    "kill": "Median within-person correlation above −0.1 on held-out days.",
+    "price": "Real wearable data held: 1,865 person-days, 26 people with at least 40 days.",
+    "compute": "About 1 day of compute.",
+    "next": "Seal the preregistration (hash) before running anything."
+   }
   },
   {
    "id": "3a9e0cc6-4a25-5aed-8dbc-f62ead88fe49",
@@ -247,7 +289,14 @@
     "computo": "Spearman intrapersona, mitad/mitad",
     "dias": null
    },
-   "siguiente": "Ya sellada y ejecutada: FB-022"
+   "siguiente": "Ya sellada y ejecutada: FB-022",
+   "en": {
+    "mechanism": "A warmer night should raise resting pulse (thermoregulation).",
+    "kill": "Median rank correlation on held-out days below 0.20, or fewer than 65% of people positive.",
+    "price": "Real wearable data held: 3,338 person-days, 47 people with at least 40 days.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Already sealed and run: FB-022."
+   }
   },
   {
    "id": "eb665acc-59ec-5902-90e2-fa71d498f699",
@@ -279,7 +328,14 @@
     "computo": "Spearman intrapersona, mitad/mitad",
     "dias": null
    },
-   "siguiente": "Ya sellada y ejecutada: FB-022"
+   "siguiente": "Ya sellada y ejecutada: FB-022",
+   "en": {
+    "mechanism": "Faster nightly breathing should come with a faster resting pulse (cardiorespiratory coupling).",
+    "kill": "Median rank correlation on held-out days below 0.20, or fewer than 65% of people positive.",
+    "price": "Real wearable data held: 2,483 person-days, 33 people with at least 40 days.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Already sealed and run: FB-022."
+   }
   },
   {
    "id": "7f922b88-f45e-56a9-a3f2-c056b9036a77",
@@ -314,7 +370,14 @@
     "computo": "pareada pre/en vuelo (n pequeña)",
     "dias": null
    },
-   "siguiente": "Esperar a que el dato exista; no se simula"
+   "siguiente": "Esperar a que el dato exista; no se simula",
+   "en": {
+    "mechanism": "Weightlessness should lower the high-frequency power of the beat-to-beat interval (Hughson 2012, six astronauts).",
+    "kill": "High-frequency power not lower in flight than before flight in at least 4 of 6.",
+    "price": "No open data exists for: vlf hf en vuelo.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Wait for the data to exist."
+   }
   },
   {
    "id": "5553f0c9-7671-50de-9511-84378f3f8414",
@@ -349,7 +412,14 @@
     "computo": "pareada por astronauta",
     "dias": null
    },
-   "siguiente": "Esperar a que el dato exista; no se simula"
+   "siguiente": "Esperar a que el dato exista; no se simula",
+   "en": {
+    "mechanism": "Spaceflight should cut the sleep obtained (Barger 2014: 6.09 h on the ISS).",
+    "kill": "In-flight minus ground difference no lower than −0.2 h.",
+    "price": "No open data exists for: sueno en vuelo.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Wait for the data to exist."
+   }
   },
   {
    "id": "29c14e7a-6211-5698-9e4c-b94a4e6b7337",
@@ -384,7 +454,14 @@
     "computo": "regresión ordinal por misión",
     "dias": null
    },
-   "siguiente": "Esperar a que el dato exista; no se simula"
+   "siguiente": "Esperar a que el dato exista; no se simula",
+   "en": {
+    "mechanism": "Delayed and blacked-out ground contact (0–22 min one-way, McBrayer 2022) should raise crew stress.",
+    "kill": "No dose–response between delay and self-reported stress.",
+    "price": "No open data exists for: estres con retardo.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Wait for the data to exist."
+   }
   }
  ]
 }

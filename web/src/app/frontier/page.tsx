@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Pager, usePaged } from "@/components/Pager";
 import { Room } from "@/components/Room";
 import { Stamp } from "@/components/Stamp";
 import { get, type Astronautas, type Entorno, type Frontera, type Osdr, type Tierra } from "@/lib/api";
@@ -160,12 +161,14 @@ function RealAstronauts({ a }: { a: Astronautas }) {
 function Atlas({ o }: { o: Osdr }) {
   const crew = o.estudios.filter((e) => e.tipo === "crew"), cells = o.n - crew.length;
   const [all, setAll] = useState(false);
-  const shown = all ? o.estudios : crew;
+  const shown0 = all ? o.estudios : crew;
+  const pg = usePaged(shown0, 8);
+  const shown = pg.slice;
   return (
     <Section title="What NASA has opened about spaceflown human bodies" banner="REAL" id="atlas">
       <p className="mt-4 max-w-3xl text-ink-dim">{o.n} studies in NASA&apos;s Open Science Data Repository involve human samples and spaceflight: {crew.length} come from crew (astronauts, mission simulations), {cells} are human cells or tissue flown to space. Nearly all are molecular — gene expression, proteins, microbiome. <strong className="text-ink">None is a continuous record of vital signs</strong>, which is why heart rate, glucose and pressure stay blocked here instead of being invented.</p>
       <div className="mt-4 flex gap-4 font-mono text-[10px] uppercase tracking-[0.18em]">
-        {([[false, `Crew studies · ${crew.length}`], [true, `All · ${o.n}`]] as const).map(([k, t]) => <button key={t} onClick={() => setAll(k)} aria-pressed={all === k} className={`border-b pb-0.5 ${all === k ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>)}
+        {([[false, `Crew studies · ${crew.length}`], [true, `All · ${o.n}`]] as const).map(([k, t]) => <button key={t} onClick={() => { setAll(k); pg.reset(); }} aria-pressed={all === k} className={`border-b pb-0.5 ${all === k ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>)}
       </div>
       <ul className="mt-4 grid gap-x-8 gap-y-3 md:grid-cols-2">
         {shown.map((e) => (
@@ -176,6 +179,7 @@ function Atlas({ o }: { o: Osdr }) {
           </li>
         ))}
       </ul>
+      <Pager {...pg} label="studies" />
       <p className="mt-3 text-[11px] text-ink-faint">Catalogue captured {o.capturado_utc.slice(0, 10)} from the OSDR search API. {o.nota}</p>
     </Section>
   );

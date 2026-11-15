@@ -26,3 +26,9 @@ def test_con_datos_reales_hay_listos_bloqueados_y_ya_probadas():
     assert e["hf-en-vuelo"]["estado"] == "bloqueado" and e["hf-en-vuelo"]["datos"]["pares"] == 0 and e["hf-en-vuelo"]["precio"]["dias"] is None
     assert e["temp-fc"]["estado"] == "ya_probada" and e["temp-fc"]["ya_probada_en"] == "FB-022"
     assert [x["estado"] for x in c] == sorted((x["estado"] for x in c), key=["listo", "ya_probada", "bloqueado"].index)
+
+
+@pytest.mark.skipif(not CSV.exists(), reason="falta LifeSnaps local (S-07)")
+def test_cada_candidato_trae_su_texto_en_ingles_para_la_vitrina():
+    for c in G.generar(CSV):
+        assert all(c["en"][k] for k in ("mechanism", "kill", "price", "compute", "next")) and "á" not in c["en"]["mechanism"] + c["en"]["kill"]

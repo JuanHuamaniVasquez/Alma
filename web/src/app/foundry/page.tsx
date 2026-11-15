@@ -125,13 +125,13 @@ function Candidate({ c }: { c: ViveroCand }) {
     <article className={`border border-dashed p-4 ${bloqueado ? "border-ink-faint/50" : "border-ink-dim/70"}`}>
       <p className="font-mono text-[9.5px] uppercase tracking-[0.16em]" style={{ color: bloqueado ? "var(--color-signal)" : "#d8d0c0" }}>{bloqueado ? "blocked · needs data that does not exist" : c.estado === "ya_probada" ? `already tested · ${c.ya_probada_en}` : "ready to seal"}</p>
       <h3 className="mt-1 font-display text-[1.45rem] leading-tight">{c.titulo}</h3>
-      <p className="mt-2 text-[12.5px] leading-snug text-ink-dim">{c.mecanismo.replace(/\s*\(ancla por verificar en M5\.5\)/, "")}</p>
+      <p className="mt-2 text-[12.5px] leading-snug text-ink-dim">{c.en.mechanism}</p>
       <p className="mt-3 font-mono text-[9.5px] uppercase tracking-[0.14em] text-ink-faint">what would kill it</p>
-      <p className="text-[12px] leading-snug">{c.mata}</p>
+      <p className="text-[12px] leading-snug">{c.en.kill}</p>
       <p className="mt-3 font-mono text-[9.5px] uppercase tracking-[0.14em] text-ink-faint">price</p>
-      <p className="text-[12px] leading-snug text-ink-dim">{c.precio.datos}. {c.precio.dias != null ? `About ${c.precio.dias} day of compute (${c.precio.computo}).` : "Cannot be run today; we do not fill the gap with invented numbers."}</p>
+      <p className="text-[12px] leading-snug text-ink-dim">{c.en.price} {c.en.compute}</p>
       <p className="mt-3 flex flex-wrap gap-x-3 font-mono text-[9px] uppercase tracking-[0.12em] text-ink-faint">{c.fuentes.map((f) => <span key={f.id} title={f.nombre}>{f.tipo} {f.id}</span>)}</p>
-      <p className="mt-2 text-[11.5px] italic leading-snug text-ink-dim">Next: {c.siguiente}.</p>
+      <p className="mt-2 text-[11.5px] italic leading-snug text-ink-dim">Next: {c.en.next}</p>
     </article>
   );
 }

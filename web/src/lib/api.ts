@@ -109,7 +109,7 @@ export type Anillos = { banner: Banner; anillos: Record<string, Anillo> };
 
 export type ViveroCand = { id: string; clave: string; titulo: string; mecanismo: string; causa: string; efecto: string; fuentes: { id: string; tipo: string; nombre: string }[]; mata: string;
   valor_si_cierta: string[]; estado: "listo" | "ya_probada" | "bloqueado"; ya_probada_en: string | null; datos: { pares: number; personas_con_40_dias: number; falta: string[] };
-  precio: { datos: string; computo: string; dias: number | null }; siguiente: string };
+  precio: { datos: string; computo: string; dias: number | null }; siguiente: string; en: { mechanism: string; kill: string; price: string; compute: string; next: string } };
 export type Vivero = { banner: Banner; generado_utc: string; n_mecanismos: number; n_listos: number; n_bloqueados: number; n_ya_probadas: number; fuente_datos: string; candidatos: ViveroCand[] };
 
 export type Tierra = { banner: Banner; disponible: boolean; imagen?: string; fecha_utc?: string; caption?: string; cuerpo?: string };
