@@ -22,11 +22,11 @@
 |---|---|---|
 | M0 Base | M0.1 stack · M0.2 repo · M0.3 contratos · M0.4 IN-3 (parcial) · M0.5 (parcial: GO-2 automatizado) · M0.6 andamio · M0.7 v0.2.1 · M0.8 banner heredado · M0.9 auditoría · M0.10 correcciones · M0.11 DC-13 · M0.13 persistencia | M0.5 (cierre de FB-001…004) · M0.12 citas→id · M0.14 alertas |
 | M1 Libro + Contrapeso | M1.1 (núcleo, parcial) · M1.2 Contrapeso · M1.3 API · M1.4 demo kill (FB-005-D1, confirmada) | M1.1 con datos reales, FB-005 completa (400 corridas, M2.6) |
-| M2 Motor | M2.1 MO-1 · M2.2 MO-2/MO-3 · M2.7 adaptador LifeSnaps · **M2.8 evaluación preregistrada FB-009** · M2.14 blanqueado AR(1) (FB-010) | FB-002 (M2.3), MO-4, MO-5, IN-4 (M2.6), M2.10 verde con potencia, M2.15 validación independiente |
+| M2 Motor | M2.1 MO-1 · M2.2 MO-2/MO-3 · M2.7 adaptador LifeSnaps · **M2.8 evaluación preregistrada FB-009** · M2.10 verde con potencia (DC-14, FB-011) · M2.14 blanqueado AR(1) (FB-010) | FB-002 (M2.3), MO-4, MO-5, IN-4 (M2.6), M2.10 verde con potencia, M2.15 validación independiente |
 | M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
 | M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
 
-Tests: **236 pytest verdes**. `sysmap check`: nada peor que la línea base.
+Tests: **263 pytest verdes**. `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
 
