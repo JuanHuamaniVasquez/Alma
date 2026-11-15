@@ -1,1 +1,5 @@
-urlpatterns: list = []  # M1.3 registra aquí los endpoints de apps.superficies
+from django.urls import include, path
+
+urlpatterns = [
+    path("api/", include("apps.superficies.urls")),  # M1.3: solo lectura; el cuerpo nunca sale en detalle
+]

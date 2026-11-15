@@ -21,12 +21,12 @@
 | Bloque | Hecho | Falta |
 |---|---|---|
 | M0 Base | M0.1 stack · M0.2 repo · M0.3 contratos · M0.4 IN-3 (parcial) · M0.5 (parcial: GO-2 automatizado) · M0.6 andamio · M0.7 v0.2.1 · M0.8 banner heredado · M0.9 auditoría · M0.10 correcciones · M0.11 DC-13 · M0.13 persistencia | M0.5 (cierre de FB-001…004) · M0.12 citas→id · M0.14 alertas |
-| M1 Libro + Contrapeso | M1.1 (núcleo, parcial) · M1.2 Contrapeso | M1.1 con datos reales, endpoints REST (M1.3), FB-005 (M1.4) |
+| M1 Libro + Contrapeso | M1.1 (núcleo, parcial) · M1.2 Contrapeso · M1.3 API | M1.1 con datos reales, FB-005 (M1.4) |
 | M2 Motor | — | MO-1…MO-3, FB-002, MO-4, MO-5, IN-4 |
 | M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
 | M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
 
-Tests: **130 pytest verdes**. `sysmap check`: nada peor que la línea base.
+Tests: **141 pytest verdes**. `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
 
@@ -90,7 +90,7 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 
 ## 7 · Capa 4 · Superficies — `src/superficies/` · app `apps.superficies`
 
-- [ ] **Endpoints REST** DC-04/05/06 (M1.3). **Regla dura: jamás exponen contenido individual, solo agregados y estados** (privacidad como arquitectura; el contenido individual no cruza de Capa 3 a Capa 4).
+- [x] **Endpoints REST** DC-04/05/06/08 (M1.3, solo lectura, privacidad probada por mutación). **Regla dura: jamás exponen contenido individual, solo agregados y estados** (privacidad como arquitectura; el contenido individual no cruza de Capa 3 a Capa 4).
 - [ ] SU-1 alertas con recibo · SU-2 tablero del comandante (agregados) · SU-3 sello semanal (regla `arbitro.proveedor ≠ operador`) · SU-4 miner de premortems.
 - [ ] SU-5 frontend Next.js (LA SALA, EL RESIDUO, LA MESA, LA TORMENTA, LA CÁPSULA, EL PRESUPUESTO): **después del backend**.
 
@@ -107,8 +107,8 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 - [x] Contratos que rechazan campos ajenos, timestamps no-UTC, NaN/inf, personas con identidad real (`tests/test_contratos.py`).
 - [x] Herencia de banner: un derivado nunca asciende a REAL en silencio (`banner_heredado`).
 - [x] Auditoría de fuentes repetible (`scripts/verificar_fuentes.py --red`).
-- [ ] Test de privacidad en la API (cuando existan endpoints): ningún campo individual en las respuestas.
-- [ ] Banner REAL/SIMULADO visible en toda respuesta de la API.
+- [x] Test de privacidad en la API: ningún id ni valor individual en las respuestas (con prueba de mutación).
+- [x] Banner REAL/SIMULADO en toda respuesta de la API (heredado de las filas).
 
 ## 10 · Propuestas y decisiones abiertas
 
