@@ -4,7 +4,7 @@ import { DayTicks } from "@/components/DayTicks";
 import { Room } from "@/components/Room";
 import { useShip } from "@/components/Ship";
 import { Stamp } from "@/components/Stamp";
-import { BUDGETS, get, type LedgerDay, type LedgerDays } from "@/lib/api";
+import { BUDGETS, get, type LedgerDay, type LedgerDays, type PrivacyBook } from "@/lib/api";
 
 /** 07 · THE BUDGET — «Do the ship's books close?» Cuentas, nunca gráficas de personas. Un libro sin datos reales de ancla NO se simula: se muestra vacío. */
 export default function Budget() {
@@ -12,6 +12,8 @@ export default function Budget() {
   const [days, setDays] = useState<number[]>([]);
   const [open, setOpen] = useState<Set<number>>(new Set());
   const [ledger, setLedger] = useState<LedgerDay | null>(null);
+  const [priv, setPriv] = useState<PrivacyBook | null>(null);
+  useEffect(() => { get<PrivacyBook>("/api/privacidad/").then(setPriv); }, []);
   useEffect(() => {
     get<LedgerDays>("/api/libro/dias/").then(async (d) => {
       if (!d || d.ultimo == null) return;
@@ -53,6 +55,24 @@ export default function Budget() {
           </table>
           <p className="mt-4 border-t border-paper-ink/60 pt-3 text-[11px]">{ledger ? `${nBooks} of 9 books exist; ${nOpen} do not close. “Blind below” is the smallest imbalance the manifest could ever notice — below it, a green means nothing.` : "No ledger loaded."}</p>
         </div>
+        {priv && (
+          <div className="mt-8 bg-paper px-8 pb-6 pt-5 font-mono text-[12.5px] text-paper-ink shadow-[0_24px_50px_-14px_rgb(0_0_0/.8)]" data-testid="privacy-book">
+            <div className="flex items-baseline justify-between border-b border-paper-ink/60 pb-3">
+              <span className="font-display text-3xl">Book 10 · Privacy</span>
+              <Stamp banner={priv.banner} />
+            </div>
+            <p className="mt-3 max-w-2xl text-[12px] leading-relaxed">With a crew of {priv.n_tripulacion}, even an average gives someone away: publish the count for all five, then the count for four, and one subtraction names a person. So every number leaving the ship spends privacy (ε), noise is added, and when the budget is gone, nothing more is published.</p>
+            <div className="mt-4 h-2.5 w-full bg-paper-ink/15" role="img" aria-label={`${priv.epsilon_gastado} of ${priv.epsilon_total} spent`}><div className="h-full bg-paper-ink" style={{ width: `${(100 * priv.epsilon_gastado) / priv.epsilon_total}%` }} /></div>
+            <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-paper-dim">ε spent {priv.epsilon_gastado.toFixed(1)} of {priv.epsilon_total.toFixed(1)} · {priv.epsilon_restante.toFixed(1)} left · {priv.cierra ? "closes" : "overspent"}</p>
+            <table className="mt-3 w-full">
+              <tbody>{priv.asientos.map((a) => (
+                <tr key={a.etiqueta} className="border-t border-paper-dim/30 align-baseline">
+                  <td className="py-2 font-display text-[1.15rem]">{a.etiqueta}</td><td className="text-right">published {a.valor_publicado} of {a.n}</td><td className="pl-5 text-right text-paper-dim">ε {a.epsilon} · {a.mecanismo}</td>
+                </tr>))}</tbody>
+            </table>
+            <p className="mt-3 border-t border-paper-ink/60 pt-3 text-[11px]">Exact counts never leave the server. ε = 2.0 is an illustrative budget, not a NASA policy. Tested: an attacker with exact counts recovers a crew member every time; with ε = 0.5 per query, they are wrong more than 12% of the time (<code>tests/test_privacidad.py</code>).</p>
+          </div>
+        )}
       </div>
       {days.length > 0 && day != null && <DayTicks days={days} day={day} open={open} onPick={setDay} />}
     </Room>

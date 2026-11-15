@@ -312,3 +312,19 @@ class Tripulacion(SoloLectura):
             "aviso": "Crew members are FICTIONAL characters of a simulated universe. The body states shown are a stand-in: an anonymous everyday person (LifeSnaps), not an astronaut.",
             "tripulacion": [{"indicativo": t.indicativo, "rol": t.rol, "color": t.color, "piel": t.piel, "pelo": t.pelo, "peinado": t.peinado, "complexion": t.complexion,
                              "estado": ({"fc": estado[elegidos[i]]["fc"], "sueño": estado[elegidos[i]]["sueño"]} if elegidos else None)} for i, t in enumerate(ROSTER)]})
+
+
+class Privacidad(SoloLectura):
+    """M6.4 · El décimo libro: presupuesto de privacidad ε. Publica SOLO conteos ruidosos de la tripulación de 5 (Laplace) y el libro de ε gastado; el conteo exacto
+    no sale nunca (con 5 personas, un agregado exacto más su resta identifica a alguien). Banner del conteo = el de la tripulación (stand-in real, no astronautas)."""
+
+    def get(self, request):
+        from src.superficies.privacidad import Libro
+        datos = Tripulacion().get(request).data
+        libro = Libro()
+        if datos["tripulacion"] and datos["tripulacion"][0]["estado"]:
+            est = [t["estado"] for t in datos["tripulacion"]]
+            for ind, etiqueta in (("fc", "crew members with a heart-rate alarm"), ("sueño", "crew members with a sleep alarm")):
+                libro.liberar_conteo(etiqueta, sum(e[ind] == "alarma" for e in est), len(est), 0.5)
+        return Response({"banner": datos["banner"], "n_tripulacion": len(datos["tripulacion"]), **libro.estado(),
+                         "nota": "Each published count spends ε. Exact counts never leave the server: with 5 people, an exact aggregate and one subtraction reveal an individual."})

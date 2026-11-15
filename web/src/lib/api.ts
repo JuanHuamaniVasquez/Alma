@@ -83,3 +83,6 @@ export function crewId(): string {
 export type CrewMember = { indicativo: string; rol: string; color: string; piel: string; pelo: string; peinado: string; complexion: number; estado: { fc: string; "sueño": string } | null };
 export type CrewPayload = { banner: Banner; aviso: string; tripulacion: CrewMember[] };
 export const CREW_STATE_EN: Record<string, string> = { verde: "a green with a receipt", alarma: "an alarm with a receipt — a question, not a verdict", sin_datos_suficientes: "too few days to say" };
+
+export type PrivacyBook = { banner: Banner; n_tripulacion: number; epsilon_total: number; epsilon_gastado: number; epsilon_restante: number; cierra: boolean; nota: string;
+  asientos: { etiqueta: string; epsilon: number; mecanismo: string; sensibilidad: number; n: number; valor_publicado: number }[] };
