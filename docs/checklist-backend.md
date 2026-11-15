@@ -22,11 +22,11 @@
 |---|---|---|
 | M0 Base | M0.1 stack · M0.2 repo · M0.3 contratos · M0.4 IN-3 (parcial) · M0.5 (parcial: GO-2 automatizado) · M0.6 andamio · M0.7 v0.2.1 · M0.8 banner heredado · M0.9 auditoría · M0.10 correcciones · M0.11 DC-13 · M0.13 persistencia | M0.5 (cierre de FB-001…004) · M0.12 citas→id · M0.14 alertas |
 | M1 Libro + Contrapeso | M1.1 (núcleo, parcial) · M1.2 Contrapeso · M1.3 API · M1.4 demo kill (FB-005-D1, confirmada) | M1.1 con datos reales, FB-005 completa (400 corridas, M2.6) |
-| M2 Motor | — | MO-1…MO-3, FB-002, MO-4, MO-5, IN-4 |
+| M2 Motor | M2.1 MO-1 · M2.2 MO-2/MO-3 · M2.7 adaptador LifeSnaps | FB-002 (M2.3), MO-4, MO-5, IN-4 (M2.6), evaluación preregistrada (M2.8) |
 | M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
 | M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
 
-Tests: **193 pytest verdes**. `sysmap check`: nada peor que la línea base.
+Tests: **207 pytest verdes**. `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
 
@@ -73,8 +73,8 @@ Ideas de contrato **pendientes de decisión humana**: hash de DC-12 inmutable un
 
 ## 5 · Capa 2 · Motor — `src/motor/` · app `apps.motor`
 
-- [ ] **MO-1** modelo nulo personal: línea base de 14 días, **priors OSDR** (**[!] necesita datos reales con archivos en OSDR; OS-892 no los tiene — buscar un estudio OSD con datos publicados**), modo aprendizaje honesto (M2.1).
-- [ ] **MO-2** residuo, sorpresa a 2σ → DC-06 · [ ] **MO-3** CUSUM **bilateral**, FPR 1 % en 14 d → DC-05 con recibo (M2.2).
+- [~] **MO-1** modelo nulo personal (M2.1): **hecho** — línea base de 14 días, modo aprendizaje honesto, ausencias sin rellenar, líneas base versionadas y solo-anexar con deriva acumulada (**enchufe de M-L1**, caso α Centauri, D-26). **Falta** — **priors OSDR**: [!] necesitan datos reales con archivos; OS-892 no los tiene.
+- [x] **MO-2** residuo, sorpresa a 2σ → DC-06 · [x] **MO-3** CUSUM **bilateral**, h **calibrado** (FPR 1 % en 14 d) → DC-05 con recibo ejecutable y retiro automático (M2.2). **Hueco:** `fc` sin presupuesto documentado (D-27).
 - [ ] **FB-002 reproducible: 10/10 detecciones, preaviso mediano 21 días** (semillas 20261113/14/15) — test de regresión permanente (M2.3). **El script no está en el repo; hay que traerlo o reconstruirlo desde el acta preregistrada, sin inventar el resultado.**
 - [ ] **MO-4** matriz co-deriva (planta × chip × humano) · FB-003 (M2.4).
 - [ ] **MO-5** integrador lento del agua (TOC/WRS) · FB-004 (M2.5).
