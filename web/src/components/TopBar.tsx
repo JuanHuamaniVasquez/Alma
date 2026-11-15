@@ -54,9 +54,9 @@ export function TopBar() {
   const here = GROUPS.find((g) => g.rooms.includes(path as never));
   return (
     <header className="absolute inset-x-0 top-0 z-40 flex h-11 items-center justify-between border-b border-line bg-bg/85 px-5 backdrop-blur" data-nav>
-      <div className="flex items-baseline gap-7">
+      <div className="flex items-baseline gap-4 sm:gap-7">
         <Link href="/" className="font-display text-[1.65rem] leading-none tracking-wide">ALMA</Link>
-        <nav className="flex items-baseline gap-6 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.18em]" aria-label="Rooms">
+        <nav className="flex items-baseline gap-4 whitespace-nowrap sm:gap-6 font-mono text-[11px] uppercase tracking-[0.18em]" aria-label="Rooms">
           {GROUPS.map((g) => {
             const active = g === here, single = g.rooms.length === 1;
             if (single) return <Link key={g.name} href={g.rooms[0]} className={active ? "text-ink" : "text-ink-faint hover:text-ink-dim"}>{g.name}</Link>;
@@ -81,7 +81,7 @@ export function TopBar() {
       <div className="flex items-center gap-3 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em] text-ink-dim">
         {checked && !days && <span className="text-signal" title="Start the backend: uv run python backend/manage.py runserver">API offline</span>}
         {LEDGER_ROOMS.includes(path) && days && days.ultimo != null && <span className="hidden -rotate-1 border border-warn px-1.5 py-[1px] font-medium tracking-[0.16em] text-warn md:inline-block" title={`The habitat's air and water are a simulated universe · day ${day ?? days.ultimo}`}>Habitat simulated · day {day ?? days.ultimo}</span>}
-        {live && <span className="inline-block border border-ok px-1.5 py-[1px] font-medium tracking-[0.16em] text-ok" title="Live NASA/NOAA feeds: ISS orbit, GOES protons and X-rays">● Live</span>}
+        {live && <span className="inline-block border border-ok px-1.5 py-[1px] font-medium tracking-[0.16em] text-ok" title="Live NASA/NOAA feeds: ISS orbit, GOES protons and X-rays"><span aria-hidden>●</span><span className="hidden sm:inline"> Live</span></span>}
       </div>
     </header>
   );

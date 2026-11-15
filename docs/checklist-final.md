@@ -63,7 +63,7 @@ Ver `TASKS.md` M6.0–M6.11. Orden: M6.0 literatura → M6.1 e-proceso → M6.3 
 ## D4 · Revisión de frontend y auditoría (2026-11-15)
 
 - [x] Navbar en 4 grupos · [x] ALMA sin tapar contenido · [x] anillos con datos reales · [x] paginación · [x] generador de hipótesis + vivero · [x] fotos reales de NASA · [x] DOC-01 v0.2.9 + entorno como DC-03 · [x] El Contrapeso en pantalla · [x] sysmap activo.
-- [ ] Decidir D-44 (privacidad de `/api/alarmas/`) · [ ] sellar con acta alguna de las 6 hipótesis «listas» del vivero (la que más valga para el pitch) · [ ] revisar con ojos de jurado las 9 salas a 1366×768 y a móvil.
+- [x] D-44 cerrada · [x] FB-026: primeras hipótesis del vivero selladas y ejecutadas · [x] móvil revisado (home y Fundición; panel plegable) · [ ] sellar las 3 hipótesis «listas» que quedan (otro estadístico) · [ ] revisar las otras 7 salas en móvil.
 
 ## E · Bloqueado por datos o acceso (no depende del código)
 - [ ] **M2.22 / GLOBEM:** solicitar acceso (PhysioNet) → con los datos, acta FB-020-v3.

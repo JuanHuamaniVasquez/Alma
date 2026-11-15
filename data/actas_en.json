@@ -390,6 +390,22 @@
     "osdr",
     "inspiration4"
    ]
+  },
+  "FB-026": {
+   "title": "The lab's own hypotheses: sleep, pulse and HRV",
+   "summary": "The first test written by the lab's hypothesis generator. Sleeping below your own median lowers overnight heart-rate variability by 0.21 standard deviations within people (p=0.0001; a placebo test sees nothing). The pulse effect is real but smaller than the minimum we sealed (0.25 vs 0.5 bpm), so it is reported as refuted. Training load shows nothing.",
+   "outcome": "mixed",
+   "data": "real",
+   "tags": [
+    "generated",
+    "sleep",
+    "hrv",
+    "pulse",
+    "training load",
+    "placebo",
+    "wearables",
+    "nursery"
+   ]
   }
  }
 }

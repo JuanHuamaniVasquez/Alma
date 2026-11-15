@@ -420,7 +420,7 @@ export default function SuitScene({ env, anillos, ledger, picked, onPick, mode, 
         {mode === "books" && BUDGETS.map(([id, label]) => {
           const s = stateOf(id);
           return (
-            <div key={id} ref={(el) => { labels.current[id] = el; }} className="absolute left-0 top-0 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.2em] will-change-transform [text-shadow:0_0_8px_#0d0c0b,0_0_2px_#0d0c0b]"
+            <div key={id} ref={(el) => { labels.current[id] = el; }} className="absolute left-0 top-0 hidden whitespace-nowrap sm:block font-mono text-[10px] uppercase tracking-[0.2em] will-change-transform [text-shadow:0_0_8px_#0d0c0b,0_0_2px_#0d0c0b]"
               style={{ color: s === "open" || driverOf(id)?.alarm ? "var(--color-signal)" : s === "absent" ? "var(--color-ink-faint)" : s === "driver" ? "#ffb45c" : "var(--color-ink-dim)" }}>
               {label}{s === "absent" ? " · no ledger" : s === "open" ? " · open" : s === "driver" ? ` · ${driverOf(id)?.text}` : ""}
             </div>

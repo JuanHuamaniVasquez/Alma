@@ -16,8 +16,8 @@ TARJETAS = mesa.leer(RAIZ / "data/fundicion/tarjetas.jsonl")
 BASE = json.loads(TARJETAS[0].model_dump_json())
 
 
-def test_las_siete_tarjetas_pasan_la_puerta_y_tienen_hash_de_un_acta_registrada():
-    assert len(TARJETAS) == 9                                                # 5 de M4.2 + 2 con astronautas REALES (M7.6/M7.7)
+def test_las_doce_tarjetas_pasan_la_puerta_y_tienen_hash_de_un_acta_registrada():
+    assert len(TARJETAS) == 12                                                # 5 de M4.2 + 2 con astronautas REALES (M7.6/M7.7)
     hashes = {e.hash_sha256 for e in leer_indice(RAIZ)}
     assert all(t.preregistro_hash in hashes for t in TARJETAS)          # el hash es de un acta realmente registrada
     assert all(t.fuentes and t.mecanismo and t.precio and t.valor_si_cierta for t in TARJETAS)
@@ -25,8 +25,8 @@ def test_las_siete_tarjetas_pasan_la_puerta_y_tienen_hash_de_un_acta_registrada(
 
 def test_tablero_cuenta_nacidas_refutadas_sostenidas():
     t = mesa.tablero(TARJETAS)
-    assert (t["nacidas"], t["refutada"], t["sostenida"], t["sin_datos"], t["en_prueba"]) == (9, 4, 3, 1, 1)
-    assert t["detectores_nuevos"] == 0 and t["listas_para_detector"] == 3   # sin registro, una sostenida NO es un detector
+    assert (t["nacidas"], t["refutada"], t["sostenida"], t["sin_datos"], t["en_prueba"]) == (12, 6, 4, 1, 1)
+    assert t["detectores_nuevos"] == 0 and t["listas_para_detector"] == 4   # sin registro, una sostenida NO es un detector
     det = mesa.leer_detectores(RAIZ / "data/fundicion/detectores.jsonl")
     assert mesa.tablero(TARJETAS, det)["detectores_nuevos"] == 1            # M4.5: circuló como detector `umbral_personal`
     assert det[0]["detector"] == "umbral_personal" and det[0]["hash_preregistro"] == TARJETAS[1].preregistro_hash

@@ -41,6 +41,7 @@
 | C-16 | El laboratorio GENERA hipótesis: una biblioteca de 11 mecanismos (cada uno con fuente con identificador) cruzada con los datos reales cargados produce candidatos con precio y señal refutadora; 6 listos, 3 bloqueados por datos inexistentes (en vuelo), 2 ya probados; nada se prueba al generar | implementada y testeada | `src/fabrica/generador.py`, `tests/test_generador.py`, `data/fundicion/vivero.json` | REAL (conteos de LifeSnaps) | son candidatos, no resultados; el umbral final lo fija el acta |
 | C-17 | El entorno en vivo de la tripulación (ISS, protones GOES, rayos X) entra al libro como eventos DC-03 con hash de lectura cruda y los fallos como DC-13 (DOC-01 v0.2.9) | implementada y testeada | `src/ingesta/entorno.py`, `tests/test_entorno_dc03.py`, `docs/DOC-01…v0.2.md` | REAL (NASA/NOAA) | la posición de la ISS es derivada de elementos orbitales |
 | C-18 | El Contrapeso se aplica día a día al universo simulado: el día de la fuga NO CIERRA | implementada | `backend/apps/libro/management/commands/sembrar_cierres.py`, `src/motor/contrapeso.py` | **SIMULADO (X-13)** | modelo de corrientes declarado; no hay datos de cabina tripulada |
+| C-19 | Primer bucle completo del laboratorio: mecanismo → candidato generado → acta redactada por el generador y revisada → hash → una ejecución → tarjetas. Resultado: dormir por debajo de la propia mediana baja la rmssd nocturna 0,21 sd (p = 0,0001, 36 personas, placebo nulo); el efecto sobre el pulso (+0,25 lpm, p = 0,003) no alcanza el mínimo preregistrado de 0,5 lpm; la carga intensa no muestra efecto con pareo por fila | medida | acta FB-026 `8260d621…`, `NOTA-FB-026.md`, `src/fabrica/generador.py`, `tests/test_borrador_acta.py` | REAL (LifeSnaps, no astronautas) | asociaciones intrapersonales; corte por mediana; pareo por fila |
 | C-12 | FB-014 (sueño/HRV × Kp) REFUTADA; FB-016 A (sueño corto → cansancio) SOSTENIDA | medida | `NOTA-FB-014.md`, `NOTA-FB-016.md` | REAL | LifeSnaps no son astronautas |
 
 (Las cifras de C-07/C-08/C-12 se citan de las notas; antes de usarlas en el informe, **releer la nota** — regla de oro del proyecto.)
@@ -76,6 +77,7 @@
 | FB-023 | `09bb108c` | 2026-11-15T19:21:02Z | 2026-11-15T19:21:16Z | simulated | partial | M6.2/MP-17: NILM metabólico de cabina, identificabilidad SIMULADA (X-17) |
 | FB-024 | `41f0413d` | 2026-11-15T20:27:32Z | 2026-11-15T20:28:13Z | real | mixed | M7.2: hematología REAL de astronautas (Inspiration4, OSD-569): conciliación interna, banda personal y retorno |
 | FB-025 | `fb459739` | 2026-11-15T20:48:16Z | 2026-11-15T20:48:41Z | real | refuted | M7.7: banda personal con varianza agrupada sobre el hemograma real de Inspiration4 (exploratoria, mismos datos |
+| FB-026 | `8260d621` | 2026-11-15T22:05:05Z | 2026-11-15T22:05:29Z | real | mixed | M9: primera acta REDACTADA por el generador de la Fundición (hipótesis del vivero): sueño→pulso, sueño→rmssd,  |
 <!-- TABLA-EXPERIMENTOS:FIN -->
 
 Cada acta se preregistró con SHA-256 **antes** de correr; el hash de cada una se puede recalcular (`docs/actas/INDEX.jsonl`, `src/gobernanza/preregistro.py`). Una sola ejecución por acta.

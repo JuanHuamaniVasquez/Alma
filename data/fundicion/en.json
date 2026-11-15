@@ -63,6 +63,27 @@
    "refuter": "Median below 0.20 or fewer than 65% positive (act FB-022, H3).",
    "mechanism": "Cardiorespiratory coupling.",
    "result": "Sustained on real wearable data: median ρ = +0.27, 79% of 33 people positive (FB-022)."
+  },
+  "0b443fed-9e59-55ac-9477-0c7f39ad1774": {
+   "title": "Short sleep, faster resting pulse",
+   "prediction": "Within each person, days with sleep below their own median have a resting pulse at least 0.5 bpm higher.",
+   "refuter": "Effect under 0.5 bpm or p > 0.0167; the placebo (labels shifted 40 days) must be null (act FB-026).",
+   "mechanism": "Sleep restriction raises sympathetic activation.",
+   "result": "Refuted by the sealed rule: the effect is real (+0.25 bpm, p = 0.003) but half the minimum we fixed before looking. Written by the lab's generator (FB-026)."
+  },
+  "c7fc6940-5bec-5d3b-a8ac-5f5bcc318110": {
+   "title": "Short sleep, lower overnight HRV",
+   "prediction": "Within each person, days with sleep below their own median have overnight heart-rate variability at least 0.05 sd lower.",
+   "refuter": "Effect smaller than 0.05 sd or p > 0.0167; the placebo must be null (act FB-026).",
+   "mechanism": "Sleep restriction lowers vagal tone.",
+   "result": "Sustained on real wearable data: −0.21 sd (p = 0.0001, 36 people); the placebo sees nothing. The lab's first clean result, written by its own generator (FB-026)."
+  },
+  "c41b2cb6-f787-52a8-adbf-cd27d9c2c71a": {
+   "title": "A hard day, a quieter night",
+   "prediction": "Within each person, days with intense activity above their own median have overnight heart-rate variability at least 0.05 sd lower.",
+   "refuter": "Effect smaller than 0.05 sd or p > 0.0167 (act FB-026).",
+   "mechanism": "Heavy training load lowers vagal activity that night.",
+   "result": "Refuted: no effect (+0.03 sd, p = 0.72). The effect may act on the next night, which a same-row pairing cannot see. Written by the generator (FB-026)."
   }
  },
  "detectores": {

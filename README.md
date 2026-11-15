@@ -158,7 +158,7 @@ sysmap --root . check                  # structural map: nothing worse than the 
 
 ### Lab and world (M7–M8)
 
-- **The Foundry generates hypotheses.** `src/fabrica/generador.py` crosses a library of 11 published mechanisms with the real data the lab holds and emits candidates (6 ready to seal, 3 blocked because the data does not exist, 2 already tested); the Foundry shows them in "The nursery", then the sealed verdicts (9 cards, 3 per page).
+- **The Foundry generates hypotheses.** `src/fabrica/generador.py` crosses a library of 11 published mechanisms with the real data the lab holds and emits candidates (6 ready to seal, 3 blocked because the data does not exist, 2 already tested); the Foundry shows them in "The nursery", then the sealed verdicts (12 cards, 3 per page). The generator also **drafts the preregistration** from the same specification the runner uses; FB-026 is the first full loop: candidate → drafted act → hash → one run → cards (sleep below your own median lowers overnight HRV by 0.21 sd, p = 0.0001).
 - **Real NASA/NOAA in the rings.** Dose ← GOES protons, Rhythm ← ISS sunlight, Energy ← solar X-rays (live; stored as DC-03 events with a raw-reading hash, DOC-01 v0.2.9); Time, Immunity, Load and Conduct show sealed results. Tap a ring for source and limit.
 - **The Frontier** (World ▸ Frontier): live ISS map, NASA EPIC Earth, blood of four real astronauts (Inspiration4, OSD-569), the OSDR catalogue, and our tests with their honest verdicts. **The Counterweight** (Ship ▸ Budget) shows conservation closure per day (simulated universe).
 - NASA photographs on each room's header are real, credited, and linked (`web/public/nasa/credits.json`).

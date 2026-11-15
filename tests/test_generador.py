@@ -22,7 +22,8 @@ def test_sin_dato_en_vuelo_es_bloqueado_y_dice_que_falta():
 def test_con_datos_reales_hay_listos_bloqueados_y_ya_probadas():
     c = G.generar(CSV)
     e = {x["clave"]: x for x in c}
-    assert e["sueno-fc"]["estado"] == "listo" and e["sueno-fc"]["datos"]["pares"] > 1000
+    assert e["temp-eficiencia"]["estado"] == "listo" and e["temp-eficiencia"]["datos"]["pares"] > 1000
+    assert e["sueno-fc"]["estado"] == "ya_probada" and e["sueno-fc"]["ya_probada_en"] == "FB-026"
     assert e["hf-en-vuelo"]["estado"] == "bloqueado" and e["hf-en-vuelo"]["datos"]["pares"] == 0 and e["hf-en-vuelo"]["precio"]["dias"] is None
     assert e["temp-fc"]["estado"] == "ya_probada" and e["temp-fc"]["ya_probada_en"] == "FB-022"
     assert [x["estado"] for x in c] == sorted((x["estado"] for x in c), key=["listo", "ya_probada", "bloqueado"].index)

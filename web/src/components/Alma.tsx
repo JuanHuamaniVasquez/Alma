@@ -123,14 +123,14 @@ export function AlmaDock({ room, docked = false }: { room?: string; docked?: boo
                    boxShadow: speaking ? "0 0 38px 10px rgb(255 140 60 / .45)" : "0 0 22px 3px rgb(255 140 60 / .18)", transition: "box-shadow .4s" }}>
           <span className={speaking ? "absolute inset-0 animate-ping rounded-full bg-[#ffb36b]/25" : "breathe absolute inset-0 rounded-full"} />
         </button>
-        <div className="min-h-[2.2rem]">
+        <div className="max-h-36 min-h-[2.2rem] overflow-y-auto sm:max-h-none sm:overflow-visible">
           {!line ? (
             <p className="flex gap-5 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint"><span>ALMA · tap the light to listen</span>{sound}{subsBtn}</p>
           ) : (
             <>
               {/* el texto sigue en el DOM (lectores de pantalla); solo se oculta a la vista */}
-              <p aria-live="polite" className={`font-display text-[1.45rem] italic leading-snug text-ink transition-all duration-700 ${speaking ? "caret" : ""} ${textVisible ? "max-h-40 opacity-100" : "sr-only"}`}>{shown}</p>
-              <p className="mt-1 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-faint">
+              <p aria-live="polite" className={`font-display text-[1.05rem] italic leading-snug text-ink transition-all duration-700 sm:text-[1.45rem] ${speaking ? "caret" : ""} ${textVisible ? "max-h-40 opacity-100" : "sr-only"}`}>{shown}</p>
+              <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-faint">
                 <span>source · {line.fuente}</span><Stamp banner={line.banner} />{sound}{subsBtn}
               </p>
             </>

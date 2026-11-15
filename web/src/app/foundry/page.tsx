@@ -29,7 +29,7 @@ export default function Foundry() {
         {v && <Nursery v={v} />}
         <h2 className="mt-14 font-display text-3xl">Verdicts</h2>
         <p className="mt-1 max-w-2xl text-[13px] text-ink-dim">Hypotheses that were sealed and tested. Three per column; use the arrows.</p>
-        <div className="mt-5 grid grid-cols-4 gap-5">
+        <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
           {COLS.map(([estado, name]) => <Column key={estado} estado={estado} name={name} f={f} />)}
         </div>
         {f?.faro.map((p) => p.en && (
@@ -85,7 +85,7 @@ function Pipeline({ v, f }: { v: Vivero; f: Fundicion | null }) {
     [t ? String(t.detectores_nuevos) : "…", "became a detector", "only a sustained card can"],
   ];
   return (
-    <ol className="mt-10 grid grid-cols-5 gap-0 border-y border-line" aria-label="How a hypothesis travels through the lab">
+    <ol className="mt-10 grid grid-cols-2 gap-0 border-y border-line md:grid-cols-5" aria-label="How a hypothesis travels through the lab">
       {steps.map(([n, a, b], i) => (
         <li key={a} className={`relative px-4 py-4 ${i ? "border-l border-line" : ""}`}>
           <p className="font-display text-5xl leading-none">{n}</p>
@@ -113,7 +113,7 @@ function Nursery({ v }: { v: Vivero }) {
         {NURSERY_TABS.map(([k, t]) => { const n = v.candidatos.filter((c) => c.estado === k).length; return (
           <button key={k} role="tab" aria-selected={tab === k} onClick={() => { setTab(k); pg.reset(); }} className={`border-b pb-0.5 ${tab === k ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t} · {n}</button>); })}
       </div>
-      <div className="mt-5 grid grid-cols-3 gap-5">{pg.slice.map((c) => <Candidate key={c.id} c={c} />)}</div>
+      <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-3">{pg.slice.map((c) => <Candidate key={c.id} c={c} />)}</div>
       <Pager {...pg} label="hypotheses" />
     </section>
   );

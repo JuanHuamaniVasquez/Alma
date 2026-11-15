@@ -20,7 +20,7 @@ def test_fundicion_expone_tablero_tarjetas_detector_y_faro():
     r = get("/api/fundicion/")
     assert r.status_code == 200
     d = r.json()
-    assert d["tablero"]["nacidas"] == len(d["tarjetas"]) == 9
+    assert d["tablero"]["nacidas"] == len(d["tarjetas"]) == 12
     assert d["tablero"]["detectores_nuevos"] == len(d["detectores"]) == 1
     assert all(t["senal_refutadora"] and t["fuentes"] for t in d["tarjetas"])  # sin fuente o sin señal refutadora no existe
     assert len(d["faro"]) == 1

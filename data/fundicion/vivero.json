@@ -1,56 +1,11 @@
 {
- "generado_utc": "2026-11-15T21:43:25Z",
+ "generado_utc": "2026-11-15T22:10:24Z",
  "n_mecanismos": 11,
  "fuente_datos": "LifeSnaps (Zenodo 7229547), conteos de pares REALES",
- "n_listos": 6,
+ "n_listos": 3,
  "n_bloqueados": 3,
- "n_ya_probadas": 2,
+ "n_ya_probadas": 5,
  "candidatos": [
-  {
-   "id": "7fb6cdcb-57f3-5e15-9a57-9842a08015a3",
-   "clave": "sueno-fc",
-   "titulo": "Short sleep, faster resting pulse",
-   "mecanismo": "Restricción de sueño → mayor activación simpática → pulso en reposo más alto al día siguiente (ancla por verificar en M5.5)",
-   "causa": "sueno_min",
-   "efecto": "fc_reposo",
-   "fuentes": [
-    {
-     "id": "10.1038/s41597-022-01764-x",
-     "tipo": "DOI",
-     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
-    },
-    {
-     "id": "25127232",
-     "tipo": "PMID",
-     "nombre": "Barger 2014 — astronaut sleep"
-    }
-   ],
-   "mata": "Diferencia intrapersonal de pulso en reposo < 0,5 lpm o p > 0,025 entre días de sueño corto y el resto",
-   "valor_si_cierta": [
-    "DC-02",
-    "DC-05"
-   ],
-   "estado": "listo",
-   "ya_probada_en": null,
-   "datos": {
-    "pares": 3512,
-    "personas_con_40_dias": 48,
-    "falta": []
-   },
-   "precio": {
-    "datos": "LifeSnaps cargado: 3512 pares, 48 personas con ≥ 40 días",
-    "computo": "barajado intrapersona (10 000)",
-    "dias": 1
-   },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr",
-   "en": {
-    "mechanism": "Cutting sleep raises sympathetic activation, so resting pulse should be higher the next day.",
-    "kill": "Within-person resting-pulse difference under 0.5 bpm, or p > 0.025, between short-sleep days and the rest.",
-    "price": "Real wearable data held: 3,512 person-days, 48 people with at least 40 days.",
-    "compute": "About 1 day of compute.",
-    "next": "Seal the preregistration (hash) before running anything."
-   }
-  },
   {
    "id": "c6f8ed81-b402-50ac-8c5e-ff6fccfdab17",
    "clave": "temp-eficiencia",
@@ -136,91 +91,6 @@
    }
   },
   {
-   "id": "736ac56f-57c1-5f5b-88fe-aa8616eea06c",
-   "clave": "carga-rmssd",
-   "titulo": "A hard day, a quieter night",
-   "mecanismo": "Carga de entrenamiento intensa → menor variabilidad vagal esa noche (ancla por verificar en M5.5)",
-   "causa": "actividad_intensa",
-   "efecto": "rmssd",
-   "fuentes": [
-    {
-     "id": "10.1038/s41597-022-01764-x",
-     "tipo": "DOI",
-     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
-    }
-   ],
-   "mata": "Correlación de rangos intrapersonal mediana > −0,1 en prueba (mitad final de cada serie)",
-   "valor_si_cierta": [
-    "DC-05",
-    "DC-14"
-   ],
-   "estado": "listo",
-   "ya_probada_en": null,
-   "datos": {
-    "pares": 2475,
-    "personas_con_40_dias": 33,
-    "falta": []
-   },
-   "precio": {
-    "datos": "LifeSnaps cargado: 2475 pares, 33 personas con ≥ 40 días",
-    "computo": "Spearman intrapersona, mitad/mitad",
-    "dias": 1
-   },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr",
-   "en": {
-    "mechanism": "A hard training day should leave less vagal activity that night.",
-    "kill": "Median within-person rank correlation above −0.1 on held-out days.",
-    "price": "Real wearable data held: 2,475 person-days, 33 people with at least 40 days.",
-    "compute": "About 1 day of compute.",
-    "next": "Seal the preregistration (hash) before running anything."
-   }
-  },
-  {
-   "id": "174fe3b1-d778-5bfa-a06f-b5f9936cab92",
-   "clave": "sueno-rmssd",
-   "titulo": "Short sleep, lower overnight HRV",
-   "mecanismo": "Restricción de sueño → menor variabilidad vagal nocturna (ancla por verificar en M5.5)",
-   "causa": "sueno_min",
-   "efecto": "rmssd",
-   "fuentes": [
-    {
-     "id": "10.1038/s41597-022-01764-x",
-     "tipo": "DOI",
-     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
-    },
-    {
-     "id": "25127232",
-     "tipo": "PMID",
-     "nombre": "Barger 2014 — astronaut sleep"
-    }
-   ],
-   "mata": "Diferencia intrapersonal de rmssd ≥ −0,05 sd o p > 0,025",
-   "valor_si_cierta": [
-    "DC-02",
-    "DC-05"
-   ],
-   "estado": "listo",
-   "ya_probada_en": null,
-   "datos": {
-    "pares": 2463,
-    "personas_con_40_dias": 33,
-    "falta": []
-   },
-   "precio": {
-    "datos": "LifeSnaps cargado: 2463 pares, 33 personas con ≥ 40 días",
-    "computo": "barajado intrapersona (10 000)",
-    "dias": 1
-   },
-   "siguiente": "Preregistrar el acta con hash ANTES de correr",
-   "en": {
-    "mechanism": "Cutting sleep lowers vagal tone, so overnight heart-rate variability should fall.",
-    "kill": "Within-person HRV difference no lower than −0.05 sd, or p > 0.025.",
-    "price": "Real wearable data held: 2,463 person-days, 33 people with at least 40 days.",
-    "compute": "About 1 day of compute.",
-    "next": "Seal the preregistration (hash) before running anything."
-   }
-  },
-  {
    "id": "77061d86-ebe4-5837-bc52-fd0d83628e4b",
    "clave": "estres-eficiencia",
    "titulo": "Stress score, worse sleep efficiency",
@@ -257,6 +127,51 @@
     "price": "Real wearable data held: 1,865 person-days, 26 people with at least 40 days.",
     "compute": "About 1 day of compute.",
     "next": "Seal the preregistration (hash) before running anything."
+   }
+  },
+  {
+   "id": "7fb6cdcb-57f3-5e15-9a57-9842a08015a3",
+   "clave": "sueno-fc",
+   "titulo": "Short sleep, faster resting pulse",
+   "mecanismo": "Restricción de sueño → mayor activación simpática → pulso en reposo más alto al día siguiente (ancla por verificar en M5.5)",
+   "causa": "sueno_min",
+   "efecto": "fc_reposo",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    },
+    {
+     "id": "25127232",
+     "tipo": "PMID",
+     "nombre": "Barger 2014 — astronaut sleep"
+    }
+   ],
+   "mata": "Diferencia intrapersonal de pulso en reposo < 0,5 lpm o p > 0,025 entre días de sueño corto y el resto",
+   "valor_si_cierta": [
+    "DC-02",
+    "DC-05"
+   ],
+   "estado": "ya_probada",
+   "ya_probada_en": "FB-026",
+   "datos": {
+    "pares": 3512,
+    "personas_con_40_dias": 48,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 3512 pares, 48 personas con ≥ 40 días",
+    "computo": "barajado intrapersona (10 000)",
+    "dias": null
+   },
+   "siguiente": "Ya sellada y ejecutada: FB-026",
+   "en": {
+    "mechanism": "Cutting sleep raises sympathetic activation, so resting pulse should be higher the next day.",
+    "kill": "Within-person resting-pulse difference under 0.5 bpm, or p > 0.025, between short-sleep days and the rest.",
+    "price": "Real wearable data held: 3,512 person-days, 48 people with at least 40 days.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Already sealed and run: FB-026."
    }
   },
   {
@@ -335,6 +250,91 @@
     "price": "Real wearable data held: 2,483 person-days, 33 people with at least 40 days.",
     "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
     "next": "Already sealed and run: FB-022."
+   }
+  },
+  {
+   "id": "736ac56f-57c1-5f5b-88fe-aa8616eea06c",
+   "clave": "carga-rmssd",
+   "titulo": "A hard day, a quieter night",
+   "mecanismo": "Carga de entrenamiento intensa → menor variabilidad vagal esa noche (ancla por verificar en M5.5)",
+   "causa": "actividad_intensa",
+   "efecto": "rmssd",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    }
+   ],
+   "mata": "Correlación de rangos intrapersonal mediana > −0,1 en prueba (mitad final de cada serie)",
+   "valor_si_cierta": [
+    "DC-05",
+    "DC-14"
+   ],
+   "estado": "ya_probada",
+   "ya_probada_en": "FB-026",
+   "datos": {
+    "pares": 2475,
+    "personas_con_40_dias": 33,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 2475 pares, 33 personas con ≥ 40 días",
+    "computo": "Spearman intrapersona, mitad/mitad",
+    "dias": null
+   },
+   "siguiente": "Ya sellada y ejecutada: FB-026",
+   "en": {
+    "mechanism": "A hard training day should leave less vagal activity that night.",
+    "kill": "Median within-person rank correlation above −0.1 on held-out days.",
+    "price": "Real wearable data held: 2,475 person-days, 33 people with at least 40 days.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Already sealed and run: FB-026."
+   }
+  },
+  {
+   "id": "174fe3b1-d778-5bfa-a06f-b5f9936cab92",
+   "clave": "sueno-rmssd",
+   "titulo": "Short sleep, lower overnight HRV",
+   "mecanismo": "Restricción de sueño → menor variabilidad vagal nocturna (ancla por verificar en M5.5)",
+   "causa": "sueno_min",
+   "efecto": "rmssd",
+   "fuentes": [
+    {
+     "id": "10.1038/s41597-022-01764-x",
+     "tipo": "DOI",
+     "nombre": "LifeSnaps (everyday wearers, not astronauts)"
+    },
+    {
+     "id": "25127232",
+     "tipo": "PMID",
+     "nombre": "Barger 2014 — astronaut sleep"
+    }
+   ],
+   "mata": "Diferencia intrapersonal de rmssd ≥ −0,05 sd o p > 0,025",
+   "valor_si_cierta": [
+    "DC-02",
+    "DC-05"
+   ],
+   "estado": "ya_probada",
+   "ya_probada_en": "FB-026",
+   "datos": {
+    "pares": 2463,
+    "personas_con_40_dias": 33,
+    "falta": []
+   },
+   "precio": {
+    "datos": "LifeSnaps cargado: 2463 pares, 33 personas con ≥ 40 días",
+    "computo": "barajado intrapersona (10 000)",
+    "dias": null
+   },
+   "siguiente": "Ya sellada y ejecutada: FB-026",
+   "en": {
+    "mechanism": "Cutting sleep lowers vagal tone, so overnight heart-rate variability should fall.",
+    "kill": "Within-person HRV difference no lower than −0.05 sd, or p > 0.025.",
+    "price": "Real wearable data held: 2,463 person-days, 33 people with at least 40 days.",
+    "compute": "Cannot be run today: we do not fill the gap with invented numbers.",
+    "next": "Already sealed and run: FB-026."
    }
   },
   {

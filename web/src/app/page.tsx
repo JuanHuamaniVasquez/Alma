@@ -28,6 +28,7 @@ export default function MedicalModule() {
   const [holo, setHolo] = useState(false);
   const [helmet, setHelmet] = useState(true);
   const [monitor, setMonitor] = useState(false);
+  const [panel, setPanel] = useState(false);
   const [env, setEnv] = useState<Entorno | null>(null);
   const [anillos, setAnillos] = useState<Record<string, Anillo> | null>(null);
   useEffect(() => { get<Anillos>("/api/anillos/").then((d) => setAnillos(d?.anillos ?? null)); }, []);
@@ -80,7 +81,8 @@ export default function MedicalModule() {
           <button key={m} role="tab" aria-selected={mode === m} onClick={() => setMode(m)} className={`border-b pb-1 transition-colors ${mode === m ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>
         ))}
       </div>
-      <nav aria-label="Crew" className="absolute left-6 top-6 z-20 w-56">
+      <button onClick={() => setPanel(!panel)} aria-expanded={panel} className="absolute left-3 top-14 z-30 border border-line bg-bg/90 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-dim md:hidden">{panel ? "Close ▴" : `${who?.indicativo ?? "Crew"} · controls ▾`}</button>
+      <nav aria-label="Crew" className={`absolute left-0 top-24 z-20 max-h-[calc(100%-7rem)] w-full overflow-y-auto bg-bg/95 px-6 pb-6 pt-3 md:left-6 md:top-6 md:block md:max-h-none md:w-56 md:overflow-visible md:bg-transparent md:p-0 ${panel ? "block" : "hidden"}`}>
         <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">Crew of 5 · fictional</p>
         <ul className="space-y-1">
           {crew.map((c, i) => (
