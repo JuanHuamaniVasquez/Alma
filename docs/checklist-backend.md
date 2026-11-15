@@ -26,7 +26,7 @@
 | M3 Vitrina | — (frontend Next, después del backend) | 6 pantallas |
 | M4 FUNDICIÓN | — | minería, ≥5 tarjetas, Faro, Adversario |
 
-Tests: **263 pytest verdes**. `sysmap check`: nada peor que la línea base.
+Tests: **284 pytest verdes**. `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-13) — `src/contratos/`
 
