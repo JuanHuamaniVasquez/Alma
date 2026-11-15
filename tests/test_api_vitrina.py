@@ -76,3 +76,22 @@ def test_sembrar_demo_es_simulado_reproducible_y_la_fuga_abre_solo_el_aire_del_d
 def test_libro_vacio_no_inventa_dias():
     d = get("/api/libro/dias/").json()
     assert d["dias"] == [] and d["ultimo"] is None
+
+
+@pytest.mark.django_db
+def test_sembrar_demo_siembra_el_residuo_dc06_y_la_fuga_es_la_unica_sorpresa():
+    from django.core.management import call_command
+    call_command("sembrar_demo")
+    call_command("sembrar_demo")
+    d = get("/api/residuo/").json()
+    assert d["banner"] == "SIMULADO" and len(d["habitat"]) == 28
+    sorpresas = [r for r in d["habitat"] if r["bandera"] != "normal"]
+    assert [(r["presupuesto_id"], r["ts_utc"][:10]) for r in sorpresas] == [("aire", "2026-11-12")]   # día 11 = 2 nov + 10 días
+    from src.superficies import narrador
+    texto = narrador.residuo(d).texto
+    assert "air on 2026-11-12" in texto and "not an alarm" in texto
+
+
+def test_narrador_residuo_sin_datos_dice_la_ausencia():
+    from src.superficies import narrador
+    assert "absence" in narrador.residuo({"banner": "REAL", "habitat": []}).texto

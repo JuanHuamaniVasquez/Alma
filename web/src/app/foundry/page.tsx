@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Room } from "@/components/Room";
+import { Stamp } from "@/components/Stamp";
 import { get, word, type Fundicion, type Tarjeta } from "@/lib/api";
 
 const COLS = [["en_prueba", "In test"], ["refutada", "Refuted"], ["sostenida", "Sustained"], ["sin_datos", "No data"]] as const;
@@ -15,6 +16,7 @@ export default function Foundry() {
       <div className="mx-auto max-w-7xl px-10 pt-10">
         <h1 className="font-display text-5xl leading-tight">Ideas are cheap.<br /><span className="text-ink-dim">Surviving them is the product.</span></h1>
         {t && <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-faint">{t.nacidas} born · <span className="text-signal">{t.refutada} refuted</span> · {t.sostenida} sustained · {t.sin_datos} no data · {t.detectores_nuevos} compiled into a detector</p>}
+        <div className="mt-3 flex items-center gap-4"><Stamp banner="REAL" /><span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">real wearable data from everyday people — not astronauts</span></div>
         <div className="mt-9 grid grid-cols-4 gap-5">
           {COLS.map(([estado, name]) => (
             <section key={estado}>

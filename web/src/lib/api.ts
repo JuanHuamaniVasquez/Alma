@@ -46,3 +46,11 @@ export type Fundicion = {
   tarjetas: Tarjeta[]; detectores: { tarjeta_id: string; detector: string; hash_preregistro: string; en: { title: string; rule: string; limit: string } | null }[];
   faro: { id: string; probabilidad: number; fecha_limite: string; sha256: string; emitida_utc: string; en: { statement: string; grading: string } | null }[];
 };
+
+export type ResidualPoint = {
+  ts_utc: string; presupuesto_id: string; observado: number; predicho: number; residuo: number;
+  sigma_efectiva: number; cusum_acumulado: number; bandera: string; banner: Banner;
+};
+export type Residuals = { banner: Banner; habitat: ResidualPoint[] };
+
+export type SpaceEvent = { evento_id: string; ts_utc_inicio: string; tipo: string; fuente: string; parametros: { kp?: number }; hash_lectura_cruda: string; banner: Banner };

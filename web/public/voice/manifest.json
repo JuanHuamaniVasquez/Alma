@@ -27,6 +27,13 @@
   "banner": "REAL",
   "audio": "/voice/5c03b4360fdd0aeb.mp3"
  },
+ "residuo": {
+  "id": "493cdc99f7863690",
+  "texto": "The largest surprise is air on 2026-11-12: 0.451 kilograms from the plan, 2.26 sigma. The cumulative sum stands at 2.14 of its 10.01 threshold. A surprise flag is not an alarm.",
+  "fuente": "/api/residuo · DC-06 · 2026-11-12",
+  "banner": "SIMULADO",
+  "audio": "/voice/493cdc99f7863690.mp3"
+ },
  "libro-1": {
   "id": "1bbf985781316311",
   "texto": "Day 1. All 2 books close within their stated uncertainty.",

@@ -81,10 +81,28 @@ def libro_del_dia(d: dict) -> Linea:
 
 
 def todas(*, demo: dict | None = None, fund: dict | None = None, storm: dict | None = None, act: dict | None = None,
-          libro: dict | None = None) -> list[Linea]:
+          libro: dict | None = None, resid: dict | None = None) -> list[Linea]:
     """Todas las líneas que los datos disponibles permiten; lo que falta se omite (la UI muestra la ausencia)."""
     out = []
-    for f, x in ((libro_del_dia, libro), (tormenta, storm), (demo_kill, demo), (fundicion, fund), (actas, act)):
+    for f, x in ((libro_del_dia, libro), (tormenta, storm), (demo_kill, demo), (fundicion, fund), (actas, act), (residuo, resid)):
         if x is not None:
             out.append(f(x))
     return out
+
+
+def residuo(d: dict) -> Linea:
+    """EL RESIDUO: la mayor sorpresa del hábitat (|residuo|/σ). Una bandera de sorpresa NO es una alarma: no tiene recibo de regla."""
+    from src.motor.adversario import H_MEDIA
+    h = d["habitat"]
+    if not h:
+        return Linea("residuo", "I have no residual stream to read. The absence is recorded, not filled in.", "/api/residuo · DC-06", d["banner"])
+    m = max(h, key=lambda r: abs(r["residuo"]) / r["sigma_efectiva"])
+    z = abs(m["residuo"]) / m["sigma_efectiva"]
+    fecha = m["ts_utc"][:10]
+    nombre = {"aire": "air", "agua": "water"}.get(m["presupuesto_id"], m["presupuesto_id"])
+    if m["bandera"] == "normal":
+        texto = f"Every residual stays inside two sigma. The largest is {nombre} on {fecha}, at {z:.2f} sigma."
+    else:
+        texto = (f"The largest surprise is {nombre} on {fecha}: {abs(m['residuo']):.3f} kilograms from the plan, {z:.2f} sigma. "
+                 f"The cumulative sum stands at {abs(m['cusum_acumulado']):.2f} of its {H_MEDIA:.2f} threshold. A surprise flag is not an alarm.")
+    return Linea("residuo", texto, f"/api/residuo · DC-06 · {fecha}", d["banner"])

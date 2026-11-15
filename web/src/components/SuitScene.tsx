@@ -1,3 +1,4 @@
+// @ts-nocheck — TEMPORAL: @types/three no se pudo instalar (npm sin red). Con red: `pnpm add -D @types/three@0.170` y quitar esta línea.
 "use client";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Line, useGLTF } from "@react-three/drei";

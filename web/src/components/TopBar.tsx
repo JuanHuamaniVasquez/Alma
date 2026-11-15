@@ -8,10 +8,14 @@ import { useShip } from "./Ship";
 
 export const ROOMS = [
   { href: "/", n: "01", name: "Medical Module" },
-  { href: "/kill", n: "02", name: "The Leak" },
-  { href: "/vault", n: "03", name: "The Vault" },
-  { href: "/foundry", n: "04", name: "The Foundry" },
+  { href: "/machine", n: "02", name: "Machine Room" },
+  { href: "/kill", n: "03", name: "The Leak" },
+  { href: "/vault", n: "04", name: "The Vault" },
+  { href: "/foundry", n: "05", name: "The Foundry" },
+  { href: "/storm", n: "06", name: "The Storm" },
 ] as const;
+
+const LEDGER_ROOMS = ["/", "/machine", "/kill"]; // salas que muestran el universo simulado del hábitat; las demás llevan su propio sello
 
 export function TopBar() {
   const path = usePathname(), router = useRouter();
@@ -39,8 +43,8 @@ export function TopBar() {
         </nav>
       </div>
       <div className="flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-dim">
-        {days?.ultimo != null ? <span>Day {day ?? days.ultimo}</span> : <span className="text-ink-faint">No ledger loaded</span>}
-        {days && days.ultimo != null && <Stamp banner={days.banner} />}
+        {LEDGER_ROOMS.includes(path) && (days?.ultimo != null ? <span>Day {day ?? days.ultimo}</span> : <span className="text-ink-faint">No ledger loaded</span>)}
+        {LEDGER_ROOMS.includes(path) && days && days.ultimo != null && <Stamp banner={days.banner} />}
       </div>
     </header>
   );
