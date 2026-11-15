@@ -21,3 +21,6 @@
 | A-14 | «NASA STD-3001: 600 mSv carrera; OCHMO-TB-020: 250 mSv/evento; Hassler 2014: 1,84/0,64 mSv/día» (bestiario) | ✗ | Pendiente de M0.12 (citas por nombre → identificador) |
 | A-15 | «19 de 49 astronautas con cefalea; CO₂ < 2,5 mmHg (OCHMO-TB-004)» (bestiario, DOC-04) | ✗ | Pendiente de M0.12 |
 | A-16 | «Biosphere 2: O₂ 20,9 %→14 %, el hormigón absorbió el CO₂ (Severinghaus 1994)» (bestiario) | ✗ | Pendiente de M0.12 |
+| A-17 | «Proxima b: planeta en zona habitable, periodo ≈11,2 días, masa del orden de la Tierra (Anglada-Escudé 2016, *Nature*)» (DOC-04 §7) | ✓ | Paper existente, doi:[10.1038/nature19106](https://doi.org/10.1038/nature19106) (Crossref). Periodo ≈11,2 d y masa mínima ≈1,3 M⊕ según prensa consistente (sin abrir el paper primario); un análisis posterior da ≈1,17 M⊕ |
+| A-18 | «Proxima Centauri está a 4,25 años luz» (DOC-04 §7) | ~ | Las fuentes dan **4,23–4,24 al**; 4,25 es un redondeo. La ida y vuelta de señal (≈8,5 años) se mantiene |
+| A-19 | «Superllamarada de Proxima, marzo de 2017, observada por varios observatorios» (DOC-04 §7) | ~ | Existe la detección de una llamarada milimétrica con ALMA: MacGregor et al. 2018, *ApJL*, doi:[10.3847/2041-8213/aaad6b](https://doi.org/10.3847/2041-8213/aaad6b). **No verifiqué la fecha exacta ni «varios observatorios»** |

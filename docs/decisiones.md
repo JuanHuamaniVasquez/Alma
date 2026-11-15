@@ -28,8 +28,10 @@
 | D-22 | 2026-11-15 | **MP-7 y MP-8 aceptadas** por el humano («acepto lo que propones»; Claude como ejecutor) | humano | `docs/propuestas.md` |
 | D-23 | 2026-11-15 | **Red teaming del Contrapeso:** la σ se propaga con covarianza (errores correlacionados declarados); la demo FB-005-D1 se reanaliza aparte, sin alterar su registro | Claude (bajo D-15) | `src/motor/contrapeso.py`, `docs/red-team.md` |
 | D-24 | 2026-11-15 | **K-4 Ficha de Verdad reconstruida** con la plantilla del manual + clase «SIN VERIFICAR»; se corrige la frase «cuando no cuadra, existe algo no contabilizado» (falsa como regla: Vulcano) | Claude (bajo D-15) | `docs/ficha-de-verdad.md`, `docs/linaje-de-residuos.md` |
+| D-25 | 2026-11-15 | **MP-9 (banco de mesa) y MP-10 (cuarta causa «modelo») aceptadas** por el humano («sigo tus propuestas y mejoras»). MP-9 queda bloqueada hasta que el humano monte el hardware | humano | `docs/propuestas.md`, `TASKS.md` M2.12/M2.13 |
+| D-26 | 2026-11-15 | **El caso de estudio sigue siendo α Centauri / Proxima b** (DOC-04 §7), como **horno de invariantes**, no como módulo: DOC-04 §10 prohíbe construir M-L1…M-L5 ahora. Se ancla en hechos verificados (A-17…A-19) y se diseña lo construido hoy para que **enchufe** (prueba de enchufe, DOC-04 Q6): p. ej., líneas base **versionadas y append-only** (enchufe de M-L1, el Archivo de Generaciones) | humano | `src/motor/linea_base.py` |
 
 ## Decisiones pendientes del humano
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).
 - Aportar el **banco Monte Carlo, actas y scripts de FB-001/FB-002** (bloquean M2.3 y M2.6), la **Ficha de Verdad (K-4)** y las **ideas dormidas (K-6)**.
-- ¿Aceptas **MP-9** (banco de mesa; **necesita que montes hardware**) y **MP-10** (`docs/propuestas.md`)?
+- **Montar el hardware del banco de mesa (MP-9)**: dos básculas, una bomba y un registrador; Claude escribe el protocolo y el acta.
