@@ -161,7 +161,7 @@ const HAIR = /short0|bob0|ponytail|long0|afro|braid|eyebrow|eyelash/;
 
 /** Capa de anatomía: esqueleto y órganos PROCEDURALES (proporciones estándar sobre la altura H; ilustrativo, no un escaneo ni un diagnóstico).
  *  Cada indicador cae sobre su órgano: sueño/ánimo → cerebro, temperatura → cuello/tronco, fc → corazón, presión → arteria braquial, glucosa → páncreas/estómago. */
-function Anatomy({ H }: { H: number }) {
+function Anatomy({ H, picked, onPick }: { H: number; picked: string | null; onPick: (id: string) => void }) {
   const P = (x: number, y: number, z = 0) => new THREE.Vector3(x * H, y * H, z * H);
   const J = useMemo(() => ({
     head: P(0, 0.935, 0.005), neck: P(0, 0.865), chest: P(0, 0.73), pelvis: P(0, 0.52),
@@ -173,6 +173,19 @@ function Anatomy({ H }: { H: number }) {
     const d = b.clone().sub(a), len = d.length(), q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.clone().normalize());
     return <mesh position={a.clone().add(b).multiplyScalar(0.5)} quaternion={q}><capsuleGeometry args={[r * H, Math.max(0.001, len - 2 * r * H), 6, 12]} />{mat ?? bone}</mesh>;
   };
+  /** Órgano = indicador oficial del reto: tocarlo lo selecciona; el elegido late y brilla. */
+  const Organ = ({ id, color, pos, scale = [1, 1, 1], rot = [0, 0, 0], r }: { id?: string; color: string; pos: THREE.Vector3; scale?: [number, number, number]; rot?: [number, number, number]; r: number }) => {
+    const on = !!id && picked === id, ref = useRef<THREE.Mesh>(null);
+    useFrame(({ clock }) => { if (ref.current) ref.current.scale.setScalar(on ? 1 + 0.07 * Math.sin(clock.elapsedTime * 5) : 1); });
+    return (
+      <mesh ref={ref} position={pos} rotation={rot} scale={scale}
+        onClick={id ? (e) => { e.stopPropagation(); if (!view.moved) onPick(id); } : undefined}
+        onPointerOver={id ? () => { document.body.style.cursor = "pointer"; } : undefined} onPointerOut={id ? () => { document.body.style.cursor = ""; } : undefined}>
+        <sphereGeometry args={[r * H, 20, 16]} />
+        <meshStandardMaterial color={on ? "#ff7a3a" : color} roughness={0.45} emissive={on ? "#ff5a1f" : color} emissiveIntensity={on ? 0.9 : 0.18} />
+      </mesh>
+    );
+  };
   const organ = (color: string) => <meshStandardMaterial color={color} roughness={0.45} emissive={color} emissiveIntensity={0.18} />;
   const vertebrae = Array.from({ length: 24 }, (_, i) => { const t = i / 23; return P(0, 0.86 - t * 0.35, -0.028 - 0.012 * Math.sin(t * Math.PI)); });
   const ribs = Array.from({ length: 8 }, (_, i) => 0.805 - i * 0.026);
@@ -180,7 +193,9 @@ function Anatomy({ H }: { H: number }) {
     <group name="anatomy">
       {/* cráneo, mandíbula y cerebro */}
       <mesh position={J.head}><sphereGeometry args={[0.052 * H, 24, 18]} /><meshStandardMaterial color="#e9e0cc" roughness={0.5} transparent opacity={0.55} /></mesh>
-      <mesh position={J.head.clone().add(new THREE.Vector3(0, 0.004 * H, 0.004 * H))} scale={[1, 0.86, 1.08]}><sphereGeometry args={[0.034 * H, 20, 16]} />{organ("#d98a8f")}</mesh>
+      <Organ id="ánimo" color="#d98a8f" pos={J.head.clone().add(new THREE.Vector3(0, 0.006 * H, 0.016 * H))} scale={[1, 0.9, 0.8]} r={0.03} />
+      <Organ id="sueño" color="#c9777f" pos={J.head.clone().add(new THREE.Vector3(0, 0.004 * H, -0.012 * H))} scale={[1, 0.9, 0.9]} r={0.03} />
+      <Organ id="temperatura" color="#e8c06a" pos={J.head.clone().add(new THREE.Vector3(0, -0.012 * H, 0.004 * H))} r={0.009} />
       <mesh position={J.head.clone().add(new THREE.Vector3(0, -0.04 * H, 0.025 * H))} scale={[1, 0.7, 0.9]}><sphereGeometry args={[0.028 * H, 14, 10]} />{bone}</mesh>
       {/* columna */}
       {vertebrae.map((v, i) => <mesh key={i} position={v}><boxGeometry args={[0.02 * H, 0.011 * H, 0.016 * H]} />{bone}</mesh>)}
@@ -199,14 +214,16 @@ function Anatomy({ H }: { H: number }) {
       <Cap a={J.shR} b={J.elR} r={0.009} /><Cap a={J.elR} b={J.wrR} r={0.0075} />
       <Cap a={J.hipL} b={J.knL} r={0.012} /><Cap a={J.knL} b={J.anL} r={0.0095} />
       <Cap a={J.hipR} b={J.knR} r={0.012} /><Cap a={J.knR} b={J.anR} r={0.0095} />
+            {/* arteria braquial (presión arterial): sigue el húmero izquierdo */}
+      {Array.from({ length: 7 }, (_, i) => <Organ key={i} id="presión" color="#b3262e" pos={J.shL.clone().lerp(J.elL, 0.1 + i * 0.13).add(new THREE.Vector3(0, 0, 0.012 * H))} r={0.006} />)}
       {[J.shL, J.shR, J.elL, J.elR, J.knL, J.knR, J.hipL, J.hipR].map((v, i) => <mesh key={i} position={v}><sphereGeometry args={[0.0125 * H, 12, 10]} />{bone}</mesh>)}
       {/* órganos */}
-      <mesh position={P(-0.055, 0.745, 0.018)} rotation={[0, 0, 0.35]} scale={[0.9, 1.15, 0.9]}><sphereGeometry args={[0.03 * H, 20, 16]} />{organ("#c8323c")}</mesh>
+      <Organ id="fc" color="#c8323c" pos={P(-0.055, 0.745, 0.018)} rot={[0, 0, 0.35]} scale={[0.9, 1.15, 0.9]} r={0.03} />
       <mesh position={P(-0.05, 0.775, 0.0)} scale={[0.8, 1.7, 0.9]}><sphereGeometry args={[0.032 * H, 18, 14]} />{organ("#e9a3a8")}</mesh>
       <mesh position={P(0.05, 0.775, 0.0)} scale={[0.8, 1.7, 0.9]}><sphereGeometry args={[0.032 * H, 18, 14]} />{organ("#e9a3a8")}</mesh>
       <mesh position={P(0.045, 0.665, 0.015)} scale={[1.5, 0.8, 0.9]}><sphereGeometry args={[0.032 * H, 18, 14]} />{organ("#8a3d2a")}</mesh>
       <mesh position={P(-0.035, 0.635, 0.02)} scale={[1.1, 0.9, 0.9]}><sphereGeometry args={[0.028 * H, 18, 14]} />{organ("#d9806a")}</mesh>
-      <mesh position={P(0, 0.58, 0.012)} scale={[1.6, 0.9, 0.8]}><sphereGeometry args={[0.02 * H, 16, 12]} />{organ("#d8b24a")}</mesh>
+      <Organ id="glucosa" color="#d8b24a" pos={P(0, 0.58, 0.012)} scale={[1.6, 0.9, 0.8]} r={0.02} />
       <mesh position={P(0, 0.54, 0.015)} scale={[1.7, 1, 0.9]}><sphereGeometry args={[0.034 * H, 18, 14]} />{organ("#c98a7a")}</mesh>
     </group>
   );
@@ -229,7 +246,7 @@ function prepCrew(m: THREE.Object3D) {
 
 /** El tripulante DENTRO de la nave: humano GENERADO por script en Blender (MPFB; piel, ojos, pelo y dientes de assets CC0) con el mono de vuelo hecho a medida.
  *  Capas: «uniform» (con mono) o «body» (solo el cuerpo). Personaje FICTICIO: combinación de parámetros, nunca una persona real. */
-function CrewGLB({ name, layer, ...props }: { name: string; layer: Layer; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
+function CrewGLB({ name, layer, pickedInd, onPickInd, ...props }: { name: string; layer: Layer; pickedInd: string | null; onPickInd: (id: string) => void; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
   const { scene } = useGLTF(`/models/crew_${name}.glb`);
   const { model, H } = useMemo(() => {
     const m = scene.clone(true);
@@ -249,7 +266,7 @@ function CrewGLB({ name, layer, ...props }: { name: string; layer: Layer; marks:
     });
   }, [layer, model, props.holo]);
   const anchors = useMemo(() => anchorsFor(H), [H]);
-  return <Body anchors={anchors} {...props}><primitive object={model} />{layer === "anatomy" && <group userData={{ noholo: true }}><Anatomy H={H} /></group>}</Body>;
+  return <Body anchors={anchors} {...props}><primitive object={model} />{layer === "anatomy" && <group userData={{ noholo: true }}><Anatomy H={H} picked={pickedInd} onPick={onPickInd} /></group>}</Body>;
 }
 
 /** La bahía holográfica: peana con anillos, haz de luz vertical y anillos de barrido en el suelo. Solo luz (aditivo): sin geometría pesada. */
@@ -353,7 +370,7 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
         <pointLight position={[0, 0.2, 1.6]} intensity={0.8} color="#ffb47a" distance={4} />
         <Rig />
         {holo && <Bay />}
-        {outfit === "eva" ? <Suspense fallback={null}><Suit helmet={helmet} crew={look.indicativo} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense> : <Suspense fallback={null}><CrewGLB name={look.indicativo} layer={layer} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense>}
+        {outfit === "eva" ? <Suspense fallback={null}><Suit helmet={helmet} crew={look.indicativo} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense> : <Suspense fallback={null}><CrewGLB name={look.indicativo} layer={layer} pickedInd={pickedInd} onPickInd={onPickInd} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense>}
         <ContactShadows position={[0, 0, 0]} opacity={0.7} scale={4} blur={2.4} far={1.6} />
         {mode === "books" && BUDGETS.map(([id], i) => <Ring key={id} i={i} id={id} state={stateOf(id)} onPick={onPick} active={picked === id} labels={labels} />)}
       </Canvas>

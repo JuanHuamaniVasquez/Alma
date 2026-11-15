@@ -108,7 +108,7 @@ export default function MedicalModule() {
           ))}
         </div>
         <p className="mt-3 font-mono text-[9.5px] uppercase leading-relaxed tracking-[0.16em] text-ink-faint">
-          {outfit === "eva" ? "NASA Z-2 prototype suit · NASA 3D Resources" : "Generated fictional character"}<br />not a real person · body states = stand-in<br /><span className="text-ink-dim">Drag to rotate · scroll or pinch to zoom · tap to hear ALMA</span>
+          {outfit === "eva" ? "NASA Z-2 prototype suit · NASA 3D Resources" : "Generated fictional character"}<br />not a real person · body states = stand-in<br /><span className="text-ink-dim">{layer === "anatomy" && outfit === "iva" ? "Tap an organ: heart = heart rate · brain = sleep, mood, temperature · pancreas = glucose · arm artery = pressure · " : ""}Drag to rotate · scroll or pinch to zoom · tap to hear ALMA</span>
         </p>
       </nav>
       {mode === "body" && pickedInd && <IndicatorSlip crewName={who?.indicativo} ind={indsCrew.find((i) => i.indicador === pickedInd)} name={INDICATOR_NAMES[pickedInd]} onClose={() => setPickedInd(null)} onSent={() => get<{ indicadores: Indicator[] }>("/api/indicadores/").then((d) => setInds(d?.indicadores ?? []))} />}
