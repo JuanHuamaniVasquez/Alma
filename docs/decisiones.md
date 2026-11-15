@@ -49,3 +49,6 @@
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).
 - Si **encuentras los scripts originales** `falsacion_d4_*.py` (no están en este equipo), colócalos en `scripts/originales/`: sus números mandan sobre la réplica. Siguen faltando también las **ideas dormidas (K-6)**.
 - **Montar el hardware del banco de mesa (MP-9)**: dos básculas, una bomba y un registrador; Claude escribe el protocolo y el acta.
+
+## 2026-11-15 · Se levanta el alcance congelado para M6 (decisión del humano, en chat)
+El humano pidió «originalidad, frontera de ciencia actual» y ordenó implementar todas las propuestas (e-procesos, NILM de cabina, consistencia física, presupuesto de privacidad, más lo visual). Las filas M6.x de `TASKS.md` salen del alcance congelado de CLAUDE.md §14; lo demás de §14 sigue (nada fuera de la cola; preregistro con hash; datos reales o SIMULADO etiquetado). La fecha límite real de entrega sigue SIN confirmar por el humano.

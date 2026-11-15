@@ -51,3 +51,12 @@
 | MP-14 | **Admitir detectores de «regla personal» en DC-05** (p. ej. `umbral_personal`: «sueño < su mediana personal») además de `dos_sigma`/`cusum`; la tarjeta `sueno-corto-cansancio` (sostenida, FB-016 A) lo necesita para circular (M4.5) | Capa 2 / DC-05 (cambio de contrato = DOC-01 v0.2.7, decide el humano) | Cierra el ciclo «hipótesis sobrevive → detector nuevo» con un caso real; sin esto la FUNDICIÓN no publica su único output | `NOTA-FB-016.md`, `tests/test_fabrica.py` | Bajo (un valor de enum + test_doc_vs_codigo) | La alarma debe llevar recibo con `regla_exacta` y el nulo de FB-016 |
 
 | MP-15 | **Canal de varianza con línea base de 28 días y recibo propio** (estadístico F de la varianza de vigilancia contra la de la línea base); si hay < 28 días de base, estado `sin_datos_suficientes` para ese canal | Capa 2 / MO-3 + DC-14 (recibo de verde por canal) | Cierra el escape del zigzag (misma media, más varianza) que el CUSUM de media no ve: 95 % de detección a H=2σ con FPR ≈ 1 %, frente a 1,8 % del CUSUM | `NOTA-FB-018.md`, `NOTA-FB-019.md` | Medio (un canal más en el recibo; cambio de DC-14 si se añade `canal`: decide el humano) | Acta ANTES con datos reales (LifeSnaps con perturbación de varianza SIMULADA etiquetada); muere si el FPR real en LifeSnaps > 3 % |
+
+## Sesión 2026-11-15 (7.ª tanda — frontera científica, pedida por el humano)
+
+| ID | Mejora | Destino | Qué compra | Ancla | Prueba |
+|---|---|---|---|---|---|
+| MP-16 | Alarmas **anytime-valid** (e-proceso de mezcla + conforme) con garantía de falsa alarma sin suponer la distribución | Capa 2 / MO-3 (detector nuevo → recibo DC-05) | Repara el canal de varianza (FPR 9 % refutado, FB-020) y da el único monitor con garantía bajo vigilancia continua | Ramdas, Grünwald, Vovk, Shafer 2023 (Stat. Sci.) — **verificar por Crossref en M6.0** | FB-021 |
+| MP-17 | **NILM metabólico de cabina**: desagregar CO₂/O₂/H₂O en cuerpos | Capa 1 (libro) + MO-6 | El cuerpo como 10.º presupuesto; huella fisiológica antes del síntoma | NASA BVAD, RQ y HR–VO₂ publicados — **por verificar** | FB-023 (SIMULADO etiquetado) |
+| MP-18 | **Consistencia física cruzada** sensor roto vs cuerpo enfermo | Capa 2 / MO-4–MO-8 | Distingue fallo de sensor de cambio fisiológico | relaciones temp–pulso publicadas — **por verificar** | FB-022 |
+| MP-19 | **Presupuesto de privacidad ε** como décimo libro para tripulaciones de 4–6 | Capa 4 / superficies | Hace explícito qué se puede publicar sin reidentificar | política de datos NASA/LSAH — **por verificar** | test + acta |

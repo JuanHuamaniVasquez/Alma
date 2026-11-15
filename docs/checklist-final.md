@@ -52,6 +52,12 @@
 | P2 | **Buscador + paginación + demás elementos en cada vista donde corresponda**, con **búsqueda por voz y un reporte hablado (en inglés)** | Un componente común de lista (búsqueda, filtros, paginación, voz) reutilizado en La Fundición (tarjetas), Machine Room (libro/día), The Storm (historial de lecturas), Budget y Capsule (filtro); más una **paleta de comandos global** (Ctrl+K + micrófono) que busca en todas las salas; el «reporte» = ALMA resume el resultado con su vocabulario cerrado (ampliado a tarjetas, libro y lecturas) | alto |
 | P3 | **Aclarar por qué tantas vistas dicen SIMULATED** (¿no trabajamos con datos reales abiertos de NASA?) | Respondido en el README («Real vs simulated»): no existen datos abiertos de un hábitat tripulado ni de fisiología de astronautas; lo real es lo que sí existe. Posible mejora: subir la parte real con más feeds (DONKI, OSDR cuando OS-892 publique) y mostrar en cada sala un indicador «x% real / y% simulado» | bajo–medio |
 
+## D3 · FRONTERA (M6, 2026-11-15) — originalidad científica
+
+Ver `TASKS.md` M6.0–M6.11. Orden: M6.0 literatura → M6.1 e-proceso → M6.3 consistencia → M6.2 NILM → M6.4 privacidad ε → M6.5/6.6 indicadores y órganos → M6.7 % real/simulado → M6.8 pulido 3D → M6.9–11 soporte visual.
+- [ ] M6.0 · [ ] M6.1 · [ ] M6.2 · [ ] M6.3 · [ ] M6.4 · [ ] M6.5 · [ ] M6.6 · [ ] M6.7 · [ ] M6.8 · [ ] M6.9 · [ ] M6.10 · [ ] M6.11
+- Honestidad: ninguna novedad se afirma hasta M6.0; todo dato REAL es de personas civiles (no astronautas); lo simulado lleva banner y fila en `docs/politica-de-datos.md` §3.
+
 ## E · Bloqueado por datos o acceso (no depende del código)
 - [ ] **M2.22 / GLOBEM:** solicitar acceso (PhysioNet) → con los datos, acta FB-020-v3.
 - [ ] **IEEE Xplore y Google Scholar** en la revisión de literatura (no tienen acceso programático abierto).
