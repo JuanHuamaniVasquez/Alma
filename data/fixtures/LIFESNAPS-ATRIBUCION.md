@@ -7,3 +7,6 @@
 - **Licencia:** Creative Commons Attribution 4.0 International (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/
 - **Cambios:** solo selección de filas de un participante; ningún valor fue alterado.
 - **Aviso:** son datos de **personas en vida cotidiana, no de astronautas**. Su uso en ALMA es validar el método (línea base personal, CUSUM), no hacer afirmaciones sobre vuelo espacial.
+
+## utah_volumen_diario_normalizado.csv
+Derivado de *High Resolution Residential Water Use Data in Cache County, Utah, USA* (Bastidas Pacheco, Atallah, Horsburgh; HydroShare, CC BY 4.0, https://www.hydroshare.org/resource/0b72cddfc51c45b188e0e6cd8927227e/): volumen diario interior (suma de `OriginalVolume` de eventos no `irrigation`) dividido por la media de cada hogar; hogares con ≥ 20 días observados. Cambios: agregación diaria y normalización. Registro S-12 de `docs/politica-de-datos.md`.
