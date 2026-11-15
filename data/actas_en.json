@@ -360,6 +360,21 @@
     "simulation",
     "body"
    ]
+  },
+  "FB-024": {
+   "title": "Real astronaut blood counts (Inspiration4)",
+   "summary": "Four real astronauts, three pre-flight blood draws each, four after landing (NASA OSDR). Reconciling each blood count against itself found one entry that does not add up. Lymphocytes fell a median 24% on landing day, yet no one left their personal band: with only 3 baseline points the band is too wide to see it. 'No alarm' is not 'no effect'.",
+   "outcome": "mixed",
+   "data": "real",
+   "tags": [
+    "astronauts",
+    "blood count",
+    "personal baseline",
+    "inspiration4",
+    "osdr",
+    "reconciliation",
+    "detection floor"
+   ]
   }
  }
 }

@@ -68,6 +68,7 @@
 | FB-021 | `5072d872` | 2026-11-15T18:43:55Z | 2026-11-15T18:44:16Z | real+simulated | inconclusive | M6.1/MP-16: e-proceso anytime-valid; ajuste LifeSnaps, validación Zenodo 8018238 |
 | FB-022 | `1a8d7c6e` | 2026-11-15T18:47:36Z | 2026-11-15T18:48:02Z | real+simulated | mixed | M6.3/MP-18: consistencia física cruzada, LifeSnaps columnas no analizadas antes |
 | FB-023 | `09bb108c` | 2026-11-15T19:21:02Z | 2026-11-15T19:21:16Z | simulated | partial | M6.2/MP-17: NILM metabólico de cabina, identificabilidad SIMULADA (X-17) |
+| FB-024 | `41f0413d` | 2026-11-15T20:27:32Z | 2026-11-15T20:28:13Z | real | mixed | M7.2: hematología REAL de astronautas (Inspiration4, OSD-569): conciliación interna, banda personal y retorno |
 <!-- TABLA-EXPERIMENTOS:FIN -->
 
 Cada acta se preregistró con SHA-256 **antes** de correr; el hash de cada una se puede recalcular (`docs/actas/INDEX.jsonl`, `src/gobernanza/preregistro.py`). Una sola ejecución por acta.
