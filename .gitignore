@@ -5,3 +5,6 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 graphify-out/cache/
+.env
+node_modules/
+.next/

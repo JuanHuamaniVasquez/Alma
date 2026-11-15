@@ -9,7 +9,7 @@
 
 ## M0 · Base (bloquea todo lo demás)
 
-- [ ] **M0.1 Cerrar el stack** y escribirlo en CLAUDE.md §2 (borrar la alternativa que no se use). *Hecho: CLAUDE.md §2 sin "SIN CERRAR".* — humano + Claude, 15 min
+- [x] **M0.1 Cerrar el stack** y escribirlo en CLAUDE.md §2 (borrar la alternativa que no se use). *Hecho: CLAUDE.md §2 sin "SIN CERRAR".* — humano + Claude, 15 min · evidencia: Django+DRF / PostgreSQL / Next.js, conexión a Postgres verificada; sin test (es una decisión) — commit en el log
 - [x] **M0.2 Init del repo**: git, pytest corriendo, estructura según CLAUDE.md §7 (`scripts/`, `src/ingesta|libro|motor|fabrica|superficies/`, `docs/`, `docs/actas/`, `data/`). *Hecho: pytest verde vacío + commit inicial.* — Dev A · evidencia: 3 tests pytest verdes (tests/test_estructura.py), commit 1d1875b
 - [ ] **M0.3 Materializar contratos DC-01…DC-12** como schemas validados (pydantic o dataclasses con validación) — campo a campo desde DOC-01 §3, incluyendo `estado_linea` de DC-04 (v0.2) y los 11 campos de DC-12. *Hecho: un test de validación por contrato (12 tests), y un test que RECHAZA una tarjeta DC-12 sin `fuentes[]` con identificador y una DC-05 sin `regla_exacta`.* — Dev A
 - [ ] **M0.4 Datos y fixtures reales al repo**: NOAA SWPC (IN-3, sin API key), dataset OS-892 o extracto con identificador en `data/`, fichas de verdad, bestiario K-1/K-2 (`docs/inventario-maestro-bestiario.md`). *Hecho: loader lee los datos reales, imprime banner REAL/SIMULADO y rechaza registros sin banner, sin fuente con id o sin semilla.* — Dev B

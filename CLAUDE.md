@@ -13,8 +13,11 @@
 
 ## 2 · Stack y decisiones cerradas (no reabrir entre sesiones)
 
-- **ESTADO: SIN CERRAR.** La tarea M0.1 de TASKS.md existe para cerrarlas. Mientras sigan abiertas: **no introduzcas dependencias ni elijas frameworks por gusto.**
-- Propuesta por defecto si el humano no decide: **Python 3.11** (motor, scripts de falsación, tests con pytest — el motor ya corre como script) + **FastAPI** para los endpoints REST de Dev A + frontend de la vitrina servido por FastAPI (o Next.js si Dev C lo decide en M0.1).
+- **ESTADO: CERRADO (M0.1, 2026-11-14, decide el humano).** Cambiar el stack requiere decisión explícita del humano; no se reabre por gusto.
+- **Backend:** Python 3.12 (gestionado con `uv`) + **Django** (+ Django REST Framework para los endpoints de Dev A). El motor y los scripts de falsación siguen siendo Python puro en `src/motor/` y `scripts/`, sin depender de Django; Django solo los expone. Tests con **pytest** (+ pytest-django).
+- **Base de datos:** **PostgreSQL** local (usuario y contraseña en `.env`, **nunca** en el repo; `.env.example` documenta las variables). Los contratos DC-xx se materializan como schemas puros validados (M0.3); persistirlos en Postgres es una capa aparte.
+- **Frontend (vitrina, Dev C):** **Next.js** (React, TypeScript) en `web/`, consumiendo la API REST. Sustituye a la propuesta anterior de FastAPI.
+- **Reglas de arquitectura:** el dominio (`src/`) no importa Django ni Next; las dependencias van hacia dentro (superficies → fábrica → motor → libro → ingesta no se invierte, ver mandamiento 1). `sysmap check` y `pytest` en verde antes de cada commit.
 - **Semillas públicas del proyecto: 20261113 · 20261114 · 20261115 · 20261111 · 20261112.** Toda corrida es reproducible: usa estas semillas y las imprime en su salida. Sin semilla pública, no hay fila nueva (regla de dependencia 4 de DOC-01).
 
 ## 3 · Los 3 mandamientos (reglas que el código jamás rompe)
@@ -124,4 +127,4 @@ Detalle completo: DOC-04 §9 y DOC-03 §8–§9. Resumen:
 - **obsidian** — visor del grafo/vault (`/graphify . --obsidian`); solo lectura humana, no es fuente de verdad.
 - **sysmap** (`~/Documentos/sysmap`, comando `sysmap`) — mapa del *código* sacado del propio código. **Antes de codear o tocar un archivo existente**: `sysmap archivo <ruta>`, `sysmap depende <ruta>`, `sysmap impact <ruta>`; antes de cerrar la sesión: `sysmap cierre`. Si avisa de algo (ciclo, trinquete, punto débil), se informa al humano antes de seguir. Cuando exista git y código (M0.2), correr `sysmap empezar` **una vez** (instala ganchos de git y de Claude) — solo con permiso del humano.
 - Estas herramientas son contexto, no fuente: ante conflicto manda DOC-01. No sustituyen la regla de oro (§0): para citar un número o contrato, abrir el DOC.
-- **Stack candidato (aún sin cerrar, decide el humano en M0.1 antes de codear):** Django + PostgreSQL + (React | Next | Go). Esto reemplazaría la propuesta por defecto del §2 (FastAPI); no se toma como decidido hasta que M0.1 se cierre.
+- Stack cerrado en §2 (Django + PostgreSQL + Next.js). sysmap entiende los tres.
