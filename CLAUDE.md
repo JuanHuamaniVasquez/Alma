@@ -28,6 +28,8 @@
 
 Esquema (convención general): `persona_id` siempre pseudónimo; timestamps ISO 8601 UTC; unidades en el nombre del campo de `parametros`; **el contenido individual jamás cruza a las superficies de decisión** (solo agregados y estados).
 
+**Herencia de banner (DOC-01 v0.2.1):** el banner de un registro derivado se computa trazando a sus fuentes de ingesta; si alguna entrada es SIMULADO, el derivado muestra SIMULADO; jamás se asciende a REAL en silencio. Ingesta: registra todo (sin umbrales); el detector califica con su recibo.
+
 ## 4 · Contratos de datos DC-01…DC-12 — NO se improvisan
 
 Detalle campo a campo: **DOC-01 §3** (única fuente). Resumen operativo:
@@ -36,7 +38,7 @@ Detalle campo a campo: **DOC-01 §3** (única fuente). Resumen operativo:
 |---|---|---|
 | DC-01 | Canal A — sensores automáticos | persona_id, ts_utc, indicador, valor, unidad, `incertidumbre_sensor`, calidad (ok/sospechoso/**ausente** — la ausencia es dato), fuente, banner |
 | DC-02 | Canal B — autorreporte 3 toques | tipo (ánimo/síntoma), escala declarada, `duracion_respuesta_s`, `registro_ausencia` |
-| DC-03 | Canal C — eventos con firma física | tipo (tormenta_solar/eva/eclss/inyeccion_escenario/brote_simulado), fuente (swpc/donki/osdr/simulador), parametros con unidades, `hash_lectura_cruda` |
+| DC-03 | Canal C — eventos con firma física | tipo (tormenta_solar/**lectura_clima_espacial**/eva/eclss/inyeccion_escenario/brote_simulado), fuente (swpc/donki/osdr/simulador), parametros con unidades, `hash_lectura_cruda`, `banner` (v0.2.1) |
 | DC-04 | Libro GPV — los 9 presupuestos (contrato central) | dia_habitat, presupuesto_id (aire/agua/energia/dosis/ritmo/carga/inmunidad/conducta/tiempo), sujeto, `emision_esperada`, **`incertidumbre_del_manifiesto` (el piso de detección)**, emision_observada, `residuo_contable`, fuente_linea, `estado_linea` (limpio/sospechoso/cuarentena — desde v0.2) |
 | DC-05 | Alarma con recibo | presupuesto_id, detector (dos_sigma/cusum + sentido), umbral, valor_cruzado, `regla_exacta` (texto ejecutable), `semilla`, `hash_preregistro`, estado (activa/retirada/apelada) |
 | DC-06 | Stream de residuo | observado, predicho, residuo, sigma_efectiva, cusum_acumulado, bandera (normal/sorpresa/deriva) |
@@ -132,3 +134,9 @@ Detalle completo: DOC-04 §9 y DOC-03 §8–§9. Resumen:
 ## 12 · Política de datos (decisión del humano, 2026-11-15)
 
 Detalle y registros: `docs/politica-de-datos.md`. Resumen: **nada simulado sin etiqueta, nada inventado.** Todo dato real con fuente identificable; si no está en los enlaces NASA/CSA (`docs/recursos-nasa.md`) se buscan papers o datos abiertos y se anotan. Sin dato real el ítem se declara bloqueado. Todo lo simulado/inventado lleva banner `SIMULADO` y una fila en el registro §3 de ese documento; lo que no esté ahí no se escribe: detenerse y avisar.
+
+## 13 · Canal de propuestas de Claude
+
+- Al cerrar cada sesión Claude puede escribir **máximo 2 propuestas** en `docs/propuestas.md` con el formato de DOC-01 §7 (ID, mejora, UNA capa destino, qué compra, ancla verificada, costo, prueba si es claim). Estado inicial: PROPUESTA.
+- Nada se implementa en la misma sesión ni salta la cola. El humano acepta o rechaza por escrito; el rechazo también se registra.
+- Huecos que Claude vea durante la sesión se señalan y su solución entra como propuesta, nunca como código fuera de la cola.

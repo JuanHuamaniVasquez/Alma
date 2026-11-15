@@ -1,5 +1,5 @@
 """Los 12 contratos de datos DC-01…DC-12 (DOC-01 §3). Dominio puro: sin Django."""
-from .comunes import SEMILLAS_PUBLICAS, Banner
+from .comunes import SEMILLAS_PUBLICAS, Banner, banner_heredado
 from .dc01_sensores import DC01Sensor
 from .dc02_autorreporte import DC02Autorreporte
 from .dc03_eventos import DC03Evento
@@ -19,4 +19,4 @@ CONTRATOS = {
     "DC-09": DC09Forma, "DC-10": DC10Caso, "DC-11": DC11Sensor, "DC-12": DC12Tarjeta,
 }
 
-__all__ = ["SEMILLAS_PUBLICAS", "Banner", "CONTRATOS", *(c.__name__ for c in CONTRATOS.values())]
+__all__ = ["SEMILLAS_PUBLICAS", "Banner", "banner_heredado", "CONTRATOS", *(c.__name__ for c in CONTRATOS.values())]

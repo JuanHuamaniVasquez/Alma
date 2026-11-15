@@ -1,0 +1,10 @@
+# Propuestas de Claude (CLAUDE.md §13) — formato DOC-01 §7
+
+> Estado de todas: **PROPUESTA**. No se implementan hasta que el humano las acepte o rechace por escrito (el rechazo también se registra). Máximo 2 por sesión.
+
+## Sesión 2026-11-15
+
+| ID | Mejora | Destino (UNA capa) | Qué compra (concreto) | Ancla verificada | Costo | Prueba si es claim |
+|---|---|---|---|---|---|---|
+| MP-3 | **Archivo inmutable de lecturas crudas** de IN-3: cada respuesta de SWPC se guarda tal cual llegó en `data/raw/swpc/<feed>/<ts>_<sha256>.json` (solo anexar, nunca reescribir) y `hash_lectura_cruda` (DC-03) apunta a ese archivo | Capa 0 (Ingesta, IN-3) | Reproducibilidad: SWPC publica **ventanas móviles**, así que sin archivo propio una lectura de hoy no se puede reaudar mañana, y FB-002/replays no podrían citar su entrada. Convierte el hash de "auditable" en "verificable" | Verificado por Claude el 2026-11-15 con `curl`: el feed de Kp trae solo 7 días (57 registros, 2026-11-08→2026-11-15) y el de rayos X solo 24 h (~2.876 registros) — ver `data/SWPC-fuentes.md` | Bajo (disco local; ~0,2–3 MB por feed y captura) | No es claim: es contabilidad. Criterio: re-calcular SHA-256 del archivo archivado coincide con `hash_lectura_cruda` |
+| MP-4 | **Registro de intentos de ingesta fallidos** como dato: cuando un feed falla, vuelve vacío o cambia de URL, se guarda un registro con feed, timestamp, código HTTP y error, distinguible de "sol tranquilo" | Capa 1 (Libro, extensión de contrato: nuevo tipo/estado de DC-03 o contrato hermano → bump de DOC-01) | Aplica "la ausencia es dato" (DC-01 l.164) al Canal C: separa *sin evento* de *no pudimos mirar*. Sin esto el detector no puede distinguir silencio real de feed caído | `data/SWPC-fuentes.md` regla de ingestión 4 pide registrar el intento con timestamp y código; y hoy mismo 3 de 6 endpoints listados dan 404 (verificado por Claude 2026-11-15), o sea que los fallos ocurren de verdad | Bajo-medio (cambio de contrato) | Test: un feed simulado caído (X-01) produce un registro de ausencia y nunca una lectura rellenada |

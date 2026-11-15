@@ -4,8 +4,8 @@ La puerta de LA FUNDICIÓN vive aquí: sin mecanismo, sin fuente con identificad
 precio, la tarjeta no existe. Interpretaciones que el DOC no fija (a confirmar con el humano):
   · `precio` = {datos: texto, computo: texto, dias: entero ≥ 0}.
   · `valor_si_cierta` = lista no vacía de referencias "DC-xx".
-  · `preregistro_hash` es obligatorio desde `en_prueba` (el hash va ANTES de ejecutar, GO-2);
-    en `vivero` y `sin_datos` aún no se ejecutó nada, así que puede faltar.
+  · `preregistro_hash` es obligatorio desde `en_prueba` (el hash va ANTES de ejecutar, GO-2,
+    DOC-01 v0.2.1) y también en `sin_datos`; en `vivero` es opcional (preregistrar antes es válido).
 """
 from __future__ import annotations
 
@@ -88,6 +88,6 @@ class DC12Tarjeta(Contrato):
 
     @model_validator(mode="after")
     def _preregistro(self):
-        if self.estado not in {EstadoTarjeta.VIVERO, EstadoTarjeta.SIN_DATOS} and self.preregistro_hash is None:
+        if self.estado is not EstadoTarjeta.VIVERO and self.preregistro_hash is None:
             raise ValueError("desde en_prueba el preregistro_hash es obligatorio (se hashea ANTES de ejecutar)")
         return self

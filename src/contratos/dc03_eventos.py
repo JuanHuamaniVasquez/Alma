@@ -18,7 +18,8 @@ _CLAVE_CON_UNIDAD = re.compile(r"^[a-z][a-z0-9]*(_[a-z0-9]+)+$")
 
 
 class TipoEvento(StrEnum):
-    TORMENTA_SOLAR = "tormenta_solar"
+    TORMENTA_SOLAR = "tormenta_solar"  # solo eventos declarados oficialmente (alerts.json / DONKI)
+    LECTURA_CLIMA_ESPACIAL = "lectura_clima_espacial"  # lectura continua de SWPC/DONKI (v0.2.1)
     EVA = "eva"
     ECLSS = "eclss"
     INYECCION_ESCENARIO = "inyeccion_escenario"
@@ -58,4 +59,8 @@ class DC03Evento(Contrato):
             raise ValueError(f"{self.tipo.value} solo puede venir de fuente=simulador")
         if self.fuente is FuenteEvento.SIMULADOR and self.banner is not Banner.SIMULADO:
             raise ValueError("fuente=simulador exige banner=SIMULADO")
+        if self.fuente is not FuenteEvento.SIMULADOR and self.banner is not Banner.REAL:
+            raise ValueError("una fuente real (swpc/donki/osdr) exige banner=REAL")
+        if self.tipo is TipoEvento.LECTURA_CLIMA_ESPACIAL and self.fuente not in {FuenteEvento.SWPC, FuenteEvento.DONKI}:
+            raise ValueError("lectura_clima_espacial solo viene de swpc o donki")
         return self

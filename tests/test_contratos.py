@@ -10,7 +10,7 @@ import uuid
 import pytest
 from pydantic import ValidationError
 
-from src.contratos import CONTRATOS, SEMILLAS_PUBLICAS
+from src.contratos import CONTRATOS, SEMILLAS_PUBLICAS, Banner, banner_heredado
 
 H = hashlib.sha256(b"x-01 estructural").hexdigest()
 T = "2026-11-15T00:00:00Z"
@@ -110,10 +110,13 @@ def test_dc12_rechaza_sin_mecanismo_ni_precio():
         sin("DC-12", "precio")
 
 
-def test_dc12_en_prueba_exige_preregistro():
-    with pytest.raises(ValidationError):
-        con("DC-12", estado="en_prueba")
-    assert con("DC-12", estado="en_prueba", preregistro_hash=H)
+def test_dc12_preregistro_desde_en_prueba():
+    for estado in ("en_prueba", "refutada", "sostenida", "sin_datos"):
+        with pytest.raises(ValidationError):
+            con("DC-12", estado=estado)
+        assert con("DC-12", estado=estado, preregistro_hash=H)
+    assert con("DC-12", estado="vivero")  # opcional en vivero
+    assert con("DC-12", estado="vivero", preregistro_hash=H)  # y válido si ya se preregistró
 
 
 def test_dc12_tiene_los_11_campos():
@@ -134,6 +137,12 @@ def test_dc01_la_ausencia_es_dato():
         con("DC-01", calidad="ausente", valor=60.0)
     with pytest.raises(ValidationError):
         con("DC-01", valor=None)
+
+
+def test_dc01_incertidumbre_solo_puede_faltar_en_ausencia():
+    assert con("DC-01", calidad="ausente", valor=None, incertidumbre_sensor=None)
+    with pytest.raises(ValidationError):
+        con("DC-01", incertidumbre_sensor=None)
 
 
 def test_dc01_rechaza_sin_banner_y_ánimo_como_sensor_y_nan():
@@ -227,3 +236,31 @@ def test_dc11_calibraciones_coherentes():
     with pytest.raises(ValidationError):
         con("DC-11", calibraciones=["2026-09-01T00:00:00Z"])
     assert con("DC-11", calibraciones=[], dias_desde_calibracion=None)
+
+
+# --- v0.2.1: lectura_clima_espacial y banner -----------------------------------------------
+def test_dc03_acepta_lectura_clima_espacial_con_banner_real():
+    assert con("DC-03", tipo="lectura_clima_espacial", parametros={"kp": 2.0}, banner="REAL")
+    assert con("DC-03", tipo="lectura_clima_espacial", fuente="donki", parametros={"kp": 2.0})
+
+
+def test_dc03_rechaza_lectura_sin_banner():
+    with pytest.raises(ValidationError):
+        sin("DC-03", "banner")
+
+
+def test_dc03_banner_coherente_con_la_fuente():
+    with pytest.raises(ValidationError):
+        con("DC-03", tipo="lectura_clima_espacial", banner="SIMULADO")  # fuente swpc ⇒ REAL
+    with pytest.raises(ValidationError):
+        con("DC-03", tipo="lectura_clima_espacial", fuente="osdr")  # una lectura solo viene de swpc/donki
+    with pytest.raises(ValidationError):
+        con("DC-03", tipo="lectura_clima_espacial", fuente="simulador", banner="SIMULADO")
+
+
+def test_banner_heredado_nunca_asciende_a_real_en_silencio():
+    assert banner_heredado(Banner.REAL, Banner.REAL) is Banner.REAL
+    assert banner_heredado(Banner.REAL, Banner.SIMULADO) is Banner.SIMULADO
+    assert banner_heredado(Banner.SIMULADO) is Banner.SIMULADO
+    with pytest.raises(ValueError):
+        banner_heredado()  # sin fuentes de ingesta no se puede afirmar REAL

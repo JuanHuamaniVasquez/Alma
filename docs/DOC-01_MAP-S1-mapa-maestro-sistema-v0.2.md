@@ -1,9 +1,10 @@
-# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2)
+# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.1)
 
 > **Qué es este documento:** el contrato de ingeniería del proyecto. Define las capas del sistema, el registro oficial de módulos, los contratos de datos campo a campo, el protocolo de cambios y la cola de mejoras propuestas. Es el antídoto contra el vibe coding: nada se construye sin fila en el registro, y toda mejora futura tiene exactamente un hogar.
 > **Reglas del documento:** (1) nada se codea sin su fila en el registro §2; (2) toda mejora nueva entra por el protocolo §5 y queda como PROPUESTA en §7 hasta ser aceptada; (3) los contratos §3 se versionan con el mapa — cambiar un contrato es cambiar de versión del mapa.
 > **Estado:** diseño pre-hackatón (construcción grande inicia 14-nov 9:00 a.m. local). **Fecha:** 2026-11-11. **Semillas públicas del proyecto:** 20261113 · 20261114 · 20261115 · 20261111 · 20261112.
 > **v0.1 → v0.2 (11-nov, aprobación del equipo):** se aplicó el parche del Apéndice A de DOC-02 (MO-6…MO-8, GO-6, DC-08…DC-11, filas de trazabilidad §6, semillas nuevas, columna `estado_linea` en DC-04) y, del mismo golpe, las adiciones aprobadas de DOC-04 · LA FUNDICIÓN (**DC-12 Contrato de Fundición, FA-4 El Faro, GO-7 MODO FRONTERA, cola M-L1…M-L5** como roadmap de frontera).
+> **v0.2 → v0.2.1 (2026-11-15, decisión del humano; cambio de contrato → bump según §5):** (1) DC-03 `tipo` gana `lectura_clima_espacial` (cada lectura exitosa de SWPC entra como lectura; `tormenta_solar` queda para eventos declarados oficialmente — sin umbral en la ingesta: la ingesta registra, el detector califica) y DC-03 gana `banner`; (2) DC-01/DC-02: la ausencia admite `valor` vacío, solo en ausencia y en ambos sentidos; (3) DC-12: `preregistro_hash` obligatorio desde `en_prueba`; (4) regla de herencia de banner en derivados (convención general).
 
 ---
 
@@ -149,7 +150,7 @@ Estados de construcción: **OPERATIVO** (existe y corre) · **ESPECIFICADO** (co
 
 ## §3 · Contratos de datos (DC-01 … DC-12)
 
-Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisión de schema. Convención: timestamps en ISO 8601 UTC; `persona_id` siempre pseudónimo; todo registro de simulación lleva banner REAL/SIMULADO.
+Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisión de schema. Convención: timestamps en ISO 8601 UTC; `persona_id` siempre pseudónimo; todo registro de simulación lleva banner REAL/SIMULADO. **Herencia de banner (v0.2.1):** un registro derivado no declara banner: lo hereda trazando a sus fuentes de ingesta (DC-01/02/03); si alguna entrada es SIMULADO, el derivado muestra SIMULADO — jamás se asciende a REAL en silencio.
 
 ### DC-01 · Canal A — sensores automáticos
 
@@ -158,9 +159,9 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | `persona_id` | string (pseudónimo) | Nunca identidad real en el flujo |
 | `ts_utc` | ISO 8601 | |
 | `indicador` | enum: presión · fc · glucosa · temperatura · sueño | Los oficiales del reto (ánimo vive en DC-02) |
-| `valor` | float | |
+| `valor` | float | `null` solo si `calidad = ausente` (y viceversa): la ausencia es dato |
 | `unidad` | string | |
-| `incertidumbre_sensor` | float (σ) | La incertidumbre viaja con el dato, no se supone después |
+| `incertidumbre_sensor` | float (σ) | La incertidumbre viaja con el dato, no se supone después; `null` solo si `calidad = ausente` |
 | `calidad` | enum: ok · sospechoso · ausente | **La ausencia es dato** (MNAR); una medición faltante se registra, no se ignora |
 | `fuente` | string (device_id) | Para cruzamientos de cordura entre sensores |
 | `banner` | enum: REAL · SIMULADO | Obligatorio en todo registro |
@@ -172,8 +173,8 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | `persona_id`, `ts_utc`, `banner` | — | Igual que DC-01 |
 | `tipo` | enum: ánimo · síntoma | Se **declara**, no se mide — como en medicina real |
 | `escala` | string | Declarada por tarjeta (p. ej. Likert 1–5) |
-| `valor` | int | |
-| `duracion_respuesta_s` | float | Metadato: el tiempo de respuesta es señal, el contenido nunca |
+| `valor` | int | `null` solo si `registro_ausencia = true` (y viceversa) |
+| `duracion_respuesta_s` | float | Metadato: el tiempo de respuesta es señal, el contenido nunca; `null` si `registro_ausencia = true` |
 | `registro_ausencia` | bool | Si nadie respondió en la ventana, el faltante entra como dato |
 
 ### DC-03 · Canal C — eventos con firma física
@@ -181,10 +182,11 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | Campo | Tipo | Nota |
 |---|---|---|
 | `evento_id`, `ts_utc_inicio`, `ts_utc_fin` | — | |
-| `tipo` | enum: tormenta_solar · eva · eclss · inyeccion_escenario · brote_simulado | |
+| `tipo` | enum: tormenta_solar · lectura_clima_espacial · eva · eclss · inyeccion_escenario · brote_simulado | `lectura_clima_espacial` = lectura continua de SWPC/DONKI (v0.2.1); `tormenta_solar` solo para eventos declarados oficialmente (alerts.json / DONKI) |
 | `fuente` | enum: swpc · donki · osdr · simulador | SWPC sin llave ni registro |
 | `parametros` | dict (kp, flujo_protones, dosis, …) | Unidades obligatorias en el nombre del campo |
 | `hash_lectura_cruda` | SHA-256 | La lectura cruda es auditable sin guardar todo |
+| `banner` | enum: REAL · SIMULADO | Obligatorio (v0.2.1); fuente swpc/donki/osdr ⇒ REAL; fuente simulador ⇒ SIMULADO |
 
 ### DC-04 · Libro GPV — los 9 presupuestos (el contrato central)
 
@@ -301,7 +303,7 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | `precio` | {datos, cómputo, días} | Incluye costo de instrumento vía DC-11 |
 | `valor_si_cierta` | detector(es) DC-xx nuevos | El único modo de pagar renta |
 | `estado` | enum: vivero · en_prueba · refutada · sostenida · sin_datos | Tres veredictos honestos + dos estados de trabajo |
-| `preregistro_hash` | SHA-256 | Antes de ejecutar (GO-2) |
+| `preregistro_hash` | SHA-256 | Antes de ejecutar (GO-2). Obligatorio desde `en_prueba` (v0.2.1); opcional en `vivero` |
 | `vencimiento` | ts_utc (opcional) | M-L3: preguntas perecederas |
 
 ---
@@ -351,6 +353,7 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | D7 Señal colectiva | MO-5 | DC-04 (agua) | FB-004 programada ≤14-nov | por fijar | T1 (la más frágil; declarada) |
 | D8 El Contrapeso | MO-6 | DC-08 | FB-005 (preregistrada) | 20261113/14/15 | T1→T2 al ejecutar (DISEÑADO) |
 | D7-β canal temporal | MO-7 | DC-09 | FB-006 (preregistrada) | 20261112 | T1 (DISEÑADO) |
+| IN-3 lectura continua clima espacial | IN-3 | DC-03 (`lectura_clima_espacial`) | — (ingesta, no experimento) | — | T3 (datos reales en vivo) |
 
 Familias de casos (contenido para FA-1): FM-1 emisor no contabilizado · FM-2 ventana de estrés viral · FM-3 sueño×hueso (reanclada con Swanson 2017/2018 — C-18/C-19) · FM-4 ventana post-EVA · FM-5 CO₂→cefalea (calibración) · FM-6 ejercicio×IL-6 · FM-7 jardín como tripulante · FM-8 farmacia como sensor · FM-9 disforia de segunda mitad · FM-10 el síndrome Pandorum (PROPUESTA — anclas C-20…C-23 de DOC-02: cascada sueño → ocio → farmacia → conducta, sin leer jamás contenido).
 
@@ -398,7 +401,7 @@ Cada fila sigue el protocolo §5: una capa destino, ancla verificada, prueba cua
 
 ## Cómo vive este documento
 
-- Se versiona como todo el proyecto (**v0.2 hoy**: parche Apéndice A de DOC-02 + adiciones de DOC-04 aplicados el 11-nov; próximo bump cuando cambie un contrato DC-x o se acepte/rechace una MP).
+- Se versiona como todo el proyecto (**v0.2.1 hoy**: parche Apéndice A de DOC-02 + adiciones de DOC-04 aplicados el 11-nov; próximo bump cuando cambie un contrato DC-x o se acepte/rechace una MP).
 - Cada acta FB-xxx nueva añade su fila en §6 el mismo día que se ejecuta.
 - Cada mejora propuesta entra como fila en §7 con estado PROPUESTA; el rechazo también se escribe (como las 10 ideas dormidas: nada muere sin razón).
 - Antes de cada sesión de código se abre §2; después de cada sesión se actualiza el estado de las filas tocadas. El mapa es el primer punto ciego programado del software: sabe dónde está todo, y por eso sabe qué falta.

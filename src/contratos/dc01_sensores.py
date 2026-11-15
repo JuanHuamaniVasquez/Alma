@@ -21,7 +21,7 @@ class DC01Sensor(Contrato):
     # None solo si calidad == ausente: «la ausencia es dato» (MNAR) y se registra, no se ignora.
     valor: Real | None
     unidad: Texto
-    incertidumbre_sensor: Sigma
+    incertidumbre_sensor: Sigma | None  # None solo si calidad == ausente (DOC-01 v0.2.1)
     calidad: CalidadDato
     fuente: Texto  # device_id
     banner: Banner
@@ -33,4 +33,6 @@ class DC01Sensor(Contrato):
             raise ValueError("calidad=ausente no lleva valor")
         if not ausente and self.valor is None:
             raise ValueError("sin valor solo se admite calidad=ausente")
+        if not ausente and self.incertidumbre_sensor is None:
+            raise ValueError("la incertidumbre viaja con el dato: solo calidad=ausente puede omitirla")
         return self

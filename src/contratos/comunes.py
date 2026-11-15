@@ -89,5 +89,16 @@ class Contrato(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
 
+def banner_heredado(*fuentes: Banner) -> Banner:
+    """Herencia de banner (DOC-01 v0.2.1): un derivado hereda el banner de sus fuentes de ingesta.
+
+    Si alguna entrada es SIMULADO, el derivado es SIMULADO; jamás se asciende a REAL en silencio.
+    Sin fuentes no hay trazabilidad y, por tanto, no se puede afirmar REAL: se rechaza.
+    """
+    if not fuentes:
+        raise ValueError("un derivado sin fuentes de ingesta no puede declarar banner")
+    return Banner.SIMULADO if any(f is Banner.SIMULADO for f in fuentes) else Banner.REAL
+
+
 def cerca(a: float, b: float) -> bool:
     return math.isclose(a, b, rel_tol=1e-9, abs_tol=1e-9)

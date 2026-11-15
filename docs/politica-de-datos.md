@@ -18,7 +18,7 @@
 | ID | Fuente | URL / identificador | Licencia | Último acceso | Estado |
 |---|---|---|---|---|---|
 | S-01 | NOAA SWPC — índice Kp planetario | https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json | Dominio público (agencia federal EE. UU.) — confirmar al cargar | 2026-11-15 | Leído: Kp=2.00 a 2026-11-15T00:00 |
-| S-02 | NOAA SWPC — otros 5 feeds | `data/SWPC-fuentes.md` | idem | — | Sin verificar por Claude |
+| S-02 | NOAA SWPC — otros 5 feeds | `data/SWPC-fuentes.md` | idem | 2026-11-15 | Verificados por Claude: xrays-1-day y integral-protons-1-day 200; plasma, mag y `/json/alerts.json` **404** → reemplazos `rtsw_wind_1m`, `rtsw_mag_1m` y `products/alerts.json` (200). Detalle al final de `SWPC-fuentes.md` |
 | S-03 | NASA OSDR — experimento OS-892 | https://osdr.nasa.gov/bio/repo/data/experiments/OS-892 | confirmar | 2026-11-15 | Página responde; **0 archivos de datos**: solo fenómeno documentado |
 | S-04 | NASA HRP — hazards y risks | https://www.nasa.gov/hrp/hazards/ · https://www.nasa.gov/hrp/risks/ | confirmar | 2026-11-15 | Leídas; descriptivas, sin datos |
 

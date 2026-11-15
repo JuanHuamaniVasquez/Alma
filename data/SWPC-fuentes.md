@@ -38,3 +38,20 @@ feed Kp → 2026-11-14T21:00:00  Kp=1.33  a_running=5  station_count=8
 
 - IN-3 (Canal C) consume los feeds 1, 4 y 6 en P0; 2, 3 y 5 para tormenta (LA TORMENTA).
 - FB-002 usa la serie de Kp (feed 1) como entrada de replay con semilla pública.
+
+---
+
+## Verificación independiente de Claude — 2026-11-15 (UTC) · CORRIGE la tabla de arriba
+
+La tabla de arriba decía "6 endpoints verificados". Comprobados uno a uno con `curl`: **3 de los 6 devuelven 404**.
+
+| # | Endpoint listado arriba | Resultado real | Reemplazo verificado |
+|---|---|---|---|
+| 1 | `products/noaa-planetary-k-index.json` | **200 OK** · ventana móvil de 7 días (57 registros, 2026-11-08 → 2026-11-15) | — |
+| 2 | `products/solar-wind/plasma-2-hour.json` | **404** | `json/rtsw/rtsw_wind_1m.json` (200; campos `proton_speed`, `proton_density`, `proton_temperature`; hay varias fuentes ACE/DSCOVR con bandera `active`) |
+| 3 | `products/solar-wind/mag-2-hour.json` | **404** | `json/rtsw/rtsw_mag_1m.json` (200; campos `bt`, `bz_gsm`) |
+| 4 | `json/goes/primary/xrays-1-day.json` | **200 OK** · ventana móvil de 24 h (~2.876 registros) | — |
+| 5 | `json/goes/primary/integral-protons-1-day.json` | **200 OK** · ventana móvil de 1 día | — |
+| 6 | `json/alerts.json` | **404** | `products/alerts.json` (200; campos `product_id`, `issue_datetime`, `message`; 71 mensajes) |
+
+Consecuencias: (a) los feeds son **ventanas móviles**: si no archivamos la respuesta cruda, esa lectura se pierde (ver `docs/propuestas.md`, MP-3); (b) los feeds P0 de IN-3 (1, 4 y 6) funcionan, el 6 con la URL corregida; (c) el aviso de "formato mixto" sigue valiendo: `/products/` puede traer array de arrays con encabezado en la fila 0, `/json/` array de objetos.
