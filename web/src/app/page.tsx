@@ -2,25 +2,34 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { AlmaDock, useAlma } from "@/components/Alma";
+import { DayTicks } from "@/components/DayTicks";
 import { Receipt } from "@/components/Receipt";
+import { useShip } from "@/components/Ship";
 import { BUDGETS, get, type LedgerDay, type LedgerDays } from "@/lib/api";
 
 const SuitScene = dynamic(() => import("@/components/SuitScene"), { ssr: false });
 
 /** 01 · MEDICAL MODULE — «How am I, really?» La nave se ve calma; el abismo está al clic. */
 export default function MedicalModule() {
+  const [days, setDays] = useState<number[]>([]);
+  const { day, setDay } = useShip();
+  const [open, setOpen] = useState<Set<number>>(new Set());
   const [ledger, setLedger] = useState<LedgerDay | null>(null);
-  const [loaded, setLoaded] = useState(false);
   const [picked, setPicked] = useState<string | null>(null);
   const { say, has } = useAlma();
 
   useEffect(() => {
     get<LedgerDays>("/api/libro/dias/").then(async (d) => {
-      if (d?.ultimo != null) setLedger(await get<LedgerDay>(`/api/libro/dia/${d.ultimo}/`));
-      setLoaded(true);
+      if (!d || d.ultimo == null) return;
+      const q = new URLSearchParams(window.location.search);   // ?day=11&pick=aire: enlaces profundos (capturas, grabaciones)
+      setDays(d.dias); setDay(d.dias.includes(Number(q.get("day"))) ? Number(q.get("day")) : d.ultimo);
+      if (q.get("pick")) setTimeout(() => setPicked(q.get("pick")), 400);
+      const all = await Promise.all(d.dias.map((n) => get<LedgerDay>(`/api/libro/dia/${n}/`)));
+      setOpen(new Set(all.filter((x): x is LedgerDay => !!x && !x.cierra).map((x) => x.dia_habitat)));
     });
   }, []);
-  useEffect(() => { if (loaded && has("libro")) say("libro"); }, [loaded]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (day != null) get<LedgerDay>(`/api/libro/dia/${day}/`).then(setLedger); setPicked(null); }, [day]);
+  useEffect(() => { if (day != null && has(`libro-${day}`)) say(`libro-${day}`); }, [day, has(`libro-${day ?? 0}`)]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const label = BUDGETS.find(([id]) => id === picked)?.[1] ?? "";
   const line = ledger?.habitat.find((h) => h.presupuesto_id === picked) ?? null;
@@ -31,7 +40,8 @@ export default function MedicalModule() {
         Crew member · NASA Z-2 prototype suit<br />model: NASA 3D Resources · not a real person
       </p>
       {picked && ledger && <Receipt line={line} label={label} day={ledger.dia_habitat} banner={ledger.banner} onClose={() => setPicked(null)} />}
-      <AlmaDock room="libro" />
+      {day != null && <DayTicks days={days} day={day} open={open} onPick={setDay} />}
+      <AlmaDock room={day != null ? `libro-${day}` : undefined} />
     </div>
   );
 }

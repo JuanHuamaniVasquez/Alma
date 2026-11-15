@@ -26,13 +26,12 @@ SALIDA = RAIZ / "web" / "public" / "voice"
 FX = "highpass=f=110,aecho=0.85:0.5:35|70:0.22|0.12,chorus=0.7:0.9:45:0.3:0.2:2,equalizer=f=3200:t=q:w=1.2:g=2.5,alimiter=limit=0.9"
 
 
-def datos() -> dict:
+def lineas() -> list:
     c = APIClient(HTTP_HOST="localhost")
     g = lambda u: (lambda r: r.json() if r.status_code == 200 else None)(c.get(u))  # noqa: E731
-    from apps.libro.models import LineaLibro
-    dia = LineaLibro.objects.order_by("-dia_habitat").values_list("dia_habitat", flat=True).first()
-    return {"demo": g("/api/demo-kill/"), "fund": g("/api/fundicion/"), "storm": g("/api/tormenta/"), "act": g("/api/actas/"),
-            "libro": g(f"/api/libro/dia/{dia}/") if dia is not None else None}
+    base = narrador.todas(demo=g("/api/demo-kill/"), fund=g("/api/fundicion/"), storm=g("/api/tormenta/"), act=g("/api/actas/"))
+    dias = (g("/api/libro/dias/") or {}).get("dias", [])
+    return base + [narrador.libro_del_dia(d) for d in (g(f"/api/libro/dia/{n}/") for n in dias) if d]
 
 
 def main() -> int:
@@ -42,7 +41,7 @@ def main() -> int:
     k = Kokoro(str(RAIZ / "data/voz_modelo/kokoro-v1.0.int8.onnx"), str(RAIZ / "data/voz_modelo/voices-v1.0.bin"))
     SALIDA.mkdir(parents=True, exist_ok=True)
     manifiesto = {}
-    for l in narrador.todas(**datos()):
+    for l in lineas():
         destino = SALIDA / f"{l.id}.mp3"
         if not destino.exists():
             audio, sr = k.create(l.texto, voice=voz, speed=0.95, lang="en-us")

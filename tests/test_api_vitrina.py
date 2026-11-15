@@ -24,6 +24,7 @@ def test_fundicion_expone_tablero_tarjetas_detector_y_faro():
     assert d["tablero"]["detectores_nuevos"] == len(d["detectores"]) == 1
     assert all(t["senal_refutadora"] and t["fuentes"] for t in d["tarjetas"])  # sin fuente o sin señal refutadora no existe
     assert len(d["faro"]) == 1
+    assert all(t["en"] and t["en"]["refuter"] for t in d["tarjetas"]) and d["detectores"][0]["en"] and d["faro"][0]["en"]  # nada sin su versión en inglés
 
 
 def test_actas_publica_refutadas_y_hash_de_cada_una():

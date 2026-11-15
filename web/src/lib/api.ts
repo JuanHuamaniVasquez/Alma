@@ -22,3 +22,27 @@ export const BUDGETS = [
   ["aire", "Air"], ["agua", "Water"], ["energia", "Energy"], ["dosis", "Dose"], ["ritmo", "Rhythm"],
   ["carga", "Load"], ["inmunidad", "Immunity"], ["conducta", "Conduct"], ["tiempo", "Time"],
 ] as const;
+
+/** Veredictos del backend (español) → inglés de la vitrina. Lo desconocido se muestra tal cual: no se adivina. */
+const WORDS: Record<string, string> = {
+  SOSTENIDA: "SUSTAINED", REFUTADA: "REFUTED", "NO CONCLUYENTE": "INCONCLUSIVE", "NO REFUTADA": "NOT REFUTED", "NO SOSTENIDA": "NOT SUSTAINED", PARCIAL: "PARTIAL", "NO REPLICADA": "NOT REPLICATED",
+  sostenida: "SUSTAINED", refutada: "REFUTED", en_prueba: "IN TEST", sin_datos: "NO DATA", vivero: "NURSERY", preregistrada: "PREREGISTERED",
+};
+export const word = (s: string) => WORDS[s] ?? s;
+
+export type DemoKill = {
+  acta: string; hash_acta: string; acta_registrada_utc: string; ts_ejecucion_utc: string; semilla: number; banner: string;
+  control: DKDay; fuga: DKDay; prediccion_confirmada: boolean;
+};
+export type DKDay = { fuga_kg: number; A_manifiesto: { z: number; alarma: boolean }; B_ley: { residuo_kg: number; sigma_propagada_kg: number; veredicto: string } };
+
+export type Acta = { acta: string; hash_sha256: string; registrada_utc: string; semillas: number[]; estado: string; ejecutada: boolean; veredictos: unknown; banner: string | null };
+export type Tarjeta = {
+  tarjeta_id: string; estado: string; preregistro_hash: string; fuentes: unknown[];
+  en: { title: string; prediction: string; refuter: string; mechanism: string; result: string } | null;
+};
+export type Fundicion = {
+  tablero: { nacidas: number; refutada: number; sostenida: number; en_prueba: number; sin_datos: number; detectores_nuevos: number };
+  tarjetas: Tarjeta[]; detectores: { tarjeta_id: string; detector: string; hash_preregistro: string; en: { title: string; rule: string; limit: string } | null }[];
+  faro: { id: string; probabilidad: number; fecha_limite: string; sha256: string; emitida_utc: string; en: { statement: string; grading: string } | null }[];
+};

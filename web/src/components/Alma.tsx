@@ -68,7 +68,7 @@ export function AlmaDock({ room }: { room?: string }) {
   const { say, line, shown, speaking, has } = useAlma();
   const idle = !line;
   return (
-    <div className="pointer-events-none absolute bottom-6 left-6 z-20 flex max-w-[34rem] items-end gap-4">
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-bg from-55% via-bg/80 to-transparent pb-6 pl-6 pt-14"><div className="flex max-w-[54rem] items-end gap-4">
       <button onClick={() => room && say(room)} disabled={!room || !has(room)} aria-label="Ask ALMA to speak"
         className="pointer-events-auto relative mb-1 h-11 w-11 shrink-0 rounded-full outline-offset-4 disabled:opacity-40"
         style={{ background: "radial-gradient(circle at 35% 30%, #fff6e4, #e9b877 45%, #7a3a14 100%)",
@@ -87,6 +87,6 @@ export function AlmaDock({ room }: { room?: string }) {
           </>
         )}
       </div>
-    </div>
+    </div></div>
   );
 }

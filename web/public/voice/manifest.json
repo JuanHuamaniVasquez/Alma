@@ -1,11 +1,4 @@
 {
- "libro": {
-  "id": "dc54bdc65ce845d5",
-  "texto": "Day 14. All 2 books close within their stated uncertainty.",
-  "fuente": "/api/libro/dia/14 · DC-04",
-  "banner": "SIMULADO",
-  "audio": "/voice/dc54bdc65ce845d5.mp3"
- },
  "tormenta": {
   "id": "cc62a6186544e7c7",
   "texto": "Planetary K index is 2.00, read from NOAA's Space Weather Prediction Center.",
@@ -33,5 +26,103 @@
   "fuente": "/api/actas · GO-2",
   "banner": "REAL",
   "audio": "/voice/5c03b4360fdd0aeb.mp3"
+ },
+ "libro-1": {
+  "id": "1bbf985781316311",
+  "texto": "Day 1. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/1 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/1bbf985781316311.mp3"
+ },
+ "libro-2": {
+  "id": "f0e3e9adc771b3e0",
+  "texto": "Day 2. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/2 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/f0e3e9adc771b3e0.mp3"
+ },
+ "libro-3": {
+  "id": "e9251c40c229feba",
+  "texto": "Day 3. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/3 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/e9251c40c229feba.mp3"
+ },
+ "libro-4": {
+  "id": "7f79219171b938b4",
+  "texto": "Day 4. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/4 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/7f79219171b938b4.mp3"
+ },
+ "libro-5": {
+  "id": "467c482c874c1888",
+  "texto": "Day 5. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/5 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/467c482c874c1888.mp3"
+ },
+ "libro-6": {
+  "id": "0dba593d2150acd7",
+  "texto": "Day 6. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/6 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/0dba593d2150acd7.mp3"
+ },
+ "libro-7": {
+  "id": "e2aed0940e037d85",
+  "texto": "Day 7. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/7 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/e2aed0940e037d85.mp3"
+ },
+ "libro-8": {
+  "id": "033c78a983e3106a",
+  "texto": "Day 8. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/8 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/033c78a983e3106a.mp3"
+ },
+ "libro-9": {
+  "id": "3c1d81122a6d635d",
+  "texto": "Day 9. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/9 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/3c1d81122a6d635d.mp3"
+ },
+ "libro-10": {
+  "id": "90cab89397c24088",
+  "texto": "Day 10. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/10 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/90cab89397c24088.mp3"
+ },
+ "libro-11": {
+  "id": "8ce692a380f959e4",
+  "texto": "Day 11. 1 of 2 books do not close: aire. A book that does not close is a question, not a verdict.",
+  "fuente": "/api/libro/dia/11 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/8ce692a380f959e4.mp3"
+ },
+ "libro-12": {
+  "id": "93f7b198e3062b5a",
+  "texto": "Day 12. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/12 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/93f7b198e3062b5a.mp3"
+ },
+ "libro-13": {
+  "id": "86dabd8f627a3866",
+  "texto": "Day 13. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/13 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/86dabd8f627a3866.mp3"
+ },
+ "libro-14": {
+  "id": "dc54bdc65ce845d5",
+  "texto": "Day 14. All 2 books close within their stated uncertainty.",
+  "fuente": "/api/libro/dia/14 · DC-04",
+  "banner": "SIMULADO",
+  "audio": "/voice/dc54bdc65ce845d5.mp3"
  }
 }

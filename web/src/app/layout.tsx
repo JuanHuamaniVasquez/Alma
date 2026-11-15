@@ -3,6 +3,7 @@ import { Instrument_Serif, Schibsted_Grotesk, IBM_Plex_Mono } from "next/font/go
 import "./globals.css";
 import { TopBar } from "@/components/TopBar";
 import { AlmaProvider } from "@/components/Alma";
+import { ShipProvider } from "@/components/Ship";
 
 const display = Instrument_Serif({ subsets: ["latin"], weight: "400", variable: "--font-display" });
 const sans = Schibsted_Grotesk({ subsets: ["latin"], variable: "--font-sans" });
@@ -18,8 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
       <body>
         <AlmaProvider>
-          <TopBar />
-          <main className="absolute inset-x-0 bottom-0 top-11">{children}</main>
+          <ShipProvider>
+            <TopBar />
+            <main className="absolute inset-x-0 bottom-0 top-11">{children}</main>
+          </ShipProvider>
         </AlmaProvider>
       </body>
     </html>

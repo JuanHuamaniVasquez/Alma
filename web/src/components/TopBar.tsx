@@ -4,14 +4,19 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { get, type LedgerDays } from "@/lib/api";
 import { Stamp } from "./Stamp";
+import { useShip } from "./Ship";
 
 export const ROOMS = [
   { href: "/", n: "01", name: "Medical Module" },
+  { href: "/kill", n: "02", name: "The Leak" },
+  { href: "/vault", n: "03", name: "The Vault" },
+  { href: "/foundry", n: "04", name: "The Foundry" },
 ] as const;
 
 export function TopBar() {
   const path = usePathname(), router = useRouter();
   const [days, setDays] = useState<LedgerDays | null>(null);
+  const { day } = useShip();
   useEffect(() => { get<LedgerDays>("/api/libro/dias/").then(setDays); }, []);
   useEffect(() => {
     const i = ROOMS.findIndex((r) => r.href === path);
@@ -34,7 +39,7 @@ export function TopBar() {
         </nav>
       </div>
       <div className="flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-dim">
-        {days?.ultimo != null ? <span>Day {days.ultimo}</span> : <span className="text-ink-faint">No ledger loaded</span>}
+        {days?.ultimo != null ? <span>Day {day ?? days.ultimo}</span> : <span className="text-ink-faint">No ledger loaded</span>}
         {days && days.ultimo != null && <Stamp banner={days.banner} />}
       </div>
     </header>

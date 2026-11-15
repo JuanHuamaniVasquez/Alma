@@ -77,7 +77,7 @@ def libro_del_dia(d: dict) -> Linea:
     else:
         texto = (f"Day {d['dia_habitat']}. {len(abiertos)} of {len(pres)} books do not close: {', '.join(abiertos)}. "
                  f"A book that does not close is a question, not a verdict.")
-    return Linea("libro", texto, f"/api/libro/dia/{d['dia_habitat']} · DC-04", d["banner"])
+    return Linea(f"libro-{d['dia_habitat']}", texto, f"/api/libro/dia/{d['dia_habitat']} · DC-04", d["banner"])
 
 
 def todas(*, demo: dict | None = None, fund: dict | None = None, storm: dict | None = None, act: dict | None = None,

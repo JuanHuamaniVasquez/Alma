@@ -151,11 +151,12 @@ class Fundicion(SoloLectura):
         raiz = Path(settings.RAIZ)
         tarjetas = mesa.leer(raiz / "data/fundicion/tarjetas.jsonl")
         detectores = mesa.leer_detectores(raiz / "data/fundicion/detectores.jsonl")
+        en = json.loads((raiz / "data/fundicion/en.json").read_text(encoding="utf-8"))  # texto en inglés de la vitrina (derivado)
         return Response({
             "tablero": mesa.tablero(tarjetas, detectores),
-            "tarjetas": [t.model_dump(mode="json") for t in tarjetas],
-            "detectores": detectores,
-            "faro": _jsonl(raiz / "data/faro/predicciones.jsonl"),
+            "tarjetas": [{**t.model_dump(mode="json"), "en": en["tarjetas"].get(str(t.tarjeta_id))} for t in tarjetas],
+            "detectores": [{**d, "en": en["detectores"].get(d["detector"])} for d in detectores],
+            "faro": [{**f, "en": en["faro"].get(f["id"])} for f in _jsonl(raiz / "data/faro/predicciones.jsonl")],
         })
 
 

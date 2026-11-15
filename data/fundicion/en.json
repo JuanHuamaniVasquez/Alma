@@ -1,0 +1,53 @@
+{
+ "_nota": "Traducción al inglés de la vitrina (hecha por Claude, derivada); el original en español de data/fundicion/tarjetas.jsonl es el que manda.",
+ "tarjetas": {
+  "f5ac1905-8293-53bb-b361-a62b1be2c4f8": {
+   "title": "Solar storms and sleep / HRV",
+   "prediction": "With at least 30 days per person, the mean Spearman correlation between Kp exposure and outcome falls outside the circular-shift null (p ≤ 0.0125).",
+   "refuter": "The statistic lands inside the circular null (act FB-014).",
+   "mechanism": "Geomagnetic–autonomic coupling (heliobiology; contested evidence).",
+   "result": "Refuted on real data: LifeSnaps wearables × GFZ Kp (FB-014)."
+  },
+  "f9af5667-837f-5a3f-a524-37a52bc8b748": {
+   "title": "Short sleep, tired next day",
+   "prediction": "Days with sleep below the person's own median raise the probability of reporting tiredness by at least 3 percentage points versus that person's other days.",
+   "refuter": "Within-person difference below 0.03, or p above 0.025 (act FB-016, card A).",
+   "mechanism": "Sleep restriction leads to subjective fatigue.",
+   "result": "Sustained: +7.9 points, 27 people, p = 0.001, with a positive control (FB-016 A)."
+  },
+  "ca55ac22-b987-5421-8e9c-e7178e6aeed2": {
+   "title": "Tension and lower HRV",
+   "prediction": "Tense days show overnight rmssd at least 0.05 SD lower than the same person's non-tense days.",
+   "refuter": "Difference no lower than −0.05 SD, or p above 0.025 (act FB-016, card B).",
+   "mechanism": "Sympathetic activation goes with lower vagal variability.",
+   "result": "Refuted on real LifeSnaps data (FB-016 B)."
+  },
+  "b4e8e1c3-6f3e-52da-b602-3709cf9b8894": {
+   "title": "Bone loss clogs the urine processor",
+   "prediction": "Across at least 8 missions, time to clogging falls as aggregate urinary calcium rises: rho ≤ −0.5.",
+   "refuter": "rho above −0.2 with n ≥ 8, or no dose–response (act FB-017).",
+   "mechanism": "Bone-loss hypercalciuria precipitates calcium sulfate in the urine processor's distillation assembly (Jones 2019).",
+   "result": "No data: public mission-level calcium doses do not exist yet. Not simulated."
+  },
+  "e68d0bd9-c97b-5e17-82ef-516560d68d04": {
+   "title": "Whitening the pulse detector",
+   "prediction": "A whitened detector (frozen φ = 0.182) lowers pulse false alarms below the critical value in an independent cohort.",
+   "refuter": "x_pw at or above x_critical, or x_pw above x_base (act FB-013, H2).",
+   "mechanism": "Positive autocorrelation of daily pulse inflates CUSUM false alarms; AR(1) whitening would correct it.",
+   "result": "In test: the independent cohort could not settle it (FB-013). Recommendation: do not enable by default."
+  }
+ },
+ "detectores": {
+  "umbral_personal": {
+   "title": "Short-sleep context alarm",
+   "rule": "A night with less sleep than the person's own baseline median.",
+   "limit": "It flags about half of all nights: a context alarm, never a critical one."
+  }
+ },
+ "faro": {
+  "F-001": {
+   "statement": "NASA's open data repository (OSDR) will publish at least one data file for experiment OS-892 before 2027-12-31.",
+   "grading": "True if the official API lists at least one file by that date; false if it still lists none on 2028-01-01."
+  }
+ }
+}
