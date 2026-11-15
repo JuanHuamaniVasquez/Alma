@@ -277,3 +277,21 @@ def test_m6_privacidad_no_publica_el_conteo_exacto():
     p = get("/api/privacidad/").json()
     assert p["epsilon_total"] == 2.0 and p["epsilon_restante"] >= 0 and p["cierra"] and "verdadero" not in json.dumps(p)   # el conteo exacto nunca sale
     assert all("valor_publicado" in a and a["mecanismo"] == "Laplace" for a in p["asientos"])
+
+
+@pytest.mark.django_db
+def test_m6_esperado_y_enlace_llevan_cita_y_no_calculan_nada_nuevo():
+    """M6.10/M6.11 · cifras COPIADAS de la fuente (con DOI/URL) y retardo publicado por NASA; el paquete de bajada son solo conteos."""
+    e = get("/api/esperado/").json()
+    assert len(e["items"]) == 3 and all(i["fuente"] and i["url"] for i in e["items"])
+    assert any("6.09" in i["en_vuelo"] for i in e["items"]) and any(i["doi"] == "10.1152/japplphysiol.01196.2011" for i in e["items"])
+    l = get("/api/enlace/").json()
+    assert l["retardo_min"] == [0, 22] and "0 to 22 minutes" in l["retardo_cita"] and "aggregates only" in l["paquete"]["contenido"]
+
+
+@pytest.mark.skipif(not (RAIZ / "data" / "externos" / "mitdb" / "100.dat").exists(), reason="falta el ECG real descargado (S-20)")
+def test_m6_ecg_real_con_calidad_medida_y_aviso_de_no_astronauta():
+    d = get("/api/ecg/").json()
+    assert d["banner"] == "REAL" and "not an astronaut" in d["aviso"] and d["calidad"]["sensibilidad"] >= 0.98 and d["calidad"]["ppv"] >= 0.98
+    w = get("/api/ecg/?t=300&dur=10").json()
+    assert w["fs_envio"] == 180 and len(w["y"]) == 1800

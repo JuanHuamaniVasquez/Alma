@@ -364,3 +364,70 @@ class EProceso(SoloLectura):
                          "ejecutada": r is not None, "hash_acta": (r or {}).get("hash_acta"),
                          "entrenamiento": (r or {}).get("entrenamiento", {}).get("tabla"), "veredictos": (r or {}).get("veredictos"),
                          "banner_resultados": "REAL (LifeSnaps, no astronautas) + escalón SIMULADO"})
+
+
+_ECG_CACHE: dict = {}
+
+
+def _ecg():
+    """Parsea y procesa UNA vez el registro REAL (lector y detector puros de `src/`); el resultado vive en memoria del proceso."""
+    if _ECG_CACHE:
+        return _ECG_CACHE
+    import statistics
+
+    from src.ingesta import ecg_mitbih as E
+    from src.motor.ecg_vitales import FS, comparar, detectar_r, pulso_lpm, rmssd_ms
+    reg = E.cargar(Path(settings.BASE_DIR).parent / "data" / "externos" / "mitdb")
+    x = list(reg.mlii)
+    picos = detectar_r(x)
+    lpm = pulso_lpm(picos)
+    tend = []
+    for t0 in range(0, len(x) // FS - 9, 10):
+        v = [p for s, p in lpm if t0 <= s < t0 + 10]
+        pk = [p for p in picos if (t0 - 20) * FS <= p < (t0 + 10) * FS]
+        if v:
+            tend.append({"t": t0, "lpm": round(statistics.median(v), 1), "rmssd": round(rmssd_ms(pk) or 0.0, 1)})
+    base = [d["lpm"] for d in tend if d["t"] < 300]                                  # línea base personal = los primeros 5 minutos
+    mu, sd = statistics.fmean(base), max(statistics.pstdev(base), 2.0)             # σ mínima de 2 lpm: resolución de una mediana de 10 s
+    for d in tend:
+        z = (d["lpm"] - mu) / sd
+        d["z"] = round(z, 2); d["bandera"] = "sorpresa" if abs(z) > 2 and d["t"] >= 300 else "normal"
+    _ECG_CACHE.update(x=x, picos=picos, tend=tend, base={"media": round(mu, 1), "sd": round(sd, 2), "ventana_s": 300}, calidad=comparar(picos, list(reg.latidos_ref)), fs=FS)
+    return _ECG_CACHE
+
+
+class Ecg(SoloLectura):
+    """M6.9 · Monitor de constantes con ECG REAL (MIT-BIH registro 100, PhysioNet; paciente ambulatorio anonimizado, NO un astronauta). Con `?t=&dur=` devuelve una ventana de señal."""
+
+    def get(self, request):
+        c = _ecg()
+        fs = c["fs"]
+        if "t" in request.query_params:
+            t = max(0.0, float(request.query_params["t"])); dur = min(30.0, max(1.0, float(request.query_params.get("dur", 20))))
+            a, b = int(t * fs), min(len(c["x"]), int((t + dur) * fs))
+            return Response({"t0": t, "fs_envio": fs // 2, "y": [round(v, 3) for v in c["x"][a:b:2]]})
+        from src.ingesta import ecg_mitbih as E
+        return Response({"banner": E.BANNER, "fuente": E.FUENTE, "doi": "10.13026/C2F305", "licencia": "Open Data Commons Attribution v1.0",
+                         "aviso": "Real ECG of an anonymised hospital outpatient from a public database — not an astronaut. The detector is ours; its accuracy was measured against human beat annotations.",
+                         "fs_envio": fs // 2, "duracion_s": len(c["x"]) // fs, "latidos_s": [round(p / fs, 3) for p in c["picos"]], "base": c["base"], "tendencia": c["tend"],
+                         "calidad": {k: c["calidad"][k] for k in ("referencia", "detectados", "sensibilidad", "ppv")},
+                         "regla": "Surprise flag (not an alarm) when the 10-second pulse is more than 2σ (σ floor 2 bpm) from the first 5 minutes of this same recording."})
+
+
+class EsperadoEnVuelo(SoloLectura):
+    """M6.10 · Lo que la literatura publicada dice que cambia en vuelo, con cifra y cita. Lee `data/referencias/esperado_en_vuelo.json` (copiado de las fuentes, no calculado)."""
+
+    def get(self, request):
+        import json
+        return Response(json.loads((Path(settings.BASE_DIR).parent / "data" / "referencias" / "esperado_en_vuelo.json").read_text(encoding="utf-8")))
+
+
+class EnlaceTierra(SoloLectura):
+    """M6.11 · Modo sin contacto con la Tierra: retardo publicado por NASA + el paquete de bajada que el Guardián dejaría en cola (SOLO agregados: cuántas alarmas con recibo y cuántos verdes)."""
+
+    def get(self, request):
+        import json
+        ref = json.loads((Path(settings.BASE_DIR).parent / "data" / "referencias" / "enlace_tierra.json").read_text(encoding="utf-8"))
+        return Response({**ref, "banner": Banner.REAL.value,
+                         "paquete": {"alarmas_activas_con_recibo": Alarma.objects.filter(estado="activa").count(), "recibos_de_verde": ReciboVerde.objects.count(),
+                                     "contenido": "aggregates only: counts and states, never an individual's values"}})

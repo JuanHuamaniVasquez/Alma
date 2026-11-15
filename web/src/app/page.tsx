@@ -1,5 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
+import { VitalsMonitor } from "@/components/VitalsMonitor";
 import { useEffect, useState } from "react";
 import { AlmaDock, useAlma } from "@/components/Alma";
 import { DayTicks } from "@/components/DayTicks";
@@ -25,6 +26,7 @@ export default function MedicalModule() {
   const [outfit, setOutfit] = useState<"iva" | "eva">("iva");
   const [holo, setHolo] = useState(false);
   const [helmet, setHelmet] = useState(true);
+  const [monitor, setMonitor] = useState(false);
   const [layer, setLayer] = useState<"uniform" | "body" | "anatomy">("uniform");
   const { say, has } = useAlma();
 
@@ -38,6 +40,7 @@ export default function MedicalModule() {
       if (q.get("holo") === "1") setHolo(true);
       if (q.get("layer") === "body" || q.get("layer") === "anatomy") setLayer(q.get("layer") as "body" | "anatomy");
       if (q.get("helmet") === "0") setHelmet(false);
+      if (q.get("monitor") === "1") setMonitor(true);
       if (q.get("mode") === "body") { setMode("body"); if (q.get("ind")) setTimeout(() => setPickedInd(q.get("ind")), 400); }
       const all = await Promise.all(d.dias.map((n) => get<LedgerDay>(`/api/libro/dia/${n}/`)));
       setOpen(new Set(all.filter((x): x is LedgerDay => !!x && !x.cierra).map((x) => x.dia_habitat)));
@@ -65,6 +68,7 @@ export default function MedicalModule() {
     <div className="absolute inset-0" style={{ background: "radial-gradient(60% 70% at 50% 42%, #2a2018 0%, #14110e 55%, #0d0c0b 100%)" }}>
       <SuitScene ledger={ledger} picked={picked} onPick={pickRing} mode={mode} indicators={indsCrew} pickedInd={pickedInd} onPickInd={pickInd} onTapSuit={() => { const k = outfit === "eva" ? "suit" : who ? `crew-${who.indicativo}` : "suit"; if (has(k)) say(k, true); }}
         outfit={outfit} look={who ?? FALLBACK} holo={holo} layer={layer} helmet={helmet} />
+      {monitor && <VitalsMonitor onClose={() => setMonitor(false)} />}
       {who && <p className="pointer-events-none absolute inset-x-0 top-12 z-10 text-center font-display text-[1.6rem] leading-none" style={{ color: who.color }}>{who.indicativo} <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-ink-faint">· {who.rol} · {outfit === "eva" ? "outside" : "inside"}</span></p>}
       <div role="tablist" aria-label="View" className="absolute left-1/2 top-4 z-20 flex -translate-x-1/2 gap-6 font-mono text-[11px] uppercase tracking-[0.22em]">
         {([["books", "Books"], ["body", "Body"]] as const).map(([m, t]) => (
@@ -102,6 +106,7 @@ export default function MedicalModule() {
             ))}
           </div>
         )}
+        <button onClick={() => setMonitor(!monitor)} aria-pressed={monitor} className={`mt-3 block border-b pb-0.5 font-mono text-[10px] uppercase tracking-[0.2em] transition-colors ${monitor ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>Vitals monitor · real ECG</button>
         <div className="mt-3 flex gap-4 font-mono text-[10px] uppercase tracking-[0.2em]" role="tablist" aria-label="Display">
           {([[true, "Hologram"], [false, "Solid"]] as const).map(([m, t]) => (
             <button key={t} role="tab" aria-selected={holo === m} onClick={() => setHolo(m)} className={`border-b pb-0.5 transition-colors ${holo === m ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>

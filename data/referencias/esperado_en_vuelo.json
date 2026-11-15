@@ -1,0 +1,38 @@
+{
+ "nota": "Promedios de grupo PUBLICADOS de astronautas; no son una predicción para ninguna persona. Cada cifra se copió de la fuente el 2026-11-15 (PubMed/NASA); ver docs/politica-de-datos.md.",
+ "items": [
+  {
+   "indicador": "sueño",
+   "titulo": "Sleep",
+   "n": "21 astronauts, 13 ISS missions, 3,248 in-flight days (wrist actigraphy)",
+   "en_vuelo": "6.09 h per night (SD 0.67) obtained on the ISS",
+   "referencia": "6.41 h (SD 0.65) about 3 months before launch · 6.95 h (SD 1.04) in the first week after return",
+   "lectura": "The same astronauts obtained 6.41 h about three months before launch: part of the shortfall predates flight.",
+   "fuente": "Barger et al. 2014, Lancet Neurol 13(9):904–912",
+   "doi": "10.1016/S1474-4422(14)70122-X",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/25127232/"
+  },
+  {
+   "indicador": "fc",
+   "titulo": "Heart rate and blood pressure",
+   "n": "6 male astronauts, 2–6 months on the ISS (finger arterial pressure)",
+   "en_vuelo": "no change in heart rate or blood pressure compared with pre-flight; high-frequency power of the beat-to-beat interval and stroke volume were reduced in flight",
+   "referencia": "after return, seated: 60.0 ± 9.4 vs 54.9 ± 9.6 beats/min before flight",
+   "lectura": "Small sample (6 men) and a single study: a published expectation, not a rule.",
+   "fuente": "Hughson et al. 2012, J Appl Physiol 112(5):719–727",
+   "doi": "10.1152/japplphysiol.01196.2011",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/22134699/"
+  },
+  {
+   "indicador": null,
+   "titulo": "Bone density",
+   "n": "NASA Human Research Program, risk page",
+   "en_vuelo": "on average, bones lose between 1% and 1.5% of their density each month during four-to-six-month missions",
+   "referencia": "not one of the six official indicators; shown because it is the best-documented body change of flight",
+   "lectura": "",
+   "fuente": "NASA HRP — Risk of Spaceflight-Induced Bone Changes",
+   "doi": null,
+   "url": "https://www.nasa.gov/reference/risk-of-spaceflight-induced-bone-changes/"
+  }
+ ]
+}

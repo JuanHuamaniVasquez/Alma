@@ -1,0 +1,4 @@
+{"fuente": "McBrayer, Chai & Judd (NASA Langley), Communication Delays, Disruptions, and Blackouts for Crewed Mars Missions, ASCEND, NTRS 20220013418",
+ "url": "https://ntrs.nasa.gov/citations/20220013418",
+ "retardo_min": [0, 22], "retardo_cita": "communication delays will vary from 0 to 22 minutes over the course of a mission, peaking while the crew is at or just departed from Mars",
+ "interrupciones_cita": "disruptions ... can last for several days up to several months, depending on the solar disturbance sensitivity of the communication band being used"}

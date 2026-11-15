@@ -157,6 +157,18 @@ await page.goto(`${BASE}/capsule`, { waitUntil: "domcontentloaded" });
 await page.waitForFunction(() => document.querySelectorAll("article").length === 3, { timeout: 30000 });
 check("las 3 cápsulas llevan límites", (await page.$$eval("article", (a) => a.every((x) => x.innerText.toLowerCase().includes("limits")))));
 
+// M6.9–M6.11 · monitor de constantes con ECG REAL, «esperado en vuelo» con cita y modo sin contacto
+await page.goto(`${BASE}/?awake=1&monitor=1`, { waitUntil: "domcontentloaded" });
+await esperar('[data-testid="vitals-monitor"]', 60000);
+await esperarTexto("not an astronaut", 20000);
+check("el monitor muestra un ECG REAL y dice que no es un astronauta", (await page.evaluate(() => document.body.innerText.toLowerCase())).includes("real data"));
+await clicTexto("button", "Expected in flight");
+await esperarTexto("6.09 h per night", 15000);
+check("«Expected in flight» cita a Barger 2014 con su DOI", (await page.evaluate(() => document.body.innerText)).includes("10.1016/S1474-4422(14)70122-X"));
+await clicTexto("button", "Earth link"); await clicTexto("button", "connected");
+await esperarTexto("Ground cannot answer", 10000);
+check("sin contacto: el Guardián sigue decidiendo a bordo y cita el retardo de NASA", (await page.evaluate(() => document.body.innerText)).includes("0 to 22 minutes"));
+
 check("sin errores de consola ni excepciones", errores.length === 0, errores.slice(0, 3).join(" | "));
 await browser.close();
 console.log(`\n${ok.length} comprobaciones OK`); ok.forEach((n) => console.log("  ✓", n));
