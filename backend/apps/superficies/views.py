@@ -9,12 +9,16 @@ Reglas duras:
 """
 from __future__ import annotations
 
+import json
 from collections import Counter, defaultdict
+from pathlib import Path
 
+from django.conf import settings
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.ingesta.models import EventoClimaEspacial
 from apps.libro.models import LineaLibro
 from apps.libro.repositorio import a_dominio
 from apps.motor.models import Alarma, CierreConservacion, ReciboVerde, ResiduoStream
@@ -125,3 +129,70 @@ class Verdes(SoloLectura):
             "recibos": len(cuerpo), "por_estado": dict(por_estado),
             "cobertura_media": (sum(r.dias_validos / r.ventana_dias for r in cuerpo) / len(cuerpo)) if cuerpo else None,
             "mde_sigma_mediana": mdes[len(mdes) // 2] if mdes else None}})
+
+
+def _jsonl(ruta: Path) -> list[dict]:
+    return [json.loads(l) for l in ruta.read_text(encoding="utf-8").splitlines() if l.strip()] if ruta.exists() else []
+
+
+class Fundicion(SoloLectura):
+    """LA FUNDICIÓN como métrica (DC-12): tarjetas con su señal refutadora, tablero, detectores circulados y Faro. Todo real o etiquetado en origen."""
+
+    def get(self, request):
+        from src.fabrica import mesa
+        raiz = Path(settings.RAIZ)
+        tarjetas = mesa.leer(raiz / "data/fundicion/tarjetas.jsonl")
+        detectores = mesa.leer_detectores(raiz / "data/fundicion/detectores.jsonl")
+        return Response({
+            "tablero": mesa.tablero(tarjetas, detectores),
+            "tarjetas": [t.model_dump(mode="json") for t in tarjetas],
+            "detectores": detectores,
+            "faro": _jsonl(raiz / "data/faro/predicciones.jsonl"),
+        })
+
+
+class Actas(SoloLectura):
+    """Preregistros con hash (GO-2) y su veredicto: el resultado nulo o refutado se publica igual que el sostenido."""
+
+    def get(self, request):
+        raiz = Path(settings.RAIZ) / "docs/actas"
+        resultados = {r.get("acta"): r for r in _jsonl(raiz / "RESULTADOS.jsonl")}
+        actas = [{
+            "acta": a["acta"], "hash_sha256": a["hash_sha256"], "registrada_utc": a["registrada_utc"], "semillas": a["semillas"],
+            "estado": a["estado"], "ejecutada": a["acta"] in resultados,
+            "veredictos": (resultados.get(a["acta"]) or {}).get("veredictos"),
+            "banner": (resultados.get(a["acta"]) or {}).get("banner"),
+        } for a in _jsonl(raiz / "INDEX.jsonl")]
+        return Response({"actas": actas})
+
+
+class DemoKill(SoloLectura):
+    """Demo kill (M3.4): dos columnas — detector contra manifiesto (ciego) vs detector contra ley (alarma) — con el hash publicado ANTES de correr."""
+
+    def get(self, request):
+        raiz = Path(settings.RAIZ) / "docs/actas"
+        filas = [r for r in _jsonl(raiz / "RESULTADOS.jsonl") if r.get("acta") == "FB-005-D1"]
+        if not filas:
+            raise Http404("FB-005-D1 aún no se ha ejecutado")
+        r = filas[-1]
+        return Response({
+            "acta": r["acta"], "hash_acta": r["hash_acta"], "acta_registrada_utc": r["acta_registrada_utc"],
+            "ts_ejecucion_utc": r["ts_ejecucion_utc"], "semilla": r["semilla"], "banner": r["banner"],
+            "control": r["control"], "fuga": r["fuga"], "prediccion_confirmada": r["prediccion_confirmada"],
+            "reglas_de_muerte_cumplidas": r["reglas_de_muerte_cumplidas"],
+        })
+
+
+class Tormenta(SoloLectura):
+    """LA TORMENTA: eventos DC-03 (clima espacial). Banner heredado: un evento del simulador vuelve SIMULADO a toda la respuesta."""
+
+    def get(self, request):
+        qs = EventoClimaEspacial.objects.order_by("-ts_utc_inicio")
+        if tipo := request.query_params.get("tipo"):
+            qs = qs.filter(tipo=tipo)
+        filas = list(qs[:LIMITE_MAX])
+        return Response({"banner": banner_de(filas), "eventos": [{
+            "evento_id": e.evento_id, "ts_utc_inicio": e.ts_utc_inicio.isoformat().replace("+00:00", "Z"),
+            "ts_utc_fin": e.ts_utc_fin.isoformat().replace("+00:00", "Z"), "tipo": e.tipo, "fuente": e.fuente,
+            "parametros": e.parametros, "hash_lectura_cruda": e.hash_lectura_cruda, "banner": e.banner,
+        } for e in filas]})
