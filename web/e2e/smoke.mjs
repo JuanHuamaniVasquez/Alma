@@ -119,6 +119,14 @@ check("el escenario G3 se rotula UNIVERSO SIMULADO", (await texto()).includes("7
 await clicTexto("button", "back to live");
 await page.waitForFunction(() => !document.body.innerText.toLowerCase().includes("simulated universe — day"), { timeout: 8000 });
 check("volver a «live» quita el banner simulado", true);
+// 5a · radiación: el panel responde «¿solo el Sol?» con tres fuentes EN VIVO (protones, electrones GOES, neutrones NMDB/Oulu) y el sol se mueve
+const src1 = await page.$eval("figure img", (e) => e.getAttribute("src"));
+await new Promise((r) => setTimeout(r, 1200));
+check("el Sol de La Tormenta es una animación real (el cuadro cambia)", src1 !== (await page.$eval("figure img", (e) => e.getAttribute("src"))));
+await clicTexto("button", "Is the Sun the only radiation?");
+await page.waitForFunction(() => /counts\/s at Oulu/.test(document.body.innerText) && /pfu now · SWPC alert level/.test(document.body.innerText) && /S1 storm begins/.test(document.body.innerText), { timeout: 30000 })
+  .then(() => check("el panel de radiación muestra protones, electrones y rayos cósmicos en vivo", true), () => check("el panel de radiación muestra protones, electrones y rayos cósmicos en vivo", false));
+await clicTexto("button", "close");
 
 // 5b · La Bóveda: «verifícalo tú mismo» recalcula en el navegador el SHA-256 de cada acta
 await page.goto(`${BASE}/vault`, { waitUntil: "domcontentloaded" });

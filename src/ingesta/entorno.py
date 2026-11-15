@@ -5,6 +5,10 @@ Fuentes (verificadas 2026-11-15; sin clave):
   · Protones GOES ≥10 MeV: https://services.swpc.noaa.gov/json/goes/primary/integral-protons-1-day.json — la escala de tormentas de radiación S de NOAA
     arranca en **10 pfu** (≥10 MeV) (NOAA SWPC, spaceweather.gov/node/415); por encima se declara «S1 o más» sin afirmar el nivel exacto.
   · Rayos X 0,1–0,8 nm (GOES): https://services.swpc.noaa.gov/json/goes/primary/xrays-1-day.json — clase de fulguración por flujo (A<1e-7, B<1e-6, C<1e-5, M<1e-4, X≥1e-4 W/m²).
+  · Electrones GOES ≥2 MeV (cinturones atrapados): https://services.swpc.noaa.gov/json/goes/primary/integral-electrons-1-day.json — NOAA SWPC emite la alerta ALTEF3 cuando el flujo
+    ≥2 MeV en órbita geoestacionaria supera **1 000 pfu** (documentación de alertas de SWPC, leída 2026-11-15). v0.2.10.
+  · Monitor de neutrones de Oulu (Finlandia) vía NMDB: https://www.nmdb.eu/nest/draw_graph.php (salida ascii, 1 h, corregido por eficiencia). Es el **proxy en tierra** de los rayos cósmicos
+    galácticos que superan el corte geomagnético; NO es una dosis. Licencia: gratis no comercial con reconocimiento a NMDB y a Oulu (texto en `ACK_NMDB`). v0.2.10.
 Todo es REAL y de ahora mismo; si una fuente no responde, el campo viene `disponible: false` (la ausencia es dato, no se rellena).
 """
 from __future__ import annotations
@@ -17,7 +21,12 @@ from datetime import UTC, datetime
 URL_ISS = "https://api.wheretheiss.at/v1/satellites/25544"
 URL_PROT = "https://services.swpc.noaa.gov/json/goes/primary/integral-protons-1-day.json"
 URL_XR = "https://services.swpc.noaa.gov/json/goes/primary/xrays-1-day.json"
+URL_EL = "https://services.swpc.noaa.gov/json/goes/primary/integral-electrons-1-day.json"
+URL_NM = "https://www.nmdb.eu/nest/draw_graph.php"          # clave estable de la fuente (la consulta lleva fechas y cambia)
 UMBRAL_S1_PFU = 10.0
+UMBRAL_ELECTRONES_PFU = 1000.0
+ESTACION_NM = "OULU"
+ACK_NMDB = "We acknowledge the NMDB database (www.nmdb.eu), founded under the European Union's FP7 programme (contract no. 213007), and the PIs of individual neutron monitors: Oulu (Sodankyla Geophysical Observatory of the University of Oulu, Finland)."
 
 
 _ULT_ARCHIVO: dict[str, float] = {}
@@ -26,7 +35,7 @@ ULTIMOS_HASHES: dict[str, str] = {}
 ARCHIVADOS_NUEVOS: set[str] = set()      # fuentes cuya lectura se archivó desde la última vez que se registraron como evento (DC-03) e intento (DC-13)
 
 
-def _get(url: str, t: float = 8.0):
+def _leer(url: str, clave: str, nombre: str, t: float = 8.0) -> bytes:
     """Lee la fuente; el cuerpo CRUDO se hashea siempre y se archiva (MP-3, `src/ingesta/archivo.py`) con tope temporal: mandamiento 1 — ninguna lectura sin hash ni archivo."""
     import time
     from pathlib import Path
@@ -35,13 +44,30 @@ def _get(url: str, t: float = 8.0):
     req = urllib.request.Request(url, headers={"User-Agent": "ALMA-TONO-LAB/0.1 (student project; contact: repo issues)"})
     with urllib.request.urlopen(req, timeout=t) as r:                      # noqa: S310 (URL fija, https)
         cuerpo = r.read()
-    ULTIMOS_HASHES[url] = archivo.sha256_hex(cuerpo)
-    if time.time() - _ULT_ARCHIVO.get(url, 0.0) >= ARCHIVO_CADA_S:
-        nombre = url.rsplit("/", 1)[-1].replace(".json", "") or "iss"
-        archivo.archivar(cuerpo, fuente="entorno", nombre=nombre, url=url, ts=archivo.ahora_utc(), raiz=Path(__file__).resolve().parents[2] / "data" / "entorno_vivo")      # carpeta propia (ignorada por git): el manifiesto de SWPC no se ensucia
-        _ULT_ARCHIVO[url] = time.time()
-        ARCHIVADOS_NUEVOS.add(url)
-    return json.loads(cuerpo)
+    ULTIMOS_HASHES[clave] = archivo.sha256_hex(cuerpo)
+    if time.time() - _ULT_ARCHIVO.get(clave, 0.0) >= ARCHIVO_CADA_S:
+        archivo.archivar(cuerpo, fuente="entorno", nombre=nombre, url=url, ts=archivo.ahora_utc(), raiz=Path(__file__).resolve().parents[2] / "data" / "entorno_vivo")      # carpeta propia (ignorada por git)
+        _ULT_ARCHIVO[clave] = time.time()
+        ARCHIVADOS_NUEVOS.add(clave)
+    return cuerpo
+
+
+def _get(url: str, t: float = 8.0):
+    return json.loads(_leer(url, url, url.rsplit("/", 1)[-1].replace(".json", "") or "iss", t))
+
+
+def _url_nm(ahora: datetime | None = None, dias: int = 3) -> str:
+    """Consulta ascii de 1 h de la estación de Oulu para los últimos `dias` días (parámetros de la interfaz NEST de NMDB)."""
+    from datetime import timedelta
+    fin = ahora or datetime.now(UTC)
+    ini = fin - timedelta(days=dias)
+    return (f"{URL_NM}?formchk=1&stations%5B%5D={ESTACION_NM}&tabchoice=1h&dtype=corr_for_efficiency&tresolution=60&force=1&yunits=0&date_choice=bydate"
+            f"&start_day={ini.day}&start_month={ini.month}&start_year={ini.year}&start_hour={ini.hour}&start_min=0"
+            f"&end_day={fin.day}&end_month={fin.month}&end_year={fin.year}&end_hour={fin.hour}&end_min=59&output=ascii")
+
+
+def _get_nm() -> str:
+    return _leer(_url_nm(), URL_NM, "neutrones_oulu", 15.0).decode("utf-8", "replace")
 
 
 def clase_xrays(flujo: float) -> str:
@@ -73,6 +99,39 @@ def rayosx(serie: list | None = None) -> dict:
     return {"disponible": True, "flujo_wm2": u["flux"], "clase": clase_xrays(u["flux"]), "ts_utc": u["time_tag"], "max_ventana": clase_xrays(max(x["flux"] for x in s)), "fuente": URL_XR, "hash_lectura_cruda": ULTIMOS_HASHES.get(URL_XR)}
 
 
+def electrones(serie: list | None = None) -> dict:
+    s = serie if serie is not None else [x for x in _get(URL_EL) if x.get("energy") == ">=2 MeV"]
+    u = s[-1]
+    return {"disponible": True, "pfu": u["flux"], "ts_utc": u["time_tag"], "max_ventana_pfu": max(x["flux"] for x in s), "n_lecturas": len(s), "alerta_swpc": u["flux"] >= UMBRAL_ELECTRONES_PFU,
+            "umbral_swpc_pfu": UMBRAL_ELECTRONES_PFU, "satelite": u.get("satellite"), "fuente": URL_EL, "hash_lectura_cruda": ULTIMOS_HASHES.get(URL_EL), "serie": [round(x["flux"], 1) for x in s]}
+
+
+def parsear_nmdb(texto: str) -> list[tuple[str, float]]:
+    """Filas `YYYY-MM-DD HH:MM:SS;valor` dentro del bloque de la respuesta ascii de NMDB; ignora comentarios (`#`) y valores ausentes."""
+    import re
+    m = re.search(r"<pre><code>(.*?)</code></pre>", texto, re.S)
+    out = []
+    for linea in (m.group(1) if m else texto).splitlines():
+        p = linea.strip().split(";")
+        if len(p) == 2 and re.fullmatch(r"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d", p[0]):
+            try:
+                out.append((p[0].replace(" ", "T") + "Z", float(p[1])))
+            except ValueError:
+                continue
+    return out
+
+
+def neutrones(texto: str | None = None) -> dict:
+    filas = parsear_nmdb(texto if texto is not None else _get_nm())
+    if not filas:
+        raise ValueError("NMDB sin filas")
+    v = [x for _, x in filas]
+    ult = v[-1]
+    base = sorted(v)[len(v) // 2]                                         # mediana de la ventana (≈ 72 h)
+    return {"disponible": True, "estacion": "Oulu (Finland)", "cps": ult, "ts_utc": filas[-1][0], "mediana_ventana": round(base, 3), "variacion_pct": round(100 * (ult / base - 1), 2),
+            "min_ventana": min(v), "max_ventana": max(v), "n_lecturas": len(v), "fuente": URL_NM, "hash_lectura_cruda": ULTIMOS_HASHES.get(URL_NM), "serie": [round(x, 2) for x in v], "reconocimiento": ACK_NMDB}
+
+
 def seguro(f: Callable[[], dict], fuente: str) -> dict:
     try:
         return f()
@@ -86,10 +145,13 @@ def a_eventos(env: dict) -> list:
     from src.contratos.dc03_eventos import DC03Evento, FuenteEvento, TipoEvento
     out = []
     iss_, p, x = env["iss"], env["protones"], env["rayosx"]
+    el, nm = env.get("electrones", {"disponible": False}), env.get("neutrones", {"disponible": False})
     plan = [(iss_, URL_ISS, TipoEvento.POSICION_ESTACION, FuenteEvento.WHERETHEISS,
              lambda r: {"latitud_deg": r["lat"], "longitud_deg": r["lon"], "altitud_km": r["alt_km"], "velocidad_kms": r["vel_kms"], "luz_solar": 1.0 if r["a_la_luz"] else 0.0}),
             (p, URL_PROT, TipoEvento.LECTURA_PROTONES, FuenteEvento.SWPC, lambda r: {"flujo_protones_pfu": r["pfu"]}),
-            (x, URL_XR, TipoEvento.LECTURA_RAYOSX, FuenteEvento.SWPC, lambda r: {"flujo_rayosx_wm2": r["flujo_wm2"]})]
+            (x, URL_XR, TipoEvento.LECTURA_RAYOSX, FuenteEvento.SWPC, lambda r: {"flujo_rayosx_wm2": r["flujo_wm2"]}),
+            (el, URL_EL, TipoEvento.LECTURA_ELECTRONES, FuenteEvento.SWPC, lambda r: {"flujo_electrones_pfu": r["pfu"]}),
+            (nm, URL_NM, TipoEvento.LECTURA_NEUTRONES, FuenteEvento.NMDB, lambda r: {"tasa_neutrones_cps": r["cps"]})]
     for r, url, tipo, fuente, params in plan:
         if not r.get("disponible") or url not in ARCHIVADOS_NUEVOS or not r.get("hash_lectura_cruda"):
             continue
@@ -106,7 +168,10 @@ def a_intentos(env: dict) -> list:
     from src.contratos.dc13_intento_ingesta import DC13Intento, ResultadoIntento
     ahora = datetime.now(UTC)
     out = []
-    for clave, url, fuente in (("iss", URL_ISS, FuenteEvento.WHERETHEISS), ("protones", URL_PROT, FuenteEvento.SWPC), ("rayosx", URL_XR, FuenteEvento.SWPC)):
+    for clave, url, fuente in (("iss", URL_ISS, FuenteEvento.WHERETHEISS), ("protones", URL_PROT, FuenteEvento.SWPC), ("rayosx", URL_XR, FuenteEvento.SWPC),
+                                 ("electrones", URL_EL, FuenteEvento.SWPC), ("neutrones", URL_NM, FuenteEvento.NMDB)):
+        if clave not in env:
+            continue
         r = env[clave]
         if r.get("disponible"):
             if url in ARCHIVADOS_NUEVOS and r.get("hash_lectura_cruda"):

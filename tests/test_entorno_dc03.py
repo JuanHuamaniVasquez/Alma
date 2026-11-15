@@ -16,15 +16,16 @@ H = "a" * 64
 
 
 def _env():
-    E.ULTIMOS_HASHES.update({E.URL_ISS: "1" * 64, E.URL_PROT: "2" * 64, E.URL_XR: "3" * 64})
-    E.ARCHIVADOS_NUEVOS.update({E.URL_ISS, E.URL_PROT, E.URL_XR})
-    return {"iss": E.iss(json.loads((F / "iss.json").read_text())), "protones": E.protones(json.loads((F / "protones.json").read_text())), "rayosx": E.rayosx(json.loads((F / "rayosx.json").read_text()))}
+    E.ULTIMOS_HASHES.update({E.URL_ISS: "1" * 64, E.URL_PROT: "2" * 64, E.URL_XR: "3" * 64, E.URL_EL: "4" * 64, E.URL_NM: "5" * 64})
+    E.ARCHIVADOS_NUEVOS.update({E.URL_ISS, E.URL_PROT, E.URL_XR, E.URL_EL, E.URL_NM})
+    return {"iss": E.iss(json.loads((F / "iss.json").read_text())), "protones": E.protones(json.loads((F / "protones.json").read_text())), "rayosx": E.rayosx(json.loads((F / "rayosx.json").read_text())),
+            "electrones": E.electrones([x for x in json.loads((F / "electrones.json").read_text()) if x["energy"] == ">=2 MeV"]), "neutrones": E.neutrones((F / "neutrones.html").read_text())}
 
 
 def test_lecturas_reales_se_vuelven_eventos_dc03_validos_con_su_hash():
     ev = E.a_eventos(_env())
-    assert {e.tipo for e in ev} == {TipoEvento.POSICION_ESTACION, TipoEvento.LECTURA_PROTONES, TipoEvento.LECTURA_RAYOSX}
-    assert {e.fuente for e in ev} == {FuenteEvento.WHERETHEISS, FuenteEvento.SWPC} and all(e.banner is Banner.REAL and len(e.hash_lectura_cruda) == 64 for e in ev)
+    assert {e.tipo for e in ev} == {TipoEvento.POSICION_ESTACION, TipoEvento.LECTURA_PROTONES, TipoEvento.LECTURA_RAYOSX, TipoEvento.LECTURA_ELECTRONES, TipoEvento.LECTURA_NEUTRONES}
+    assert {e.fuente for e in ev} == {FuenteEvento.WHERETHEISS, FuenteEvento.SWPC, FuenteEvento.NMDB} and all(e.banner is Banner.REAL and len(e.hash_lectura_cruda) == 64 for e in ev)
     iss = next(e for e in ev if e.tipo is TipoEvento.POSICION_ESTACION)
     assert set(iss.parametros) == {"latitud_deg", "longitud_deg", "altitud_km", "velocidad_kms", "luz_solar"} and iss.parametros["luz_solar"] in (0.0, 1.0)
     E.ARCHIVADOS_NUEVOS.clear()
@@ -53,3 +54,19 @@ def test_dc05_acepta_e_proceso_con_su_regla_que_declara_el_supuesto():
     a = DC05Alarma(alarma_id="al-1", ts_utc="2026-11-15T00:00:00Z", indicador="fc", detector=Detector.E_PROCESO, sentido="alza", umbral=100.0, valor_cruzado=117.2, regla_exacta=r,
                    semilla=20261113, hash_preregistro=H, estado="activa")
     assert a.detector is Detector.E_PROCESO and "subgaussiana" in a.regla_exacta
+
+
+def test_electrones_y_neutrones_reales_se_leen_y_respetan_su_contrato():
+    env = _env()
+    el, nm = env["electrones"], env["neutrones"]
+    assert el["umbral_swpc_pfu"] == 1000.0 and el["pfu"] > 0 and el["alerta_swpc"] is (el["pfu"] >= 1000.0)
+    assert nm["estacion"].startswith("Oulu") and 50 < nm["cps"] < 200 and nm["min_ventana"] <= nm["cps"] <= nm["max_ventana"] and nm["n_lecturas"] == len(nm["serie"])
+    assert E.parsear_nmdb("basura") == [] and E.parsear_nmdb("2026-11-15 22:00:00;102.974\n#coment\n2026-11-15 23:00:00;\n") == [("2026-11-15T22:00:00Z", 102.974)]
+    ok = dict(evento_id="x", ts_utc_inicio="2026-11-15T00:00:00Z", ts_utc_fin="2026-11-15T00:00:00Z", hash_lectura_cruda=H, banner=Banner.REAL)
+    DC03Evento(tipo=TipoEvento.LECTURA_NEUTRONES, fuente=FuenteEvento.NMDB, parametros={"tasa_neutrones_cps": 102.9}, **ok)
+    DC03Evento(tipo=TipoEvento.LECTURA_ELECTRONES, fuente=FuenteEvento.SWPC, parametros={"flujo_electrones_pfu": 1500.0}, **ok)
+    with pytest.raises(ValidationError):
+        DC03Evento(tipo=TipoEvento.LECTURA_NEUTRONES, fuente=FuenteEvento.SWPC, parametros={"tasa_neutrones_cps": 102.9}, **ok)      # neutrones solo de NMDB
+    with pytest.raises(ValidationError):
+        DC03Evento(tipo=TipoEvento.LECTURA_ELECTRONES, fuente=FuenteEvento.NMDB, parametros={"flujo_electrones_pfu": 1.0}, **ok)        # NMDB solo emite neutrones
+    E.ARCHIVADOS_NUEVOS.clear()

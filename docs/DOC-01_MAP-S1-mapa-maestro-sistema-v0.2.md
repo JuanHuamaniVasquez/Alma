@@ -1,4 +1,4 @@
-# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.9)
+# TONO-LAB · MAP-S1 — Mapa Maestro del Sistema (v0.2.10)
 
 > **Qué es este documento:** el contrato de ingeniería del proyecto. Define las capas del sistema, el registro oficial de módulos, los contratos de datos campo a campo, el protocolo de cambios y la cola de mejoras propuestas. Es el antídoto contra el vibe coding: nada se construye sin fila en el registro, y toda mejora futura tiene exactamente un hogar.
 > **Reglas del documento:** (1) nada se codea sin su fila en el registro §2; (2) toda mejora nueva entra por el protocolo §5 y queda como PROPUESTA en §7 hasta ser aceptada; (3) los contratos §3 se versionan con el mapa — cambiar un contrato es cambiar de versión del mapa.
@@ -12,6 +12,7 @@
 > **v0.2.5 → v0.2.6 (2026-11-15, MP-5 aceptada; cambio de contrato → bump según §5):** nuevo contrato **DC-14 · Recibo de verde** («el verde sin recibo no aparece»): un «sin anomalías» declara su efecto mínimo detectable y su potencia **condicionados a los días válidos observados**, en σ y en unidades físicas; con pocos datos el estado es `sin_datos_suficientes`. Ancla: Altman & Bland 1995, *BMJ*, doi:10.1136/bmj.311.7003.485.
 > **v0.2.6 → v0.2.7 (2026-11-15, MP-14 autorizada por el humano; cambio de contrato → bump según §5):** DC-05 `detector` gana **`umbral_personal`** (regla fija contra un valor de referencia personal, p. ej. «sueño < su mediana de la línea base»). Motivo: la tarjeta DC-12 `sueno-corto-cansancio` (sostenida en FB-016 A) no puede circular como detector con solo `dos_sigma`/`cusum` (M4.5). La alarma sigue exigiendo recibo completo (`regla_exacta` ejecutable, semilla, hash de preregistro). **Límite declarado:** la regla probada en FB-016 marca ≈ la mitad de las noches; su uso es de contexto, no de alarma crítica, hasta una acta que fije un umbral más selectivo. DC-14 no cambia (el verde solo admite `dos_sigma`/`cusum`).
 > **v0.2.7 → v0.2.8 (2026-11-15, MP-15 aceptada por el humano; cambio de contrato → bump según §5):** DC-05 y DC-14 ganan el detector **`f_varianza`** (razón de varianzas vigilancia/línea base de 28 días) y DC-14 gana el campo **`canal`** (`media` por defecto · `varianza`). Motivo: FB-018/FB-019 mostraron que un zigzag de la misma media escapa al CUSUM (1,8 %) y que el techo es de información: con 28 días de base F detecta el 95 % del zigzag de 2σ. El canal de varianza lleva su propio recibo: con < 28 días de base o < 14 de vigilancia es `sin_datos_suficientes`, nunca verde. Validación en datos reales: FB-020 (la regla de muerte es FPR real > 3 %).
+> **v0.2.9 → v0.2.10 (2026-11-15; el humano ordenó expresamente conectar los electrones GOES y los rayos cósmicos; cambio de contrato → bump según §5):** DC-03 `tipo` gana **`lectura_electrones`** (electrones GOES ≥2 MeV, cinturones atrapados; solo de `swpc`) y **`lectura_neutrones`** (monitor de neutrones de Oulu, proxy en tierra de los rayos cósmicos galácticos; solo de `nmdb`), y DC-03/DC-13 `fuente` gana **`nmdb`** (Neutron Monitor Database, www.nmdb.eu; emite solo `lectura_neutrones`). Parámetros: `flujo_electrones_pfu`, `tasa_neutrones_cps`. La alerta ALTEF3 de NOAA SWPC marca 1 000 pfu (≥2 MeV); NMDB exige reconocimiento (texto en `src/ingesta/entorno.py::ACK_NMDB`). El monitor de neutrones es un **proxy, no una dosis**: la dosis de GCR en vuelo no se mide en ALMA.
 > **v0.2.8 → v0.2.9 (2026-11-15, auditoría sesión 2; el humano ordenó expresamente editar DOC-01 y los contratos; cambio de contrato → bump según §5):** (1) DC-03 `tipo` gana **`lectura_protones`**, **`lectura_rayosx`** (GOES, vía SWPC) y **`posicion_estacion`** (ISS), y DC-03/DC-13 `fuente` gana **`wheretheiss`**: el entorno en vivo de la tripulación deja de leerse «directo» (mandamiento 1) y entra como evento con `hash_lectura_cruda`; `posicion_estacion` solo viene de `wheretheiss`, las lecturas GOES solo de `swpc`; el parámetro adimensional `luz_solar` (1 = a la luz, 0 = en sombra) se añade a los adimensionales (como `kp`). (2) DC-05 `detector` gana **`e_proceso`** (alarma anytime-valid de FB-021): su `regla_exacta` es la de `src/motor/eproceso.py` y **declara el supuesto** (la garantía P(falsa alarma) ≤ α solo vale si el residuo es s-subgaussiano; FB-021 mostró que con s = 1 el FPR real fue 5,06 %, así que el recibo lleva el `s` calibrado). **No** pasa a DC-14: no hay validación fuera de muestra (FB-021: 5 ventanas, no concluyente).
 
 ---
@@ -190,8 +191,8 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | Campo | Tipo | Nota |
 |---|---|---|
 | `evento_id`, `ts_utc_inicio`, `ts_utc_fin` | — | |
-| `tipo` | enum: tormenta_solar · lectura_clima_espacial · lectura_protones · lectura_rayosx · posicion_estacion · eva · eclss · inyeccion_escenario · brote_simulado | `lectura_clima_espacial` = lectura continua de SWPC/DONKI (v0.2.1); `tormenta_solar` solo para eventos declarados oficialmente (alerts.json / DONKI) |
-| `fuente` | enum: swpc · donki · osdr · wheretheiss · simulador | SWPC sin llave ni registro; `wheretheiss` = posición derivada de elementos orbitales (v0.2.9) |
+| `tipo` | enum: tormenta_solar · lectura_clima_espacial · lectura_protones · lectura_rayosx · posicion_estacion · lectura_electrones · lectura_neutrones · eva · eclss · inyeccion_escenario · brote_simulado | `lectura_clima_espacial` = lectura continua de SWPC/DONKI (v0.2.1); `tormenta_solar` solo para eventos declarados oficialmente (alerts.json / DONKI) |
+| `fuente` | enum: swpc · donki · osdr · wheretheiss · nmdb · simulador | SWPC sin llave ni registro; `wheretheiss` = posición derivada de elementos orbitales (v0.2.9); `nmdb` = monitor de neutrones (v0.2.10) |
 | `parametros` | dict (kp, flujo_protones, dosis, …) | Unidades obligatorias en el nombre del campo |
 | `hash_lectura_cruda` | SHA-256 | La lectura cruda es auditable sin guardar todo |
 | `banner` | enum: REAL · SIMULADO | Obligatorio (v0.2.1); fuente swpc/donki/osdr ⇒ REAL; fuente simulador ⇒ SIMULADO |
@@ -320,7 +321,7 @@ Los contratos son la parte que NO se improvisa. Cada campo abajo es una decisió
 | Campo | Tipo | Nota |
 |---|---|---|
 | `intento_id`, `ts_utc` | — | Un registro por cada intento de leer una fuente externa, también el fallido |
-| `fuente` | enum: swpc · donki · osdr · wheretheiss · simulador | Igual que DC-03 |
+| `fuente` | enum: swpc · donki · osdr · wheretheiss · nmdb · simulador | Igual que DC-03 |
 | `url` | string (http/https) | Qué se intentó leer |
 | `resultado` | enum: ok · fallo · vacio | `vacio` = respondió 2xx pero sin registros |
 | `http_status` | int \| null | `null` si no hubo respuesta HTTP (red caída). `ok` y `vacio` exigen 2xx |

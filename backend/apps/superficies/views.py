@@ -203,13 +203,37 @@ class DemoKill(SoloLectura):
         })
 
 
+_SWPC_REFRESCO: dict = {"t": 0.0}
+
+
+def _refrescar_swpc(cada_s: float = 600.0) -> None:
+    """La Tormenta en vivo no debe mostrar un Kp viejo: si pasaron `cada_s` desde la última ingesta, se vuelve a leer SWPC (Kp y rayos X). Pasa por la misma ruta que
+    `manage.py ingestar_swpc` (archivo crudo + hash + DC-03 + DC-13, también si falla): mandamiento 1. Un fallo no rompe la respuesta: queda como DC-13 y se sirve lo ya guardado."""
+    import time
+    if time.time() - _SWPC_REFRESCO["t"] < cada_s:
+        return
+    _SWPC_REFRESCO["t"] = time.time()
+    try:
+        from apps.ingesta.repositorio import guardar_resultado
+        from src.ingesta.archivo import ahora_utc
+        from src.ingesta.cliente import FEEDS, fetch_http, ingestar
+        for nombre in ("kp", "xrays"):
+            guardar_resultado(ingestar(FEEDS[nombre], fetch=fetch_http, ahora=ahora_utc(), raiz=settings.RAIZ))
+    except Exception:                                                          # noqa: BLE001  la ausencia se sirve tal cual (datos ya guardados); el fallo de red ya es un DC-13
+        pass
+
+
 class Tormenta(SoloLectura):
-    """LA TORMENTA: eventos DC-03 (clima espacial). Banner heredado: un evento del simulador vuelve SIMULADO a toda la respuesta."""
+    """LA TORMENTA: eventos DC-03 (clima espacial). Banner heredado: un evento del simulador vuelve SIMULADO a toda la respuesta. La vista en vivo (`tipo=lectura_clima_espacial`) refresca SWPC si está vieja."""
 
     def get(self, request):
+        if request.query_params.get("tipo") == "lectura_clima_espacial":
+            _refrescar_swpc()
         qs = EventoClimaEspacial.objects.order_by("-ts_utc_inicio")
         if tipo := request.query_params.get("tipo"):
             qs = qs.filter(tipo=tipo)
+        if con := request.query_params.get("con"):                          # p. ej. con=kp: los rayos X llegan cada minuto y taparían las lecturas de Kp (cada 3 h) en el tope de filas
+            qs = qs.filter(parametros__has_key=con)
         filas = list(qs[:LIMITE_MAX])
         return Response({"banner": banner_de(filas), "eventos": [{
             "evento_id": e.evento_id, "ts_utc_inicio": e.ts_utc_inicio.isoformat().replace("+00:00", "Z"),
@@ -443,11 +467,11 @@ class EnlaceTierra(SoloLectura):
                                      "contenido": "aggregates only: counts and states, never an individual's values"}})
 
 
-_ENTORNO: dict = {"t": 0.0, "d": None}
+_ENTORNO: dict = {"t": 0.0, "d": None, "nm": None, "t_nm": 0.0}
 
 
 class Entorno(SoloLectura):
-    """M7.1 · Entorno REAL en vivo de la tripulación: ISS (posición y luz), protones GOES y rayos X solares (el Kp vive en La Tormenta). Si una fuente no responde, `disponible: false` (no se rellena)."""
+    """M7.1/M9 · Entorno REAL en vivo de la tripulación: ISS (posición y luz), protones y electrones GOES, rayos X solares y monitor de neutrones (rayos cósmicos) (el Kp vive en La Tormenta). Si una fuente no responde, `disponible: false` (no se rellena)."""
 
     def get(self, request):
         import time
@@ -455,9 +479,14 @@ class Entorno(SoloLectura):
         from src.ingesta import entorno as E
         if _ENTORNO["d"] is None or time.time() - _ENTORNO["t"] > 30:                     # caché de 30 s: respeta ≈1 petición/s de la fuente de la ISS
             from concurrent.futures import ThreadPoolExecutor
-            with ThreadPoolExecutor(3) as ex:                                              # las tres fuentes en paralelo (≈ 1 s en vez de ≈ 4 s)
-                fi, fp, fx = ex.submit(E.seguro, E.iss, E.URL_ISS), ex.submit(E.seguro, E.protones, E.URL_PROT), ex.submit(E.seguro, E.rayosx, E.URL_XR)
-            _ENTORNO["d"] = {"banner": Banner.REAL.value, "iss": fi.result(), "protones": fp.result(), "rayosx": fx.result(),
+            nm_viejo = time.time() - _ENTORNO.get("t_nm", 0.0) > 600 or _ENTORNO.get("nm") is None      # NMDB publica por hora: se pregunta cada 10 min, no cada 30 s
+            with ThreadPoolExecutor(5) as ex:                                              # las fuentes en paralelo (≈ 1 s en vez de ≈ 6 s)
+                fi, fp, fx, fe = (ex.submit(E.seguro, E.iss, E.URL_ISS), ex.submit(E.seguro, E.protones, E.URL_PROT), ex.submit(E.seguro, E.rayosx, E.URL_XR),
+                                  ex.submit(E.seguro, E.electrones, E.URL_EL))
+                fn = ex.submit(E.seguro, E.neutrones, E.URL_NM) if nm_viejo else None
+            if fn is not None:
+                _ENTORNO["nm"], _ENTORNO["t_nm"] = fn.result(), time.time()
+            _ENTORNO["d"] = {"banner": Banner.REAL.value, "iss": fi.result(), "protones": fp.result(), "rayosx": fx.result(), "electrones": fe.result(), "neutrones": _ENTORNO["nm"],
                              "aviso": "Live, real, NASA/NOAA-derived feeds. The ISS position is computed from orbital elements, not station telemetry."}
             _ENTORNO["t"] = time.time()
             try:                                                       # mandamiento 1 (DOC-01 v0.2.9): lo leído entra al libro de eventos (DC-03) y al registro de intentos (DC-13)

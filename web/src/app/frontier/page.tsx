@@ -43,7 +43,7 @@ function Section({ title, banner, children, id }: { title: string; banner?: "REA
 
 /* ---------- 1 · entorno en vivo ---------- */
 function LiveEnvironment({ env, trail, tierra }: { env: Entorno; trail: [number, number][]; tierra: Tierra | null }) {
-  const { iss, protones: p, rayosx: x } = env;
+  const { iss, protones: p, rayosx: x, electrones: el, neutrones: nm } = env;
   return (
     <Section title="Live around the crew" banner={env.banner} id="live">
       <div className="mt-6 grid gap-8 lg:grid-cols-[1.35fr_1fr]">
@@ -65,6 +65,15 @@ function LiveEnvironment({ env, trail, tierra }: { env: Entorno; trail: [number,
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">Solar X-rays · flare class</p>
             {x.disponible ? <p className="mt-1 font-display text-5xl leading-none">{x.clase}<span className="ml-2 font-mono text-[11px] text-ink-faint">peak today {x.max_ventana}</span></p> : <p className="text-ink-faint">Unavailable.</p>}
           </div>
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">Radiation belts · GOES electrons ≥2 MeV</p>
+            {el?.disponible && el.pfu != null ? <p className="mt-1 font-display text-4xl leading-none">{Math.round(el.pfu).toLocaleString("en-US")}<span className="ml-2 font-mono text-[11px] text-ink-faint">pfu · {el.alerta_swpc ? "above" : "below"} the 1,000 pfu SWPC alert level</span></p> : <p className="text-ink-faint">Unavailable.</p>}
+          </div>
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">Cosmic rays · neutron monitor, Oulu</p>
+            {nm?.disponible && nm.cps != null ? <p className="mt-1 font-display text-4xl leading-none">{nm.cps.toFixed(1)}<span className="ml-2 font-mono text-[11px] text-ink-faint">counts/s · {(nm.variacion_pct ?? 0) >= 0 ? "+" : ""}{nm.variacion_pct?.toFixed(2)} % vs 3-day median</span></p> : <p className="text-ink-faint">Unavailable.</p>}
+            <p className="mt-1 text-[11px] leading-snug text-ink-faint">Proxies of the environment, not a dose measured on board. More in The Storm.</p>
+          </div>
           {tierra?.disponible && tierra.imagen && (
             <figure className="flex items-center gap-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -72,7 +81,7 @@ function LiveEnvironment({ env, trail, tierra }: { env: Entorno; trail: [number,
               <figcaption className="text-[11px] leading-snug text-ink-faint"><span className="font-mono uppercase tracking-[0.16em] text-ink-dim">Earth, latest image</span><br />NASA EPIC camera on DSCOVR, 1.5 million km away · {tierra.fecha_utc?.slice(0, 16)} UTC</figcaption>
             </figure>
           )}
-          <p className="text-[11px] leading-snug text-ink-faint">Sources: wheretheiss.at (orbit-derived position), NOAA SWPC GOES. The ISS position is computed from orbital elements, not station telemetry. Updated every 30 s.</p>
+          <p className="text-[11px] leading-snug text-ink-faint">Sources: wheretheiss.at (orbit-derived position), NOAA SWPC GOES, NMDB / University of Oulu (neutron monitor). The ISS position is computed from orbital elements, not station telemetry. Updated every 30 s.</p>
         </div>
       </div>
     </Section>

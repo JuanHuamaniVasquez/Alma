@@ -66,4 +66,4 @@
 - **Capa destino:** Ingesta (IN-3). **Requiere** ampliar DC-03 (`tipo`: `lectura_electrones`, `lectura_neutrones`) = cambio de versión de DOC-01 → necesita orden expresa.
 - **Qué compra:** el jurado pregunta «¿solo el Sol?»; hoy lo declaramos incompleto en la sala The Storm y en el anillo.
 - **Ancla:** NASA OCHMO radiation brief (límites 600 mSv carrera / 250 mSv por SPE, leído) y SIDC (80 mSv a máximo solar vs 160 mSv a mínimo en 6 meses en la ISS, leído).
-- **Costo:** ~1 sesión. **Estado:** PROPUESTA.
+- **Costo:** ~1 sesión. **Estado:** ACEPTADA y APLICADA el 2026-11-15 (el humano ordenó conectarlas): DOC-01 v0.2.10, `src/ingesta/entorno.py`, S-33/S-34.

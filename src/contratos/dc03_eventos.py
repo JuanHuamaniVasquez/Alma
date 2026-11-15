@@ -23,6 +23,8 @@ class TipoEvento(StrEnum):
     LECTURA_PROTONES = "lectura_protones"  # v0.2.9: protones GOES ≥10 MeV (vía SWPC)
     LECTURA_RAYOSX = "lectura_rayosx"  # v0.2.9: rayos X solares 0,1–0,8 nm (vía SWPC)
     POSICION_ESTACION = "posicion_estacion"  # v0.2.9: ISS (derivada de elementos orbitales)
+    LECTURA_ELECTRONES = "lectura_electrones"  # v0.2.10: electrones GOES ≥2 MeV (cinturones atrapados; vía SWPC)
+    LECTURA_NEUTRONES = "lectura_neutrones"  # v0.2.10: monitor de neutrones (proxy de rayos cósmicos galácticos; vía NMDB)
     EVA = "eva"
     ECLSS = "eclss"
     INYECCION_ESCENARIO = "inyeccion_escenario"
@@ -34,6 +36,7 @@ class FuenteEvento(StrEnum):
     DONKI = "donki"
     OSDR = "osdr"
     WHERETHEISS = "wheretheiss"  # v0.2.9
+    NMDB = "nmdb"  # v0.2.10: Neutron Monitor Database (www.nmdb.eu)
     SIMULADOR = "simulador"
 
 
@@ -64,13 +67,17 @@ class DC03Evento(Contrato):
         if self.fuente is FuenteEvento.SIMULADOR and self.banner is not Banner.SIMULADO:
             raise ValueError("fuente=simulador exige banner=SIMULADO")
         if self.fuente is not FuenteEvento.SIMULADOR and self.banner is not Banner.REAL:
-            raise ValueError("una fuente real (swpc/donki/osdr/wheretheiss) exige banner=REAL")
+            raise ValueError("una fuente real (swpc/donki/osdr/wheretheiss/nmdb) exige banner=REAL")
         if self.tipo is TipoEvento.LECTURA_CLIMA_ESPACIAL and self.fuente not in {FuenteEvento.SWPC, FuenteEvento.DONKI}:
             raise ValueError("lectura_clima_espacial solo viene de swpc o donki")
-        if self.tipo in {TipoEvento.LECTURA_PROTONES, TipoEvento.LECTURA_RAYOSX} and self.fuente is not FuenteEvento.SWPC:
-            raise ValueError("lectura_protones / lectura_rayosx solo vienen de swpc (GOES)")
+        if self.tipo in {TipoEvento.LECTURA_PROTONES, TipoEvento.LECTURA_RAYOSX, TipoEvento.LECTURA_ELECTRONES} and self.fuente is not FuenteEvento.SWPC:
+            raise ValueError("lectura_protones / lectura_rayosx / lectura_electrones solo vienen de swpc (GOES)")
         if self.tipo is TipoEvento.POSICION_ESTACION and self.fuente is not FuenteEvento.WHERETHEISS:
             raise ValueError("posicion_estacion solo viene de wheretheiss")
         if self.fuente is FuenteEvento.WHERETHEISS and self.tipo is not TipoEvento.POSICION_ESTACION:
             raise ValueError("wheretheiss solo emite posicion_estacion")
+        if self.tipo is TipoEvento.LECTURA_NEUTRONES and self.fuente is not FuenteEvento.NMDB:
+            raise ValueError("lectura_neutrones solo viene de nmdb")
+        if self.fuente is FuenteEvento.NMDB and self.tipo is not TipoEvento.LECTURA_NEUTRONES:
+            raise ValueError("nmdb solo emite lectura_neutrones")
         return self

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Room } from "@/components/Room";
 import { Stamp } from "@/components/Stamp";
 import { useAlma } from "@/components/Alma";
-import { get, type Banner, type Scenario, type SpaceEvent } from "@/lib/api";
+import { get, type Banner, type Entorno, type Scenario, type SpaceEvent } from "@/lib/api";
 
 const SUN = [
   { id: "suvi195", name: "Corona · 195 Å", anim: true, note: "GOES-19 SUVI · hot plasma, ~1.2 million K" },
@@ -27,7 +27,7 @@ export default function Storm() {
   const [scale, setScale] = useState<string | null>(null);        // null = en vivo; "G1"…"G5" = escenario SIMULADO
   const [sc, setSc] = useState<Scenario | null>(null);
   const { say } = useAlma();
-  useEffect(() => { get<{ banner: Banner; eventos: SpaceEvent[] }>("/api/tormenta/?tipo=lectura_clima_espacial").then((d) => { setEv(d?.eventos ?? []); if (d) setBanner(d.banner); }); }, []);
+  useEffect(() => { const l = () => get<{ banner: Banner; eventos: SpaceEvent[] }>("/api/tormenta/?tipo=lectura_clima_espacial&con=kp").then((d) => { setEv(d?.eventos ?? []); if (d) setBanner(d.banner); }); l(); const id = setInterval(l, 600000); return () => clearInterval(id); }, []);   // el servidor vuelve a leer SWPC cada 10 min
   useEffect(() => { fetch("/sun/anim/manifest.json").then((r) => r.json()).then((m) => setFrames(m.canales ?? {})).catch(() => setFrames({})); }, []);
   const canal = SUN[sun];
   const cuadros = canal.anim ? (frames[canal.id] ?? []) : [];
@@ -46,7 +46,7 @@ export default function Storm() {
   return (
     <Room voice={scale ? undefined : "tormenta"}>
       {scale && sc && <div className="absolute inset-x-0 top-0 z-10 border-b border-warn/60 bg-warn/10 py-1.5 text-center font-mono text-[11px] uppercase tracking-[0.3em] text-warn">SIMULATED UNIVERSE — DAY {sc.dia_habitat}</div>}
-      <div className="mx-auto grid h-full max-w-6xl grid-cols-[minmax(0,34rem)_1fr] items-center gap-14 px-10 pb-28 pt-14">
+      <div className={`mx-auto grid h-full max-w-6xl grid-cols-[minmax(0,34rem)_1fr] items-center gap-14 px-10 pb-28 pt-14 ${radiacion ? "invisible" : ""}`}>
         <figure className="relative" style={{ width: "min(100%, calc(100vh - 19rem))" }}>
           <div className={`relative aspect-square w-full overflow-hidden rounded-full shadow-[0_0_120px_10px_rgb(255_120_40/.18)] transition-opacity duration-700 ${scale ? "opacity-35" : ""}`}>
             {/* hotlink al último SDO; si no hay red, la instantánea local con su marca de tiempo */}
@@ -91,15 +91,35 @@ export default function Storm() {
   );
 }
 
-const FUENTES_RAD = [
-  { n: "Solar particle events", ritmo: "episodic · hours to days", que: "Protons accelerated by flares and shock waves. Rare, but the only source that can deliver a harmful dose quickly; NASA limits the dose from a single event to 250 mSv.", estado: "CONNECTED · live GOES protons ≥10 MeV (this room and the Dose ring)", ok: true },
-  { n: "Trapped radiation (Earth's belts)", ritmo: "every orbit · South Atlantic Anomaly", que: "Protons and electrons held by Earth's magnetic field. For a crew in low Earth orbit, the passes through the South Atlantic Anomaly are a main part of the dose.", estado: "NOT CONNECTED · the ISS position is live (The Frontier); no dose reading yet", ok: false },
-  { n: "Galactic cosmic rays", ritmo: "always on · strongest at solar minimum", que: "Fast protons and heavy nuclei from outside the solar system. A constant background that shielding stops poorly; it matters most beyond the magnetosphere (Moon, Mars).", estado: "NOT CONNECTED · no live feed used yet (neutron monitors are the candidate)", ok: false },
-  { n: "Secondary radiation", ritmo: "inside the hull", que: "Neutrons and fragments produced when the particles above hit the station walls and the body itself.", estado: "NOT MODELLED", ok: false },
-] as const;
+function Spark({ v, umbral }: { v: number[]; umbral?: number }) {
+  if (v.length < 2) return null;
+  const lo = Math.min(...v, umbral ?? Infinity), hi = Math.max(...v, umbral ?? -Infinity), r = hi - lo || 1;
+  const y = (x: number) => 30 - ((x - lo) / r) * 28 - 1;
+  const d = v.map((x, i) => `${i ? "L" : "M"}${((i / (v.length - 1)) * 200).toFixed(1)},${y(x).toFixed(1)}`).join(" ");
+  return (
+    <svg viewBox="0 0 200 30" className="mt-2 h-8 w-full" preserveAspectRatio="none" aria-hidden>
+      {umbral != null && <line x1="0" x2="200" y1={y(umbral)} y2={y(umbral)} stroke="var(--color-warn)" strokeDasharray="3 3" strokeWidth="0.8" />}
+      <path d={d} fill="none" stroke="var(--color-ink)" strokeWidth="1.2" vectorEffect="non-scaling-stroke" />
+    </svg>
+  );
+}
 
-/** Respuesta honesta a «¿es el Sol la única radiación?»: no. Las referencias son literatura citada, no mediciones de ALMA. */
+const fmt = (x: number | undefined, d = 1) => (x == null ? "—" : x.toLocaleString("en-US", { maximumFractionDigits: d }));
+
+/** Respuesta honesta a «¿es el Sol la única radiación?»: no. Los valores en vivo vienen de /api/entorno/ (NOAA SWPC GOES y NMDB/Oulu); las referencias son literatura citada, no mediciones de ALMA. */
 function RadiationPanel({ onClose }: { onClose: () => void }) {
+  const [env, setEnv] = useState<Entorno | null>(null);
+  useEffect(() => { const l = () => get<Entorno>("/api/entorno/").then(setEnv); l(); const id = setInterval(l, 60000); return () => clearInterval(id); }, []);
+  const p = env?.protones, e = env?.electrones, n = env?.neutrones;
+  const filas = [
+    { t: "Solar particle events", sub: "episodic · hours to days", ok: !!p?.disponible, que: "Protons accelerated by flares and shock waves. Rare, but the only source that can deliver a harmful dose quickly; NASA limits the dose from a single event to 250 mSv.",
+      live: p?.disponible ? `${fmt(p.pfu, 2)} pfu now · S1 storm begins at ${p.umbral_s1_pfu} pfu · ${p.tormenta_s1_o_mas ? "STORM" : "quiet"}` : null, serie: p?.serie, umbral: p?.umbral_s1_pfu, fuente: "GOES protons ≥10 MeV · NOAA SWPC" },
+    { t: "Trapped radiation (Earth's belts)", sub: "every orbit · South Atlantic Anomaly", ok: !!e?.disponible, que: "Protons and electrons held by Earth's magnetic field; for a crew in low orbit the South Atlantic Anomaly passes are a main part of the dose. We read the belts' ELECTRONS at geostationary orbit: a proxy of belt activity, not the dose inside the ISS.",
+      live: e?.disponible ? `${fmt(e.pfu, 0)} pfu now · SWPC alert level ${fmt(e.umbral_swpc_pfu, 0)} pfu · ${e.alerta_swpc ? "ABOVE alert level" : "below"}` : null, serie: e?.serie, umbral: e?.umbral_swpc_pfu, fuente: "GOES electrons ≥2 MeV · NOAA SWPC" },
+    { t: "Galactic cosmic rays", sub: "always on · strongest at solar minimum", ok: !!n?.disponible, que: "Fast protons and heavy nuclei from outside the solar system: a constant background that shielding stops poorly; it matters most beyond the magnetosphere. A ground neutron monitor sees their echo in the atmosphere: a proxy, not a dose.",
+      live: n?.disponible ? `${fmt(n.cps, 1)} counts/s at ${n.estacion} · ${(n.variacion_pct ?? 0) >= 0 ? "+" : ""}${fmt(n.variacion_pct, 2)} % vs the 3-day median` : null, serie: n?.serie, umbral: undefined, fuente: "Neutron monitor · NMDB / University of Oulu" },
+    { t: "Secondary radiation", sub: "inside the hull", ok: false, que: "Neutrons and fragments produced when the particles above hit the station walls and the body itself.", live: null, serie: undefined, umbral: undefined, fuente: "" },
+  ];
   return (
     <aside role="dialog" aria-label="Space radiation sources" className="fixed inset-x-0 bottom-24 top-14 z-40 overflow-y-auto bg-bg px-6 py-8 md:px-14">
       <div className="mx-auto max-w-5xl">
@@ -107,21 +127,22 @@ function RadiationPanel({ onClose }: { onClose: () => void }) {
           <h2 className="font-display text-[2.4rem] leading-tight text-ink">The Sun is not the only radiation.</h2>
           <button onClick={onClose} className="shrink-0 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-dim underline underline-offset-4 hover:text-ink">close</button>
         </div>
-        <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-ink-dim">A crew is exposed to four kinds. ALMA shows only the first one live today, so the Dose ring reflects solar protons alone: an incomplete picture, and we say so.</p>
+        <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-ink-dim">A crew is exposed to four kinds. Three are read live below from real instruments; none of them is a dose measured inside a spacecraft, so ALMA shows the environment, not an exposure. The fourth is not modelled.</p>
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          {FUENTES_RAD.map((f) => (
-            <article key={f.n} className="border border-line p-5">
-              <h3 className="font-display text-[1.35rem] text-ink">{f.n}</h3>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">{f.ritmo}</p>
+          {filas.map((f) => (
+            <article key={f.t} className="border border-line p-5">
+              <h3 className="font-display text-[1.35rem] text-ink">{f.t}</h3>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">{f.sub}</p>
               <p className="mt-3 text-[14px] leading-relaxed text-ink-dim">{f.que}</p>
-              <p className={`mt-3 font-mono text-[10px] uppercase tracking-[0.14em] ${f.ok ? "text-ink" : "text-warn"}`}>{f.estado}</p>
+              {f.live ? (<><p className="mt-3 font-mono text-[11px] tracking-[0.04em] text-ink">{f.live}</p><Spark v={f.serie ?? []} umbral={f.umbral} /><p className="font-mono text-[9.5px] uppercase tracking-[0.14em] text-ink-faint">LIVE · REAL · {f.fuente}{f.umbral != null ? " · dashed = threshold" : ""}</p></>)
+                : <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.14em] text-warn">{f.fuente ? "source unavailable right now — the absence is data" : "not modelled"}</p>}
             </article>
           ))}
         </div>
         <p className="mt-6 font-mono text-[10px] leading-relaxed tracking-[0.04em] text-ink-faint">
           Reference values (published, not measured by ALMA): career limit 600 mSv and 250 mSv per solar particle event, NASA-STD-3001 as summarised in the{" "}
           <a className="underline" href="https://www.nasa.gov/sites/default/files/atoms/files/radiation_protection_technical_brief_ochmo.pdf" target="_blank" rel="noreferrer">NASA OCHMO radiation brief</a>; an ISS crew receives roughly 80 mSv in six months at solar maximum and 160 mSv at solar minimum, per the{" "}
-          <a className="underline" href="https://www.sidc.be/article/radiation-space" target="_blank" rel="noreferrer">Royal Observatory of Belgium (SIDC)</a>. Next to connect: GOES electrons (trapped belts) and a neutron-monitor feed (cosmic rays).
+          <a className="underline" href="https://www.sidc.be/article/radiation-space" target="_blank" rel="noreferrer">Royal Observatory of Belgium (SIDC)</a>. {n?.reconocimiento}
         </p>
       </div>
     </aside>

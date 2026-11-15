@@ -58,5 +58,5 @@ class DC13Intento(Contrato):
         if self.fuente is FuenteEvento.SIMULADOR and self.banner is not Banner.SIMULADO:
             raise ValueError("fuente=simulador exige banner=SIMULADO")
         if self.fuente is not FuenteEvento.SIMULADOR and self.banner is not Banner.REAL:
-            raise ValueError("una fuente real (swpc/donki/osdr) exige banner=REAL")
+            raise ValueError("una fuente real (swpc/donki/osdr/wheretheiss/nmdb) exige banner=REAL")
         return self

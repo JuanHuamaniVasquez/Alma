@@ -303,16 +303,21 @@ def test_m7_entorno_con_respuestas_reales_guardadas(monkeypatch):
     from src.ingesta import entorno as E
     from apps.superficies import views
     F = RAIZ / "tests" / "fixtures" / "entorno"
-    monkeypatch.setattr(E, "_get", lambda url, t=8.0: json.loads((F / ("iss.json" if "wheretheiss" in url else "protones.json" if "protons" in url else "rayosx.json")).read_text()))
-    views._ENTORNO.update(t=0.0, d=None)
+    monkeypatch.setattr(E, "_get", lambda url, t=8.0: json.loads((F / ("iss.json" if "wheretheiss" in url else "protones.json" if "protons" in url else "electrones.json" if "electrons" in url else "rayosx.json")).read_text()))
+    monkeypatch.setattr(E, "_get_nm", lambda: (F / "neutrones.html").read_text())
+    views._ENTORNO.update(t=0.0, d=None, nm=None, t_nm=0.0)
     d = get("/api/entorno/").json()
+    assert d["electrones"]["disponible"] and d["electrones"]["umbral_swpc_pfu"] == 1000.0 and isinstance(d["electrones"]["alerta_swpc"], bool) and len(d["electrones"]["serie"]) > 100
+    assert d["neutrones"]["disponible"] and 50 < d["neutrones"]["cps"] < 200 and d["neutrones"]["n_lecturas"] > 40 and "NMDB" in d["neutrones"]["reconocimiento"]
     assert d["banner"] == "REAL" and d["iss"]["disponible"] and d["iss"]["visibilidad"] in {"daylight", "eclipsed", "visible"} and 350 < d["iss"]["alt_km"] < 450
     assert d["protones"]["disponible"] and d["protones"]["umbral_s1_pfu"] == 10.0 and isinstance(d["protones"]["tormenta_s1_o_mas"], bool)
     assert d["rayosx"]["clase"][0] in "ABCMX"
     monkeypatch.setattr(E, "_get", lambda url, t=8.0: (_ for _ in ()).throw(TimeoutError()))
-    views._ENTORNO.update(t=0.0, d=None)
-    assert get("/api/entorno/").json()["iss"] == {"disponible": False, "fuente": E.URL_ISS, "error": "TimeoutError"}
-    views._ENTORNO.update(t=0.0, d=None)
+    monkeypatch.setattr(E, "_get_nm", lambda: (_ for _ in ()).throw(TimeoutError()))
+    views._ENTORNO.update(t=0.0, d=None, nm=None, t_nm=0.0)
+    caido = get("/api/entorno/").json()
+    assert caido["iss"] == {"disponible": False, "fuente": E.URL_ISS, "error": "TimeoutError"} and caido["neutrones"]["disponible"] is False and caido["electrones"]["disponible"] is False
+    views._ENTORNO.update(t=0.0, d=None, nm=None, t_nm=0.0)
 
 
 def test_m7_astronautas_solo_agregados_y_osdr_catalogo():
@@ -353,15 +358,21 @@ def test_el_entorno_en_vivo_deja_eventos_dc03_y_intentos_dc13_en_la_base(monkeyp
     F = RAIZ / "tests" / "fixtures" / "entorno"
 
     def falso(url, t=8.0):
-        E.ULTIMOS_HASHES[url] = (("1" if "wheretheiss" in url else "2" if "protons" in url else "3") * 64)
+        E.ULTIMOS_HASHES[url] = (("1" if "wheretheiss" in url else "2" if "protons" in url else "4" if "electrons" in url else "3") * 64)
         E.ARCHIVADOS_NUEVOS.add(url)
-        return json.loads((F / ("iss.json" if "wheretheiss" in url else "protones.json" if "protons" in url else "rayosx.json")).read_text())
+        return json.loads((F / ("iss.json" if "wheretheiss" in url else "protones.json" if "protons" in url else "electrones.json" if "electrons" in url else "rayosx.json")).read_text())
+
+    def falso_nm():
+        E.ULTIMOS_HASHES[E.URL_NM] = "5" * 64
+        E.ARCHIVADOS_NUEVOS.add(E.URL_NM)
+        return (F / "neutrones.html").read_text()
     monkeypatch.setattr(E, "_get", falso)
-    views._ENTORNO.update(t=0.0, d=None)
+    monkeypatch.setattr(E, "_get_nm", falso_nm)
+    views._ENTORNO.update(t=0.0, d=None, nm=None, t_nm=0.0)
     assert get("/api/entorno/").status_code == 200
-    assert set(EventoClimaEspacial.objects.filter(evento_id__startswith="entorno-").values_list("tipo", flat=True)) == {"posicion_estacion", "lectura_protones", "lectura_rayosx"}
-    assert IntentoIngesta.objects.filter(intento_id__startswith="entorno-", resultado="ok").count() == 3
-    views._ENTORNO.update(t=0.0, d=None)
+    assert set(EventoClimaEspacial.objects.filter(evento_id__startswith="entorno-").values_list("tipo", flat=True)) == {"posicion_estacion", "lectura_protones", "lectura_rayosx", "lectura_electrones", "lectura_neutrones"}
+    assert IntentoIngesta.objects.filter(intento_id__startswith="entorno-", resultado="ok").count() == 5
+    views._ENTORNO.update(t=0.0, d=None, nm=None, t_nm=0.0)
 
 
 @pytest.mark.django_db
@@ -375,3 +386,25 @@ def test_alarmas_de_personas_reales_no_llevan_id_ni_valores_personales():
     a = {x["indicador"] or x["presupuesto_id"]: x for x in get("/api/alarmas/").json()["alarmas"]}
     assert "PERSONAID123" not in json.dumps(a) and "mu=70.5" not in a["fc"]["regla_exacta"] and "mu=‹personal›" in a["fc"]["regla_exacta"] and a["fc"]["alarma_id"].startswith("cuerpo-")
     assert "mu=4.45" in a["aire"]["regla_exacta"] and a["aire"]["alarma_id"] == "al-habitat-1"
+
+
+@pytest.mark.django_db
+def test_tormenta_en_vivo_refresca_swpc_si_esta_vieja_y_filtra_kp_sin_que_los_rayos_x_lo_tapen(monkeypatch):
+    """Auditoría M9: el Kp de La Tormenta venía de la base y podía estar viejo, y los rayos X (1/min) lo expulsaban del tope de filas. Ahora se refresca (con tope temporal) y `con=kp` filtra."""
+    from apps.superficies import views
+    llamadas = []
+    monkeypatch.setattr("apps.ingesta.repositorio.guardar_resultado", lambda r: llamadas.append(r))
+    monkeypatch.setattr("src.ingesta.cliente.ingestar", lambda feed, **k: feed.nombre if hasattr(feed, "nombre") else str(feed))
+    views._SWPC_REFRESCO["t"] = 0.0
+    t = datetime(2026, 11, 15, 12, tzinfo=UTC)
+    EventoClimaEspacial.objects.create(evento_id="k1", ts_utc_inicio=t, ts_utc_fin=t, tipo="lectura_clima_espacial", fuente="swpc", banner="REAL", parametros={"kp": 2.0}, hash_lectura_cruda=H)
+    for i in range(3):
+        EventoClimaEspacial.objects.create(evento_id=f"x{i}", ts_utc_inicio=datetime(2026, 11, 15, 13, i, tzinfo=UTC), ts_utc_fin=datetime(2026, 11, 15, 13, i, tzinfo=UTC), tipo="lectura_clima_espacial",
+                                           fuente="swpc", banner="REAL", parametros={"flujo_x_w_m2": 1e-7}, hash_lectura_cruda=H)
+    d = get("/api/tormenta/?tipo=lectura_clima_espacial&con=kp").json()
+    assert [e["parametros"] for e in d["eventos"]] == [{"kp": 2.0}] and len(llamadas) == 2          # kp y xrays se re-leyeron
+    get("/api/tormenta/?tipo=lectura_clima_espacial&con=kp")
+    assert len(llamadas) == 2                                                                        # dentro de los 10 min no se vuelve a pedir
+    get("/api/tormenta/")
+    assert len(llamadas) == 2                                                                        # la vista sin filtro de tipo no dispara red
+    views._SWPC_REFRESCO["t"] = 1e18

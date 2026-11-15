@@ -96,7 +96,9 @@ export type EProcess = { banner: Banner; alfa: number; umbral: number; s: number
 export type Entorno = { banner: Banner; aviso: string;
   iss: { disponible: boolean; lat?: number; lon?: number; alt_km?: number; vel_kms?: number; visibilidad?: string; sol_lat?: number; sol_lon?: number; ts_utc?: string; a_la_luz?: boolean };
   protones: { disponible: boolean; pfu?: number; max_ventana_pfu?: number; tormenta_s1_o_mas?: boolean; umbral_s1_pfu?: number; ts_utc?: string; serie?: number[] };
-  rayosx: { disponible: boolean; clase?: string; max_ventana?: string; ts_utc?: string } };
+  rayosx: { disponible: boolean; clase?: string; max_ventana?: string; ts_utc?: string };
+  electrones?: { disponible: boolean; pfu?: number; max_ventana_pfu?: number; alerta_swpc?: boolean; umbral_swpc_pfu?: number; ts_utc?: string; serie?: number[] };
+  neutrones?: { disponible: boolean; estacion?: string; cps?: number; mediana_ventana?: number; variacion_pct?: number; min_ventana?: number; max_ventana?: number; ts_utc?: string; serie?: number[]; reconocimiento?: string } };
 export type Astronautas = { banner: Banner; ejecutada: boolean; hash_acta?: string; fuente?: string; n_personas?: number; tiempos?: string[]; aviso?: string;
   conciliacion?: { valores: number; filas: number; de_filas: number };
   tabla?: Record<string, { dentro: number; arriba: number; abajo: number; sin_datos: number; sospechoso: number; mediana_cambio_pct: number | null; n: number }>; veredictos?: Record<string, string | number | { valores: number; filas: number }> };

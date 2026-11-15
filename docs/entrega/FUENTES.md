@@ -11,6 +11,8 @@
 | Otros feeds SWPC (rtsw viento/mag, alertas) | `data/SWPC-fuentes.md` (reemplazos verificados: `rtsw_wind_1m`, `rtsw_mag_1m`, `products/alerts.json`) | referencia | S-02 |
 | Sol animado (SUVI 195/304, LASCO C2) | https://services.swpc.noaa.gov/products/animations/suvi-primary-195.json (y `-304`, `lasco-c2.json`) | The Storm; se guarda local con `scripts/descargar_sol_animado.py` | S-31 |
 | Imagen fija del Sol (SDO HMI, manchas) | https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg | The Storm | — |
+| **Electrones GOES ≥2 MeV** (cinturones) | https://services.swpc.noaa.gov/json/goes/primary/integral-electrons-1-day.json | The Storm (panel de radiación), The Frontier | S-33 |
+| **Rayos cósmicos: monitor de neutrones Oulu** | https://www.nmdb.eu/nest/draw_graph.php (ascii; ver `src/ingesta/entorno.py::_url_nm`) · reconocimiento obligatorio en S-34 | The Storm, The Frontier | S-34 |
 | Posición de la ISS | https://api.wheretheiss.at/v1/satellites/25544 (≈1 petición/s) | The Frontier | S-26 |
 | Foto de la Tierra (EPIC/DSCOVR) | https://epic.gsfc.nasa.gov/api/natural | The Frontier | S-29 |
 | Catálogo OSDR (experimento OS-892) | https://osdr.nasa.gov/geode-py/ws/repo/experiments/OS-892 · buscador https://osdr.nasa.gov/osdr/data/search | La Fundición (Faro F-001), atlas OSDR | S-03, S-25 |
@@ -50,7 +52,6 @@ Cada respuesta cruda se hashea (DC-03/DC-13); si una fuente cae, la API devuelve
 Modelo 3D del traje (S-17: https://github.com/nasa/NASA-3D-Resources) · voz de ALMA (S-18: https://huggingface.co/hexgrad/Kokoro-82M) · PDF fundacional (S-11, `docs/ALMA-documento-del-proyecto-v0.3.pdf`) · biblioteca de literatura verificada (S-06, S-16, S-19: `docs/auditoria-de-fuentes.md`, `docs/revision-literatura.md`).
 
 ## E · Candidatas NO conectadas (no usar como dato hasta verificarlas y registrarlas)
-- GOES electrones ≥2 MeV: https://services.swpc.noaa.gov/json/goes/primary/integral-electrons-1-day.json (responde 200; falta contrato DC-03 → propuesta P-R1).
-- Monitores de neutrones para rayos cósmicos (NMDB, https://www.nmdb.eu): **endpoint no verificado**.
+- Dosis REAL a bordo de la ISS (dosímetros) y paso por la Anomalía del Atlántico Sur: no hay feed abierto verificado; hoy se muestran solo proxies del entorno (protones, electrones, neutrones).
 - DONKI (NASA CCMC): sin acceso con los intentos hechos; documentado como bloqueado.
 - Datos de astronautas por persona más allá de OSD-569: no hay abiertos (por eso el proyecto declara sus límites).
