@@ -30,7 +30,7 @@ Each act (`docs/actas/FB-xxx.md`) states the question, success rule and kill rul
 | FB-016 | Within-person sleep→tiredness; tension→HRV | A sustained (+7.9 points, 27 people, p 0.001, positive control); B refuted (+0.030 SD, 13 people, p 0.62). |
 | FB-015-v2 | Independent replication of a "10 of 10" detection result (simulated) | Table structure replicated 6/7 cells; detection **8 of 10 — not replicated** (H4 refuted). |
 | FB-018 | Is there an input that evades the CUSUM? (simulated) | Zigzag (zero mean, more variance) detected 1.8% at H=2σ vs 95.2% for a step of equal "damage"; variance-CUSUM reached 67.0% (H2 refuted). |
-| FB-019 | Is the blind spot detector- or information-limited? (simulated) | With a 14-day baseline even an F test detects 40.3% at H=1.5σ (oracle 91.3%); with a 28-day baseline F detects 95.0% at H=2σ. |
+| FB-019 | Is the blind spot detector- or information-limited? (simulated) | With a 14-day baseline even an F test detects about 40% at H=1.5σ (oracle about 91%); with a 28-day baseline F detects 95.0% at H=2σ. |
 | FB-020 | Variance channel (28-d baseline) on real data | **False alarms 9.0% (9/100, Wilson 95% 4.8–16.2%) — refuted**; power at 2σ 99% and mean-CUSUM blind (3%), sustained. |
 | FB-020-v2 | Robust variant (MAD ratio, empirical critical) validated out of sample | Selected in training (FPR 1.95%, power 94%); validation had **5 windows** → inconclusive. |
 
