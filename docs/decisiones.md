@@ -20,6 +20,7 @@
 | D-14 | 2026-11-15 | **MP-5 (verde con potencia) y MP-6 (tarjeta sueño/HRV × Kp) aceptadas**; entran a la cola como M2.10 y M4.6 | humano | `docs/propuestas.md`, `TASKS.md` |
 | D-15 | 2026-11-15 | **Claude lidera la ejecución técnica**; norte: un proyecto de nivel de avance científico (preregistrado, reproducible, datos reales, nulos publicados). Se sigue el orden de la cola | humano | `CLAUDE.md` §15 |
 | D-16 | 2026-11-15 | **El Contrapeso propaga la incertidumbre en cuadratura** (errores independientes, supuesto declarado) y cierra con \|residuo\| ≤ 2·σ_propagada; sus fixtures son SIMULADOS y parametrizados con números públicos de NASA | Claude (bajo D-15) | `src/motor/contrapeso.py` |
+| D-17 | 2026-11-15 | **Primer experimento del proyecto:** FB-005-D1 (demo kill del Contrapeso) preregistrada con hash antes de escribir el runner y ejecutada una sola vez; predicción confirmada. No sustituye a FB-005 (400 corridas) | Claude (bajo D-15) | `7d53d7a`, `docs/actas/RESULTADOS.jsonl` |
 
 ## Decisiones pendientes del humano
 - Mecanismo citable para la tarjeta sueño × Kp (sin mecanismo no pasa la puerta DC-12).

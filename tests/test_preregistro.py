@@ -31,7 +31,8 @@ def test_actas_reales_registradas_e_intactas():
         crudo = (RAIZ / "docs" / "actas" / e.archivo).read_bytes()
         assert hashlib.sha256(crudo).hexdigest() == e.hash_sha256  # reproducible por cualquiera
         assert all(s in SEMILLAS_PUBLICAS for s in e.semillas)
-        assert len(e.hash_publicado_origen or "") == 64  # se conserva el hash publicado el 11-nov
+        if e.acta in {"FB-005", "FB-006", "FB-007", "FB-008"}:  # las re-registradas conservan el hash del 11-nov
+            assert len(e.hash_publicado_origen or "") == 64
         assert exigir_preregistro(RAIZ, e.acta, ahora=T0 + timedelta(days=1)).acta == e.acta
 
 
