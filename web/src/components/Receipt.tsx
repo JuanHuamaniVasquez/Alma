@@ -50,3 +50,44 @@ function Row({ k, v, strong }: { k: string; v: string; strong?: boolean }) {
     <div className="flex justify-between gap-4"><dt className="text-paper-dim">{k}</dt><dd className={strong ? "font-medium" : ""}>{v}</dd></div>
   );
 }
+
+/** Recibo de un indicador oficial del reto (estado agregado de la cohorte; nunca ids ni valores). Lo bloqueado se declara, no se simula. */
+export function IndicatorSlip({ ind, name, onClose }: { ind: import("@/lib/api").Indicator | undefined; name: string; onClose: () => void }) {
+  const blocked = !ind || !!ind.bloqueado;
+  const n = ind?.personas_con_linea_base ?? 0;
+  return (
+    <aside aria-label={`Receipt for ${name}`} className="absolute right-8 top-0 z-20 w-[22rem]">
+      <div className="mx-4 h-[5px] rounded-b bg-black shadow-[0_2px_0_rgb(255_255_255/.06)]" />
+      <div className="slot-in relative -mt-px rotate-[0.6deg] bg-paper px-6 pb-6 pt-5 font-mono text-[12px] leading-relaxed text-paper-ink shadow-[0_24px_50px_-12px_rgb(0_0_0/.7)]">
+        <button onClick={onClose} aria-label="Close receipt" className="absolute right-4 top-3 text-paper-dim hover:text-paper-ink">×</button>
+        <div className="flex items-baseline justify-between border-b border-dashed border-paper-dim/50 pb-3">
+          <span className="font-display text-[1.7rem] leading-none">{name}</span>
+          <span className="text-[10px] uppercase tracking-[0.18em] text-paper-dim">official indicator</span>
+        </div>
+        {blocked ? (
+          <p className="mt-4 text-[12px]"><b>No data.</b> {ind?.bloqueado ?? "Not loaded."} <b>The absence is data</b>: nothing is drawn, nothing is invented.</p>
+        ) : (
+          <>
+            <dl className="mt-4 space-y-1.5">
+              <Row k="people with a baseline" v={String(n)} />
+              <Row k="green with receipt" v={String(ind!.verde)} />
+              <Row k="alarm with receipt" v={String(ind!.alarma)} strong={(ind!.alarma ?? 0) > 0} />
+              <Row k="too few days to say" v={String(ind!.sin_datos_suficientes)} />
+              <Row k="window coverage" v={ind!.cobertura_media != null ? `${Math.round(ind!.cobertura_media * 100)} %` : "—"} />
+            </dl>
+            <p className="mt-4 border-t border-dashed border-paper-dim/50 pt-3 text-[11px]">
+              <span className="uppercase tracking-[0.14em] text-paper-dim">a green means </span>
+              it could have seen a drop of ≥ {ind!.mde_sigma_mediana}σ with {Math.round((ind!.potencia_declarada ?? 0) * 100)} % power, given the days observed — nothing more.
+            </p>
+            <p className="mt-2 text-[11px]"><span className="uppercase tracking-[0.14em] text-paper-dim">dot colour </span>orange ⇔ at least one active alarm with a receipt; sage otherwise.</p>
+            {ind!.indicador === "fc" && <p className="mt-2 text-[11px] font-medium">Known limit: daily pulse is autocorrelated, and this detector raised false alarms in 7 of 144 real pulse windows (act FB-009). Treat an alarm as a question.</p>}
+          </>
+        )}
+        <div className="mt-5 flex items-center justify-between">
+          <span className="text-[10px] uppercase tracking-[0.14em] text-paper-dim">{blocked ? "source · /api/indicadores" : "everyday people · not astronauts"}</span>
+          <Stamp banner={blocked ? "REAL" : (ind!.banner ?? "REAL")} />
+        </div>
+      </div>
+    </aside>
+  );
+}

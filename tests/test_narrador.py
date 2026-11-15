@@ -55,3 +55,15 @@ def test_escenario_se_dice_como_simulado_y_sin_numeros_ajenos():
     l = n.escenario(d)
     assert l.banner == "SIMULADO" and l.clave == "escenario-G3" and "Nothing here is real" in l.texto
     assert numeros(l.texto) == {3, 7, 33}                                  # G3, Kp 7.00, 11 pasos × 3 h
+
+
+def test_indicadores_dice_estados_y_lo_bloqueado_queda_vacio():
+    d = {"banner": "REAL", "indicadores": [
+        {"indicador": "fc", "bloqueado": None, "personas_con_linea_base": 70, "verde": 50, "alarma": 8, "sin_datos_suficientes": 12},
+        {"indicador": "sueño", "bloqueado": None, "personas_con_linea_base": 60, "verde": 40, "alarma": 5, "sin_datos_suficientes": 15},
+        {"indicador": "presión", "bloqueado": "x"}, {"indicador": "glucosa", "bloqueado": "x"},
+        {"indicador": "temperatura", "bloqueado": "x"}, {"indicador": "ánimo", "bloqueado": "x"}]}
+    l = n.indicadores(d)
+    assert numeros(l.texto) == {70, 50, 8, 12, 60, 40, 5, 15} and "nothing is simulated" in l.texto and "not astronauts" in l.texto
+    assert "two have a verified" in l.texto and "other four stay empty" in l.texto and l.banner == "REAL"
+    assert "absence" in n.indicadores({"banner": "REAL", "indicadores": [{"indicador": "fc", "bloqueado": None, "personas_con_linea_base": 0}]}).texto

@@ -61,3 +61,9 @@ export type Capsule = {
   version: string; banner: Banner; hipotesis: string; prueba_protocolo: string; preregistro: { hash: string; semilla: number };
   numeros: Record<string, number | string>; senal_refutadora: string; veredicto: string; limites: string;
 };
+
+export type Indicator = {
+  indicador: string; bloqueado: string | null; personas_con_linea_base?: number; verde?: number; sin_datos_suficientes?: number; alarma?: number;
+  cobertura_media?: number | null; mde_sigma_mediana?: number | null; unidad?: string | null; potencia_declarada?: number | null; banner?: Banner; fuente?: string;
+};
+export const INDICATOR_NAMES: Record<string, string> = { fc: "Heart rate", "sueño": "Sleep", "presión": "Blood pressure", glucosa: "Glucose", temperatura: "Temperature", "ánimo": "Mood" };

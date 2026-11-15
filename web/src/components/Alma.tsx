@@ -4,8 +4,8 @@ import type { Banner } from "@/lib/api";
 import { Stamp } from "./Stamp";
 
 type Entry = { id: string; texto: string; fuente: string; banner: Banner; audio: string };
-type Ctx = { say: (key: string) => void; stop: () => void; has: (key: string) => boolean; line: Entry | null; shown: string; speaking: boolean };
-const AlmaCtx = createContext<Ctx>({ say() {}, stop() {}, has: () => false, line: null, shown: "", speaking: false });
+type Ctx = { say: (key: string) => void; stop: () => void; has: (key: string) => boolean; line: Entry | null; shown: string; speaking: boolean; muted: boolean; setMuted: (m: boolean) => void };
+const AlmaCtx = createContext<Ctx>({ say() {}, stop() {}, has: () => false, line: null, shown: "", speaking: false, muted: false, setMuted() {} });
 export const useAlma = () => useContext(AlmaCtx);
 
 /**
@@ -18,10 +18,13 @@ export function AlmaProvider({ children }: { children: React.ReactNode }) {
   const [shown, setShown] = useState("");
   const [speaking, setSpeaking] = useState(false);
   const [awake, setAwake] = useState(false);
+  const [muted, setMutedState] = useState(false);
   const audio = useRef<HTMLAudioElement | null>(null);
   const raf = useRef<number>(0);
 
   useEffect(() => { if (new URLSearchParams(window.location.search).has("awake")) setAwake(true); }, []); // ?awake salta la puerta (capturas, grabaciones)
+  useEffect(() => { try { setMutedState(localStorage.getItem("alma-muted") === "1"); } catch { /* sin almacenamiento: sigue con sonido */ } }, []);
+  const setMuted = useCallback((m: boolean) => { setMutedState(m); if (audio.current) audio.current.muted = m; try { localStorage.setItem("alma-muted", m ? "1" : "0"); } catch { /* idem */ } }, []);
   useEffect(() => { fetch("/voice/manifest.json").then((r) => (r.ok ? r.json() : {})).then(setBook).catch(() => setBook({})); }, []);
 
   const stop = useCallback(() => { cancelAnimationFrame(raf.current); audio.current?.pause(); setSpeaking(false); }, []);
@@ -29,7 +32,7 @@ export function AlmaProvider({ children }: { children: React.ReactNode }) {
     const e = book[key];
     if (!e) return;
     stop(); setLine(e); setShown("");
-    const a = new Audio(e.audio); audio.current = a;
+    const a = new Audio(e.audio); a.muted = muted; audio.current = a;            // en silencio el audio corre igual: los subtítulos se sincronizan con él
     const tick = () => {
       const f = a.duration ? Math.min(1, a.currentTime / (a.duration * 0.96)) : 0;
       setShown(e.texto.slice(0, Math.ceil(e.texto.length * f)));
@@ -39,10 +42,10 @@ export function AlmaProvider({ children }: { children: React.ReactNode }) {
     a.onended = () => { setSpeaking(false); setShown(e.texto); };
     a.onerror = () => { setShown(e.texto); };                      // sin audio: el subtítulo aparece entero
     a.play().catch(() => setShown(e.texto));
-  }, [book, stop]);
+  }, [book, stop, muted]);
 
   return (
-    <AlmaCtx.Provider value={{ say, stop, has: (k) => k in book, line, shown, speaking }}>
+    <AlmaCtx.Provider value={{ say, stop, has: (k) => k in book, line, shown, speaking, muted, setMuted }}>
       {children}
       {!awake && <WakeGate onWake={() => setAwake(true)} />}
     </AlmaCtx.Provider>
@@ -65,7 +68,8 @@ function WakeGate({ onWake }: { onWake: () => void }) {
 
 /** El orbe de ALMA + subtítulos. Siempre visible, abajo a la izquierda. `room` = clave de la línea de esta sala. */
 export function AlmaDock({ room }: { room?: string }) {
-  const { say, line, shown, speaking, has } = useAlma();
+  const { say, line, shown, speaking, has, muted, setMuted } = useAlma();
+  const sound = <button onClick={() => setMuted(!muted)} aria-pressed={muted} className="pointer-events-auto text-ink-faint hover:text-ink">sound {muted ? "off" : "on"}</button>;
   const idle = !line;
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-bg from-55% via-bg/80 to-transparent pb-6 pl-6 pt-14"><div className="flex max-w-[54rem] items-end gap-4">
@@ -77,12 +81,12 @@ export function AlmaDock({ room }: { room?: string }) {
       </button>
       <div className="min-h-[3.5rem]">
         {idle ? (
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint">ALMA · tap the light to listen</p>
+          <p className="flex gap-5 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint"><span>ALMA · tap the light to listen</span>{sound}</p>
         ) : (
           <>
             <p aria-live="polite" className={`font-display text-[1.45rem] italic leading-snug text-ink ${speaking ? "caret" : ""}`}>{shown}</p>
             <p className="mt-2 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-faint">
-              <span>source · {line.fuente}</span><Stamp banner={line.banner} />
+              <span>source · {line.fuente}</span><Stamp banner={line.banner} />{sound}
             </p>
           </>
         )}

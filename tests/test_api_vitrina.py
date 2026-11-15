@@ -122,3 +122,61 @@ def test_api_escenario_es_simulada_reproducible_y_no_toca_la_base():
     assert d == get("/api/tormenta/escenario/G3/").json()
     assert get("/api/tormenta/escenario/G7/").status_code == 404
     assert EventoClimaEspacial.objects.count() == antes                             # solo lectura: nada se escribe
+
+
+# --- los 6 indicadores oficiales como estados agregados (reto NASA) -------------------------------------------------
+@pytest.mark.django_db
+def test_indicadores_agregados_sin_ids_y_los_bloqueados_no_se_simulan():
+    from pathlib import Path
+
+    from django.core.management import call_command
+    call_command("sembrar_verdes", csv=str(RAIZ / "data/fixtures/lifesnaps_diario_extracto.csv"))
+    call_command("sembrar_verdes", csv=str(RAIZ / "data/fixtures/lifesnaps_diario_extracto.csv"))        # idempotente
+    r = get("/api/indicadores/")
+    d = r.json()
+    por = {i["indicador"]: i for i in d["indicadores"]}
+    assert set(por) == {"presión", "fc", "glucosa", "temperatura", "sueño", "ánimo"} and d["banner"] == "REAL"
+    for k in ("presión", "glucosa", "temperatura", "ánimo"):
+        assert por[k]["bloqueado"] and "nothing is simulated" in por[k]["bloqueado"] and "personas_con_linea_base" not in por[k]
+    for k in ("fc", "sueño"):
+        assert por[k]["bloqueado"] is None and por[k]["personas_con_linea_base"] == 1 and por[k]["fuente"].endswith("not astronauts")
+        assert por[k]["verde"] + por[k]["sin_datos_suficientes"] + por[k]["alarma"] == 1
+    assert "621e2f9167b776a240011ccb" not in r.content.decode()                       # el id pseudónimo jamás sale
+    assert APIClient().post("/api/indicadores/", {}).status_code == 405
+
+
+@pytest.mark.django_db
+def test_sembrar_verdes_sin_csv_se_niega_no_simula():
+    from django.core.management import call_command
+    from django.core.management.base import CommandError
+    with pytest.raises(CommandError):
+        call_command("sembrar_verdes", csv="/no/existe.csv")
+
+
+@pytest.mark.django_db
+def test_ingestar_swpc_cada_repite_y_se_detiene_sin_red(monkeypatch):
+    """`--cada N` repite la ingesta (LA TORMENTA en vivo). Sin red: cada feed deja su DC-13 de fallo; el bucle duerme N s entre rondas."""
+    from django.core.management import call_command
+
+    from apps.ingesta.models import IntentoIngesta
+    from apps.ingesta.management.commands import ingestar_swpc as cmd
+    llamadas = []
+
+    from datetime import UTC, datetime, timedelta
+
+    from src.ingesta.cliente import Respuesta
+    reloj = iter(datetime(2026, 11, 15, 12, 0, tzinfo=UTC) + timedelta(seconds=i * 10) for i in range(10))
+
+    def sin_red(*a, **k):
+        return Respuesta(None, b"", "OSError: sin red")
+
+    def duerme(s):
+        llamadas.append(s)
+        if len(llamadas) == 2:
+            raise KeyboardInterrupt
+    monkeypatch.setattr(cmd, "fetch_http", sin_red)
+    monkeypatch.setattr(cmd, "ahora_utc", lambda: next(reloj))
+    monkeypatch.setattr(cmd.time, "sleep", duerme)
+    with pytest.raises(KeyboardInterrupt):
+        call_command("ingestar_swpc", "kp", cada=7)
+    assert llamadas == [7, 7] and IntentoIngesta.objects.filter(resultado="fallo").count() == 2   # 2 rondas completas antes de la interrupción; cada fallo es dato

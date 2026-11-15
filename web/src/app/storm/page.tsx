@@ -34,8 +34,8 @@ export default function Storm() {
   return (
     <Room voice={scale ? undefined : "tormenta"}>
       {scale && sc && <div className="absolute inset-x-0 top-0 z-10 border-b border-warn/60 bg-warn/10 py-1.5 text-center font-mono text-[11px] uppercase tracking-[0.3em] text-warn">SIMULATED UNIVERSE — DAY {sc.dia_habitat}</div>}
-      <div className="mx-auto grid h-full max-w-6xl grid-cols-[minmax(0,34rem)_1fr] items-center gap-14 px-10 pb-28 pt-6">
-        <figure className="relative">
+      <div className="mx-auto grid h-full max-w-6xl grid-cols-[minmax(0,34rem)_1fr] items-center gap-14 px-10 pb-28 pt-14">
+        <figure className="relative" style={{ width: "min(100%, calc(100vh - 19rem))" }}>
           <div className={`relative aspect-square w-full overflow-hidden rounded-full shadow-[0_0_120px_10px_rgb(255_120_40/.18)] transition-opacity duration-700 ${scale ? "opacity-35" : ""}`}>
             {/* hotlink al último SDO; si no hay red, la instantánea local con su marca de tiempo */}
             {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -233,3 +233,34 @@ class Capsulas(SoloLectura):
     def get(self, request):
         from src.fabrica.capsula import capsulas
         return Response({"capsulas": [c.model_dump(mode="json") for c in capsulas(Path(settings.RAIZ))]})
+
+
+class Indicadores(SoloLectura):
+    """Los 6 indicadores oficiales del reto, como ESTADOS agregados (nunca ids ni valores). Un indicador sin σ de sensor verificada o sin canal
+    de captura NO se simula: se declara bloqueado con su motivo. Datos: personas cotidianas (LifeSnaps), NO astronautas."""
+
+    def get(self, request):
+        from apps.motor.models import Alarma
+        from src.contratos.comunes import Indicador, IndicadorSensor
+        from src.ingesta.incertidumbre import SinIncertidumbreVerificada, sigma_de
+        out = []
+        for ind in Indicador:
+            base = {"indicador": ind.value}
+            if ind is Indicador.ANIMO:
+                out.append({**base, "bloqueado": "No self-report channel yet (DC-02 needs real users); nothing is simulated."})
+                continue
+            try:
+                sigma_de(IndicadorSensor(ind.value))
+            except SinIncertidumbreVerificada:
+                out.append({**base, "bloqueado": "No verified sensor uncertainty for this indicator (docs/politica-de-datos.md); nothing is simulated."})
+                continue
+            rv = [r for r in ReciboVerde.objects.filter(indicador=ind.value, canal="media") if r.sujeto != HABITAT]
+            al = Alarma.objects.filter(indicador=ind.value, estado="activa").count()
+            estados = Counter(r.estado for r in rv)
+            mdes = sorted(r.mde_sigma for r in rv if r.mde_sigma is not None)
+            out.append({**base, "bloqueado": None, "personas_con_linea_base": len(rv) + al, "verde": estados.get("verde", 0),
+                        "sin_datos_suficientes": estados.get("sin_datos_suficientes", 0), "alarma": al,
+                        "cobertura_media": (sum(r.dias_validos / r.ventana_dias for r in rv) / len(rv)) if rv else None,
+                        "mde_sigma_mediana": mdes[len(mdes) // 2] if mdes else None, "unidad": rv[0].unidad if rv else None,
+                        "potencia_declarada": next((r.potencia_declarada for r in rv if r.potencia_declarada is not None), None), "banner": Banner.REAL.value, "fuente": "LifeSnaps (Zenodo 7229547): everyday people, not astronauts"})
+        return Response({"banner": Banner.REAL.value, "indicadores": out})

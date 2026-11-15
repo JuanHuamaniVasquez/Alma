@@ -2,6 +2,8 @@
 
 Datos REALES de NOAA SWPC. Cada feed deja su DC-13 (también si falla) y sus eventos DC-03.
 """
+import time
+
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
@@ -15,9 +17,17 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("feeds", nargs="*", default=list(FEEDS))
+        parser.add_argument("--cada", type=int, default=0, help="repetir cada N segundos (0 = una sola vez); la ingesta periódica de LA TORMENTA en vivo")
 
     def handle(self, *args, **opts):
-        for nombre in opts["feeds"]:
+        while True:
+            self._una_vez(opts["feeds"])
+            if not opts["cada"]:
+                return
+            time.sleep(opts["cada"])
+
+    def _una_vez(self, feeds):
+        for nombre in feeds:
             if nombre not in FEEDS:
                 self.stderr.write(f"feed desconocido: {nombre} (válidos: {', '.join(FEEDS)})")
                 continue

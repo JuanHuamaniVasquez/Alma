@@ -19,7 +19,7 @@ WEB = RAIZ / "web" / "src"
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize("url", ["/api/libro/dias/", "/api/alarmas/", "/api/residuo/", "/api/verdes/", "/api/tormenta/", "/api/tormenta/escenario/G2/"])
+@pytest.mark.parametrize("url", ["/api/libro/dias/", "/api/alarmas/", "/api/residuo/", "/api/verdes/", "/api/tormenta/", "/api/tormenta/escenario/G2/", "/api/indicadores/"])
 def test_1_toda_respuesta_con_datos_lleva_banner(url):
     d = APIClient().get(url).json()
     assert d["banner"] in ("REAL", "SIMULADO")
@@ -45,7 +45,7 @@ def test_2_cada_pantalla_declara_o_hereda_su_banner():
 
 def test_3_cada_linea_de_alma_tiene_fuente_banner_y_audio():
     m = json.loads((WEB.parent / "public" / "voice" / "manifest.json").read_text(encoding="utf-8"))
-    assert {"tormenta", "demo_kill", "fundicion", "actas", "residuo"} <= set(m) and any(k.startswith("libro-") for k in m) and any(k.startswith("escenario-") for k in m)
+    assert {"tormenta", "demo_kill", "fundicion", "actas", "residuo", "indicadores"} <= set(m) and any(k.startswith("libro-") for k in m) and any(k.startswith("escenario-") for k in m)
     for k, e in m.items():
         assert e["fuente"] and e["banner"] in ("REAL", "SIMULADO"), k
         assert (WEB.parent / "public" / e["audio"].lstrip("/")).is_file(), k

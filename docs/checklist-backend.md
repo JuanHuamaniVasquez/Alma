@@ -27,7 +27,7 @@
 | M4 Fundición | 5 tarjetas DC-12, 1 detector circulado, Faro F-001, Adversario, cápsulas DC-07 | MP-15/M2.22 para el detector de varianza |
 | M5 Entrega | Checklist de honestidad ejecutable, borradores de formulario/video/ruta/preprint, revisión de literatura (PubMed+NTRS) | URLs, video, ensayo, IEEE/Scholar, revisión humana |
 
-Tests: **373 pytest verdes** (HEAD en `git log`). `sysmap check`: nada peor que la línea base.
+Tests: **382 pytest verdes** (HEAD en `git log`). `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-14) — `src/contratos/`
 

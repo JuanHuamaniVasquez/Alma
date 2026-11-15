@@ -81,10 +81,10 @@ def libro_del_dia(d: dict) -> Linea:
 
 
 def todas(*, demo: dict | None = None, fund: dict | None = None, storm: dict | None = None, act: dict | None = None,
-          libro: dict | None = None, resid: dict | None = None) -> list[Linea]:
+          libro: dict | None = None, resid: dict | None = None, ind: dict | None = None) -> list[Linea]:
     """Todas las líneas que los datos disponibles permiten; lo que falta se omite (la UI muestra la ausencia)."""
     out = []
-    for f, x in ((libro_del_dia, libro), (tormenta, storm), (demo_kill, demo), (fundicion, fund), (actas, act), (residuo, resid)):
+    for f, x in ((libro_del_dia, libro), (tormenta, storm), (demo_kill, demo), (fundicion, fund), (actas, act), (residuo, resid), (indicadores, ind)):
         if x is not None:
             out.append(f(x))
     return out
@@ -114,3 +114,20 @@ def escenario(d: dict) -> Linea:
     texto = (f"Simulated scenario. A {d['escala']} storm builds to a K index of {d['pico_kp']:.2f} and fades over {horas} hours. "
              f"Nothing here is real. The recipe and the public seed are printed, so anyone can regenerate it.")
     return Linea(f"escenario-{d['escala']}", texto, f"simulator · seed {d['semilla']} · sha256 {_corto(d['eventos'][0]['hash_lectura_cruda'])}", "SIMULADO")
+
+
+_NUM = {0: "zero", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six"}
+_NOM = {"fc": "heart rate", "sueño": "sleep", "presión": "blood pressure", "glucosa": "glucose", "temperatura": "temperature", "ánimo": "mood"}
+
+
+def indicadores(d: dict) -> Linea:
+    """Los indicadores oficiales como ESTADOS: solo cuenta (personas, verdes, alarmas); lo bloqueado se dice bloqueado, nunca se rellena."""
+    todos = d["indicadores"]
+    activos = [i for i in todos if not i["bloqueado"] and i["personas_con_linea_base"]]
+    if not activos:
+        return Linea("indicadores", "I hold no personal baselines yet. The absence is recorded, not filled in.", "/api/indicadores · DC-14", d["banner"])
+    partes = [(f"{_NOM[i['indicador']]}: {i['verde']} of {i['personas_con_linea_base']} people with a personal baseline have a green with a receipt, "
+               f"{i['alarma']} an alarm, and {i['sin_datos_suficientes']} too few days to say") for i in activos]
+    texto = (f"Of the {_NUM[len(todos)]} official indicators, {_NUM[len(activos)]} have a verified sensor uncertainty. For {'; for '.join(partes)}. "
+             f"The other {_NUM[len(todos) - len(activos)]} stay empty on purpose: nothing is simulated. This is everyday people, not astronauts.")
+    return Linea("indicadores", texto, "/api/indicadores · DC-14 · LifeSnaps", d["banner"])

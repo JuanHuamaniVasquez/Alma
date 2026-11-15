@@ -9,6 +9,7 @@ urlpatterns = [
     path("residuo/", views.Residuo.as_view(), name="residuo"),
     path("cierres/dia/<int:dia>/", views.CierresDia.as_view(), name="cierres-dia"),
     path("verdes/", views.Verdes.as_view(), name="verdes"),
+    path("indicadores/", views.Indicadores.as_view(), name="indicadores"),
     path("fundicion/", views.Fundicion.as_view(), name="fundicion"),
     path("actas/", views.Actas.as_view(), name="actas"),
     path("capsulas/", views.Capsulas.as_view(), name="capsulas"),
