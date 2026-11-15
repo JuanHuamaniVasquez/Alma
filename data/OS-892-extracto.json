@@ -11,13 +11,27 @@
   "extracto_verbatim": "Exercise slows bone loss in microgravity but even when astronauts adopt a rigorous exercise regimen, they continue to lose about 1 - 2% of their bone mass a month.",
   "parametros": {
     "perdida_masa_hueso_pct_mes": {
-      "valor": [1.0, 2.0],
+      "valor": [
+        1.0,
+        2.0
+      ],
       "contexto": "astronautas con regimen riguroso de ejercicio",
-      "cita": "descripcion oficial del experimento OS-892"
+      "cita": "campo objectives del experimento OS-892 (antecedentes, no resultado); ancla primaria de la cifra: NASA HRP 1-1.5 % densidad/mes"
     }
   },
-  "companeros": ["NASA SVS MABL-B 31382", "Stavnichuk 2020 npj Microgravity 6:13", "Swanson 2017/2018 (anclas C-18/C-19)"],
-  "verificado": "2026-11-15",
-  "nota_hash": "el loader computa hash_lectura_cruda (SHA-256 del JSON crudo) al ingestar este fixture",
-  "regla_uso": "citable como fenomeno documentado; NO citable como archivo de datos hasta que OSDR publique los resultados"
+  "companeros": [
+    "NASA SVS MABL-B 31382",
+    "Stavnichuk 2020 npj Microgravity 6:13",
+    "Swanson 2017/2018 (anclas C-18/C-19)"
+  ],
+  "verificado": "2026-11-15T05:10:34Z (Claude, API geode-py)",
+  "nota_hash": "hash_lectura_cruda = SHA-256 de la respuesta cruda de la API, archivada en data/lecturas/ (MP-3)",
+  "regla_uso": "citable como fenomeno documentado; NO citable como archivo de datos hasta que OSDR publique los resultados",
+  "experimentID": "80NSSC21K0299",
+  "fuente_api": "https://osdr.nasa.gov/geode-py/ws/repo/experiments/OS-892",
+  "respuesta_cruda": "data/lecturas/osdr_OS-892_20261115T051034Z.json",
+  "hash_lectura_cruda": "d0aedb056b7761d8ae09ec6926f28de44088c96eccb8fc93acebd32fa6d62f79",
+  "control_negativo": "OS-999999 -> HTTP 403",
+  "archivos_publicos": 0,
+  "studies_asociados": []
 }

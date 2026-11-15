@@ -19,7 +19,7 @@
 | Indicador | Fuente / número |
 |---|---|
 | Presión, FC, glucosa, temperatura, sueño, ánimo | Los 6 oficiales del reto |
-| Hueso | Mechanostat Frost 2003 (1500–3000 με modelado / <100–300 με reabsorción); pérdida 1–2 %/mes (NASA OSDR OS-892); B(t+1)=B(t)·e^(−k)+α·carga(t); k=1 %/mes → −5,8 % semestre |
+| Hueso | Mechanostat Frost 2003 (1500–3000 με modelado / <100–300 με reabsorción); pérdida de densidad ósea **1–1,5 %/mes** en misiones de 4–6 meses (ancla primaria: [NASA HRP](https://www.nasa.gov/reference/risk-of-spaceflight-induced-bone-changes/)); cita secundaria: *"they continue to lose about 1 – 2% of their bone mass a month"* ([NASA OSDR OS-892](https://osdr.nasa.gov/geode-py/ws/repo/experiments/OS-892), texto de antecedentes del experimento, no un resultado); B(t+1)=B(t)·e^(−k)+α·carga(t); k=1 %/mes → −5,8 % semestre |
 | Radiación | 600 mSv carrera (NASA-STD-3001); 250 mSv/evento (OCHMO-TB-020); Hassler 2014: 1,84 mSv/día tránsito, 0,64 mSv/día superficie |
 
 ### C. Tres canales de entrada
@@ -112,7 +112,7 @@ Lo que existe hoy (real): **flight rules** (cientos de reglas if-then pre-acorda
 - **Tercer modo — el PREMORTEM** (Mitchell, Russo & Pennington 1989, *J. Behavioral Decision Making*; popularizado por Klein): la retrospectiva prospectiva (imaginar el fallo ya ocurrido y escribir su historia) identifica más causas que el análisis hacia adelante (~30 % en el estudio original). La tripulación escribe su premortem cada 30 días y el motor mina esas narrativas para encontrar **balances no instrumentados** — el premortem es el generador humano del punto ciego programado.
 
 ### 6.2 Detección → el residuo lento (la mayor brecha técnica encontrada)
-- Nuestro |r| > 2σ solo caza anomalías **agudas**. Las lentas — pérdida ósea de 1–2 %/mes, una colonia de moho creciendo, CO₂ crónicamente alto — pasan bajo el umbral punto a punto.
+- Nuestro |r| > 2σ solo caza anomalías **agudas**. Las lentas — pérdida ósea de ~1–1,5 %/mes (NASA HRP), una colonia de moho creciendo, CO₂ crónicamente alto — pasan bajo el umbral punto a punto.
 - Solución con 70 años de vigencia: **CUSUM (Page 1954, Biometrika)** y EWMA — estadísticamente más eficientes para desplazamientos pequeños y sostenidos (NIST/NCSS; usado en control de calidad quirúrgica).
 - **Veredicto: el motor gana dos constantes de tiempo — 2σ (agudo) + CUSUM (lento). El 8º pasajero real (el hongo) es una firma CUSUM, no un pico.**
 

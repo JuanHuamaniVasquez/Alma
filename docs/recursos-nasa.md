@@ -22,7 +22,7 @@
 |---|---|---|---|---|
 | NOAA SWPC — Kp planetario | https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json | 200 | IN-3, Canal C, base de FB-002 | Leído por mí 2026-11-15: último registro `2026-11-15T00:00:00 Kp=2.00`, coincide con `data/SWPC-fuentes.md` |
 | NOAA SWPC — otros 5 feeds (plasma, mag, rayos X, protones, alertas) | ver `SWPC-fuentes.md` | — | LA TORMENTA | **No verificados por mí todavía** |
-| NASA OSDR — experimento OS-892 | https://osdr.nasa.gov/bio/repo/data/experiments/OS-892 | 200 | Fenómeno documentado (pérdida ósea 1–2 %/mes); **0 archivos de datos publicados** | Página responde; la cita textual aún no la he comparado yo |
+| NASA OSDR — experimento OS-892 | https://osdr.nasa.gov/bio/repo/data/experiments/OS-892 · API https://osdr.nasa.gov/geode-py/ws/repo/experiments/OS-892 | 200 | Experimento real y público; **0 archivos de datos publicados**; cita de antecedentes 1–2 % de masa ósea/mes | **Verificado (API + control negativo)**. Antes: Página responde; la cita textual aún no la he comparado yo |
 
 Regla de uso de OS-892: citable como fenómeno documentado, **no** como archivo de datos (no hay archivos).
 
