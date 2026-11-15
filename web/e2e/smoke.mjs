@@ -54,6 +54,18 @@ check("la flecha derecha va a Machine Room", true);
 await page.keyboard.press("ArrowLeft");
 await page.waitForFunction(() => location.pathname === "/", { timeout: 8000 });
 
+// 2b · la tripulación de 5: elegir, dentro / fuera
+await page.waitForFunction(() => document.querySelectorAll('nav[aria-label="Crew"] ul button').length === 5, { timeout: 15000 }).catch(() => {});   // el roster llega de la API
+const nCrew = await page.$$eval('nav[aria-label="Crew"] ul button', (b) => b.length);
+check("la tripulación muestra 5 personajes", nCrew === 5, String(nCrew));
+await page.evaluate(() => document.querySelectorAll('nav[aria-label="Crew"] ul button')[1].click());
+await page.waitForFunction(() => document.querySelectorAll('nav[aria-label="Crew"] ul button')[1].getAttribute("aria-pressed") === "true", { timeout: 5000 });
+await clicTexto("button", "Outside");
+await esperarTexto("NASA Z-2 prototype suit", 8000);
+check("«Outside» cambia al traje Z-2 y sigue rotulado «not a real person»", (await texto()).toLowerCase().includes("not a real person"));
+await clicTexto("button", "Inside");
+await esperarTexto("Stylized fictional character", 8000);
+
 // 3 · figura humana: modo Body, ánimo en 3 toques
 await clicTexto("button", "Body");
 await page.waitForSelector('button[aria-label^="Mood"]', { timeout: 20000 });
@@ -73,7 +85,7 @@ await page.evaluate(() => document.querySelector('button[aria-label^="Heart rate
 await page.waitForFunction((n) => window.__audio.length > n, { timeout: 15000 }, hablo0).then(() => check("tocar el marcador de frecuencia cardíaca hace hablar a ALMA", true), () => check("tocar el marcador de frecuencia cardíaca hace hablar a ALMA", false));
 await esperarTexto("people with a baseline", 8000);
 const t = await texto();
-check("el recibo de frecuencia cardíaca declara su límite conocido", t.toLowerCase().includes("known limit") && t.toLowerCase().includes("not astronauts"));
+check("el recibo de frecuencia cardíaca declara su límite conocido", t.toLowerCase().includes("known limit") && t.toLowerCase().includes("not astronauts") && t.toLowerCase().includes("stand-in"));
 await clicTexto("button", "Glucose").catch(() => {});
 await page.evaluate(() => document.querySelector('button[aria-label^="Glucose"]').click());
 await esperarTexto("The absence is data", 8000);
@@ -82,7 +94,7 @@ check("glucosa se declara bloqueada, no simulada", (await texto()).toLowerCase()
 // 3b · subtítulos: se pueden apagar y el texto sigue disponible para lectores de pantalla (sr-only)
 await clicTexto("button", "subtitles on");
 await page.waitForFunction(() => [...document.querySelectorAll("button")].some((b) => b.textContent.trim() === "subtitles off"), { timeout: 5000 });
-check("«subtitles off» oculta el texto a la vista pero lo deja en el DOM", await page.$eval("p[aria-live]", (e) => getComputedStyle(e).position === "absolute" && e.textContent.length > 0));
+await page.waitForFunction(() => { const e = document.querySelector("p[aria-live]"); return e && getComputedStyle(e).position === "absolute" && e.textContent.length > 0; }, { timeout: 8000 }).then(() => check("«subtitles off» oculta el texto a la vista pero lo deja en el DOM", true), () => check("«subtitles off» oculta el texto a la vista pero lo deja en el DOM", false));
 await clicTexto("button", "subtitles off");
 
 // 4 · la demo kill

@@ -65,6 +65,7 @@ export type Capsule = {
 export type Indicator = {
   indicador: string; bloqueado: string | null; personas_con_linea_base?: number; verde?: number; sin_datos_suficientes?: number; alarma?: number;
   cobertura_media?: number | null; mde_sigma_mediana?: number | null; unidad?: string | null; potencia_declarada?: number | null; banner?: Banner; fuente?: string;
+  crew?: "verde" | "alarma" | "sin_datos_suficientes";   // estado del SUSTITUTO del tripulante elegido (solo se rellena en la vista de tripulante)
   canal?: string; reportes?: number; personas?: number; distribucion?: Record<string, number>; duracion_mediana_s?: number | null; escala?: string;
 };
 export const INDICATOR_NAMES: Record<string, string> = { fc: "Heart rate", "sueño": "Sleep", "presión": "Blood pressure", glucosa: "Glucose", temperatura: "Temperature", "ánimo": "Mood" };
@@ -77,3 +78,7 @@ export function crewId(): string {
     return id;
   } catch { return "crew-" + Math.random().toString(16).slice(2, 10); }
 }
+
+export type CrewMember = { indicativo: string; rol: string; color: string; piel: string; pelo: string; peinado: string; complexion: number; estado: { fc: string; "sueño": string } | null };
+export type CrewPayload = { banner: Banner; aviso: string; tripulacion: CrewMember[] };
+export const CREW_STATE_EN: Record<string, string> = { verde: "a green with a receipt", alarma: "an alarm with a receipt — a question, not a verdict", sin_datos_suficientes: "too few days to say" };

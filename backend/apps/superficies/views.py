@@ -285,3 +285,29 @@ class ActaArchivo(SoloLectura):
         if not ruta.is_file():
             raise Http404("no existe esa acta")
         return HttpResponse(ruta.read_bytes(), content_type="text/markdown; charset=utf-8")
+
+
+class Tripulacion(SoloLectura):
+    """La tripulación SIMULADA de 5 (personajes ficticios) con el estado corporal de un SUSTITUTO real y anónimo (LifeSnaps, no astronautas) por tripulante.
+    Solo ESTADOS por indicador (verde / alarma / sin datos suficientes): nunca ids ni valores. El sustituto se elige con una semilla pública."""
+
+    def get(self, request):
+        import random
+        import re
+
+        from apps.motor.models import Alarma
+        from src.libro.tripulacion import ROSTER, SEMILLA_SUSTITUTOS
+        estado: dict[str, dict[str, str]] = {}
+        for r in ReciboVerde.objects.filter(canal="media", indicador__in=["fc", "sueño"]).exclude(sujeto=HABITAT):
+            estado.setdefault(r.sujeto, {})[r.indicador] = r.estado                      # verde | sin_datos_suficientes
+        for a in Alarma.objects.filter(indicador__in=["fc", "sueño"], estado="activa"):
+            m = re.fullmatch(r"al-(.+)-(fc|sueño)-\d{4}-\d{2}-\d{2}", a.alarma_id)       # ids que genera estado_indicadores.evaluar_persona
+            if m:
+                estado.setdefault(m.group(1), {})[m.group(2)] = "alarma"
+        candidatos = sorted(p for p, e in estado.items() if {"fc", "sueño"} <= set(e))
+        elegidos = random.Random(SEMILLA_SUSTITUTOS).sample(candidatos, len(ROSTER)) if len(candidatos) >= len(ROSTER) else []
+        return Response({
+            "banner": Banner.REAL.value if elegidos else Banner.SIMULADO.value,
+            "aviso": "Crew members are FICTIONAL characters of a simulated universe. The body states shown are a stand-in: an anonymous everyday person (LifeSnaps), not an astronaut.",
+            "tripulacion": [{"indicativo": t.indicativo, "rol": t.rol, "color": t.color, "piel": t.piel, "pelo": t.pelo, "peinado": t.peinado, "complexion": t.complexion,
+                             "estado": ({"fc": estado[elegidos[i]]["fc"], "sueño": estado[elegidos[i]]["sueño"]} if elegidos else None)} for i, t in enumerate(ROSTER)]})

@@ -40,7 +40,7 @@ def lineas() -> list:
             if ln is not None or not any(a.clave == f"ring-{pres}" for a in anillos):
                 anillos.append(narrador.presupuesto(d["dia_habitat"], pres, ln, d["banner"]))
     inds = (g("/api/indicadores/") or {}).get("indicadores", [])
-    return base + esc + [narrador.libro_del_dia(d) for d in libros] + anillos + [narrador.indicador(i) for i in inds] + [narrador.astronauta()]
+    return base + esc + [narrador.libro_del_dia(d) for d in libros] + anillos + [narrador.indicador(i) for i in inds] + [narrador.astronauta()] + [narrador.tripulante(c) for c in (g("/api/tripulacion/") or {}).get("tripulacion", [])]
 
 
 def main() -> int:

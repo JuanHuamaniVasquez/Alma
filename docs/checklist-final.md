@@ -29,6 +29,7 @@
 - [x] Captura del ánimo en 3 toques (DC-02, tiempo de respuesta medido).
 - [x] Checklist de honestidad ejecutable, README, `scripts/demo.sh`, higiene del repo.
 - [x] **Ronda «poco tiempo»:** subtítulos compactos (se desvanecen a los 5 s; interruptor *subtitles on/off*; el sello y la fuente siguen visibles) · **ALMA habla al tocar** un anillo, un marcador del cuerpo o el astronauta · **«Verifícalo tú mismo»** en La Bóveda (recalcula el SHA-256 de cada acta en tu navegador).
+- [x] **Tripulación de 5** (versión estilizada): selector, dentro/fuera, estado corporal de un sustituto real y anónimo mostrado solo como estado y rotulado «stand-in».
 - [x] Arreglos de audio: la voz pedida antes del primer clic se encola; sin reinicios por doble disparo; el recibo ya no se cierra solo.
 
 ## D · Siguiente ronda (si hay tiempo; de más a menos impacto ante el jurado)
@@ -37,7 +38,8 @@
 | 1 | **Intenta engañar a ALMA** (el jurado dibuja una anomalía y ve qué detector la caza; incluye el zigzag que el CUSUM no ve) | medio | Reutiliza el Adversario (FB-018) |
 | 2 | **Buscador en La Bóveda** con filtros, paginación y «no encontré X; lo más parecido es…» | medio | Base para la voz |
 | 3 | **Preguntas habladas/escritas** respondidas solo desde nuestras actas, tarjetas y libro, con fuente (el modelo, si se usa, solo interpreta la pregunta) | alto | Reconocimiento de voz local para funcionar sin red |
-| 4 | **Tripulación de 5** con ficha (callsign, rol, parche, color), interior (uniforme + cara estilizada) y exterior (traje) | alto | **Decidir 4 o 5**: el simulador hoy usa 4 |
+| 4 | ~~Tripulación de 5~~ **HECHO (versión estilizada)**: 5 ficticios con indicativo, rol y color; dentro (uniforme + cara) y fuera (Z-2). Falta: realismo (ver D4b) | — | Decidido: 5. El simulador y `sembrar_demo` usan 5; FB-005-D1 conserva sus 4 (acta sellada) |
+| 4b | **Mejorar el realismo de los tripulantes**: descargar «Universal Base Characters» de Quaternius (CC0, itch.io: requiere navegador) y yo lo integro con uniforme | medio | Lo descargas tú y lo dejas en `web/public/models/`; yo adapto cara/uniforme/colores |
 | 5 | **Repetición de misión** (deslizador de los 14 días con ALMA narrando) | medio | |
 | 6 | **Hábitat 3D** (modelo de la ISS de NASA) con los bucles de aire y agua iluminados | alto | Licencia NASA 3D Resources |
 | 7 | **Exportar la cápsula en PDF** con enlace al repositorio | bajo | |

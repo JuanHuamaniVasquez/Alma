@@ -10,6 +10,7 @@ urlpatterns = [
     path("cierres/dia/<int:dia>/", views.CierresDia.as_view(), name="cierres-dia"),
     path("verdes/", views.Verdes.as_view(), name="verdes"),
     path("indicadores/", views.Indicadores.as_view(), name="indicadores"),
+    path("tripulacion/", views.Tripulacion.as_view(), name="tripulacion"),
     path("animo/", captura.Animo.as_view(), name="animo"),
     path("fundicion/", views.Fundicion.as_view(), name="fundicion"),
     path("actas/", views.Actas.as_view(), name="actas"),

@@ -178,3 +178,18 @@ def indicador(i: dict) -> Linea:
 def astronauta() -> Linea:
     return Linea("suit", "This is a NASA Z-2 prototype suit, not a real person. The rings are the ship's nine books; the Body view shows the six official indicators. "
                          "Touch a ring or a dot and I will explain it.", "NASA 3D Resources · Z-2", "REAL")
+
+
+_EST = {"verde": "a green with a receipt", "alarma": "an alarm with a receipt, which is a question, not a verdict", "sin_datos_suficientes": "too few days to say"}
+
+
+def tripulante(c: dict) -> Linea:
+    """Lo que ALMA dice al elegir un tripulante: es ficticio; su estado corporal es de un SUSTITUTO real y anónimo, y se dice."""
+    nombre = c["indicativo"].capitalize()
+    base = f"{nombre}, {c['rol'].lower()}. A fictional crew member of a simulated universe, and not a real person. "
+    if not c.get("estado"):
+        return Linea(f"crew-{c['indicativo']}", base + "I have no body states to show for this seat yet; nothing is invented.", "/api/tripulacion · X-15", "SIMULADO")
+    e = c["estado"]
+    texto = (base + f"The body states you see belong to a stand-in, an anonymous everyday person and not an astronaut. Heart rate: {_EST[e['fc']]}. "
+             f"Sleep: {_EST[e['sueño']]}.")
+    return Linea(f"crew-{c['indicativo']}", texto, "/api/tripulacion · X-15 · stand-in LifeSnaps", "REAL")

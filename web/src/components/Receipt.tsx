@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
-import { crewId, type Banner, type HabitatLine } from "@/lib/api";
+import { CREW_STATE_EN, crewId, type Banner, type HabitatLine } from "@/lib/api";
 import { Stamp } from "./Stamp";
 
 const fmt = (x: number) => (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(3);
@@ -53,7 +53,7 @@ function Row({ k, v, strong }: { k: string; v: string; strong?: boolean }) {
 }
 
 /** Recibo de un indicador oficial del reto (estado agregado de la cohorte; nunca ids ni valores). Lo bloqueado se declara, no se simula. */
-export function IndicatorSlip({ ind, name, onClose, onSent }: { ind: import("@/lib/api").Indicator | undefined; name: string; onClose: () => void; onSent: () => void }) {
+export function IndicatorSlip({ ind, name, onClose, onSent, crewName }: { ind: import("@/lib/api").Indicator | undefined; name: string; onClose: () => void; onSent: () => void; crewName?: string }) {
   if (ind?.canal === "autorreporte") return <MoodSlip ind={ind} name={name} onClose={onClose} onSent={onSent} />;
   const blocked = !ind || !!ind.bloqueado;
   const n = ind?.personas_con_linea_base ?? 0;
@@ -70,6 +70,9 @@ export function IndicatorSlip({ ind, name, onClose, onSent }: { ind: import("@/l
           <p className="mt-4 text-[12px]"><b>No data.</b> {ind?.bloqueado ?? "Not loaded."} <b>The absence is data</b>: nothing is drawn, nothing is invented.</p>
         ) : (
           <>
+            {ind!.crew && crewName && (
+              <p className="mt-4 bg-paper-ink px-3 py-2 text-[11.5px] leading-snug text-paper"><b className="uppercase tracking-[0.12em]">{crewName}</b> · {CREW_STATE_EN[ind!.crew]}.<br /><span className="text-paper/70">Stand-in: an anonymous everyday person's state, not an astronaut's.</span></p>
+            )}
             <dl className="mt-4 space-y-1.5">
               <Row k="people with a baseline" v={String(n)} />
               <Row k="green with receipt" v={String(ind!.verde)} />

@@ -12,7 +12,7 @@ uv run pytest -q                                              # must be green (3
 Open `http://localhost:3000`, click once to wake ALMA (this also allows audio). Everything works offline (model, fonts, voice, last Sun snapshot).
 
 ## The route
-1. **Medical Module** (30 s) — "The ship looks calm. Nine books." Click day 11 → orange air ring → click it: the receipt (expected 3.560, observed 4.011, rule 2σ = 0.400 kg).
+1. **Medical Module** (30 s) — "The ship looks calm. Nine books." Pick a crew member (five fictional characters, each with a stand-in body state) and toggle Inside / Outside. Click day 11 → orange air ring → click it: the receipt (expected 4.450, observed 4.901, rule 2σ = 0.400 kg).
 2. **Machine Room** (30 s) — promised vs observed; the day-11 surprise is a *flag, not an alarm*.
 3. **The Leak** (60 s) — the demo kill. Hash preregistered 05:52:17, run 05:52:43. "A manifest detector would have stayed silent."
 4. **The Vault + The Foundry** (45 s) — 21 sealed acts, 2 refuted cards, 1 detector compiled. "Refuted ideas are our metric."

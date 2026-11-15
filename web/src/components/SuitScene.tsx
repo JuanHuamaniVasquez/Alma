@@ -4,6 +4,7 @@ import { ContactShadows, Line, useGLTF, useProgress } from "@react-three/drei";
 import { Suspense, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { BUDGETS, INDICATOR_NAMES, type Indicator, type LedgerDay } from "@/lib/api";
+import { ANCHORS_IVA, CrewMesh, type CrewLook } from "./CrewFigure";
 
 useGLTF.setDecoderPath("/draco/");
 useGLTF.preload("/models/z2.glb");
@@ -13,18 +14,42 @@ type State = "closes" | "open" | "absent";
 type Labels = React.MutableRefObject<Record<string, HTMLDivElement | null>>;
 type Marks = React.MutableRefObject<Record<string, HTMLButtonElement | null>>;
 
-/** Dónde se «toca» cada indicador oficial del reto sobre la figura (coordenadas del modelo normalizado: pies en y=0, altura 1,9; frente = +z). */
-const BODY_ANCHORS: Record<string, [number, number, number]> = {
+/** Dónde se «toca» cada indicador oficial del reto sobre el traje de exterior (modelo normalizado: pies en y=0, altura 1,9; frente = +z). */
+const ANCHORS_EVA: Record<string, [number, number, number]> = {
   "sueño": [0, 1.86, 0.02], "ánimo": [-0.16, 1.7, 0.2], temperatura: [0, 1.52, 0.22], fc: [-0.1, 1.3, 0.3], "presión": [0.42, 1.28, 0.05], glucosa: [0, 0.95, 0.3],
 };
+const INDICATOR_IDS = Object.keys(ANCHORS_EVA);
 
-/** Traje NASA Z-2 (NASA 3D Resources, sin copyright). Visor oscuro y sin cara: la persona es el cuerpo, nunca un avatar. */
-function Suit({ marks, mode, onTap }: { marks: Marks; mode: "books" | "body"; onTap: () => void }) {
+/** Cuerpo: balanceo suave, anclas de los marcadores del DOM (se atenúan si miran hacia dentro) y toque para que ALMA hable. Sirve al traje y a la tripulación. */
+function Body({ anchors: pos, marks, mode, onTap, children }: { anchors: Record<string, [number, number, number]>; marks: Marks; mode: "books" | "body"; onTap: () => void; children: React.ReactNode }) {
   const anchors = useRef<Record<string, THREE.Object3D | null>>({});
   const v = useMemo(() => new THREE.Vector3(), []);
   const { size } = useThree();
-  const { scene } = useGLTF(typeof window !== "undefined" && window.location.search.includes("orig") ? "/models/z2_orig.glb" : "/models/z2.glb");
   const ref = useRef<THREE.Group>(null);
+  useFrame(({ clock, camera }) => {
+    if (ref.current) ref.current.rotation.y = Math.sin(clock.elapsedTime * 0.2) * 0.5;
+    for (const id of INDICATOR_IDS) {
+      const a = anchors.current[id], el = marks.current[id];
+      if (!a || !el) continue;
+      a.getWorldPosition(v);
+      const frente = v.x * camera.position.x + v.z * camera.position.z > 0;
+      v.project(camera);
+      el.style.transform = `translate(${(v.x * 0.5 + 0.5) * size.width}px, ${(-v.y * 0.5 + 0.5) * size.height}px) translate(-50%,-50%)`;
+      el.style.opacity = mode === "body" ? (frente ? "1" : "0.25") : "0";
+      el.style.pointerEvents = mode === "body" && frente ? "auto" : "none";
+    }
+  });
+  return (
+    <group ref={ref} onClick={(e) => { e.stopPropagation(); onTap(); }} onPointerOver={() => { document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = ""; }}>
+      {children}
+      {Object.entries(pos).map(([id, p]) => <object3D key={id} ref={(o) => { anchors.current[id] = o; }} position={p} />)}
+    </group>
+  );
+}
+
+/** Traje NASA Z-2 (NASA 3D Resources, sin copyright): el tripulante FUERA de la nave. Visor oscuro y sin cara. */
+function Suit(props: { marks: Marks; mode: "books" | "body"; onTap: () => void }) {
+  const { scene } = useGLTF("/models/z2.glb");
   const model = useMemo(() => {
     const m = scene.clone(true);
     const box = new THREE.Box3().setFromObject(m), size = box.getSize(new THREE.Vector3()), c = box.getCenter(new THREE.Vector3());
@@ -39,25 +64,12 @@ function Suit({ marks, mode, onTap }: { marks: Marks; mode: "books" | "body"; on
     m.scale.setScalar(k); m.position.set(-c.x * k, -box.min.y * k, -c.z * k);
     return m;
   }, [scene]);
-  useFrame(({ clock, camera }) => {
-    if (ref.current) ref.current.rotation.y = Math.sin(clock.elapsedTime * 0.2) * 0.5;
-    for (const id of Object.keys(BODY_ANCHORS)) {                  // marcadores del DOM anclados al cuerpo; se atenúan si miran hacia dentro
-      const a = anchors.current[id], el = marks.current[id];
-      if (!a || !el) continue;
-      a.getWorldPosition(v);
-      const frente = v.x * camera.position.x + (v.z) * camera.position.z > 0;
-      v.project(camera);
-      el.style.transform = `translate(${(v.x * 0.5 + 0.5) * size.width}px, ${(-v.y * 0.5 + 0.5) * size.height}px) translate(-50%,-50%)`;
-      el.style.opacity = mode === "body" ? (frente ? "1" : "0.25") : "0";
-      el.style.pointerEvents = mode === "body" && frente ? "auto" : "none";
-    }
-  });
-  return (
-    <group ref={ref} onClick={(e) => { e.stopPropagation(); onTap(); }} onPointerOver={() => { document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = ""; }}>
-      <primitive object={model} />
-      {Object.entries(BODY_ANCHORS).map(([id, p]) => <object3D key={id} ref={(o) => { anchors.current[id] = o; }} position={p} />)}
-    </group>
-  );
+  return <Body anchors={ANCHORS_EVA} {...props}><primitive object={model} /></Body>;
+}
+
+/** El tripulante DENTRO de la nave: personaje ficticio y estilizado, con cara, uniforme, indicativo y franja de su color. */
+function Crew({ look, ...props }: { look: CrewLook; marks: Marks; mode: "books" | "body"; onTap: () => void }) {
+  return <Body anchors={ANCHORS_IVA} {...props}><CrewMesh look={look} /></Body>;
 }
 
 /** Cámara centrada en el cuerpo, con un paralaje mínimo del puntero (calma: nada brusco). */
@@ -107,14 +119,14 @@ function Ring({ i, id, state, onPick, active, labels }: { i: number; id: string;
   );
 }
 
-export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit }: {
-  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void;
+export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look }: {
+  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook;
 }) {
   const labels: Labels = useRef({});
   const marks: Marks = useRef({});
   const { active, progress } = useProgress();
   const ready = !active && progress >= 100;
-  const indState = (i?: Indicator) => (!i || i.bloqueado ? "blocked" : i.canal === "autorreporte" ? "channel" : (i.alarma ?? 0) > 0 ? "alarm" : "ok");
+  const indState = (i?: Indicator) => (!i || i.bloqueado ? "blocked" : i.canal === "autorreporte" ? "channel" : i.crew ? (i.crew === "alarma" ? "alarm" : i.crew === "verde" ? "ok" : "channel") : (i.alarma ?? 0) > 0 ? "alarm" : "ok");
   const stateOf = (id: string): State => { const p = ledger?.presupuestos[id]; return !p ? "absent" : p.cierra ? "closes" : "open"; };
   return (
     <div className="absolute inset-0">
@@ -124,13 +136,13 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
         <directionalLight position={[-3, 2, -2.5]} intensity={1.5} color="#d9dde0" />
         <pointLight position={[0, 0.2, 1.6]} intensity={0.8} color="#ffb47a" distance={4} />
         <Rig />
-        <Suspense fallback={null}><Suit marks={marks} mode={mode} onTap={onTapSuit} /></Suspense>
+        {outfit === "eva" ? <Suspense fallback={null}><Suit marks={marks} mode={mode} onTap={onTapSuit} /></Suspense> : <Crew look={look} marks={marks} mode={mode} onTap={onTapSuit} />}
         <ContactShadows position={[0, 0, 0]} opacity={0.7} scale={4} blur={2.4} far={1.6} />
         {mode === "books" && BUDGETS.map(([id], i) => <Ring key={id} i={i} id={id} state={stateOf(id)} onPick={onPick} active={picked === id} labels={labels} />)}
       </Canvas>
       {!ready && <p className="pointer-events-none absolute inset-x-0 top-1/2 text-center font-mono text-[11px] uppercase tracking-[0.3em] text-ink-faint">Loading NASA Z-2 model…</p>}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {Object.keys(BODY_ANCHORS).map((id) => {
+        {INDICATOR_IDS.map((id) => {
           const st = indState(indicators.find((x) => x.indicador === id));
           return (
             <button key={id} ref={(el) => { marks.current[id] = el; }} onClick={() => onPickInd(id)} aria-label={`${INDICATOR_NAMES[id]} — open receipt`}

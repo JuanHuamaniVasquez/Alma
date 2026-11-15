@@ -215,3 +215,35 @@ def test_cada_acta_servida_hashea_a_su_hash_sellado_y_no_hay_path_traversal():
     for malo in ("..%2F..%2F.env", "FB-005%2F..%2F..%2FREADME", "x", "FB-"):
         assert get(f"/api/actas/{malo}/archivo/").status_code == 404, malo
     assert APIClient().post("/api/actas/FB-005/archivo/", {}).status_code == 405
+
+
+# --- tripulación de 5 (X-15): ficticia, con sustitutos reales y anónimos mostrados solo como estados --------------------
+def test_roster_de_5_ficticios_con_indicativos_unicos_y_sin_cian():
+    from src.libro.tripulacion import ROSTER, TRIPULACION
+    assert TRIPULACION == 5 and len({t.indicativo for t in ROSTER}) == 5 and len({t.color for t in ROSTER}) == 5
+    for t in ROSTER:   # ningún color de franja es cian (r bajo, g y b altos): paleta propia, no la firma de las interfaces generadas
+        r, g, b = (int(t.color[i:i + 2], 16) for i in (1, 3, 5))
+        assert not (r < 120 and g > 150 and b > 150), t.indicativo
+
+
+@pytest.mark.django_db
+def test_tripulacion_solo_estados_sin_ids_y_con_aviso_de_sustituto():
+    from django.core.management import call_command
+    from apps.motor.models import ReciboVerde
+    from src.contratos import CONTRATOS, Banner
+    sin = get("/api/tripulacion/").json()
+    assert all(t["estado"] is None for t in sin["tripulacion"]) and sin["banner"] == "SIMULADO"     # sin sustitutos reales no se inventa ningún estado
+    from apps.motor.repositorio import guardar_recibo_verde
+    from datetime import UTC, datetime
+    for i in range(8):                                                                               # 8 personas con fc y sueño (estructurales, X-01)
+        for ind in ("fc", "sueño"):
+            guardar_recibo_verde(CONTRATOS["DC-14"].model_validate(dict(
+                recibo_id=f"rv-p{i:02d}-{ind}", ts_utc=datetime(2026, 11, 15, tzinfo=UTC), sujeto=f"persona-{i:02d}", indicador=ind, estado="verde", ventana_dias=14,
+                dias_validos=14, detector="cusum", k=0.5, h=10.01, potencia_declarada=0.9, mde_sigma=1.75, mde_fisico=1.0, unidad="x", supuesto="s",
+                regla_exacta="r", semilla=20261113, hash_preregistro="a" * 64, banner=Banner.REAL)))
+    r = get("/api/tripulacion/")
+    d = r.json()
+    assert len(d["tripulacion"]) == 5 and d["banner"] == "REAL" and "FICTIONAL" in d["aviso"] and "not an astronaut" in d["aviso"]
+    assert all(t["estado"] == {"fc": "verde", "sueño": "verde"} for t in d["tripulacion"])
+    assert "persona-" not in r.content.decode()                                                      # el id del sustituto no sale
+    assert d == get("/api/tripulacion/").json()                                                      # semilla pública: siempre los mismos sustitutos

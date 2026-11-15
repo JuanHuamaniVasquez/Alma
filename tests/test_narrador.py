@@ -90,3 +90,10 @@ def test_frases_de_anillos_indicadores_y_astronauta_solo_dicen_lo_que_hay():
     assert "no data" in n.indicador({"indicador": "glucosa", "bloqueado": "x"}).texto and not numeros(n.indicador({"indicador": "glucosa", "bloqueado": "x"}).texto)
     assert "Mood" in n.indicador({"indicador": "ánimo", "bloqueado": None, "canal": "autorreporte", "reportes": 5}).texto
     assert "not a real person" in n.astronauta().texto
+
+
+def test_tripulante_se_dice_ficticio_y_su_estado_es_de_un_sustituto():
+    c = {"indicativo": "LYRA", "rol": "Pilot", "estado": {"fc": "verde", "sueño": "alarma"}}
+    l = n.tripulante(c)
+    assert l.clave == "crew-LYRA" and "fictional" in l.texto and "stand-in" in l.texto and "not an astronaut" in l.texto and "question, not a verdict" in l.texto and not numeros(l.texto)
+    assert "nothing is invented" in n.tripulante({"indicativo": "VEGA", "rol": "Commander", "estado": None}).texto
