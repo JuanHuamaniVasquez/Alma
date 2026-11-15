@@ -9,26 +9,38 @@ import type { CrewLook } from "./CrewFigure";
 useGLTF.setDecoderPath("/draco/");
 useGLTF.preload("/models/z2_suit.glb"); useGLTF.preload("/models/z2_helmet.glb");
 for (const n of ["VEGA", "LYRA", "ALTAIR", "CASTOR", "RIGEL"]) useGLTF.preload(`/models/crew_${n}.glb`);
+type Layer = "uniform" | "body" | "anatomy";
 const HEIGHT = 1.9, FOCUS_Y = 0.98;
+/** Vista del usuario: arrastrar (ratón o dedo) gira la figura, rueda/pellizco acerca. `moved` distingue arrastre de toque (el toque hace hablar a ALMA). */
+const view = { yaw: 0, zoom: 1, moved: false, last: 0 };
 const IVORY = "#efe8da", SIGNAL = "#ff5a1f";
 
 /** Holograma: fresnel (borde brillante), líneas de barrido que suben, parpadeo mínimo y el mapa de color del modelo como modulación de brillo (los detalles del traje se leen).
  *  Tono ÁMBAR/marfil (no el cian típico de las interfaces generadas). Aditivo y sin escribir profundidad: se ve «hecho de luz». */
 const HOLO = { color: new THREE.Color("#ffb45c"), rim: new THREE.Color("#fff2dc") };
-function holoMaterial(map: THREE.Texture | null): THREE.ShaderMaterial {
+function holoMaterial(map: THREE.Texture | null, base: THREE.Color | null, vcol: boolean): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
+    vertexColors: vcol,
     transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
-    uniforms: { uTime: { value: 0 }, uMap: { value: map }, uHasMap: { value: map ? 1 : 0 }, uColor: { value: HOLO.color }, uRim: { value: HOLO.rim } },
-    vertexShader: `varying vec3 vN; varying vec3 vV; varying vec3 vW; varying vec2 vUv;
-      void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); vW = (modelMatrix * vec4(position,1.0)).xyz; vUv = uv; gl_Position = projectionMatrix * mv; }`,
-    fragmentShader: `uniform float uTime; uniform sampler2D uMap; uniform float uHasMap; uniform vec3 uColor; uniform vec3 uRim; varying vec3 vN; varying vec3 vV; varying vec3 vW; varying vec2 vUv;
+    uniforms: { uTime: { value: 0 }, uMap: { value: map }, uHasMap: { value: map ? 1 : 0 }, uColor: { value: HOLO.color }, uRim: { value: HOLO.rim }, uBase: { value: base ?? new THREE.Color(1, 1, 1) } },
+    vertexShader: `varying vec3 vN; varying vec3 vV; varying vec3 vW; varying vec2 vUv; varying vec3 vC;
+      void main(){
+        #ifdef USE_COLOR
+          vC = color;
+        #else
+          vC = vec3(1.0);
+        #endif
+        vec4 mv = modelViewMatrix * vec4(position,1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); vW = (modelMatrix * vec4(position,1.0)).xyz; vUv = uv; gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: `uniform float uTime; uniform sampler2D uMap; uniform float uHasMap; uniform vec3 uColor; uniform vec3 uRim; uniform vec3 uBase; varying vec3 vN; varying vec3 vV; varying vec3 vW; varying vec2 vUv; varying vec3 vC;
       void main(){
         float fres = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.2);
-        float scan = 0.5 + 0.5 * sin(vW.y * 110.0 - uTime * 2.4);
+        float scan = 0.5 + 0.5 * sin(vW.y * 110.0 - uTime * 2.4); scan *= 0.5;
         float sweep = smoothstep(0.96, 1.0, sin(vW.y * 1.4 - uTime * 0.9) * 0.5 + 0.5);          // una franja brillante que recorre el cuerpo
-        float lum = uHasMap > 0.5 ? dot(texture2D(uMap, vUv).rgb, vec3(0.33)) : 0.7;
+        vec3 albedo = (uHasMap > 0.5 ? texture2D(uMap, vUv).rgb : vec3(1.0)) * vC * uBase;
+        float lum = dot(albedo, vec3(0.33));
         float a = 0.10 + lum * 0.22 + fres * 0.78 + scan * 0.10 + sweep * 0.45;
         vec3 c = mix(uColor, uRim, clamp(fres * 1.3 + sweep, 0.0, 1.0));
+        c = mix(c, normalize(albedo + 0.001) * length(c), 0.85);                 // conserva el COLOR del objeto (uniforme, piel, traje); el ámbar es la luz, no la pintura
         a *= 0.94 + 0.06 * sin(uTime * 37.0);
         gl_FragColor = vec4(c * (0.55 + lum * 0.7), clamp(a, 0.0, 1.0)); }`,
   });
@@ -55,13 +67,14 @@ function Body({ anchors: pos, marks, mode, onTap, children, holo }: { anchors: R
     mats.current = [];
     g.traverse((o) => {
       const m = o as THREE.Mesh; if (!m.isMesh) return;
-      if (holo) { if (!m.userData.orig) m.userData.orig = m.material; const map = (m.userData.orig as THREE.MeshStandardMaterial).map ?? null; const hm = holoMaterial(map); m.material = hm; mats.current.push(hm); }
+      for (let a: THREE.Object3D | null = o; a; a = a.parent) if (a.userData.noholo) { m.userData.noholo = true; break; }
+      if (holo) { if (!m.userData.orig) m.userData.orig = m.material; if (m.userData.noholo) return; const om = m.userData.orig as THREE.MeshStandardMaterial; const hm = holoMaterial(om.map ?? null, om.map ? null : om.color ?? null, !!m.geometry.getAttribute("color") && om.vertexColors); m.material = hm; mats.current.push(hm); }
       else if (m.userData.orig) { m.material = m.userData.orig; }
     });
   }, [holo, children]);
   useFrame(({ clock, camera }) => {
     for (const m of mats.current) m.uniforms.uTime.value = clock.elapsedTime;
-    if (ref.current) ref.current.rotation.y = Math.sin(clock.elapsedTime * 0.2) * 0.5;
+    if (ref.current) ref.current.rotation.y = view.yaw + (performance.now() / 1000 - view.last > 6 ? Math.sin(clock.elapsedTime * 0.2) * 0.35 : 0);
     for (const id of INDICATOR_IDS) {
       const a = anchors.current[id], el = marks.current[id];
       if (!a || !el) continue;
@@ -74,7 +87,7 @@ function Body({ anchors: pos, marks, mode, onTap, children, holo }: { anchors: R
     }
   });
   return (
-    <group ref={ref} onClick={(e) => { e.stopPropagation(); onTap(); }} onPointerOver={() => { document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = ""; }}>
+    <group ref={ref} onClick={(e) => { e.stopPropagation(); if (!view.moved) onTap(); }} onPointerOver={() => { document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = ""; }}>
       {children}
       {Object.entries(pos).map(([id, p]) => <object3D key={id} ref={(o) => { anchors.current[id] = o; }} position={p} />)}
     </group>
@@ -145,6 +158,60 @@ function anchorsFor(H: number): Record<string, [number, number, number]> {
 }
 const HAIR = /short0|bob0|ponytail|long0|afro|braid|eyebrow|eyelash/;
 
+
+/** Capa de anatomía: esqueleto y órganos PROCEDURALES (proporciones estándar sobre la altura H; ilustrativo, no un escaneo ni un diagnóstico).
+ *  Cada indicador cae sobre su órgano: sueño/ánimo → cerebro, temperatura → cuello/tronco, fc → corazón, presión → arteria braquial, glucosa → páncreas/estómago. */
+function Anatomy({ H }: { H: number }) {
+  const P = (x: number, y: number, z = 0) => new THREE.Vector3(x * H, y * H, z * H);
+  const J = useMemo(() => ({
+    head: P(0, 0.935, 0.005), neck: P(0, 0.865), chest: P(0, 0.73), pelvis: P(0, 0.52),
+    shL: P(-0.105, 0.815), elL: P(-0.17, 0.705), wrL: P(-0.24, 0.585), shR: P(0.105, 0.815), elR: P(0.17, 0.705), wrR: P(0.24, 0.585),
+    hipL: P(-0.055, 0.5), knL: P(-0.062, 0.275), anL: P(-0.07, 0.045), hipR: P(0.055, 0.5), knR: P(0.062, 0.275), anR: P(0.07, 0.045),
+  }), [H]);                                                         // eslint-disable-line react-hooks/exhaustive-deps
+  const bone = <meshStandardMaterial color="#e9e0cc" roughness={0.55} />;
+  const Cap = ({ a, b, r, mat }: { a: THREE.Vector3; b: THREE.Vector3; r: number; mat?: React.ReactNode }) => {
+    const d = b.clone().sub(a), len = d.length(), q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.clone().normalize());
+    return <mesh position={a.clone().add(b).multiplyScalar(0.5)} quaternion={q}><capsuleGeometry args={[r * H, Math.max(0.001, len - 2 * r * H), 6, 12]} />{mat ?? bone}</mesh>;
+  };
+  const organ = (color: string) => <meshStandardMaterial color={color} roughness={0.45} emissive={color} emissiveIntensity={0.18} />;
+  const vertebrae = Array.from({ length: 24 }, (_, i) => { const t = i / 23; return P(0, 0.86 - t * 0.35, -0.028 - 0.012 * Math.sin(t * Math.PI)); });
+  const ribs = Array.from({ length: 8 }, (_, i) => 0.805 - i * 0.026);
+  return (
+    <group name="anatomy">
+      {/* cráneo, mandíbula y cerebro */}
+      <mesh position={J.head}><sphereGeometry args={[0.052 * H, 24, 18]} /><meshStandardMaterial color="#e9e0cc" roughness={0.5} transparent opacity={0.55} /></mesh>
+      <mesh position={J.head.clone().add(new THREE.Vector3(0, 0.004 * H, 0.004 * H))} scale={[1, 0.86, 1.08]}><sphereGeometry args={[0.034 * H, 20, 16]} />{organ("#d98a8f")}</mesh>
+      <mesh position={J.head.clone().add(new THREE.Vector3(0, -0.04 * H, 0.025 * H))} scale={[1, 0.7, 0.9]}><sphereGeometry args={[0.028 * H, 14, 10]} />{bone}</mesh>
+      {/* columna */}
+      {vertebrae.map((v, i) => <mesh key={i} position={v}><boxGeometry args={[0.02 * H, 0.011 * H, 0.016 * H]} />{bone}</mesh>)}
+      {/* caja torácica: costillas como arcos + esternón + clavículas */}
+      {ribs.map((y, i) => (
+        <group key={i} position={[0, y * H, -0.01 * H]} scale={[1 - i * 0.012, 1, 1]}>
+          <mesh rotation={[Math.PI / 2, 0, 0]}><torusGeometry args={[0.085 * H, 0.0035 * H, 6, 40, Math.PI * 1.55]} />{bone}</mesh>
+        </group>
+      ))}
+      <Cap a={P(0, 0.835, 0.045)} b={P(0, 0.74, 0.06)} r={0.007} />
+      <Cap a={P(0, 0.84, 0.03)} b={J.shL} r={0.0055} /><Cap a={P(0, 0.84, 0.03)} b={J.shR} r={0.0055} />
+      {/* pelvis */}
+      <mesh position={J.pelvis} rotation={[Math.PI / 2, 0, 0]} scale={[1, 0.75, 1]}><torusGeometry args={[0.062 * H, 0.014 * H, 8, 28]} />{bone}</mesh>
+      {/* brazos y piernas (húmero/radio, fémur/tibia) */}
+      <Cap a={J.shL} b={J.elL} r={0.009} /><Cap a={J.elL} b={J.wrL} r={0.0075} />
+      <Cap a={J.shR} b={J.elR} r={0.009} /><Cap a={J.elR} b={J.wrR} r={0.0075} />
+      <Cap a={J.hipL} b={J.knL} r={0.012} /><Cap a={J.knL} b={J.anL} r={0.0095} />
+      <Cap a={J.hipR} b={J.knR} r={0.012} /><Cap a={J.knR} b={J.anR} r={0.0095} />
+      {[J.shL, J.shR, J.elL, J.elR, J.knL, J.knR, J.hipL, J.hipR].map((v, i) => <mesh key={i} position={v}><sphereGeometry args={[0.0125 * H, 12, 10]} />{bone}</mesh>)}
+      {/* órganos */}
+      <mesh position={P(-0.055, 0.745, 0.018)} rotation={[0, 0, 0.35]} scale={[0.9, 1.15, 0.9]}><sphereGeometry args={[0.03 * H, 20, 16]} />{organ("#c8323c")}</mesh>
+      <mesh position={P(-0.05, 0.775, 0.0)} scale={[0.8, 1.7, 0.9]}><sphereGeometry args={[0.032 * H, 18, 14]} />{organ("#e9a3a8")}</mesh>
+      <mesh position={P(0.05, 0.775, 0.0)} scale={[0.8, 1.7, 0.9]}><sphereGeometry args={[0.032 * H, 18, 14]} />{organ("#e9a3a8")}</mesh>
+      <mesh position={P(0.045, 0.665, 0.015)} scale={[1.5, 0.8, 0.9]}><sphereGeometry args={[0.032 * H, 18, 14]} />{organ("#8a3d2a")}</mesh>
+      <mesh position={P(-0.035, 0.635, 0.02)} scale={[1.1, 0.9, 0.9]}><sphereGeometry args={[0.028 * H, 18, 14]} />{organ("#d9806a")}</mesh>
+      <mesh position={P(0, 0.58, 0.012)} scale={[1.6, 0.9, 0.8]}><sphereGeometry args={[0.02 * H, 16, 12]} />{organ("#d8b24a")}</mesh>
+      <mesh position={P(0, 0.54, 0.015)} scale={[1.7, 1, 0.9]}><sphereGeometry args={[0.034 * H, 18, 14]} />{organ("#c98a7a")}</mesh>
+    </group>
+  );
+}
+
 /** Materiales del tripulante generado: pelo/cejas con recorte alfa, piel opaca, uniforme con color por vértice. */
 function prepCrew(m: THREE.Object3D) {
   m.traverse((o) => {
@@ -162,7 +229,7 @@ function prepCrew(m: THREE.Object3D) {
 
 /** El tripulante DENTRO de la nave: humano GENERADO por script en Blender (MPFB; piel, ojos, pelo y dientes de assets CC0) con el mono de vuelo hecho a medida.
  *  Capas: «uniform» (con mono) o «body» (solo el cuerpo). Personaje FICTICIO: combinación de parámetros, nunca una persona real. */
-function CrewGLB({ name, layer, ...props }: { name: string; layer: "uniform" | "body"; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
+function CrewGLB({ name, layer, ...props }: { name: string; layer: Layer; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
   const { scene } = useGLTF(`/models/crew_${name}.glb`);
   const { model, H } = useMemo(() => {
     const m = scene.clone(true);
@@ -171,9 +238,18 @@ function CrewGLB({ name, layer, ...props }: { name: string; layer: "uniform" | "
     prepCrew(m);
     return { model: m, H: size.y };
   }, [scene]);
-  useEffect(() => { model.traverse((o) => { if (o.userData.kind === "uniform") o.visible = layer === "uniform"; }); }, [layer, model]);
+  useEffect(() => {
+    model.traverse((o) => {
+      const mesh = o as THREE.Mesh;
+      if (o.userData.kind === "uniform") o.visible = layer === "uniform";
+      if (mesh.isMesh && o.userData.kind === "skin") {                       // en «anatomía» la piel es un fantasma translúcido: se ve lo de dentro
+        const mats = [mesh.userData.orig ?? mesh.material].flat() as THREE.MeshStandardMaterial[];
+        for (const m of mats) { m.transparent = layer === "anatomy"; m.opacity = layer === "anatomy" ? 0.13 : 1; m.depthWrite = layer !== "anatomy"; m.needsUpdate = true; }
+      }
+    });
+  }, [layer, model, props.holo]);
   const anchors = useMemo(() => anchorsFor(H), [H]);
-  return <Body anchors={anchors} {...props}><primitive object={model} /></Body>;
+  return <Body anchors={anchors} {...props}><primitive object={model} />{layer === "anatomy" && <group userData={{ noholo: true }}><Anatomy H={H} /></group>}</Body>;
 }
 
 /** La bahía holográfica: peana con anillos, haz de luz vertical y anillos de barrido en el suelo. Solo luz (aditivo): sin geometría pesada. */
@@ -201,6 +277,7 @@ function Bay() {
 function Rig() {
   useFrame(({ camera, pointer }) => {
     camera.position.x += (pointer.x * 0.45 - camera.position.x) * 0.04;
+    camera.zoom += (view.zoom - camera.zoom) * 0.12; camera.updateProjectionMatrix();
     camera.position.y += (FOCUS_Y + 0.12 + pointer.y * 0.2 - camera.position.y) * 0.04;
     camera.lookAt(0, FOCUS_Y, 0);
   });
@@ -244,8 +321,9 @@ function Ring({ i, id, state, onPick, active, labels }: { i: number; id: string;
   );
 }
 
+const drag = { pts: new Map<number, [number, number]>(), start: [0, 0] as [number, number], pinch: 0 };
 export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look, holo, layer, helmet }: {
-  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook; holo: boolean; layer: "uniform" | "body"; helmet: boolean;
+  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook; holo: boolean; layer: Layer; helmet: boolean;
 }) {
   const labels: Labels = useRef({});
   const marks: Marks = useRef({});
@@ -254,7 +332,20 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
   const indState = (i?: Indicator) => (!i || i.bloqueado ? "blocked" : i.canal === "autorreporte" ? "channel" : i.crew ? (i.crew === "alarma" ? "alarm" : i.crew === "verde" ? "ok" : "channel") : (i.alarma ?? 0) > 0 ? "alarm" : "ok");
   const stateOf = (id: string): State => { const p = ledger?.presupuestos[id]; return !p ? "absent" : p.cierra ? "closes" : "open"; };
   return (
-    <div className="absolute inset-0">
+    <div className="absolute inset-0 cursor-grab touch-none active:cursor-grabbing" onPointerDown={(e) => { drag.pts.set(e.pointerId, [e.clientX, e.clientY]); view.moved = false; drag.start = [e.clientX, e.clientY]; drag.pinch = 0; }}
+      onPointerMove={(e) => {
+        const prev = drag.pts.get(e.pointerId); if (!prev) return;
+        drag.pts.set(e.pointerId, [e.clientX, e.clientY]);
+        if (drag.pts.size === 2) {                                  // pellizco: acercar / alejar
+          const [a, b] = [...drag.pts.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]);
+          if (drag.pinch) view.zoom = Math.min(2.2, Math.max(0.7, view.zoom * (d / drag.pinch)));
+          drag.pinch = d; view.moved = true; return;
+        }
+        if (Math.hypot(e.clientX - drag.start[0], e.clientY - drag.start[1]) > 6) view.moved = true;
+        if (view.moved) { view.yaw += (e.clientX - prev[0]) * 0.012; view.last = performance.now() / 1000; }
+      }}
+      onPointerUp={(e) => { drag.pts.delete(e.pointerId); drag.pinch = 0; setTimeout(() => { view.moved = false; }, 0); }} onPointerCancel={(e) => { drag.pts.delete(e.pointerId); }}
+      onWheel={(e) => { view.zoom = Math.min(2.2, Math.max(0.7, view.zoom * (e.deltaY < 0 ? 1.08 : 0.926))); }}>
       <Canvas camera={{ position: [0, 1.1, 5.4], fov: 30, near: 2.5, far: 14 }} dpr={[1, 2]} gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05 }}>
         <hemisphereLight args={["#e9e2d6", "#1a1612", 0.55]} />
         <directionalLight position={[2.6, 3.2, 3]} intensity={2.6} color="#ffd9b3" />

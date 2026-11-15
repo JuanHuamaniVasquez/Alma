@@ -23,9 +23,9 @@ export default function MedicalModule() {
   const [crew, setCrew] = useState<CrewMember[]>([]);
   const [sel, setSel] = useState(0);
   const [outfit, setOutfit] = useState<"iva" | "eva">("iva");
-  const [holo, setHolo] = useState(true);
+  const [holo, setHolo] = useState(false);
   const [helmet, setHelmet] = useState(true);
-  const [layer, setLayer] = useState<"uniform" | "body">("uniform");
+  const [layer, setLayer] = useState<"uniform" | "body" | "anatomy">("uniform");
   const { say, has } = useAlma();
 
   useEffect(() => {
@@ -35,8 +35,8 @@ export default function MedicalModule() {
       setDays(d.dias); setDay(d.dias.includes(Number(q.get("day"))) ? Number(q.get("day")) : d.ultimo);
       if (q.get("pick")) setTimeout(() => setPicked(q.get("pick")), 400);
       if (q.get("out") === "eva") setOutfit("eva");
-      if (q.get("holo") === "0") setHolo(false);
-      if (q.get("layer") === "body") setLayer("body");
+      if (q.get("holo") === "1") setHolo(true);
+      if (q.get("layer") === "body" || q.get("layer") === "anatomy") setLayer(q.get("layer") as "body" | "anatomy");
       if (q.get("helmet") === "0") setHelmet(false);
       if (q.get("mode") === "body") { setMode("body"); if (q.get("ind")) setTimeout(() => setPickedInd(q.get("ind")), 400); }
       const all = await Promise.all(d.dias.map((n) => get<LedgerDay>(`/api/libro/dia/${n}/`)));
@@ -97,7 +97,7 @@ export default function MedicalModule() {
         )}
         {outfit === "iva" && (
           <div className="mt-3 flex gap-4 font-mono text-[10px] uppercase tracking-[0.2em]" role="tablist" aria-label="Layer">
-            {([["uniform", "Uniform"], ["body", "Body"]] as const).map(([m, t]) => (
+            {([["uniform", "Uniform"], ["body", "Body"], ["anatomy", "Anatomy"]] as const).map(([m, t]) => (
               <button key={m} role="tab" aria-selected={layer === m} onClick={() => setLayer(m)} className={`border-b pb-0.5 transition-colors ${layer === m ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>
             ))}
           </div>
@@ -108,7 +108,7 @@ export default function MedicalModule() {
           ))}
         </div>
         <p className="mt-3 font-mono text-[9.5px] uppercase leading-relaxed tracking-[0.16em] text-ink-faint">
-          {outfit === "eva" ? "NASA Z-2 prototype suit · NASA 3D Resources" : "Generated fictional character"}<br />not a real person · body states = stand-in
+          {outfit === "eva" ? "NASA Z-2 prototype suit · NASA 3D Resources" : "Generated fictional character"}<br />not a real person · body states = stand-in<br /><span className="text-ink-dim">Drag to rotate · scroll or pinch to zoom · tap to hear ALMA</span>
         </p>
       </nav>
       {mode === "body" && pickedInd && <IndicatorSlip crewName={who?.indicativo} ind={indsCrew.find((i) => i.indicador === pickedInd)} name={INDICATOR_NAMES[pickedInd]} onClose={() => setPickedInd(null)} onSent={() => get<{ indicadores: Indicator[] }>("/api/indicadores/").then((d) => setInds(d?.indicadores ?? []))} />}
