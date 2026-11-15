@@ -8,11 +8,11 @@ members: 6
 **Members:** 6 nodes
 
 ## Members
-- [[DC-05 Alarma con recibo]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[FB-002]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[MO-3 CUSUM bilateral]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DC-05 Alarma con recibo]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[FB-002]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[MO-3 CUSUM bilateral]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[Mandamiento 3 Colores solo con regla contestable]] - rationale - CLAUDE.md
-- [[SU-1 Alertas con recibo]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[SU-1 Alertas con recibo]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[Tarea M2.3]] - document - TASKS.md
 
 ## Live Query (requires Dataview plugin)

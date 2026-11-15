@@ -9,15 +9,15 @@ members: 16
 
 ## Members
 - [[CLAUDE]] - document - CLAUDE.md
-- [[DC-03 Canal C eventos fisicos]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[DC-04 Libro GPV 9 presupuestos]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[DOC-03 Pitch Equipo]] - document - DOC-03_TONO-pitch-equipo-v0.2.md
-- [[GO-2 Preregistro SHA-256]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[IN-3 SWPCDONKIOSDR]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DC-03 Canal C eventos fisicos]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DC-04 Libro GPV 9 presupuestos]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DOC-03 Pitch Equipo]] - document - docs/DOC-03_TONO-pitch-equipo-v0.2.md
+- [[GO-2 Preregistro SHA-256]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[IN-3 SWPCDONKIOSDR]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[LA SALA]] - concept - CLAUDE.md
-- [[LB-1 Libro GPV]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[LEEME]] - document - LEEME.md
-- [[MO-1 Modelo nulo personal]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[LB-1 Libro GPV]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[LEEME]] - document - docs/LEEME.md
+- [[MO-1 Modelo nulo personal]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[Mandamiento 1 Nada lee directo de sensores]] - rationale - CLAUDE.md
 - [[Mandamiento 2 Preregistro hasheado antes de correr]] - rationale - CLAUDE.md
 - [[Tarea M1.1]] - document - TASKS.md

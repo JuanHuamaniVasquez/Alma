@@ -8,8 +8,8 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[FB-004]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[MO-5 Integrador lento del agua]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[FB-004]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[MO-5 Integrador lento del agua]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[Tarea M2.5]] - document - TASKS.md
 
 ## Live Query (requires Dataview plugin)

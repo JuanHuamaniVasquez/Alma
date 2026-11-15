@@ -19,7 +19,7 @@
         "relation": "participate_in",
         "confidence": "EXTRACTED",
         "confidence_score": 1.0,
-        "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md"
+        "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md"
       },
       {
         "id": "pipeline_unidireccional",
@@ -34,7 +34,7 @@
         "relation": "form",
         "confidence": "EXTRACTED",
         "confidence_score": 1.0,
-        "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md"
+        "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md"
       },
       {
         "id": "tres_mandamientos",
@@ -61,7 +61,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-1",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -74,7 +74,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-10",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -87,7 +87,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-11",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -100,7 +100,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-12",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -113,7 +113,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-13",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -126,7 +126,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-14",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -139,7 +139,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-15",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -152,7 +152,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-16",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -165,7 +165,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-17",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -178,7 +178,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-18",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -191,7 +191,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-19",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -204,7 +204,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-2",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -217,7 +217,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-20",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -230,7 +230,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-21",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -243,7 +243,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-22",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -256,7 +256,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-23",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -269,7 +269,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-3",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -282,7 +282,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-4",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -295,7 +295,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-5",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -308,7 +308,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-6",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -321,7 +321,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-7",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -334,7 +334,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-8",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -347,7 +347,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "ancla c-9",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -360,7 +360,7 @@
       "contributor": null,
       "file_type": "document",
       "norm_label": "doc-02 genesis",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -373,7 +373,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "fa-4 el faro",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -386,7 +386,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "in-4 banco de falsaciones",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -633,7 +633,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "mo-7 forma diaria del habitat",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -646,7 +646,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-09 forma diaria del habitat",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -659,7 +659,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fb-006",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -672,7 +672,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-10 casos de error y contagio",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -685,7 +685,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "go-6 epidemiologia del error",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -698,7 +698,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fb-007",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -711,7 +711,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "mo-8 demografia de testigos",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -724,7 +724,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-11 ficha de vida de sensor",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -737,7 +737,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fb-008",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -750,7 +750,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "mo-4 triangulacion 3 testigos",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -763,7 +763,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fb-003",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -789,7 +789,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "mo-5 integrador lento del agua",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -802,7 +802,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fb-004",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -828,7 +828,7 @@
       "contributor": null,
       "file_type": "document",
       "norm_label": "auditoria",
-      "source_file": "auditoria.md",
+      "source_file": ".claude/commands/auditoria.md",
       "source_location": null,
       "source_url": null
     },
@@ -841,7 +841,7 @@
       "contributor": null,
       "file_type": "document",
       "norm_label": "implementar",
-      "source_file": "implementar.md",
+      "source_file": ".claude/commands/implementar.md",
       "source_location": null,
       "source_url": null
     },
@@ -854,7 +854,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "fa-2 n-of-1 abab",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -867,7 +867,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "in-2",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -880,7 +880,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "su-2 tablero",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -893,7 +893,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "su-3 sello semanal",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -906,7 +906,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "su-4 premortems",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -919,7 +919,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "su-5 frontend 6 pantallas",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -932,7 +932,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-02 canal b autorreporte",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -945,7 +945,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fm-1 familia de hipotesis",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -958,7 +958,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fm-10 familia de hipotesis",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -971,7 +971,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fm-2 familia de hipotesis",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -984,7 +984,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fm-3 familia de hipotesis",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -997,7 +997,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fm-4 familia de hipotesis",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1010,7 +1010,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fm-5 familia de hipotesis",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1023,7 +1023,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fm-6 familia de hipotesis",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1036,7 +1036,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fm-7 familia de hipotesis",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1049,7 +1049,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fm-8 familia de hipotesis",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1062,7 +1062,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fm-9 familia de hipotesis",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1075,7 +1075,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "go-1 recalibracion",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1088,7 +1088,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "go-7 modo frontera",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1101,7 +1101,7 @@
       "contributor": null,
       "file_type": "document",
       "norm_label": "doc-01 mapa maestro",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1114,7 +1114,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "in-3 swpc/donki/osdr",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1127,7 +1127,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "lb-1 libro gpv",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1140,7 +1140,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "mo-1 modelo nulo personal",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1166,7 +1166,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-03 canal c eventos fisicos",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1179,7 +1179,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-04 libro gpv 9 presupuestos",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1192,7 +1192,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "go-2 preregistro sha-256",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1218,7 +1218,7 @@
       "contributor": null,
       "file_type": "document",
       "norm_label": "doc-03 pitch equipo",
-      "source_file": "DOC-03_TONO-pitch-equipo-v0.2.md",
+      "source_file": "docs/DOC-03_TONO-pitch-equipo-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1231,7 +1231,7 @@
       "contributor": null,
       "file_type": "document",
       "norm_label": "leeme",
-      "source_file": "LEEME.md",
+      "source_file": "docs/LEEME.md",
       "source_location": null,
       "source_url": null
     },
@@ -1322,7 +1322,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "mo-2 residuo 2 sigma",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1348,7 +1348,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-06 stream de residuo",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1361,7 +1361,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fb-001",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -1413,7 +1413,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "fa-1 kanban h-cards",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1452,7 +1452,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-12 contrato de fundicion",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1465,7 +1465,7 @@
       "contributor": null,
       "file_type": "document",
       "norm_label": "doc-04 la fundicion",
-      "source_file": "DOC-04_LA-FUNDICION-laboratorio-v0.2.md",
+      "source_file": "docs/DOC-04_LA-FUNDICION-laboratorio-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1491,7 +1491,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "mo-3 cusum bilateral",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1504,7 +1504,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "su-1 alertas con recibo",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1517,7 +1517,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-05 alarma con recibo",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1530,7 +1530,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fb-002",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -1569,7 +1569,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "mo-6 el contrapeso",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1582,7 +1582,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-08 cierre de conservacion",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1595,7 +1595,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "fb-005",
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "source_url": null
     },
@@ -1634,7 +1634,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "in-1",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1647,7 +1647,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-01 canal a sensores",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1673,7 +1673,7 @@
       "contributor": null,
       "file_type": "code",
       "norm_label": "fa-3 capsula",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1686,7 +1686,7 @@
       "contributor": null,
       "file_type": "concept",
       "norm_label": "dc-07 capsula exportable",
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "source_url": null
     },
@@ -1711,7 +1711,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -1721,7 +1721,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -1971,7 +1971,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -1981,7 +1981,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -1991,7 +1991,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2001,7 +2001,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2041,7 +2041,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2051,7 +2051,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2061,7 +2061,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2071,7 +2071,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2081,7 +2081,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2091,7 +2091,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2101,7 +2101,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2111,7 +2111,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2121,7 +2121,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2131,7 +2131,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2141,7 +2141,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2151,7 +2151,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2161,7 +2161,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2171,7 +2171,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2181,7 +2181,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2191,7 +2191,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2201,7 +2201,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2211,7 +2211,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2221,7 +2221,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2231,7 +2231,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2241,7 +2241,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2251,7 +2251,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2261,7 +2261,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2271,7 +2271,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2281,7 +2281,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2291,7 +2291,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2301,7 +2301,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2311,7 +2311,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2321,7 +2321,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2331,7 +2331,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2341,7 +2341,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2351,7 +2351,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2361,7 +2361,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2371,7 +2371,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2381,7 +2381,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2391,7 +2391,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2401,7 +2401,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2411,7 +2411,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2421,7 +2421,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2431,7 +2431,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2441,7 +2441,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2451,7 +2451,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2461,7 +2461,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2471,7 +2471,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2481,7 +2481,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2491,7 +2491,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2501,7 +2501,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2511,7 +2511,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2521,7 +2521,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2531,7 +2531,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2541,7 +2541,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2551,7 +2551,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2561,7 +2561,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2571,7 +2571,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2581,7 +2581,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2591,7 +2591,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2601,7 +2601,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2611,7 +2611,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2621,7 +2621,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2631,7 +2631,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2641,7 +2641,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2651,7 +2651,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2661,7 +2661,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2671,7 +2671,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2681,7 +2681,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2691,7 +2691,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2701,7 +2701,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2711,7 +2711,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2721,7 +2721,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2731,7 +2731,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2741,7 +2741,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2751,7 +2751,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2761,7 +2761,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2771,7 +2771,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2781,7 +2781,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2791,7 +2791,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2801,7 +2801,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2811,7 +2811,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2821,7 +2821,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2831,7 +2831,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2841,7 +2841,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2851,7 +2851,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2861,7 +2861,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2871,7 +2871,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2881,7 +2881,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2891,7 +2891,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2901,7 +2901,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2911,7 +2911,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-03_TONO-pitch-equipo-v0.2.md",
+      "source_file": "docs/DOC-03_TONO-pitch-equipo-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2921,7 +2921,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-04_LA-FUNDICION-laboratorio-v0.2.md",
+      "source_file": "docs/DOC-04_LA-FUNDICION-laboratorio-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2931,7 +2931,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "LEEME.md",
+      "source_file": "docs/LEEME.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -2941,7 +2941,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3301,7 +3301,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3311,7 +3311,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3321,7 +3321,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3331,7 +3331,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3341,7 +3341,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3351,7 +3351,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3361,7 +3361,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3371,7 +3371,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3381,7 +3381,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3391,7 +3391,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3401,7 +3401,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3411,7 +3411,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3421,7 +3421,7 @@
       "relation": "shares_data_with",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3431,7 +3431,7 @@
       "relation": "conceptually_related_to",
       "confidence": "INFERRED",
       "confidence_score": 0.75,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3441,7 +3441,7 @@
       "relation": "semantically_similar_to",
       "confidence": "INFERRED",
       "confidence_score": 0.75,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3451,7 +3451,7 @@
       "relation": "shares_data_with",
       "confidence": "INFERRED",
       "confidence_score": 0.75,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3461,7 +3461,7 @@
       "relation": "calls",
       "confidence": "INFERRED",
       "confidence_score": 0.85,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     },
@@ -3471,7 +3471,7 @@
       "relation": "references",
       "confidence": "INFERRED",
       "confidence_score": 0.85,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md",
       "source_location": null,
       "weight": 1.0
     }
@@ -3493,7 +3493,7 @@
       "relation": "participate_in",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md"
+      "source_file": "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md"
     },
     {
       "id": "pipeline_unidireccional",
@@ -3508,7 +3508,7 @@
       "relation": "form",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md"
+      "source_file": "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md"
     },
     {
       "id": "tres_mandamientos",

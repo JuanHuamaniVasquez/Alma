@@ -8,8 +8,8 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[DC-07 Capsula exportable]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[FA-3 Capsula]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DC-07 Capsula exportable]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[FA-3 Capsula]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[Tarea M3.6]] - document - TASKS.md
 
 ## Live Query (requires Dataview plugin)

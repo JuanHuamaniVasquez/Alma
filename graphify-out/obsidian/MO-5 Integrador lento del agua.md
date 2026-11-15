@@ -1,5 +1,5 @@
 ---
-source_file: "DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md"
+source_file: "docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md"
 type: "code"
 community: "Community 14"
 tags:

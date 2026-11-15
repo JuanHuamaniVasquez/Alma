@@ -8,7 +8,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[auditoria]] - document - auditoria.md
+- [[auditoria]] - document - .claude/commands/auditoria.md
 
 ## Live Query (requires Dataview plugin)
 

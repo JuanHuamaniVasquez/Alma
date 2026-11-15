@@ -1,5 +1,5 @@
 ---
-source_file: "DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md"
+source_file: "docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md"
 type: "concept"
 community: "Community 0"
 tags:

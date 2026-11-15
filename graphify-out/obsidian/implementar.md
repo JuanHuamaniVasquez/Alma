@@ -1,5 +1,5 @@
 ---
-source_file: "implementar.md"
+source_file: ".claude/commands/implementar.md"
 type: "document"
 community: "Community 16"
 tags:

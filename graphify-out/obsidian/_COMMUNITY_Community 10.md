@@ -8,9 +8,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[DC-09 Forma diaria del habitat]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[FB-006]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[MO-7 Forma diaria del habitat]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DC-09 Forma diaria del habitat]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[FB-006]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[MO-7 Forma diaria del habitat]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 
 ## Live Query (requires Dataview plugin)
 

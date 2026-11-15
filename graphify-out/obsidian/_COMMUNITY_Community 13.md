@@ -8,8 +8,8 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[FB-003]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[MO-4 Triangulacion 3 testigos]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[FB-003]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[MO-4 Triangulacion 3 testigos]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[Tarea M2.4]] - document - TASKS.md
 
 ## Live Query (requires Dataview plugin)

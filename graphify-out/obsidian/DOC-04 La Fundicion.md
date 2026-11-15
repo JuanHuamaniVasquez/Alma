@@ -1,5 +1,5 @@
 ---
-source_file: "DOC-04_LA-FUNDICION-laboratorio-v0.2.md"
+source_file: "docs/DOC-04_LA-FUNDICION-laboratorio-v0.2.md"
 type: "document"
 community: "Community 5"
 tags:

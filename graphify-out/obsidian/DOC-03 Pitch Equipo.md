@@ -1,5 +1,5 @@
 ---
-source_file: "DOC-03_TONO-pitch-equipo-v0.2.md"
+source_file: "docs/DOC-03_TONO-pitch-equipo-v0.2.md"
 type: "document"
 community: "Community 3"
 tags:

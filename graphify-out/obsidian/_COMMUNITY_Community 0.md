@@ -8,30 +8,30 @@ members: 24
 **Members:** 24 nodes
 
 ## Members
-- [[Ancla C-1]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-10]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-11]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-12]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-13]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-14]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-15]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-16]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-17]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-18]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-19]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-2]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-20]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-21]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-22]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-23]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-3]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-4]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-5]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-6]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-7]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-8]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[Ancla C-9]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[DOC-02 Genesis]] - document - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-1]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-10]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-11]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-12]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-13]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-14]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-15]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-16]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-17]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-18]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-19]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-2]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-20]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-21]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-22]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-23]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-3]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-4]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-5]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-6]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-7]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-8]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[Ancla C-9]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[DOC-02 Genesis]] - document - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
 
 ## Live Query (requires Dataview plugin)
 

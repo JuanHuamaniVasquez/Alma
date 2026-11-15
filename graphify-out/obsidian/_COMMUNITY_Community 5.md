@@ -8,10 +8,10 @@ members: 6
 **Members:** 6 nodes
 
 ## Members
-- [[DC-12 Contrato de Fundicion]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[DOC-04 La Fundicion]] - document - DOC-04_LA-FUNDICION-laboratorio-v0.2.md
+- [[DC-12 Contrato de Fundicion]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DOC-04 La Fundicion]] - document - docs/DOC-04_LA-FUNDICION-laboratorio-v0.2.md
 - [[El Guardian]] - concept - CLAUDE.md
-- [[FA-1 Kanban H-cards]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[FA-1 Kanban H-cards]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[LA FUNDICION]] - concept - CLAUDE.md
 - [[Tarea M4.2]] - document - TASKS.md
 

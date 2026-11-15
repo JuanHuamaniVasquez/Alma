@@ -8,9 +8,9 @@ members: 5
 **Members:** 5 nodes
 
 ## Members
-- [[DC-08 Cierre de conservacion]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[FB-005]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[MO-6 El Contrapeso]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DC-08 Cierre de conservacion]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[FB-005]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[MO-6 El Contrapeso]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[Tarea M1.2]] - document - TASKS.md
 - [[Tarea M1.4]] - document - TASKS.md
 

@@ -8,9 +8,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[DC-10 Casos de error y contagio]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[FB-007]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[GO-6 Epidemiologia del error]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DC-10 Casos de error y contagio]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[FB-007]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[GO-6 Epidemiologia del error]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 
 ## Live Query (requires Dataview plugin)
 

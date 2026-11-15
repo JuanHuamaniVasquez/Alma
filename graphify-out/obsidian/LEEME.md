@@ -1,5 +1,5 @@
 ---
-source_file: "LEEME.md"
+source_file: "docs/LEEME.md"
 type: "document"
 community: "Community 3"
 tags:

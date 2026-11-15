@@ -8,10 +8,10 @@ members: 7
 **Members:** 7 nodes
 
 ## Members
-- [[DC-06 Stream de residuo]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DC-06 Stream de residuo]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[EL RESIDUO]] - concept - CLAUDE.md
-- [[FB-001]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[MO-2 Residuo 2 sigma]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[FB-001]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[MO-2 Residuo 2 sigma]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[Tarea M0.5]] - document - TASKS.md
 - [[Tarea M2.2]] - document - TASKS.md
 - [[Tarea M3.2]] - document - TASKS.md

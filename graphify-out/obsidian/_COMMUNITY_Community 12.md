@@ -8,9 +8,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[DC-11 Ficha de vida de sensor]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[FB-008]] - concept - DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
-- [[MO-8 Demografia de testigos]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DC-11 Ficha de vida de sensor]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[FB-008]] - concept - docs/DOC-02_MAP-S2-genesis-nueva-generacion-v0.3.md
+- [[MO-8 Demografia de testigos]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 
 ## Live Query (requires Dataview plugin)
 

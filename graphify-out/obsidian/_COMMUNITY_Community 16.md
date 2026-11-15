@@ -8,7 +8,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[implementar]] - document - implementar.md
+- [[implementar]] - document - .claude/commands/implementar.md
 
 ## Live Query (requires Dataview plugin)
 

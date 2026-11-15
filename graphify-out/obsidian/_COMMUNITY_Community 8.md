@@ -8,8 +8,8 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[DC-01 Canal A sensores]] - concept - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[IN-1]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[DC-01 Canal A sensores]] - concept - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[IN-1]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[Tarea M0.3]] - document - TASKS.md
 
 ## Live Query (requires Dataview plugin)

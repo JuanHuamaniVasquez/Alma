@@ -1,5 +1,5 @@
 ---
-source_file: "auditoria.md"
+source_file: ".claude/commands/auditoria.md"
 type: "document"
 community: "Community 15"
 tags:

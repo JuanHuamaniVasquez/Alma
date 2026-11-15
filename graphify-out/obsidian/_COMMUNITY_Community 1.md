@@ -9,8 +9,8 @@ members: 20
 
 ## Members
 - [[El Adversario]] - concept - CLAUDE.md
-- [[FA-4 El Faro]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
-- [[IN-4 Banco de Falsaciones]] - code - DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[FA-4 El Faro]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
+- [[IN-4 Banco de Falsaciones]] - code - docs/DOC-01_MAP-S1-mapa-maestro-sistema-v0.2.md
 - [[LA TORMENTA]] - concept - CLAUDE.md
 - [[TASKS]] - document - TASKS.md
 - [[Tarea M0.1]] - document - TASKS.md
