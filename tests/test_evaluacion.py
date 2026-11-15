@@ -167,3 +167,61 @@ def test_fb009_el_resultado_primario_se_reproduce_exactamente_desde_el_dataset()
         assert de_nuevo[k] == r["primario"][k]
     assert de_nuevo["M1"]["alarmas"] == r["primario"]["M1"]["alarmas"]
     assert {d: v["detectadas"] for d, v in de_nuevo["M3"].items()} == {d: v["detectadas"] for d, v in r["primario"]["M3"].items()}
+
+
+# --- FB-010 (MP-11): el resultado REGISTRADO --------------------------------------------------------------
+def _registro_fb010():
+    lineas = (RAIZ / "docs" / "actas" / "RESULTADOS.jsonl").read_text(encoding="utf-8").splitlines()
+    return [json.loads(l) for l in lineas if l and json.loads(l)["acta"] == "FB-010"]
+
+
+def test_fb010_se_ejecuto_una_sola_vez_tras_registrar_el_acta():
+    (r,) = _registro_fb010()
+    assert r["hash_acta"] == hash_acta(RAIZ / "docs" / "actas" / "FB-010.md")
+    reg = datetime.strptime(r["acta_registrada_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    eje = datetime.strptime(r["ts_ejecucion_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    assert reg < eje and r["csv_sha256"] in (RAIZ / "docs" / "actas" / "FB-010.md").read_text(encoding="utf-8")
+
+
+def test_fb010_los_tamanos_de_particion_son_los_que_el_acta_declaro_antes_de_correr():
+    (r,) = _registro_fb010()
+    fc, sueno = r["resultados"]["fc"], r["resultados"]["sueño"]
+    assert (fc["prueba_base"]["n_unidades"], fc["entrenamiento_base"]["n_unidades"]) == (77, 67)
+    assert (sueno["prueba_base"]["n_unidades"], sueno["entrenamiento_base"]["n_unidades"]) == (51, 46)
+    assert fc["prueba_base"]["M1"]["x_critico"] == 3  # el acta lo declaró
+
+
+def test_fb010_los_veredictos_salen_de_las_reglas_del_acta_y_la_prueba_no_discrimina():
+    (r,) = _registro_fb010()
+    pw, base = r["resultados"]["fc"]["prueba_blanqueado"], r["resultados"]["fc"]["prueba_base"]
+    h1 = pw["M1"]["alarmas"] < pw["M1"]["x_critico"] and pw["M1"]["alarmas"] <= base["M1"]["alarmas"]
+    h2 = pw["M3"]["2.0"]["tasa"] >= 0.80
+    assert r["veredictos"] == {"H1p": "SOSTENIDA" if h1 else "REFUTADA", "H2p": "SOSTENIDA" if h2 else "REFUTADA"}
+    # HECHO REGISTRADO (defecto de diseño del acta): en las personas de prueba el control sin blanquear TAMBIÉN pasó la regla,
+    # y blanquear no cambió el número de falsas alarmas: esta prueba no demuestra mejora fuera de muestra.
+    assert base["M1"]["alarmas"] < base["M1"]["x_critico"] and pw["M1"]["alarmas"] == base["M1"]["alarmas"]
+    # coste del blanqueado en potencia a cambios pequeños (declarado)
+    assert pw["M3"]["1.0"]["tasa"] < base["M3"]["1.0"]["tasa"]
+
+
+def test_fb010_la_mejora_solo_se_ve_en_muestra_y_phi_viene_solo_de_entrenamiento():
+    (r,) = _registro_fb010()
+    fc = r["resultados"]["fc"]
+    assert 0 < fc["phi_estimado_en_entrenamiento"] < 0.5
+    assert fc["entrenamiento_blanqueado"]["M1"]["alarmas"] < fc["entrenamiento_base"]["M1"]["alarmas"]  # 5 → 2 (en muestra: sugestivo, no evidencia)
+
+
+@pytest.mark.skipif(not COMPLETO.exists(), reason="el dataset completo no está en este equipo")
+def test_fb010_el_resultado_de_pulso_se_reproduce_exactamente():
+    from src.motor.evaluacion import estimar_phi, particion
+    (r,) = _registro_fb010()
+    por = {}
+    for x in cargar(COMPLETO).registros:
+        if x.indicador is IndicadorSensor.FC and x.calidad is CalidadDato.OK:
+            por.setdefault(x.persona_id, []).append((x.ts_utc.date(), x.valor))
+    entrena = {p for p in por if particion(p) == "entrenamiento"}
+    prueba = {p for p in por if particion(p) == "prueba"}
+    phi = estimar_phi(por, filtro_personas=lambda p: p in entrena)
+    assert phi == pytest.approx(r["resultados"]["fc"]["phi_estimado_en_entrenamiento"])
+    nuevo = evaluar(por, Indicador.FC, sigma_de(IndicadorSensor.FC).sigma, personas=prueba, phi=phi)
+    assert nuevo["M1"]["alarmas"] == r["resultados"]["fc"]["prueba_blanqueado"]["M1"]["alarmas"]
