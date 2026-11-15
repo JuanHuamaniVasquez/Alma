@@ -29,7 +29,7 @@ FX = "highpass=f=110,aecho=0.85:0.5:35|70:0.22|0.12,chorus=0.7:0.9:45:0.3:0.2:2,
 def lineas() -> list:
     c = APIClient(HTTP_HOST="localhost")
     g = lambda u: (lambda r: r.json() if r.status_code == 200 else None)(c.get(u))  # noqa: E731
-    base = narrador.todas(demo=g("/api/demo-kill/"), fund=g("/api/fundicion/"), storm=g("/api/tormenta/"), act=g("/api/actas/"), resid=g("/api/residuo/"), ind=g("/api/indicadores/"))
+    base = narrador.todas(front=(lambda a, o: {"astro": a, "osdr": o} if a and o else None)(g("/api/astronautas/"), g("/api/osdr/")), demo=g("/api/demo-kill/"), fund=g("/api/fundicion/"), storm=g("/api/tormenta/"), act=g("/api/actas/"), resid=g("/api/residuo/"), ind=g("/api/indicadores/"))
     dias = (g("/api/libro/dias/") or {}).get("dias", [])
     esc = [narrador.escenario(x) for x in (g(f"/api/tormenta/escenario/{e}/") for e in ("G1", "G2", "G3", "G4", "G5")) if x]
     libros = [d for d in (g(f"/api/libro/dia/{n}/") for n in dias) if d]

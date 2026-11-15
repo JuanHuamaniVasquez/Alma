@@ -36,6 +36,7 @@
 | C-10 | Los hechos de vuelo mostrados (sueño 6,09 h en la ISS; pulso sin cambio en vuelo; hueso 1–1,5 %/mes; retardo 0–22 min) están **copiados de sus fuentes** con cita | verificado | S-21, S-22, S-05, S-23; `data/referencias/*.json` | REAL (literatura) | promedios de grupo publicados, no predicciones individuales |
 | C-11 | Las pantallas dicen en cada sala qué es real y qué es simulado; hay un test que impide afirmar lo no demostrado | implementada | `web/src/components/Origins.tsx`, `tests/test_checklist_honestidad.py` | — | la lista se mantiene a mano |
 | C-13 | Reconciliar el hemograma de astronautas reales consigo mismo (absoluto = % × leucocitos) encuentra 1 fila de 28 que no cierra (un error de captura probable en datos públicos de NASA); con 3 extracciones de base la banda personal es tan ancha que ninguna persona sale de ella pese a una caída mediana de linfocitos de −24 % en R+1 | medida (mixta) | acta FB-024 `41f0413d…`, `NOTA-FB-024.md`, `tests/test_hematologia_i4.py` | **REAL, astronautas (n = 4, Inspiration4, OSD-569)** | civiles, sin muestras en vuelo, sin causalidad; «sin alarma» ≠ «sin efecto» |
+| C-15 | Poner en común la variación intra-persona de los 4 astronautas estrecha las bandas ≈ 30 % (razón mediana 1,42), pero el piso de detección de linfocitos sigue en ±70 % de la media personal, casi el triple de la caída mediana observada (−24 %): ninguna banda razonable la habría visto | medida (exploratoria, mismos datos que FB-024) | acta FB-025 `fb459739…`, `NOTA-FB-025.md` | **REAL, astronautas (n = 4)** | exploratoria; 4 civiles; la varianza agrupada supone variación intra-persona común |
 | C-14 | La nave muestra el entorno REAL de la tripulación en vivo (órbita de la ISS, protones GOES, rayos X) y declara `disponible:false` si una fuente cae | implementada y testeada con respuestas reales guardadas | `src/ingesta/entorno.py`, `tests/fixtures/entorno/`, S-26, S-27 | REAL (NASA/NOAA) | la posición de la ISS es derivada de elementos orbitales, no telemetría |
 | C-12 | FB-014 (sueño/HRV × Kp) REFUTADA; FB-016 A (sueño corto → cansancio) SOSTENIDA | medida | `NOTA-FB-014.md`, `NOTA-FB-016.md` | REAL | LifeSnaps no son astronautas |
 
@@ -71,6 +72,7 @@
 | FB-022 | `1a8d7c6e` | 2026-11-15T18:47:36Z | 2026-11-15T18:48:02Z | real+simulated | mixed | M6.3/MP-18: consistencia física cruzada, LifeSnaps columnas no analizadas antes |
 | FB-023 | `09bb108c` | 2026-11-15T19:21:02Z | 2026-11-15T19:21:16Z | simulated | partial | M6.2/MP-17: NILM metabólico de cabina, identificabilidad SIMULADA (X-17) |
 | FB-024 | `41f0413d` | 2026-11-15T20:27:32Z | 2026-11-15T20:28:13Z | real | mixed | M7.2: hematología REAL de astronautas (Inspiration4, OSD-569): conciliación interna, banda personal y retorno |
+| FB-025 | `fb459739` | 2026-11-15T20:48:16Z | 2026-11-15T20:48:41Z | real | refuted | M7.7: banda personal con varianza agrupada sobre el hemograma real de Inspiration4 (exploratoria, mismos datos |
 <!-- TABLA-EXPERIMENTOS:FIN -->
 
 Cada acta se preregistró con SHA-256 **antes** de correr; el hash de cada una se puede recalcular (`docs/actas/INDEX.jsonl`, `src/gobernanza/preregistro.py`). Una sola ejecución por acta.

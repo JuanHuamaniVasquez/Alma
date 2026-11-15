@@ -97,3 +97,11 @@ def test_tripulante_se_dice_ficticio_y_su_estado_es_de_un_sustituto():
     l = n.tripulante(c)
     assert l.clave == "crew-LYRA" and "fictional" in l.texto and "stand-in" in l.texto and "not an astronaut" in l.texto and "question, not a verdict" in l.texto and not numeros(l.texto)
     assert "nothing is invented" in n.tripulante({"indicativo": "VEGA", "rol": "Commander", "estado": None}).texto
+
+
+def test_frontier_dice_solo_hechos_sellados_y_con_su_fuente():
+    a = {"banner": "REAL", "ejecutada": True, "hash_acta": "41f0413d" + "0" * 56, "conciliacion": {"valores": 5, "filas": 1, "de_filas": 28},
+         "tabla": {"abs_lymphocytes|R+1": {"mediana_cambio_pct": -23.8}}}
+    l = n.frontier({"astro": a, "osdr": {"n": 52}})
+    assert l.clave == "frontier" and "1 of 28" in l.texto and "24 percent" in l.texto and "52 NASA studies" in l.texto and "41f0413d" in l.fuente
+    assert n.frontier({"astro": {"banner": "REAL", "ejecutada": False}, "osdr": {"n": 0}}).texto.startswith("I have no astronaut blood record")

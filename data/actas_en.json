@@ -375,6 +375,21 @@
     "reconciliation",
     "detection floor"
    ]
+  },
+  "FB-025": {
+   "title": "Borrowing the group's variation (astronaut blood)",
+   "summary": "Pooling the within-person variation of the four real astronauts narrows each personal band by about 30%, but the detection floor for lymphocytes stays near ±70%: day-to-day variation is so large that no reasonable band could have seen the 24% landing-day fall. Exploratory, same data as the previous test.",
+   "outcome": "refuted",
+   "data": "real",
+   "tags": [
+    "astronauts",
+    "blood count",
+    "pooled variance",
+    "detection floor",
+    "exploratory",
+    "osdr",
+    "inspiration4"
+   ]
   }
  }
 }

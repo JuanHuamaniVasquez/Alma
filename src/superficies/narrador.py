@@ -50,6 +50,20 @@ def fundicion(d: dict) -> Linea:
     return Linea("fundicion", texto, "/api/fundicion · DC-12", "REAL")
 
 
+def frontier(d: dict) -> Linea:
+    """THE FRONTIER: solo hechos ESTABLES (resultado sellado de FB-024 y tamaño del catálogo OSDR); lo «en vivo» no se narra porque el audio es estático."""
+    a, o = d["astro"], d["osdr"]
+    if not a.get("ejecutada"):
+        return Linea("frontier", "I have no astronaut blood record to read. The absence is recorded, not filled in.", "/api/astronautas · FB-024", a["banner"])
+    cambio = abs(a["tabla"]["abs_lymphocytes|R+1"]["mediana_cambio_pct"])
+    c = a["conciliacion"]
+    texto = (f"The Frontier. Real astronauts: four people from the Inspiration4 mission, whose blood counts NASA has opened. Checking each count against itself found "
+             f"{c['filas']} of {c['de_filas']} that did not add up. Lymphocytes fell a median {cambio:.0f} percent on landing day, and no one left their personal band, "
+             f"because with three baseline samples the band is too wide to see it. No alarm is not no effect. The catalogue lists {o['n']} NASA studies of spaceflown human bodies. "
+             f"Above, the ship watches the real space around the crew, live.")
+    return Linea("frontier", texto, f"/api/astronautas · FB-024 · sha256 {_corto(a['hash_acta'])}", a["banner"])
+
+
 def tormenta(d: dict) -> Linea:
     kps = [e for e in d["eventos"] if e["tipo"] == "lectura_clima_espacial" and "kp" in e["parametros"]]
     if not kps:
@@ -81,10 +95,10 @@ def libro_del_dia(d: dict) -> Linea:
 
 
 def todas(*, demo: dict | None = None, fund: dict | None = None, storm: dict | None = None, act: dict | None = None,
-          libro: dict | None = None, resid: dict | None = None, ind: dict | None = None) -> list[Linea]:
+          libro: dict | None = None, resid: dict | None = None, ind: dict | None = None, front: dict | None = None) -> list[Linea]:
     """Todas las líneas que los datos disponibles permiten; lo que falta se omite (la UI muestra la ausencia)."""
     out = []
-    for f, x in ((libro_del_dia, libro), (tormenta, storm), (demo_kill, demo), (fundicion, fund), (actas, act), (residuo, resid), (indicadores, ind)):
+    for f, x in ((libro_del_dia, libro), (tormenta, storm), (demo_kill, demo), (fundicion, fund), (actas, act), (residuo, resid), (indicadores, ind), (frontier, front)):
         if x is not None:
             out.append(f(x))
     return out

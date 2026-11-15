@@ -35,6 +35,20 @@
    "refuter": "x_pw at or above x_critical, or x_pw above x_base (act FB-013, H2).",
    "mechanism": "Positive autocorrelation of daily pulse inflates CUSUM false alarms; AR(1) whitening would correct it.",
    "result": "In test: the independent cohort could not settle it (FB-013). Recommendation: do not enable by default."
+  },
+  "af2f9c04-37f4-579c-9609-845862b4d450": {
+   "title": "A personal band sees astronauts' blood change",
+   "prediction": "On landing day, lymphocytes fall below each astronaut's own prediction band (built from three pre-flight draws) in at least 2 of 4 astronauts.",
+   "refuter": "Fewer than 2 of 4 leave the band (act FB-024, H2).",
+   "mechanism": "Immune stress response on return from flight (lymphocyte redistribution).",
+   "result": "Refuted on real astronaut data (NASA OSDR, Inspiration4): 0 of 4, despite a median fall of 24% — the band built from 3 samples is too wide to see it (FB-024)."
+  },
+  "acd51244-9f2e-54b2-9539-ab33e68f48ea": {
+   "title": "Borrowing the group's variation narrows the band",
+   "prediction": "On landing day, lymphocytes fall below the pooled band (variation shared across the four astronauts) in at least 2 of 4.",
+   "refuter": "Fewer than 2 of 4 leave the pooled band (act FB-025, H1).",
+   "mechanism": "Pooling within-person variation gives more degrees of freedom (t = 2.36 instead of 4.30) and a tighter band (exploratory: same data as FB-024).",
+   "result": "Refuted on real astronaut data: 0 of 4. Bands narrow by about 30%, but the detection floor stays near ±70% of the person's mean — day-to-day variation is huge (FB-025)."
   }
  },
  "detectores": {

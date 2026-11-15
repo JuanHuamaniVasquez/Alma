@@ -124,7 +124,9 @@
 - [x] **M7.3 Atlas OSDR** — HECHO: `scripts/actualizar_osdr.py` → `data/referencias/osdr_humanos.json` (52 estudios humanos + vuelo, 14 con tripulación; heurística de clasificación declarada), `/api/osdr/`; acceso a archivos NO verificado salvo OSD-569.
 - [x] **M7.4 Sala nueva «The Frontier»** (09) — HECHO: mapa de la ISS con continentes (Natural Earth 110m, dominio público) y terminador día/noche, medidor de protones contra S1, clase de rayos X, sangre real de astronautas (curva de cambio mediano, «3 de 112 fuera de banda», «1 de 28 no cierra»), atlas OSDR filtrable, 6 tiles con su veredicto honesto, y «lo que nadie puede abrir».
 - [x] **M7.5 Cabecera**: chips separados «Habitat simulated» y «● Live»; el día solo en pantallas anchas.
-- [x] **M7.6 La Fundición explicada** («What is this page?») — HECHO. **Pendiente:** acuñar una tarjeta DC-12 con la fuente real OSD-569 (requiere pasar la puerta de `src/fabrica/mesa.py`: mecanismo de la biblioteca FA, precio, señal refutadora).
+- [x] **M7.6 La Fundición explicada** («What is this page?») — HECHO. Tarjetas DC-12 con astronautas REALES acuñadas (`scripts/acunar_tarjetas_m7.py`, ahora 7 en total): `hemograma-banda-personal` (refutada, FB-024) y `hemograma-banda-agrupada` (refutada, FB-025). ALMA narra la sala Frontier (`narrador.frontier`: solo hechos sellados, no lo «en vivo»).
+
+- [x] **M7.7 FB-025 (exploratoria)** — banda con varianza agrupada sobre OSD-569: las bandas se estrechan ≈ 30 %, pero el piso de detección de linfocitos sigue en ±70 % de la media; H1/H2 refutadas, H3/H4 sostenidas. `docs/actas/NOTA-FB-025.md`, acta `fb459739…`.
 
 ## Bloqueado / decisiones pendientes del humano (no son ítems de código)
 

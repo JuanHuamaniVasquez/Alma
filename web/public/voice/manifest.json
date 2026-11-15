@@ -14,18 +14,18 @@
   "audio": "/voice/a0d5104e363d84c3.mp3"
  },
  "fundicion": {
-  "id": "23af43fdff111956",
-  "texto": "The foundry has minted 5 hypothesis cards: 2 refuted, 1 sustained, and 1 compiled into a new detector. Refuted cards are published exactly like the sustained ones.",
+  "id": "2fbb553f97d09318",
+  "texto": "The foundry has minted 7 hypothesis cards: 4 refuted, 1 sustained, and 1 compiled into a new detector. Refuted cards are published exactly like the sustained ones.",
   "fuente": "/api/fundicion · DC-12",
   "banner": "REAL",
-  "audio": "/voice/23af43fdff111956.mp3"
+  "audio": "/voice/2fbb553f97d09318.mp3"
  },
  "actas": {
-  "id": "5c03b4360fdd0aeb",
-  "texto": "21 experiments were preregistered with a SHA-256 hash before they ran. 16 have been executed, each exactly once. Failures are part of the record.",
+  "id": "3dbd120bf2374d43",
+  "texto": "26 experiments were preregistered with a SHA-256 hash before they ran. 21 have been executed, each exactly once. Failures are part of the record.",
   "fuente": "/api/actas · GO-2",
   "banner": "REAL",
-  "audio": "/voice/5c03b4360fdd0aeb.mp3"
+  "audio": "/voice/3dbd120bf2374d43.mp3"
  },
  "residuo": {
   "id": "493cdc99f7863690",
@@ -40,6 +40,13 @@
   "fuente": "/api/indicadores · DC-14 · LifeSnaps",
   "banner": "REAL",
   "audio": "/voice/cd33af5667fc7ffe.mp3"
+ },
+ "frontier": {
+  "id": "7cde3303c7cf2d90",
+  "texto": "The Frontier. Real astronauts: four people from the Inspiration4 mission, whose blood counts NASA has opened. Checking each count against itself found 1 of 28 that did not add up. Lymphocytes fell a median 24 percent on landing day, and no one left their personal band, because with three baseline samples the band is too wide to see it. No alarm is not no effect. The catalogue lists 52 NASA studies of spaceflown human bodies. Above, the ship watches the real space around the crew, live.",
+  "fuente": "/api/astronautas · FB-024 · sha256 41f0413d",
+  "banner": "REAL",
+  "audio": "/voice/7cde3303c7cf2d90.mp3"
  },
  "escenario-G1": {
   "id": "47ef8b69ba9f8228",

@@ -142,7 +142,7 @@ function RealAstronauts({ a }: { a: Astronautas }) {
           {a.conciliacion && <p><span className="font-display text-4xl text-ink">{a.conciliacion.filas} of {a.conciliacion.de_filas}</span> blood counts did not add up with themselves (absolute count ≠ percentage × white cells): a likely data-entry error in a public NASA file, found just by checking the book against itself.</p>}
         </div>
       </div>
-      <p className="mt-3 text-[11px] text-ink-faint">Sealed test FB-024 (hash {a.hash_acta?.slice(0, 8)}…), predictions published even where wrong. Four civilians, none sampled in flight: a method case study, not a clinical finding. {a.aviso}</p>
+      <p className="mt-3 text-[11px] text-ink-faint">Sealed tests FB-024 (hash {a.hash_acta?.slice(0, 8)}…) and FB-025 (pooling the group's variation: bands about 30% narrower, floor still near ±70% — the same cards are in <Link href="/foundry" className="underline decoration-ink-faint hover:text-ink">The Foundry</Link>), predictions published even where wrong. Four civilians, none sampled in flight: a method case study, not a clinical finding. {a.aviso}</p>
     </Section>
   );
 }
@@ -181,7 +181,7 @@ function Tiles({ nilm }: { nilm: NilmBook | null }) {
     { id: "FB-022", title: "Body or sensor?", verdict: "failed", head: "couplings real, classifier refuted", body: "Temperature, breathing and HRV move with resting pulse in most people, out of sample. A rule to tell a broken sensor from a changed body flagged 44% of untouched real data.", where: "Notes in the Vault", href: "/vault" },
     { id: "FB-023", title: "Who is breathing extra?", verdict: "mixed", head: best != null ? `${Math.round(best * 100)}% at best (simulated)` : "simulated", body: "Splitting the cabin's CO₂ into bodies works only if people sleep at different hours (at chance if they sleep together) — and is weaker than we predicted.", where: "The Budget", href: "/budget" },
     { id: "ε", title: "Privacy as a budget", verdict: "held", head: "5 people can't hide in an average", body: "With a crew of five, an exact average plus one subtraction names someone. Every number that leaves spends privacy; when it is gone, nothing more is published.", where: "The Budget", href: "/budget" },
-    { id: "FB-024", title: "Real astronauts' blood", verdict: "mixed", head: "1 of 28 blood counts doesn't add up", body: "A personal-baseline band on four real astronauts could not see a 24% lymphocyte fall — the detection floor, stated out loud.", where: "above", href: "#astronauts" },
+    { id: "FB-024", title: "Real astronauts' blood", verdict: "mixed", head: "1 of 28 blood counts doesn't add up", body: "A personal-baseline band on four real astronauts could not see a 24% lymphocyte fall. Pooling the group's variation (FB-025) narrows the band by ~30%, yet the floor stays near ±70%: day-to-day variation is that large.", where: "above", href: "#astronauts" },
     { id: "ECG", title: "Vitals monitor · real ECG", verdict: "held", head: "99.96% of beats found", body: "Our own R-peak detector against 2,273 human-annotated beats of a real 30-minute ECG: 2,272 found, none invented. Includes 'expected in flight' (with DOIs) and an Earth-link blackout switch.", where: "Medical Module", href: "/" },
   ];
   const col = { held: "#9fbf9f", failed: "var(--color-signal)", mixed: "#ffb45c", open: "#8a8174" } as const;
