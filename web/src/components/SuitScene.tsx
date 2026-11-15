@@ -97,7 +97,7 @@ function Body({ anchors: pos, marks, mode, onTap, children, holo }: { anchors: R
 /** Traje NASA Z-2 (NASA 3D Resources, sin copyright): el tripulante FUERA de la nave. El modelo es una sola malla: `scripts/blender/z2_split.py` lo parte en traje y casco.
  *  Con el casco quitado se ve la cabeza del tripulante (el modelo generado, recortado a la altura del cuello). */
 const Z2_HELMET_CENTER = new THREE.Vector3(0, 1.72, 0.115), Z2_NECK_Y = 1.56;
-function Suit({ helmet, crew, ...props }: { helmet: boolean; crew: string; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
+function Suit({ helmet, crew, layer, pickedInd, onPickInd, states, ...props }: { helmet: boolean; crew: string; layer: Layer; pickedInd: string | null; onPickInd: (id: string) => void; states: Record<string, OrganState>; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
   const suit = useGLTF("/models/z2_suit.glb").scene, hel = useGLTF("/models/z2_helmet.glb").scene, head = useGLTF(`/models/crew_${crew}.glb`).scene;
   const model = useMemo(() => {
     const g = new THREE.Group();
@@ -112,7 +112,7 @@ function Suit({ helmet, crew, ...props }: { helmet: boolean; crew: string; marks
       });
       return m;
     };
-    const s = prep(suit), h = prep(hel); h.name = "helmet";
+    const s = prep(suit), h = prep(hel); s.name = "suit"; h.name = "helmet";
     g.add(s, h);
     // cabeza del tripulante: se centra en el casco y se recorta por debajo del cuello
     const c = head.clone(true); prepCrew(c); c.scale.setScalar(1.12);
@@ -145,10 +145,21 @@ function Suit({ helmet, crew, ...props }: { helmet: boolean; crew: string; marks
     return { wrap: w };
   }, [model]);
   useEffect(() => {
+    const ghost = layer === "anatomy";                                    // en «anatomía» el traje es un fantasma translúcido y se ve el cuerpo de dentro
+    for (const nm of ["suit", "helmet"]) model.getObjectByName(nm)?.traverse((o) => {
+      const mesh = o as THREE.Mesh; if (!mesh.isMesh) return;
+      for (const m of ([mesh.userData.orig ?? mesh.material].flat() as THREE.Material[])) { m.transparent = ghost; m.opacity = ghost ? 0.16 : 1; m.depthWrite = !ghost; m.needsUpdate = true; }
+    });
     const hh = model.getObjectByName("helmet"); if (hh) hh.visible = helmet;
     const hd = model.getObjectByName("head"); if (hd) hd.visible = !helmet;
-  }, [helmet, model]);
-  return <Body anchors={ANCHORS_EVA} {...props}><primitive object={wrap} /></Body>;
+  }, [helmet, layer, model]);
+  return (
+    <Body anchors={ANCHORS_EVA} {...props}>
+      <primitive object={wrap}>{/* hijo de wrap: hereda la misma escala y desplazamiento que el traje (coordenadas nativas del modelo) */}
+        {layer === "anatomy" && <group name="anatomy-eva" userData={{ noholo: true }} position={[0, 0.06, 0.0]}><Anatomy H={1.78} picked={pickedInd} onPick={onPickInd} states={states} /></group>}
+      </primitive>
+    </Body>
+  );
 }
 
 /** Anclas de los indicadores sobre el cuerpo generado (fracciones de la altura H; pies en y=0, frente = +z; A-pose). */
@@ -380,7 +391,7 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
         <pointLight position={[0, 0.2, 1.6]} intensity={0.8} color="#ffb47a" distance={4} />
         <Rig />
         {holo && <Bay />}
-        {outfit === "eva" ? <Suspense fallback={null}><Suit helmet={helmet} crew={look.indicativo} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense> : <Suspense fallback={null}><CrewGLB name={look.indicativo} layer={layer} pickedInd={pickedInd} onPickInd={onPickInd} states={organStates} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense>}
+        {outfit === "eva" ? <Suspense fallback={null}><Suit helmet={helmet} crew={look.indicativo} layer={layer} pickedInd={pickedInd} onPickInd={onPickInd} states={organStates} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense> : <Suspense fallback={null}><CrewGLB name={look.indicativo} layer={layer} pickedInd={pickedInd} onPickInd={onPickInd} states={organStates} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense>}
         <ContactShadows position={[0, 0, 0]} opacity={0.7} scale={4} blur={2.4} far={1.6} />
         {mode === "books" && BUDGETS.map(([id], i) => <Ring key={id} i={i} id={id} state={stateOf(id)} onPick={onPick} active={picked === id} labels={labels} />)}
       </Canvas>

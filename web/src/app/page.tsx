@@ -89,13 +89,20 @@ export default function MedicalModule() {
         </ul>
         <div className="mt-4 flex gap-4 font-mono text-[10px] uppercase tracking-[0.2em]" role="tablist" aria-label="Where">
           {([["iva", "Inside"], ["eva", "Outside"]] as const).map(([m, t]) => (
-            <button key={m} role="tab" aria-selected={outfit === m} onClick={() => setOutfit(m)} className={`border-b pb-0.5 transition-colors ${outfit === m ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>
+            <button key={m} role="tab" aria-selected={outfit === m} onClick={() => { setOutfit(m); if (m === "eva" && layer === "body") setLayer("uniform"); }} className={`border-b pb-0.5 transition-colors ${outfit === m ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>
           ))}
         </div>
         {outfit === "eva" && (
           <div className="mt-3 flex gap-4 font-mono text-[10px] uppercase tracking-[0.2em]" role="tablist" aria-label="Helmet">
             {([[true, "Helmet on"], [false, "Helmet off"]] as const).map(([m, t]) => (
               <button key={t} role="tab" aria-selected={helmet === m} onClick={() => setHelmet(m)} className={`border-b pb-0.5 transition-colors ${helmet === m ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>
+            ))}
+          </div>
+        )}
+        {outfit === "eva" && (
+          <div className="mt-3 flex gap-4 font-mono text-[10px] uppercase tracking-[0.2em]" role="tablist" aria-label="Outside layer">
+            {([["uniform", "Suit"], ["anatomy", "Anatomy"]] as const).map(([m, t]) => (
+              <button key={m} role="tab" aria-selected={layer === m} onClick={() => setLayer(m)} className={`border-b pb-0.5 transition-colors ${layer === m ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>
             ))}
           </div>
         )}
@@ -113,7 +120,7 @@ export default function MedicalModule() {
           ))}
         </div>
         <p className="mt-3 font-mono text-[9.5px] uppercase leading-relaxed tracking-[0.16em] text-ink-faint">
-          {outfit === "eva" ? "NASA Z-2 prototype suit · NASA 3D Resources" : "Generated fictional character"}<br />not a real person · body states = stand-in<br /><span className="text-ink-dim">{layer === "anatomy" && outfit === "iva" ? "Organ colour = its receipt: green ok · orange alarm · grey no verified sensor. Tap an organ: heart = heart rate · brain = sleep, mood, temperature · pancreas = glucose · arm artery = pressure · " : ""}Drag to rotate · scroll or pinch to zoom · tap to hear ALMA</span>
+          {outfit === "eva" ? "NASA Z-2 prototype suit · NASA 3D Resources" : "Generated fictional character"}<br />not a real person · body states = stand-in<br /><span className="text-ink-dim">{layer === "anatomy" ? "Organ colour = its receipt: green ok · orange alarm · grey no verified sensor. Tap an organ: heart = heart rate · brain = sleep, mood, temperature · pancreas = glucose · arm artery = pressure · " : ""}Drag to rotate · scroll or pinch to zoom · tap to hear ALMA</span>
         </p>
       </nav>
       {mode === "body" && pickedInd && <IndicatorSlip crewName={who?.indicativo} ind={indsCrew.find((i) => i.indicador === pickedInd)} name={INDICATOR_NAMES[pickedInd]} onClose={() => setPickedInd(null)} onSent={() => get<{ indicadores: Indicator[] }>("/api/indicadores/").then((d) => setInds(d?.indicadores ?? []))} />}
