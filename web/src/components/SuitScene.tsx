@@ -248,7 +248,7 @@ function prepCrew(m: THREE.Object3D) {
       mat.transparent = false; mat.opacity = 1; mat.alphaTest = pelo ? 0.12 : 0; mat.depthWrite = true; mat.side = pelo ? THREE.DoubleSide : THREE.FrontSide;
       mat.roughness = n.includes("uniform") ? 0.86 : n.includes("body") || n.includes("lips") ? 0.55 : 0.6; mat.metalness = 0;
       if (n.includes("uniform")) mat.vertexColors = true;
-      mesh.material = mat; mesh.userData.kind = n.includes("uniform") ? "uniform" : "skin";
+      mesh.material = mat; mesh.userData.kind = n.includes("uniform") ? "uniform" : n.includes("underwear") ? "underwear" : "skin";
     });
 }
 
@@ -267,6 +267,7 @@ function CrewGLB({ name, layer, pickedInd, onPickInd, states, ...props }: { name
     model.traverse((o) => {
       const mesh = o as THREE.Mesh;
       if (o.userData.kind === "uniform") o.visible = layer === "uniform";
+      if (o.userData.kind === "underwear") o.visible = layer === "body";
       if (mesh.isMesh && o.userData.kind === "skin") {                       // en «anatomía» la piel es un fantasma translúcido: se ve lo de dentro
         const mats = [mesh.userData.orig ?? mesh.material].flat() as THREE.MeshStandardMaterial[];
         for (const m of mats) { m.transparent = layer === "anatomy"; m.opacity = layer === "anatomy" ? 0.13 : 1; m.depthWrite = layer !== "anatomy"; m.needsUpdate = true; }

@@ -27,7 +27,7 @@ def hex_a_lineal(h):
     return [x / 12.92 if x <= 0.04045 else ((x + 0.055) / 1.055) ** 2.4 for x in c] + [1.0]
 
 
-QUITAR = ("head", "jaw", "ears", "eye", "lips", "neck02", "neck03", "finger", "metacarpal", "foot", "toe", "fingernails", "oculi", "orbicularis", "levator")
+QUITAR = ("head", "jaw", "ears", "eye", "lips", "finger", "metacarpal", "foot", "toe", "fingernails", "oculi", "orbicularis")
 
 
 def crear_uniforme(nombre, base, rig):
@@ -43,9 +43,24 @@ def crear_uniforme(nombre, base, rig):
     bm = bmesh.new(); bm.from_mesh(me); bm.verts.ensure_lookup_table()
     dvert = bm.verts.layers.deform.verify()
     cabeza_z = min(v.co.z for v in bm.verts if sum(w for gi, w in v[dvert].items() if nombres[gi] == "head") > 0.5)
-    corte = cabeza_z - 0.05                                  # todo lo que está por encima del cuello se va, sin depender de pesos (evita restos en mejillas)
-    borrar = [v for v in bm.verts if v.co.z > corte or sum(w for gi, w in v[dvert].items() if any(nombres[gi].startswith(q) for q in QUITAR)) > 0.45]
+    corte = cabeza_z - 0.075                                  # todo lo que está por encima del cuello se va, sin depender de pesos (evita restos en mejillas)
+    borrar = [v for v in bm.verts if sum(w for gi, w in v[dvert].items() if any(nombres[gi].startswith(q) for q in QUITAR)) > 0.45]
     bmesh.ops.delete(bm, geom=borrar, context="VERTS")
+    # bordes limpios: cuello, muñecas y tobillos se cortan con PLANOS (no con pesos de vértice, que dejan dientes de sierra)
+    from mathutils import Vector
+    def corta(co, no, quitar_fuera=True):
+        geom = bm.verts[:] + bm.edges[:] + bm.faces[:]
+        bmesh.ops.bisect_plane(bm, geom=geom, dist=1e-5, plane_co=co, plane_no=no, clear_outer=quitar_fuera, clear_inner=not quitar_fuera)
+    corta(Vector((0, 0, corte)), Vector((0, 0, 1)))
+    for lado in ("L", "R"):
+        try:
+            mu, an = rig.pose.bones[f"wrist.{lado}"], rig.pose.bones[f"foot.{lado}"]
+            ant = rig.pose.bones[f"lowerarm02.{lado}"]
+            eje = (mu.head - ant.head).normalized()
+            corta(mu.head.copy(), eje)                                   # la mano queda fuera
+            corta(Vector((0, 0, an.head.z + 0.03)), Vector((0, 0, 1)), quitar_fuera=False)   # el pie queda fuera
+        except KeyError:
+            print("AVISO: hueso no encontrado para el corte limpio", lado)
     bm.normal_update()
     for v in bm.verts:
         v.co += v.normal * 0.011                                # la prenda queda 1,1 cm por fuera de la piel
@@ -53,19 +68,35 @@ def crear_uniforme(nombre, base, rig):
     # franja de color en el brazo (35–52 % entre hombro y codo) y en el cuello de la prenda
     col = bm.loops.layers.color.new("Col")
     base_c, franja = hex_a_lineal("#d9d3c1"), hex_a_lineal(COLOR_FRANJA[nombre])
-    # franja en el brazo: vértices con peso en los huesos del brazo, en el tramo 38–56 % de su recorrido en X (A-pose: el brazo corre sobre X)
-    banda = set()
-    for lado, signo in (("L", 1), ("R", -1)):
-        grupos = {gi for gi, n in nombres.items() if n in (f"upperarm01.{lado}", f"upperarm02.{lado}")}
-        brazo = [v for v in bm.verts if sum(w for gi, w in v[dvert].items() if gi in grupos) > 0.4 and v.co.x * signo > 0.1]
-        if brazo:
-            x0, x1 = min(abs(v.co.x) for v in brazo), max(abs(v.co.x) for v in brazo)
-            banda |= {v.index for v in brazo if x0 + 0.38 * (x1 - x0) <= abs(v.co.x) <= x0 + 0.56 * (x1 - x0)}
-    cuello_z = max(v.co.z for v in bm.verts)
+    # franjas con BORDE NÍTIDO: se insertan cortes (planos) en los límites de la banda y se colorea por cara, no por vértice (la interpolación dibujaba dientes de sierra)
+    def centro(lado, prefijos):                                # centroide de los vértices con peso en esos huesos (la geometría real del brazo, no una suposición)
+        grupos = {gi for gi, n in nombres.items() if any(n == f"{q}.{lado}" for q in prefijos)}
+        pts = [v.co.copy() for v in bm.verts if sum(w for gi, w in v[dvert].items() if gi in grupos) > 0.5]
+        return sum(pts, Vector((0, 0, 0))) / len(pts) if pts else None
+    brazos = []
+    for lado in ("L", "R"):
+        cu, cl = centro(lado, ("upperarm01", "upperarm02")), centro(lado, ("lowerarm01", "lowerarm02"))
+        if cu is not None and cl is not None:
+            u = (cl - cu).normalized()
+            brazos.append((cu, u))                             # franja = 7 cm a cada lado del centro del brazo superior
+    def corte_sin_borrar(co, no):
+        geom = bm.verts[:] + bm.edges[:] + bm.faces[:]
+        bmesh.ops.bisect_plane(bm, geom=geom, dist=1e-5, plane_co=co, plane_no=no)
+    z_collar = corte - 0.025
+    corte_sin_borrar(Vector((0, 0, z_collar)), Vector((0, 0, 1)))
+    for cu, u in brazos:
+        for t in (-0.07, 0.07):
+            corte_sin_borrar(cu + u * t, u)
+    bm.faces.ensure_lookup_table()
     for f in bm.faces:
+        c = f.calc_center_median()
+        en_banda = c.z > z_collar - 1e-4 and abs(c.x) < 0.13
+        for cu, u in brazos:
+            t = (c - cu).dot(u)
+            if abs(t) <= 0.07 + 1e-4 and ((c - cu) - u * t).length < 0.09:
+                en_banda = True
         for l in f.loops:
-            v = l.vert
-            l[col] = franja if (v.index in banda or v.co.z > cuello_z - 0.035) else base_c
+            l[col] = franja if en_banda else base_c
     bm.to_mesh(me); bm.free()
     for p in me.polygons:
         p.use_smooth = True
@@ -79,23 +110,77 @@ def crear_uniforme(nombre, base, rig):
     return ob
 
 
+def material_plano(nombre, rgb, rugosidad=0.4):
+    m = bpy.data.materials.new(nombre); m.use_nodes = True
+    b = m.node_tree.nodes["Principled BSDF"]; b.inputs["Base Color"].default_value = (*rgb, 1.0); b.inputs["Roughness"].default_value = rugosidad
+    return m
+
+
+def ojos(me, nombre):
+    """Ojo = esfera: casquete frontal (≈38°) = iris del color del tripulante; casquete central (≈14°) = pupila; resto = esclerótica. Sustituye a la textura, que no se tiñe bien."""
+    me.materials.clear()
+    for m in (material_plano(f"{nombre}_sclera", (0.88, 0.85, 0.80), 0.35), material_plano(f"{nombre}_iris", COLOR_OJOS, 0.25), material_plano(f"{nombre}_pupil", (0.01, 0.01, 0.012), 0.1)):
+        me.materials.append(m)
+    c38, c14 = math.cos(math.radians(38)), math.cos(math.radians(14))
+    for p in me.polygons:
+        d = -p.normal.y
+        p.material_index = 2 if d > c14 else 1 if d > c38 else 0
+
+
+def crear_ropa_interior(nombre, base, rig, mujer):
+    """Short (y top deportivo en las mujeres) a medida desde la superficie del cuerpo: la capa Body deja de ser un cuerpo desnudo."""
+    import bmesh
+    dg = bpy.context.evaluated_depsgraph_get()
+    me = bpy.data.meshes.new_from_object(base.evaluated_get(dg))
+    zs = [v.co.z for v in me.vertices]
+    alto = max(zs) - min(zs)
+    zmin = min(zs)
+    bandas = [(0.455, 0.545, 0.125)] + ([(0.705, 0.775, 0.098)] if mujer else [])     # (z0, z1, |x|máx) como fracción de la altura
+    from mathutils import Vector
+    piezas = []
+    for z0, z1, xl in bandas:
+        bm = bmesh.new(); bm.from_mesh(me)
+        for co, no, clear_inner in ((Vector((0, 0, zmin + z0 * alto)), Vector((0, 0, 1)), True), (Vector((0, 0, zmin + z1 * alto)), Vector((0, 0, 1)), False),
+                                    (Vector((-xl * alto, 0, 0)), Vector((1, 0, 0)), True), (Vector((xl * alto, 0, 0)), Vector((1, 0, 0)), False)):
+            geom = bm.verts[:] + bm.edges[:] + bm.faces[:]
+            bmesh.ops.bisect_plane(bm, geom=geom, dist=1e-5, plane_co=co, plane_no=no, clear_inner=clear_inner, clear_outer=not clear_inner)
+        piezas.append(bm)
+    bm = piezas[0]
+    for extra in piezas[1:]:
+        tmp = bpy.data.meshes.new("tmp"); extra.to_mesh(tmp); extra.free(); bm.from_mesh(tmp); bpy.data.meshes.remove(tmp)
+    bm.normal_update()
+    for v in bm.verts:
+        v.co += v.normal * 0.004
+    bm.to_mesh(me); bm.free()
+    for p in me.polygons:
+        p.use_smooth = True
+    ob = bpy.data.objects.new(f"{nombre}_underwear", me)
+    bpy.context.scene.collection.objects.link(ob)
+    me.materials.clear(); me.materials.append(material_plano(f"{nombre}_underwear_mat", (0.10, 0.10, 0.11), 0.7))
+    for p in me.polygons:
+        p.material_index = 0
+    return ob
+
+
 def exportar(nombre, base, rig):
     """Hornea todo a mallas estáticas (sin rig), simplifica los materiales a Principled con su textura y exporta un .glb con una malla por capa."""
     dg = bpy.context.evaluated_depsgraph_get()
     estaticos = []
-    for ob in [o for o in bpy.data.objects if o.type == "MESH" and not o.name.endswith("_uniform")]:
+    for ob in [o for o in bpy.data.objects if o.type == "MESH" and not o.name.endswith(("_uniform", "_underwear"))]:
         me = bpy.data.meshes.new_from_object(ob.evaluated_get(dg))
         nuevo = bpy.data.objects.new(ob.name.replace(f"{nombre}_body.", f"{nombre}_").replace(f"{nombre}_body", f"{nombre}_skin"), me)
         bpy.context.scene.collection.objects.link(nuevo)
         for slot in ob.material_slots:
             me.materials.append(simple_material(slot.material))
+        if "high-poly" in ob.name.lower():
+            ojos(me, nombre)
         for p in me.polygons:
             p.use_smooth = True
         estaticos.append(nuevo)
         ob.hide_viewport = True; ob.hide_render = True
     rig.hide_viewport = True
     for o in bpy.data.objects:
-        o.select_set(o in estaticos or o.name.endswith("_uniform"))
+        o.select_set(o in estaticos or o.name.endswith(("_uniform", "_underwear")))
     destino = SALIDA / f"crew_{nombre}.glb"
     bpy.ops.export_scene.gltf(filepath=str(destino), export_format="GLB", use_selection=True, export_image_format="WEBP", export_materials="EXPORT",
                               export_draco_mesh_compression_enable=True, export_draco_mesh_compression_level=6, export_yup=True, export_apply=False)
@@ -237,6 +322,7 @@ def main():
     print("GRUPOS", sorted({g.name for g in base.vertex_groups})[:80], len(base.data.vertices), [m.type for m in base.modifiers])
     print("LISTO", nombre, [o.name for o in bpy.data.objects][:20], "alto", round(base.dimensions.z, 3))
     uni = crear_uniforme(nombre, base, rig)
+    crear_ropa_interior(nombre, base, rig, spec["macro"]["gender"] < 0.5)
     if "--glb" in sys.argv:
         exportar(nombre, base, rig)
     if "--preview" in sys.argv:
