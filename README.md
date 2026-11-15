@@ -104,6 +104,19 @@ Every claim is an **act** ([`docs/actas/`](docs/actas/)): question, success rule
 
 Related work and what we can and cannot claim: [`docs/revision-literatura.md`](docs/revision-literatura.md) — **no algorithmic novelty is claimed** (CUSUM, data reconciliation and spacecraft mass balance are established); the contribution is a *method of work*. A negative-results-first manuscript draft is in [`docs/preprint/manuscript.md`](docs/preprint/manuscript.md) (not submitted).
 
+## Frontier work (M6) — what we tried, including what failed
+
+Four ideas beyond the brief, each sealed with a SHA-256 hash **before** running and published whatever the outcome:
+
+| Idea | Result |
+|---|---|
+| **Alarms with a false-alarm guarantee** (e-processes; the method is not ours, see `docs/revision-literatura.md`) — FB-021 | On real wearable data the textbook guarantee failed fivefold (5.06% false alarms asked ≤1%); calibrated it holds but sensitivity drops 99% → 71%. Out-of-sample check had 5 windows: inconclusive. |
+| **Body or sensor? Cross-signal consistency** — FB-022 | Real within-person couplings hold out of sample (temperature, breathing, HRV vs resting pulse). The classifier built on them is refuted (66%; 44% of untouched real blocks flagged). |
+| **Who is breathing extra? Splitting cabin air into bodies** — FB-023, *simulated* | Identifiable only with staggered shifts (chance when identical); weaker than predicted (71% at 20% excess). |
+| **Privacy as a budget** (ε, Laplace) — `tests/test_privacidad.py` | With a crew of 5, an exact aggregate plus one subtraction names a person; the ledger spends ε per published count. ε = 2.0 is illustrative, not a NASA policy. |
+
+The room "What is real here?" button lists real vs simulated on every screen. Notes: `docs/actas/NOTA-FB-021.md` … `NOTA-FB-023.md`.
+
 ## Architecture
 ```
 Ingestion → Ledger → Engine → Foundry → Surfaces        (one direction only; the domain never imports Django or Next)
