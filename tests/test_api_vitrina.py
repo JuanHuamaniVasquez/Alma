@@ -362,3 +362,16 @@ def test_el_entorno_en_vivo_deja_eventos_dc03_y_intentos_dc13_en_la_base(monkeyp
     assert set(EventoClimaEspacial.objects.filter(evento_id__startswith="entorno-").values_list("tipo", flat=True)) == {"posicion_estacion", "lectura_protones", "lectura_rayosx"}
     assert IntentoIngesta.objects.filter(intento_id__startswith="entorno-", resultado="ok").count() == 3
     views._ENTORNO.update(t=0.0, d=None)
+
+
+@pytest.mark.django_db
+def test_alarmas_de_personas_reales_no_llevan_id_ni_valores_personales():
+    """D-44: una alarma REAL por indicador sale sin id de persona y con media/σ personales redactadas; la del hábitat conserva su recibo completo."""
+    from datetime import UTC, datetime
+    from apps.motor.models import Alarma
+    base = dict(ts_utc=datetime(2026, 11, 15, tzinfo=UTC), detector="cusum", sentido="alza", umbral=10.0, valor_cruzado=10.4, semilla=20261113, hash_preregistro="a" * 64, estado="activa")
+    Alarma.objects.create(alarma_id="al-PERSONAID123-fc-2026-11-14", indicador="fc", banner="REAL", regla_exacta="CUSUM_BILATERAL k=0.5 h=10.0 mu=70.5 sigma=6.2 phi=0.18 x0=71.0 :: z=...", **base)
+    Alarma.objects.create(alarma_id="al-habitat-1", presupuesto_id="aire", banner="SIMULADO", regla_exacta="CUSUM_BILATERAL k=0.5 h=10.0 mu=4.45 sigma=0.2 :: z=...", **base)
+    a = {x["indicador"] or x["presupuesto_id"]: x for x in get("/api/alarmas/").json()["alarmas"]}
+    assert "PERSONAID123" not in json.dumps(a) and "mu=70.5" not in a["fc"]["regla_exacta"] and "mu=‹personal›" in a["fc"]["regla_exacta"] and a["fc"]["alarma_id"].startswith("cuerpo-")
+    assert "mu=4.45" in a["aire"]["regla_exacta"] and a["aire"]["alarma_id"] == "al-habitat-1"

@@ -134,3 +134,55 @@ def generar(csv_ruta: Path) -> list[dict]:
                             "next": ("Seal the preregistration (hash) before running anything." if listo else f"Already sealed and run: {m.ya_probada_en}." if m.ya_probada_en else "Wait for the data to exist.")}})
     orden = {"listo": 0, "ya_probada": 1, "bloqueado": 2}
     return sorted(cand, key=lambda x: (orden[x["estado"]], -x["datos"]["pares"]))
+
+
+# Especificación EJECUTABLE de la prueba de cada candidato listo: la MISMA que usa el borrador del acta y el runner, de modo que lo preregistrado y lo ejecutado no pueden divergir.
+# x = 1 si la variable `causa` de ese día está por debajo (−) / por encima (+) de la mediana PERSONAL; y = `efecto`; contraste intrapersonal con barajado de etiquetas dentro de cada persona.
+TEST_SPEC = {
+    "sueno-fc": {"x_col": "minutesAsleep", "x_lado": "bajo", "y_col": "resting_hr", "estandarizar": False, "signo": +1, "efecto_min": 0.5, "unidad": "lpm",
+                 "enunciado": "los días con sueño por debajo de su mediana personal tienen el pulso en reposo MÁS ALTO"},
+    "sueno-rmssd": {"x_col": "minutesAsleep", "x_lado": "bajo", "y_col": "rmssd", "estandarizar": True, "signo": -1, "efecto_min": 0.05, "unidad": "sd",
+                    "enunciado": "los días con sueño por debajo de su mediana personal tienen la rmssd MÁS BAJA"},
+    "carga-rmssd": {"x_col": "very_active_minutes", "x_lado": "alto", "y_col": "rmssd", "estandarizar": True, "signo": -1, "efecto_min": 0.05, "unidad": "sd",
+                    "enunciado": "los días con actividad intensa por encima de su mediana personal tienen la rmssd MÁS BAJA"},
+}
+
+
+def borrador_acta(numero: str, claves: list[str], *, semilla: int, sha_csv: str, alfa: float, no_ceguera: str, predicciones: str, minimo_dias: int = 30, desplazamiento: int = 40) -> str:
+    """El generador REDACTA el borrador de preregistro de los candidatos elegidos (sin ejecutar nada). Un humano lo revisa y solo entonces se sella con hash."""
+    m = {x.clave: x for x in BIBLIOTECA}
+    h = []
+    for i, c in enumerate(claves, start=1):
+        sp = TEST_SPEC[c]
+        sentido = "≥" if sp["signo"] > 0 else "≤"
+        h.append(f"- **H{i} · {m[c].titulo} (`{c}`):** {sp['enunciado']}. **SOSTENIDA** si S {sentido} {sp['signo'] * sp['efecto_min']:g} {sp['unidad']} **y** p unilateral ≤ {alfa:g}; si no, **REFUTADA**. "
+                 f"Mecanismo y ancla: {m[c].mecanismo}. Señal que la mata (plantilla del vivero): {m[c].mata}.")
+    primera = claves[0]
+    sp0 = TEST_SPEC[primera]
+    h.append(f"- **H{len(claves) + 1} · control placebo:** la prueba de H1 repetida con las etiquetas de «{sp0['x_col']}» DESPLAZADAS {desplazamiento} días dentro de cada persona (se conserva su distribución, se rompe la coincidencia temporal). "
+             f"**VÁLIDO** si el placebo NO cumple a la vez S {'≥' if sp0['signo'] > 0 else '≤'} {sp0['signo'] * sp0['efecto_min']:g} {sp0['unidad']} y p ≤ {alfa:g}; si lo cumple, el método «ve» efectos que no pueden existir y todo el acta es INVÁLIDA.")
+    return f"""# Acta de preregistro {numero} — Hipótesis GENERADAS por el laboratorio (vivero), contrastes intrapersonales sobre wearables reales
+
+> **Estado:** PREREGISTRADA, sin ejecutar · **Semilla pública:** {semilla} · **Borrador redactado por `src/fabrica/generador.py::borrador_acta` y revisado por Claude antes de sellarlo.**
+> **No-ceguera (declarada):** {no_ceguera}
+> **Etiqueta:** datos REALES de personas en vida cotidiana (LifeSnaps, sha256 `{sha_csv}`), **NO astronautas**.
+
+## Pregunta
+¿Se sostienen, con datos reales, las {len(claves)} hipótesis que el laboratorio generó cruzando mecanismos de la literatura con los datos que existen? Ninguna se eligió mirando un resultado: son los candidatos «listos» del vivero cuyo contraste es el intrapersonal binario (los demás candidatos listos —temperatura→eficiencia, Kp→respiración, estrés→eficiencia— usan otro estadístico y irán en otra acta).
+
+## Diseño (código fijado: `src/fabrica/generador.py::TEST_SPEC`, `src/motor/intrapersona.py`, `scripts/fb026_vivero.py`)
+- Personas con ≥ {minimo_dias} días con ambas variables. Por persona: `x = 1` si la variable causal de ese día está del lado indicado de **su propia mediana**; la diferencia media de `y` entre días con x = 1 y x = 0 (estandarizada por la sd personal cuando la unidad es «sd»; se exigen ≥ 5 días por grupo).
+- **S** = media de esas diferencias entre personas. **p** unilateral por barajado de las etiquetas DENTRO de cada persona (10 000 permutaciones, semilla {semilla}).
+- **α = {alfa:g}** unilateral por hipótesis (Bonferroni: 0,05 / {len(claves)}).
+
+## Hipótesis y reglas (fijadas ANTES de correr)
+{chr(10).join(h)}
+
+**Predicción mía (se publica aunque falle):** {predicciones}
+
+## Reglas de proceso
+Una sola ejecución (`scripts/fb026_vivero.py`; se niega a correr sin acta intacta, con otro CSV, o dos veces); nada cambia tras ver resultados (un cambio exige `{numero}-v2`). Cada resultado se acuña después como tarjeta DC-12 con el hash de esta acta.
+
+## Lo que NO afirma
+Que sean astronautas; causalidad (son asociaciones intrapersonales); que «mediana personal» sea el mejor corte; que el pareo por fila (la noche que termina esa mañana ↔ el pulso/HRV de esa fila) coincida con el orden temporal exacto del dispositivo; que {len(claves)} pruebas con Bonferroni agoten el espacio de hipótesis.
+"""

@@ -77,17 +77,26 @@ class LibroDias(SoloLectura):
 
 
 class Alarmas(SoloLectura):
+    """DC-05. Del HÁBITAT, el recibo completo. De las PERSONAS reales (banner REAL con `indicador`), solo lo que no identifica: sin id de persona y con la media y σ personales de la regla
+    sustituidas por `‹personal›` (D-44: «lo individual jamás cruza a las superficies»). La regla, la semilla y el hash de preregistro siguen visibles: se puede contestar la regla sin conocer a nadie."""
+
     def get(self, request):
+        import re
         qs = Alarma.objects.order_by("-ts_utc")
         if estado := request.query_params.get("estado"):
             qs = qs.filter(estado=estado)
         filas = list(qs[:LIMITE_MAX])
+
+        def regla(a):
+            if a.banner == Banner.REAL.value and a.indicador:
+                return re.sub(r"(mu|sigma|x0|phi)=[-\d.eE+]+", lambda m: f"{m.group(1)}=‹personal›", a.regla_exacta)
+            return a.regla_exacta
         return Response({"banner": banner_de(filas), "alarmas": [{
-            "alarma_id": a.alarma_id, "ts_utc": a.ts_utc.isoformat().replace("+00:00", "Z"),
+            "alarma_id": (f"cuerpo-{i + 1:03d}" if a.banner == Banner.REAL.value and a.indicador else a.alarma_id), "ts_utc": a.ts_utc.isoformat().replace("+00:00", "Z"),
             "presupuesto_id": a.presupuesto_id, "indicador": a.indicador, "detector": a.detector, "sentido": a.sentido, "umbral": a.umbral,
-            "valor_cruzado": a.valor_cruzado, "regla_exacta": a.regla_exacta, "semilla": a.semilla,
+            "valor_cruzado": a.valor_cruzado, "regla_exacta": regla(a), "semilla": a.semilla,
             "hash_preregistro": a.hash_preregistro, "estado": a.estado, "banner": a.banner,
-        } for a in filas]})
+        } for i, a in enumerate(filas)]})
 
 
 class Residuo(SoloLectura):
