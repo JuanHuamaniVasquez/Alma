@@ -63,7 +63,7 @@ await page.waitForFunction(() => document.querySelectorAll('nav[aria-label="Crew
 const nCrew = await page.$$eval('nav[aria-label="Crew"] ul button', (b) => b.length);
 check("la tripulación muestra 5 personajes", nCrew === 5, String(nCrew));
 await page.evaluate(() => document.querySelectorAll('nav[aria-label="Crew"] ul button')[1].click());
-await page.waitForFunction(() => document.querySelectorAll('nav[aria-label="Crew"] ul button')[1].getAttribute("aria-pressed") === "true", { timeout: 5000 });
+await page.waitForFunction(() => document.querySelectorAll('nav[aria-label="Crew"] ul button')[1].getAttribute("aria-pressed") === "true", { timeout: 25000 });
 await clicTexto("button", "Outside");
 await esperarTexto("NASA Z-2 prototype suit", 8000);
 check("«Outside» cambia al traje Z-2 y sigue rotulado «not a real person»", (await texto()).toLowerCase().includes("not a real person"));

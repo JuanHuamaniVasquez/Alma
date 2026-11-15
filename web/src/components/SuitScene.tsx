@@ -7,7 +7,7 @@ import { BUDGETS, INDICATOR_NAMES, type Indicator, type LedgerDay } from "@/lib/
 import type { CrewLook } from "./CrewFigure";
 
 useGLTF.setDecoderPath("/draco/");
-useGLTF.preload("/models/z2.glb");
+useGLTF.preload("/models/z2_suit.glb"); useGLTF.preload("/models/z2_helmet.glb");
 for (const n of ["VEGA", "LYRA", "ALTAIR", "CASTOR", "RIGEL"]) useGLTF.preload(`/models/crew_${n}.glb`);
 const HEIGHT = 1.9, FOCUS_Y = 0.98;
 const IVORY = "#efe8da", SIGNAL = "#ff5a1f";
@@ -81,24 +81,61 @@ function Body({ anchors: pos, marks, mode, onTap, children, holo }: { anchors: R
   );
 }
 
-/** Traje NASA Z-2 (NASA 3D Resources, sin copyright): el tripulante FUERA de la nave. Visor oscuro y sin cara. */
-function Suit(props: { marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
-  const { scene } = useGLTF("/models/z2.glb");
+/** Traje NASA Z-2 (NASA 3D Resources, sin copyright): el tripulante FUERA de la nave. El modelo es una sola malla: `scripts/blender/z2_split.py` lo parte en traje y casco.
+ *  Con el casco quitado se ve la cabeza del tripulante (el modelo generado, recortado a la altura del cuello). */
+const Z2_HELMET_CENTER = new THREE.Vector3(0, 1.72, 0.115), Z2_NECK_Y = 1.56;
+function Suit({ helmet, crew, ...props }: { helmet: boolean; crew: string; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
+  const suit = useGLTF("/models/z2_suit.glb").scene, hel = useGLTF("/models/z2_helmet.glb").scene, head = useGLTF(`/models/crew_${crew}.glb`).scene;
   const model = useMemo(() => {
-    const m = scene.clone(true);
-    const box = new THREE.Box3().setFromObject(m), size = box.getSize(new THREE.Vector3()), c = box.getCenter(new THREE.Vector3());
-    m.traverse((o) => {                                    // el mapa de especular horneado del modelo produce manchas negras en three: se descarta
+    const g = new THREE.Group();
+    const prep = (src: THREE.Object3D) => {
+      const m = src.clone(true);
+      m.traverse((o) => {                                  // el mapa de especular horneado del modelo produce manchas negras en three: se descarta
+        const mesh = o as THREE.Mesh;
+        if (!mesh.isMesh) return;
+        const mat = (mesh.material as THREE.MeshPhysicalMaterial).clone();
+        mat.specularIntensityMap = null; mat.specularColorMap = null; mat.normalMap = null; mat.roughness = 0.62; mat.needsUpdate = true;
+        mesh.material = mat;
+      });
+      return m;
+    };
+    const s = prep(suit), h = prep(hel); h.name = "helmet";
+    g.add(s, h);
+    // cabeza del tripulante: se centra en el casco y se recorta por debajo del cuello
+    const c = head.clone(true); prepCrew(c); c.scale.setScalar(1.12);
+    const box = new THREE.Box3().setFromObject(c), ctr = box.getCenter(new THREE.Vector3());
+    c.position.set(-ctr.x, -box.min.y, -ctr.z);
+    const hc = new THREE.Group(); hc.name = "head"; hc.add(c);
+    hc.position.set(0, Z2_HELMET_CENTER.y - (box.getSize(new THREE.Vector3()).y - 0.105), Z2_HELMET_CENTER.z - 0.02);
+    // solo cabeza y cuello: se descartan los triángulos por debajo del cuello (recorte geométrico: funciona también con el shader holográfico)
+    const yBase = hc.position.y - box.min.y;
+    c.traverse((o) => {
       const mesh = o as THREE.Mesh;
       if (!mesh.isMesh) return;
-      const mat = (mesh.material as THREE.MeshPhysicalMaterial).clone();
-      mat.specularIntensityMap = null; mat.specularColorMap = null; mat.normalMap = null; mat.roughness = 0.62; mat.needsUpdate = true;
-      mesh.material = mat;
+      if (mesh.userData.kind === "uniform") { mesh.visible = false; return; }
+      const g = mesh.geometry.clone(), pos = g.getAttribute("position"), idx = g.getIndex();
+      const n = idx ? idx.count : pos.count, keep: number[] = [];
+      for (let i = 0; i < n; i += 3) {
+        const t = [0, 1, 2].map((j) => (idx ? idx.getX(i + j) : i + j));
+        const y = yBase + 1.12 * ((pos.getY(t[0]) + pos.getY(t[1]) + pos.getY(t[2])) / 3);
+        if (y > Z2_NECK_Y) keep.push(...t);
+      }
+      g.setIndex(keep); mesh.geometry = g;
     });
-    const k = HEIGHT / size.y;
-    m.scale.setScalar(k); m.position.set(-c.x * k, -box.min.y * k, -c.z * k);
-    return m;
-  }, [scene]);
-  return <Body anchors={ANCHORS_EVA} {...props}><primitive object={model} /></Body>;
+    g.add(hc);
+    return g;
+  }, [suit, hel, head]);
+  const { wrap } = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(model), size = box.getSize(new THREE.Vector3()), c = box.getCenter(new THREE.Vector3());
+    const kk = HEIGHT / size.y, w = new THREE.Group();
+    w.add(model); w.scale.setScalar(kk); w.position.set(-c.x * kk, -box.min.y * kk, -c.z * kk);
+    return { wrap: w };
+  }, [model]);
+  useEffect(() => {
+    const hh = model.getObjectByName("helmet"); if (hh) hh.visible = helmet;
+    const hd = model.getObjectByName("head"); if (hd) hd.visible = !helmet;
+  }, [helmet, model]);
+  return <Body anchors={ANCHORS_EVA} {...props}><primitive object={wrap} /></Body>;
 }
 
 /** Anclas de los indicadores sobre el cuerpo generado (fracciones de la altura H; pies en y=0, frente = +z; A-pose). */
@@ -108,15 +145,9 @@ function anchorsFor(H: number): Record<string, [number, number, number]> {
 }
 const HAIR = /short0|bob0|ponytail|long0|afro|braid|eyebrow|eyelash/;
 
-/** El tripulante DENTRO de la nave: humano GENERADO por script en Blender (MPFB; piel, ojos, pelo y dientes de assets CC0) con el mono de vuelo hecho a medida.
- *  Capas: «uniform» (con mono) o «body» (solo el cuerpo). Personaje FICTICIO: combinación de parámetros, nunca una persona real. */
-function CrewGLB({ name, layer, ...props }: { name: string; layer: "uniform" | "body"; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
-  const { scene } = useGLTF(`/models/crew_${name}.glb`);
-  const { model, H } = useMemo(() => {
-    const m = scene.clone(true);
-    const box = new THREE.Box3().setFromObject(m), c = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
-    m.position.set(-c.x, -box.min.y, -c.z);
-    m.traverse((o) => {
+/** Materiales del tripulante generado: pelo/cejas con recorte alfa, piel opaca, uniforme con color por vértice. */
+function prepCrew(m: THREE.Object3D) {
+  m.traverse((o) => {
       const mesh = o as THREE.Mesh;
       if (!mesh.isMesh) return;
       const mat = (mesh.material as THREE.MeshStandardMaterial).clone();
@@ -127,6 +158,17 @@ function CrewGLB({ name, layer, ...props }: { name: string; layer: "uniform" | "
       if (n.includes("uniform")) mat.vertexColors = true;
       mesh.material = mat; mesh.userData.kind = n.includes("uniform") ? "uniform" : "skin";
     });
+}
+
+/** El tripulante DENTRO de la nave: humano GENERADO por script en Blender (MPFB; piel, ojos, pelo y dientes de assets CC0) con el mono de vuelo hecho a medida.
+ *  Capas: «uniform» (con mono) o «body» (solo el cuerpo). Personaje FICTICIO: combinación de parámetros, nunca una persona real. */
+function CrewGLB({ name, layer, ...props }: { name: string; layer: "uniform" | "body"; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
+  const { scene } = useGLTF(`/models/crew_${name}.glb`);
+  const { model, H } = useMemo(() => {
+    const m = scene.clone(true);
+    const box = new THREE.Box3().setFromObject(m), c = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
+    m.position.set(-c.x, -box.min.y, -c.z);
+    prepCrew(m);
     return { model: m, H: size.y };
   }, [scene]);
   useEffect(() => { model.traverse((o) => { if (o.userData.kind === "uniform") o.visible = layer === "uniform"; }); }, [layer, model]);
@@ -150,7 +192,7 @@ function Bay() {
       <mesh position={[0, 1.15, 0]}><cylinderGeometry args={[0.92, 1.0, 2.3, 64, 1, true]} />
         <shaderMaterial transparent depthWrite={false} side={THREE.DoubleSide} blending={THREE.AdditiveBlending} uniforms={{ uT: { value: 0 } }}
           vertexShader={`varying float vY; void main(){ vY = position.y / 2.3 + 0.5; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`}
-          fragmentShader={`varying float vY; void main(){ float a = pow(1.0 - vY, 1.8) * 0.16; gl_FragColor = vec4(1.0, 0.70, 0.36, a); }`} /></mesh>
+          fragmentShader={`varying float vY; void main(){ float a = pow(1.0 - vY, 4.5) * 0.10 * smoothstep(0.0, 0.12, 1.0 - vY); gl_FragColor = vec4(1.0, 0.70, 0.36, a); }`} /></mesh>
     </group>
   );
 }
@@ -202,8 +244,8 @@ function Ring({ i, id, state, onPick, active, labels }: { i: number; id: string;
   );
 }
 
-export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look, holo, layer }: {
-  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook; holo: boolean; layer: "uniform" | "body";
+export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit, outfit, look, holo, layer, helmet }: {
+  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void; outfit: "iva" | "eva"; look: CrewLook; holo: boolean; layer: "uniform" | "body"; helmet: boolean;
 }) {
   const labels: Labels = useRef({});
   const marks: Marks = useRef({});
@@ -220,7 +262,7 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
         <pointLight position={[0, 0.2, 1.6]} intensity={0.8} color="#ffb47a" distance={4} />
         <Rig />
         {holo && <Bay />}
-        {outfit === "eva" ? <Suspense fallback={null}><Suit marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense> : <Suspense fallback={null}><CrewGLB name={look.indicativo} layer={layer} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense>}
+        {outfit === "eva" ? <Suspense fallback={null}><Suit helmet={helmet} crew={look.indicativo} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense> : <Suspense fallback={null}><CrewGLB name={look.indicativo} layer={layer} marks={marks} mode={mode} onTap={onTapSuit} holo={holo} /></Suspense>}
         <ContactShadows position={[0, 0, 0]} opacity={0.7} scale={4} blur={2.4} far={1.6} />
         {mode === "books" && BUDGETS.map(([id], i) => <Ring key={id} i={i} id={id} state={stateOf(id)} onPick={onPick} active={picked === id} labels={labels} />)}
       </Canvas>
