@@ -9,7 +9,7 @@ ALMA is health-monitoring software for astronauts built around one rule: no colo
 1. **Ledger** — nine budgets (air, water, energy, dose, rhythm, load, immunity, conduct, time); a book closes if |residual| ≤ 2σ of its manifest's own uncertainty.
 2. **Detectors with receipts** — personal baselines, bilateral CUSUM, conservation-of-mass reconciliation; each alarm withdraws itself if its rule stops holding.
 3. **Foundry** — hypothesis cards declare what would kill them *before* testing; survivors compile into new detectors (one so far).
-4. **Interface** — eight rooms in English with a deterministic narrator (no free-text AI), subtitles always visible, and a NASA Z-2 suit model.
+4. **Interface** — eight rooms in English with a deterministic narrator (no free-text AI), subtitles always visible, and a NASA Z-2 suit as a clickable human figure: the six official indicators (blood pressure, heart rate, glucose, temperature, sleep, mood), colour only where a receipted rule allows it. Heart rate and sleep show real states from everyday people; mood is captured in three touches; the rest stay empty and say why (no verified sensor uncertainty) instead of being simulated.
 
 ## Data (all linked and registered in `docs/politica-de-datos.md`)
 - LifeSnaps wearable dataset — Zenodo 7229547 (everyday people, not astronauts).
@@ -18,6 +18,7 @@ ALMA is health-monitoring software for astronauts built around one rule: no colo
 - Utah residential water use — HydroShare (CC BY).
 - NASA NTRS: Ewert & Stromgren 2019 (mass balance), Jones 2019 (ISS reliability manifests).
 - NASA 3D Resources — Z-2 spacesuit model (no copyright).
+- Mood self-reports typed by whoever uses the demo (DC-02; real, not astronauts).
 
 ## Honest limits
 Not astronaut data. The habitat is a labelled simulation anchored to public NASA figures. Our replication of an earlier 10/10 detection result reached 8/10 and is reported as "documented, not replicated". The variance channel failed its real-data test (9% false alarms) and is not enabled for alarms.
