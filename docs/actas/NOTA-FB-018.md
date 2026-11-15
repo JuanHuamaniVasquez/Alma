@@ -1,0 +1,7 @@
+# NOTA FB-018 · El Adversario (UNA ejecución; acta `c6127543…`; SIMULADO)
+
+**Escape documentado: el zigzag** (`(−1)^j·H`: noches alternas cortas/largas, **media cero, más varianza**). El CUSUM bilateral que sostiene el verde lo detecta **1,8 %** incluso con H = 2,0 σ de daño (el escalón de igual daño se detecta 95,2 %). La razón es estructural: el CUSUM acumula desviaciones de la **media**; las alternancias se cancelan. Un detector de media es ciego a un cambio de **varianza**.
+- **H1 SOSTENIDA** (escapes con H ≥ 1: zigzag 1,0 / 1,5 / 2,0).
+- **H2 REFUTADA:** el CUSUM de varianza propuesto (k_v = 0,5; h_v = 35,9 calibrado al 1 %) detecta el zigzag solo **9,2 % (H=1), 31,2 % (1,5), 67,0 % (2,0)** — **menos del 80 % exigido**; con FPR nula 0,2 %. Es, además, **menos potente que el CUSUM de media contra cambios de media** (p. ej. escalón H=1,0: 10 % vs 35 %). Mi predicción («H2 se sostiene a H≥1,5») **falló**.
+- **H3 SOSTENIDA:** la unión de ambos detectores tiene 0,8 % de falsas alarmas (no cuesta calibración).
+**Consecuencia / fila nueva (regla 4):** el sistema tiene un punto ciego documentado y la contramedida ingenua **no basta**; entra **M2.18** (diseñar y falsar un detector de varianza con mejor potencia: p. ej. `|z|` en vez de `z²`, o ventana deslizante de la varianza, o razón de varianza F). **Límites:** el daño H es mía (media de |desviación|), no una medida clínica; ruido normal e independiente; 14 días de vigilancia.
