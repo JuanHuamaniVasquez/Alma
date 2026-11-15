@@ -1,0 +1,2381 @@
+{
+  "nodes": [
+    {
+      "id": "g0",
+      "type": "group",
+      "label": "Community 0",
+      "x": 0,
+      "y": 0,
+      "width": 1100,
+      "height": 620,
+      "color": "1"
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_1",
+      "type": "file",
+      "file": "Ancla C-1.md",
+      "x": 20,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_10",
+      "type": "file",
+      "file": "Ancla C-10.md",
+      "x": 220,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_11",
+      "type": "file",
+      "file": "Ancla C-11.md",
+      "x": 420,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_12",
+      "type": "file",
+      "file": "Ancla C-12.md",
+      "x": 620,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_13",
+      "type": "file",
+      "file": "Ancla C-13.md",
+      "x": 820,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_14",
+      "type": "file",
+      "file": "Ancla C-14.md",
+      "x": 20,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_15",
+      "type": "file",
+      "file": "Ancla C-15.md",
+      "x": 220,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_16",
+      "type": "file",
+      "file": "Ancla C-16.md",
+      "x": 420,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_17",
+      "type": "file",
+      "file": "Ancla C-17.md",
+      "x": 620,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_18",
+      "type": "file",
+      "file": "Ancla C-18.md",
+      "x": 820,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_19",
+      "type": "file",
+      "file": "Ancla C-19.md",
+      "x": 20,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_2",
+      "type": "file",
+      "file": "Ancla C-2.md",
+      "x": 220,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_20",
+      "type": "file",
+      "file": "Ancla C-20.md",
+      "x": 420,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_21",
+      "type": "file",
+      "file": "Ancla C-21.md",
+      "x": 620,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_22",
+      "type": "file",
+      "file": "Ancla C-22.md",
+      "x": 820,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_23",
+      "type": "file",
+      "file": "Ancla C-23.md",
+      "x": 20,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_3",
+      "type": "file",
+      "file": "Ancla C-3.md",
+      "x": 220,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_4",
+      "type": "file",
+      "file": "Ancla C-4.md",
+      "x": 420,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_5",
+      "type": "file",
+      "file": "Ancla C-5.md",
+      "x": 620,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_6",
+      "type": "file",
+      "file": "Ancla C-6.md",
+      "x": 820,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_7",
+      "type": "file",
+      "file": "Ancla C-7.md",
+      "x": 20,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_8",
+      "type": "file",
+      "file": "Ancla C-8.md",
+      "x": 220,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_9",
+      "type": "file",
+      "file": "Ancla C-9.md",
+      "x": 420,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "type": "file",
+      "file": "DOC-02 Genesis.md",
+      "x": 620,
+      "y": 400,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g1",
+      "type": "group",
+      "label": "Community 1",
+      "x": 1180,
+      "y": 0,
+      "width": 1100,
+      "height": 520,
+      "color": "2"
+    },
+    {
+      "id": "n_claude_adversario",
+      "type": "file",
+      "file": "El Adversario.md",
+      "x": 1200,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_4",
+      "type": "file",
+      "file": "FA-4 El Faro.md",
+      "x": 1400,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_4",
+      "type": "file",
+      "file": "IN-4 Banco de Falsaciones.md",
+      "x": 1600,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_claude_tormenta",
+      "type": "file",
+      "file": "LA TORMENTA.md",
+      "x": 1800,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks",
+      "type": "file",
+      "file": "TASKS.md",
+      "x": 2000,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m0_1",
+      "type": "file",
+      "file": "Tarea M0.1.md",
+      "x": 1200,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m0_2",
+      "type": "file",
+      "file": "Tarea M0.2.md",
+      "x": 1400,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m0_4",
+      "type": "file",
+      "file": "Tarea M0.4.md",
+      "x": 1600,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m2_6",
+      "type": "file",
+      "file": "Tarea M2.6.md",
+      "x": 1800,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m3_3",
+      "type": "file",
+      "file": "Tarea M3.3.md",
+      "x": 2000,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m3_4",
+      "type": "file",
+      "file": "Tarea M3.4.md",
+      "x": 1200,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m3_5",
+      "type": "file",
+      "file": "Tarea M3.5.md",
+      "x": 1400,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m4_1",
+      "type": "file",
+      "file": "Tarea M4.1.md",
+      "x": 1600,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m4_3",
+      "type": "file",
+      "file": "Tarea M4.3.md",
+      "x": 1800,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m4_4",
+      "type": "file",
+      "file": "Tarea M4.4.md",
+      "x": 2000,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m4_5",
+      "type": "file",
+      "file": "Tarea M4.5.md",
+      "x": 1200,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m5_1",
+      "type": "file",
+      "file": "Tarea M5.1.md",
+      "x": 1400,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m5_2",
+      "type": "file",
+      "file": "Tarea M5.2.md",
+      "x": 1600,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m5_3",
+      "type": "file",
+      "file": "Tarea M5.3.md",
+      "x": 1800,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m5_4",
+      "type": "file",
+      "file": "Tarea M5.4.md",
+      "x": 2000,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g2",
+      "type": "group",
+      "label": "Community 2",
+      "x": 2360,
+      "y": 0,
+      "width": 1100,
+      "height": 520,
+      "color": "3"
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_02",
+      "type": "file",
+      "file": "DC-02 Canal B autorreporte.md",
+      "x": 2380,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "type": "file",
+      "file": "DOC-01 Mapa Maestro.md",
+      "x": 2580,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_2",
+      "type": "file",
+      "file": "FA-2 N-of-1 ABAB.md",
+      "x": 2780,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_1",
+      "type": "file",
+      "file": "FM-1 familia de hipotesis.md",
+      "x": 2980,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_10",
+      "type": "file",
+      "file": "FM-10 familia de hipotesis.md",
+      "x": 3180,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_2",
+      "type": "file",
+      "file": "FM-2 familia de hipotesis.md",
+      "x": 2380,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_3",
+      "type": "file",
+      "file": "FM-3 familia de hipotesis.md",
+      "x": 2580,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_4",
+      "type": "file",
+      "file": "FM-4 familia de hipotesis.md",
+      "x": 2780,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_5",
+      "type": "file",
+      "file": "FM-5 familia de hipotesis.md",
+      "x": 2980,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_6",
+      "type": "file",
+      "file": "FM-6 familia de hipotesis.md",
+      "x": 3180,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_7",
+      "type": "file",
+      "file": "FM-7 familia de hipotesis.md",
+      "x": 2380,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_8",
+      "type": "file",
+      "file": "FM-8 familia de hipotesis.md",
+      "x": 2580,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_9",
+      "type": "file",
+      "file": "FM-9 familia de hipotesis.md",
+      "x": 2780,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_1",
+      "type": "file",
+      "file": "GO-1 Recalibracion.md",
+      "x": 2980,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_7",
+      "type": "file",
+      "file": "GO-7 MODO FRONTERA.md",
+      "x": 3180,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_2",
+      "type": "file",
+      "file": "IN-2.md",
+      "x": 2380,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_2",
+      "type": "file",
+      "file": "SU-2 Tablero.md",
+      "x": 2580,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_3",
+      "type": "file",
+      "file": "SU-3 Sello semanal.md",
+      "x": 2780,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_4",
+      "type": "file",
+      "file": "SU-4 Premortems.md",
+      "x": 2980,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_5",
+      "type": "file",
+      "file": "SU-5 Frontend 6 pantallas.md",
+      "x": 3180,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g3",
+      "type": "group",
+      "label": "Community 3",
+      "x": 3540,
+      "y": 0,
+      "width": 880,
+      "height": 520,
+      "color": "4"
+    },
+    {
+      "id": "n_claude",
+      "type": "file",
+      "file": "CLAUDE.md",
+      "x": 3560,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_03",
+      "type": "file",
+      "file": "DC-03 Canal C eventos fisicos.md",
+      "x": 3760,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_04",
+      "type": "file",
+      "file": "DC-04 Libro GPV 9 presupuestos.md",
+      "x": 3960,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_03_tono_pitch_equipo_v0_2",
+      "type": "file",
+      "file": "DOC-03 Pitch Equipo.md",
+      "x": 4160,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_2",
+      "type": "file",
+      "file": "GO-2 Preregistro SHA-256.md",
+      "x": 3560,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_3",
+      "type": "file",
+      "file": "IN-3 SWPCDONKIOSDR.md",
+      "x": 3760,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_claude_sala",
+      "type": "file",
+      "file": "LA SALA.md",
+      "x": 3960,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "type": "file",
+      "file": "LB-1 Libro GPV.md",
+      "x": 4160,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_leeme",
+      "type": "file",
+      "file": "LEEME.md",
+      "x": 3560,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_1",
+      "type": "file",
+      "file": "MO-1 Modelo nulo personal.md",
+      "x": 3760,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_claude_mandamiento_1",
+      "type": "file",
+      "file": "Mandamiento 1 Nada lee directo de sensores.md",
+      "x": 3960,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_claude_mandamiento_2",
+      "type": "file",
+      "file": "Mandamiento 2 Preregistro hasheado antes de correr.md",
+      "x": 4160,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m1_1",
+      "type": "file",
+      "file": "Tarea M1.1.md",
+      "x": 3560,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m1_3",
+      "type": "file",
+      "file": "Tarea M1.3.md",
+      "x": 3760,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m2_1",
+      "type": "file",
+      "file": "Tarea M2.1.md",
+      "x": 3960,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m3_1",
+      "type": "file",
+      "file": "Tarea M3.1.md",
+      "x": 4160,
+      "y": 320,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g4",
+      "type": "group",
+      "label": "Community 4",
+      "x": 4500,
+      "y": 0,
+      "width": 660,
+      "height": 420,
+      "color": "5"
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_06",
+      "type": "file",
+      "file": "DC-06 Stream de residuo.md",
+      "x": 4520,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_claude_residuo",
+      "type": "file",
+      "file": "EL RESIDUO.md",
+      "x": 4720,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_001",
+      "type": "file",
+      "file": "FB-001.md",
+      "x": 4920,
+      "y": 80,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2",
+      "type": "file",
+      "file": "MO-2 Residuo 2 sigma.md",
+      "x": 4520,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m0_5",
+      "type": "file",
+      "file": "Tarea M0.5.md",
+      "x": 4720,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m2_2",
+      "type": "file",
+      "file": "Tarea M2.2.md",
+      "x": 4920,
+      "y": 160,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m3_2",
+      "type": "file",
+      "file": "Tarea M3.2.md",
+      "x": 4520,
+      "y": 240,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g5",
+      "type": "group",
+      "label": "Community 5",
+      "x": 0,
+      "y": 700,
+      "width": 660,
+      "height": 400,
+      "color": "6"
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_12",
+      "type": "file",
+      "file": "DC-12 Contrato de Fundicion.md",
+      "x": 20,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_04_la_fundicion_laboratorio_v0_2",
+      "type": "file",
+      "file": "DOC-04 La Fundicion.md",
+      "x": 220,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_claude_guardian",
+      "type": "file",
+      "file": "El Guardian.md",
+      "x": 420,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_1",
+      "type": "file",
+      "file": "FA-1 Kanban H-cards.md",
+      "x": 20,
+      "y": 860,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_claude_fundicion",
+      "type": "file",
+      "file": "LA FUNDICION.md",
+      "x": 220,
+      "y": 860,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m4_2",
+      "type": "file",
+      "file": "Tarea M4.2.md",
+      "x": 420,
+      "y": 860,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g6",
+      "type": "group",
+      "label": "Community 6",
+      "x": 1180,
+      "y": 700,
+      "width": 660,
+      "height": 400,
+      "color": "1"
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_05",
+      "type": "file",
+      "file": "DC-05 Alarma con recibo.md",
+      "x": 1200,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_002",
+      "type": "file",
+      "file": "FB-002.md",
+      "x": 1400,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_3",
+      "type": "file",
+      "file": "MO-3 CUSUM bilateral.md",
+      "x": 1600,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_claude_mandamiento_3",
+      "type": "file",
+      "file": "Mandamiento 3 Colores solo con regla contestable.md",
+      "x": 1200,
+      "y": 860,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_1",
+      "type": "file",
+      "file": "SU-1 Alertas con recibo.md",
+      "x": 1400,
+      "y": 860,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m2_3",
+      "type": "file",
+      "file": "Tarea M2.3.md",
+      "x": 1600,
+      "y": 860,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g7",
+      "type": "group",
+      "label": "Community 7",
+      "x": 2360,
+      "y": 700,
+      "width": 660,
+      "height": 400,
+      "color": "2"
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_08",
+      "type": "file",
+      "file": "DC-08 Cierre de conservacion.md",
+      "x": 2380,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_005",
+      "type": "file",
+      "file": "FB-005.md",
+      "x": 2580,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_6",
+      "type": "file",
+      "file": "MO-6 El Contrapeso.md",
+      "x": 2780,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m1_2",
+      "type": "file",
+      "file": "Tarea M1.2.md",
+      "x": 2380,
+      "y": 860,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m1_4",
+      "type": "file",
+      "file": "Tarea M1.4.md",
+      "x": 2580,
+      "y": 860,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g8",
+      "type": "group",
+      "label": "Community 8",
+      "x": 3540,
+      "y": 700,
+      "width": 600,
+      "height": 400,
+      "color": "3"
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_01",
+      "type": "file",
+      "file": "DC-01 Canal A sensores.md",
+      "x": 3560,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_1",
+      "type": "file",
+      "file": "IN-1.md",
+      "x": 3760,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m0_3",
+      "type": "file",
+      "file": "Tarea M0.3.md",
+      "x": 3560,
+      "y": 860,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g9",
+      "type": "group",
+      "label": "Community 9",
+      "x": 4500,
+      "y": 700,
+      "width": 600,
+      "height": 400,
+      "color": "4"
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_07",
+      "type": "file",
+      "file": "DC-07 Capsula exportable.md",
+      "x": 4520,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_3",
+      "type": "file",
+      "file": "FA-3 Capsula.md",
+      "x": 4720,
+      "y": 780,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m3_6",
+      "type": "file",
+      "file": "Tarea M3.6.md",
+      "x": 4520,
+      "y": 860,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g10",
+      "type": "group",
+      "label": "Community 10",
+      "x": 0,
+      "y": 1180,
+      "width": 600,
+      "height": 400,
+      "color": "5"
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_09",
+      "type": "file",
+      "file": "DC-09 Forma diaria del habitat.md",
+      "x": 20,
+      "y": 1260,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_006",
+      "type": "file",
+      "file": "FB-006.md",
+      "x": 220,
+      "y": 1260,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_7",
+      "type": "file",
+      "file": "MO-7 Forma diaria del habitat.md",
+      "x": 20,
+      "y": 1340,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g11",
+      "type": "group",
+      "label": "Community 11",
+      "x": 1180,
+      "y": 1180,
+      "width": 600,
+      "height": 400,
+      "color": "6"
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_10",
+      "type": "file",
+      "file": "DC-10 Casos de error y contagio.md",
+      "x": 1200,
+      "y": 1260,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_007",
+      "type": "file",
+      "file": "FB-007.md",
+      "x": 1400,
+      "y": 1260,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_6",
+      "type": "file",
+      "file": "GO-6 Epidemiologia del error.md",
+      "x": 1200,
+      "y": 1340,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g12",
+      "type": "group",
+      "label": "Community 12",
+      "x": 2360,
+      "y": 1180,
+      "width": 600,
+      "height": 400,
+      "color": "1"
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_11",
+      "type": "file",
+      "file": "DC-11 Ficha de vida de sensor.md",
+      "x": 2380,
+      "y": 1260,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_008",
+      "type": "file",
+      "file": "FB-008.md",
+      "x": 2580,
+      "y": 1260,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_8",
+      "type": "file",
+      "file": "MO-8 Demografia de testigos.md",
+      "x": 2380,
+      "y": 1340,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g13",
+      "type": "group",
+      "label": "Community 13",
+      "x": 3540,
+      "y": 1180,
+      "width": 600,
+      "height": 400,
+      "color": "2"
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_003",
+      "type": "file",
+      "file": "FB-003.md",
+      "x": 3560,
+      "y": 1260,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_4",
+      "type": "file",
+      "file": "MO-4 Triangulacion 3 testigos.md",
+      "x": 3760,
+      "y": 1260,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m2_4",
+      "type": "file",
+      "file": "Tarea M2.4.md",
+      "x": 3560,
+      "y": 1340,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g14",
+      "type": "group",
+      "label": "Community 14",
+      "x": 4500,
+      "y": 1180,
+      "width": 600,
+      "height": 400,
+      "color": "3"
+    },
+    {
+      "id": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_004",
+      "type": "file",
+      "file": "FB-004.md",
+      "x": 4520,
+      "y": 1260,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_5",
+      "type": "file",
+      "file": "MO-5 Integrador lento del agua.md",
+      "x": 4720,
+      "y": 1260,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "n_tasks_m2_5",
+      "type": "file",
+      "file": "Tarea M2.5.md",
+      "x": 4520,
+      "y": 1340,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g15",
+      "type": "group",
+      "label": "Community 15",
+      "x": 0,
+      "y": 1660,
+      "width": 600,
+      "height": 400,
+      "color": "4"
+    },
+    {
+      "id": "n_auditoria",
+      "type": "file",
+      "file": "auditoria.md",
+      "x": 20,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    },
+    {
+      "id": "g16",
+      "type": "group",
+      "label": "Community 16",
+      "x": 1180,
+      "y": 1660,
+      "width": 600,
+      "height": 400,
+      "color": "5"
+    },
+    {
+      "id": "n_implementar",
+      "type": "file",
+      "file": "implementar.md",
+      "x": 1200,
+      "y": 1740,
+      "width": 180,
+      "height": 60
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_1_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_1",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_10_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_10",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_11_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_11",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_12_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_12",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_13_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_13",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_14_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_14",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_15_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_15",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_16_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_16",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_17_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_17",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_18_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_18",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_19_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_19",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_2_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_2",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_20_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_20",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_21_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_21",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_22_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_22",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_23_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_23",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_3_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_3",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_4_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_4",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_5_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_5",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_6_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_6",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_7_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_7",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_8_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_8",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_9_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_c_9",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_claude",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "toNode": "n_claude",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_001",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_001",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_002",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_002",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_003",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_003",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_004",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_004",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_005",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_005",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_006",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_006",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_007",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_007",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_008",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_008",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_4_tasks_m4_3",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_4",
+      "toNode": "n_tasks_m4_3",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_4_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_4",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_4_tasks_m2_6",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_4",
+      "toNode": "n_tasks_m2_6",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_4_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_4",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_adversario_tasks_m4_4",
+      "fromNode": "n_claude_adversario",
+      "toNode": "n_tasks_m4_4",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_tormenta_tasks_m3_3",
+      "fromNode": "n_claude_tormenta",
+      "toNode": "n_tasks_m3_3",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_claude",
+      "fromNode": "n_tasks",
+      "toNode": "n_claude",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m0_1",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m0_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m0_2",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m0_3",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m0_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m0_4",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m0_4",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m0_5",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m0_5",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m1_1",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m1_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m1_2",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m1_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m1_3",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m1_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m1_4",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m1_4",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m2_1",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m2_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m2_2",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m2_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m2_3",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m2_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m2_4",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m2_4",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m2_5",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m2_5",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m2_6",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m2_6",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m3_1",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m3_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m3_2",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m3_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m3_3",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m3_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m3_4",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m3_4",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m3_5",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m3_5",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m3_6",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m3_6",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m4_1",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m4_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m4_2",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m4_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m4_3",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m4_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m4_4",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m4_4",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m4_5",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m4_5",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m5_1",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m5_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m5_2",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m5_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m5_3",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m5_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_tasks_tasks_m5_4",
+      "fromNode": "n_tasks",
+      "toNode": "n_tasks_m5_4",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_7_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_7",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_7_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_006",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_7",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_006",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_7_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_09",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_7",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_09",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_09_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_09",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_10_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_10",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_10_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_6",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_10",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_6",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_6_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_6",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_6_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_007",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_6",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_007",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_8_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_8",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_8_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_008",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_8",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_008",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_8_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_11",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_8",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_11",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_11_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_11",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_4_tasks_m2_4",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_4",
+      "toNode": "n_tasks_m2_4",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_4_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_4",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_4_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_003",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_4",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_003",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_003_tasks_m2_4",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_003",
+      "toNode": "n_tasks_m2_4",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_5_tasks_m2_5",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_5",
+      "toNode": "n_tasks_m2_5",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_5_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_5",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_5_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_004",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_5",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_004",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_004_tasks_m2_5",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_004",
+      "toNode": "n_tasks_m2_5",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_2_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_2_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_2_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_3_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_3",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_4_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_4",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_5_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_5",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_02_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_02",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_1_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_1",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_10_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_10",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_2_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_3_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_3",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_4_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_4",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_5_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_5",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_6_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_6",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_7_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_7",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_8_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_8",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_9_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fm_9",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_1_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_1",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_7_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_7",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_claude",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_claude",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_01",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_01",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_03",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_03",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_04",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_04",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_05",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_05",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_06",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_06",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_07",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_07",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_08",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_08",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_12",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_12",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_1",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_3",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_1",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_3",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_1",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_3",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_6",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_6",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_1",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_3_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_03",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_3",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_03",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_3_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_3",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "label": "conceptually_related_to [INFERRED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_6",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_6",
+      "label": "calls [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1_tasks_m1_1",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "toNode": "n_tasks_m1_1",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1_claude_mandamiento_1",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "toNode": "n_claude_mandamiento_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_04",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_04",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_1",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_1",
+      "label": "shares_data_with [INFERRED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_3",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_lb_1",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_3",
+      "label": "calls [INFERRED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_1_tasks_m2_1",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_1",
+      "toNode": "n_tasks_m2_1",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_1_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_001",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_1",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_001",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_1_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_04",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_1",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_04",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_sala_tasks_m3_1",
+      "fromNode": "n_claude_sala",
+      "toNode": "n_tasks_m3_1",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_sala_doc_03_tono_pitch_equipo_v0_2",
+      "fromNode": "n_claude_sala",
+      "toNode": "n_doc_03_tono_pitch_equipo_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_sala_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_04",
+      "fromNode": "n_claude_sala",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_04",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_04_tasks_m1_3",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_04",
+      "toNode": "n_tasks_m1_3",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_2_claude_mandamiento_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_go_2",
+      "toNode": "n_claude_mandamiento_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_claude_mandamiento_1",
+      "fromNode": "n_claude",
+      "toNode": "n_claude_mandamiento_1",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_claude_mandamiento_2",
+      "fromNode": "n_claude",
+      "toNode": "n_claude_mandamiento_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_claude_mandamiento_3",
+      "fromNode": "n_claude",
+      "toNode": "n_claude_mandamiento_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_doc_03_tono_pitch_equipo_v0_2",
+      "fromNode": "n_claude",
+      "toNode": "n_doc_03_tono_pitch_equipo_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_doc_04_la_fundicion_laboratorio_v0_2",
+      "fromNode": "n_claude",
+      "toNode": "n_doc_04_la_fundicion_laboratorio_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_leeme",
+      "fromNode": "n_claude",
+      "toNode": "n_leeme",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2_tasks_m2_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2",
+      "toNode": "n_tasks_m2_2",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_001",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_001",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_06",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_06",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_3",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_2",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_3",
+      "label": "semantically_similar_to [INFERRED]"
+    },
+    {
+      "id": "e_claude_residuo_tasks_m3_2",
+      "fromNode": "n_claude_residuo",
+      "toNode": "n_tasks_m3_2",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_residuo_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_06",
+      "fromNode": "n_claude_residuo",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_06",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_001_tasks_m0_5",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_001",
+      "toNode": "n_tasks_m0_5",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_1_tasks_m4_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_1",
+      "toNode": "n_tasks_m4_2",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_1_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_12",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_1",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_12",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_fundicion_claude_guardian",
+      "fromNode": "n_claude_fundicion",
+      "toNode": "n_claude_guardian",
+      "label": "conceptually_related_to [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_fundicion_doc_04_la_fundicion_laboratorio_v0_2",
+      "fromNode": "n_claude_fundicion",
+      "toNode": "n_doc_04_la_fundicion_laboratorio_v0_2",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_claude_fundicion_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_12",
+      "fromNode": "n_claude_fundicion",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_12",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_12_tasks_m4_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_12",
+      "toNode": "n_tasks_m4_2",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_3_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_002",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_3",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_002",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_3_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_05",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_3",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_05",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_1_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_05",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_su_1",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_05",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_05_claude_mandamiento_3",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_05",
+      "toNode": "n_claude_mandamiento_3",
+      "label": "references [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_002_tasks_m2_3",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_002",
+      "toNode": "n_tasks_m2_3",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_6_tasks_m1_2",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_6",
+      "toNode": "n_tasks_m1_2",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_6_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_08",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_6",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_08",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_6_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_005",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_mo_6",
+      "toNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_005",
+      "label": "references [INFERRED]"
+    },
+    {
+      "id": "e_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_005_tasks_m1_4",
+      "fromNode": "n_doc_02_map_s2_genesis_nueva_generacion_v0_3_fb_005",
+      "toNode": "n_tasks_m1_4",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_1_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_01",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_in_1",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_01",
+      "label": "shares_data_with [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_01_tasks_m0_3",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_01",
+      "toNode": "n_tasks_m0_3",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_3_tasks_m3_6",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_3",
+      "toNode": "n_tasks_m3_6",
+      "label": "implements [EXTRACTED]"
+    },
+    {
+      "id": "e_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_3_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_07",
+      "fromNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_fa_3",
+      "toNode": "n_doc_01_map_s1_mapa_maestro_sistema_v0_2_dc_07",
+      "label": "shares_data_with [EXTRACTED]"
+    }
+  ]
+}
