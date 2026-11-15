@@ -181,6 +181,14 @@ await page.goto(`${BASE}/foundry?awake=1`, { waitUntil: "domcontentloaded" });
 await esperar('[data-testid="foundry-explainer"]', 30000);
 check("la Fundición explica qué es", (await page.evaluate(() => document.body.innerText.toLowerCase())).includes("what is this page?"));
 
+// M8 · Contrapeso (DC-08) en El Presupuesto y recibos agregados en la sala de máquinas
+await page.goto(`${BASE}/budget?awake=1`, { waitUntil: "domcontentloaded" });
+await esperar('[data-testid="closure-card"]', 40000);
+check("El Presupuesto muestra El Contrapeso (cierre de conservación) del día", (await page.evaluate(() => document.body.innerText.toLowerCase())).includes("does the loop obey conservation"));
+await page.goto(`${BASE}/machine?awake=1`, { waitUntil: "domcontentloaded" });
+await esperar('[data-testid="receipts-card"]', 40000);
+check("Machine Room cuenta alarmas y verdes con recibo (solo agregados)", !(await page.evaluate(() => /al-[0-9a-f]{12}/.test(document.body.innerText))));
+
 check("sin errores de consola ni excepciones", errores.length === 0, errores.slice(0, 3).join(" | "));
 await browser.close();
 console.log(`\n${ok.length} comprobaciones OK`); ok.forEach((n) => console.log("  ✓", n));

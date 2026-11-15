@@ -23,6 +23,7 @@ UMBRAL_S1_PFU = 10.0
 _ULT_ARCHIVO: dict[str, float] = {}
 ARCHIVO_CADA_S = 600.0      # una lectura cruda archivada por fuente cada 10 min (la fuente cambia cada minuto; sin tope llenaría el disco)
 ULTIMOS_HASHES: dict[str, str] = {}
+ARCHIVADOS_NUEVOS: set[str] = set()      # fuentes cuya lectura se archivó desde la última vez que se registraron como evento (DC-03) e intento (DC-13)
 
 
 def _get(url: str, t: float = 8.0):
@@ -39,6 +40,7 @@ def _get(url: str, t: float = 8.0):
         nombre = url.rsplit("/", 1)[-1].replace(".json", "") or "iss"
         archivo.archivar(cuerpo, fuente="entorno", nombre=nombre, url=url, ts=archivo.ahora_utc(), raiz=Path(__file__).resolve().parents[2] / "data" / "entorno_vivo")      # carpeta propia (ignorada por git): el manifiesto de SWPC no se ensucia
         _ULT_ARCHIVO[url] = time.time()
+        ARCHIVADOS_NUEVOS.add(url)
     return json.loads(cuerpo)
 
 
@@ -76,3 +78,41 @@ def seguro(f: Callable[[], dict], fuente: str) -> dict:
         return f()
     except Exception as e:                                                # noqa: BLE001  la ausencia es dato: se dice, no se rellena
         return {"disponible": False, "fuente": fuente, "error": type(e).__name__}
+
+
+def a_eventos(env: dict) -> list:
+    """DC-03 (v0.2.9): cada lectura archivada entra como EVENTO con su `hash_lectura_cruda` (mandamiento 1: el consumidor lee del libro de eventos, no de la fuente)."""
+    from src.contratos.comunes import Banner
+    from src.contratos.dc03_eventos import DC03Evento, FuenteEvento, TipoEvento
+    out = []
+    iss_, p, x = env["iss"], env["protones"], env["rayosx"]
+    plan = [(iss_, URL_ISS, TipoEvento.POSICION_ESTACION, FuenteEvento.WHERETHEISS,
+             lambda r: {"latitud_deg": r["lat"], "longitud_deg": r["lon"], "altitud_km": r["alt_km"], "velocidad_kms": r["vel_kms"], "luz_solar": 1.0 if r["a_la_luz"] else 0.0}),
+            (p, URL_PROT, TipoEvento.LECTURA_PROTONES, FuenteEvento.SWPC, lambda r: {"flujo_protones_pfu": r["pfu"]}),
+            (x, URL_XR, TipoEvento.LECTURA_RAYOSX, FuenteEvento.SWPC, lambda r: {"flujo_rayosx_wm2": r["flujo_wm2"]})]
+    for r, url, tipo, fuente, params in plan:
+        if not r.get("disponible") or url not in ARCHIVADOS_NUEVOS or not r.get("hash_lectura_cruda"):
+            continue
+        ts = datetime.strptime(r["ts_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+        out.append(DC03Evento(evento_id=f"entorno-{tipo.value}-{r['ts_utc']}-{r['hash_lectura_cruda'][:12]}", ts_utc_inicio=ts, ts_utc_fin=ts, tipo=tipo, fuente=fuente,
+                              parametros=params(r), hash_lectura_cruda=r["hash_lectura_cruda"], banner=Banner.REAL))
+    return out
+
+
+def a_intentos(env: dict) -> list:
+    """DC-13: los fallos SIEMPRE se registran (la ausencia es dato); los éxitos, cuando la lectura se archiva."""
+    from src.contratos.comunes import Banner
+    from src.contratos.dc03_eventos import FuenteEvento
+    from src.contratos.dc13_intento_ingesta import DC13Intento, ResultadoIntento
+    ahora = datetime.now(UTC)
+    out = []
+    for clave, url, fuente in (("iss", URL_ISS, FuenteEvento.WHERETHEISS), ("protones", URL_PROT, FuenteEvento.SWPC), ("rayosx", URL_XR, FuenteEvento.SWPC)):
+        r = env[clave]
+        if r.get("disponible"):
+            if url in ARCHIVADOS_NUEVOS and r.get("hash_lectura_cruda"):
+                out.append(DC13Intento(intento_id=f"entorno-{clave}-{ahora:%Y%m%dT%H%M%S}-{r['hash_lectura_cruda'][:8]}", ts_utc=ahora, fuente=fuente, url=url,
+                                       resultado=ResultadoIntento.OK, http_status=200, hash_lectura_cruda=r["hash_lectura_cruda"], banner=Banner.REAL))
+        else:
+            out.append(DC13Intento(intento_id=f"entorno-{clave}-{ahora:%Y%m%dT%H%M%S}-fallo", ts_utc=ahora, fuente=fuente, url=url, resultado=ResultadoIntento.FALLO,
+                                   http_status=None, error=str(r.get("error", "desconocido")), banner=Banner.REAL))
+    return out

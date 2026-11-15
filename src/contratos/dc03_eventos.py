@@ -13,13 +13,16 @@ from pydantic import model_validator
 
 from .comunes import Banner, Contrato, Real, Sha256, Texto, TsUtc
 
-ADIMENSIONALES = frozenset({"kp"})
+ADIMENSIONALES = frozenset({"kp", "luz_solar"})      # v0.2.9: luz_solar = 1 (a la luz) / 0 (en sombra)
 _CLAVE_CON_UNIDAD = re.compile(r"^[a-z][a-z0-9]*(_[a-z0-9]+)+$")
 
 
 class TipoEvento(StrEnum):
     TORMENTA_SOLAR = "tormenta_solar"  # solo eventos declarados oficialmente (alerts.json / DONKI)
     LECTURA_CLIMA_ESPACIAL = "lectura_clima_espacial"  # lectura continua de SWPC/DONKI (v0.2.1)
+    LECTURA_PROTONES = "lectura_protones"  # v0.2.9: protones GOES ≥10 MeV (vía SWPC)
+    LECTURA_RAYOSX = "lectura_rayosx"  # v0.2.9: rayos X solares 0,1–0,8 nm (vía SWPC)
+    POSICION_ESTACION = "posicion_estacion"  # v0.2.9: ISS (derivada de elementos orbitales)
     EVA = "eva"
     ECLSS = "eclss"
     INYECCION_ESCENARIO = "inyeccion_escenario"
@@ -30,6 +33,7 @@ class FuenteEvento(StrEnum):
     SWPC = "swpc"
     DONKI = "donki"
     OSDR = "osdr"
+    WHERETHEISS = "wheretheiss"  # v0.2.9
     SIMULADOR = "simulador"
 
 
@@ -60,7 +64,13 @@ class DC03Evento(Contrato):
         if self.fuente is FuenteEvento.SIMULADOR and self.banner is not Banner.SIMULADO:
             raise ValueError("fuente=simulador exige banner=SIMULADO")
         if self.fuente is not FuenteEvento.SIMULADOR and self.banner is not Banner.REAL:
-            raise ValueError("una fuente real (swpc/donki/osdr) exige banner=REAL")
+            raise ValueError("una fuente real (swpc/donki/osdr/wheretheiss) exige banner=REAL")
         if self.tipo is TipoEvento.LECTURA_CLIMA_ESPACIAL and self.fuente not in {FuenteEvento.SWPC, FuenteEvento.DONKI}:
             raise ValueError("lectura_clima_espacial solo viene de swpc o donki")
+        if self.tipo in {TipoEvento.LECTURA_PROTONES, TipoEvento.LECTURA_RAYOSX} and self.fuente is not FuenteEvento.SWPC:
+            raise ValueError("lectura_protones / lectura_rayosx solo vienen de swpc (GOES)")
+        if self.tipo is TipoEvento.POSICION_ESTACION and self.fuente is not FuenteEvento.WHERETHEISS:
+            raise ValueError("posicion_estacion solo viene de wheretheiss")
+        if self.fuente is FuenteEvento.WHERETHEISS and self.tipo is not TipoEvento.POSICION_ESTACION:
+            raise ValueError("wheretheiss solo emite posicion_estacion")
         return self

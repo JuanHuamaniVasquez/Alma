@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Room } from "@/components/Room";
 import { Stamp } from "@/components/Stamp";
-import { BUDGETS, get, type EProcess, type ResidualPoint, type Residuals } from "@/lib/api";
+import { BUDGETS, get, type AlarmasApi, type EProcess, type VerdesApi, type ResidualPoint, type Residuals } from "@/lib/api";
 
 const W = 1000, H = 170, MID = H / 2, PX = 20, CLAMP = 3.8; // 20 px por σ; la cinta cubre ±3,8σ
 const H_CUSUM = 10.01;
@@ -12,6 +12,9 @@ const label = (id: string) => BUDGETS.find(([b]) => b === id)?.[1] ?? id;
 export default function MachineRoom() {
   const [r, setR] = useState<Residuals | null>(null);
   const [ep, setEp] = useState<EProcess | null>(null);
+  const [al, setAl] = useState<AlarmasApi | null>(null);
+  const [vd, setVd] = useState<VerdesApi | null>(null);
+  useEffect(() => { get<AlarmasApi>("/api/alarmas/").then(setAl); get<VerdesApi>("/api/verdes/").then(setVd); }, []);
   useEffect(() => { get<EProcess>("/api/eproceso/").then(setEp); }, []);
   const [pick, setPick] = useState<{ id: string; i: number } | null>(null);
   useEffect(() => {
@@ -45,6 +48,7 @@ export default function MachineRoom() {
             </section>
           ))}
         </div>
+        {al && vd && <ReceiptsCard al={al} vd={vd} />}
         {ep && <EProcessCard ep={ep} />}
         {sel && pick && <Slip p={sel} day={pick.i + 1} name={label(pick.id)} onClose={() => setPick(null)} />}
       </div>
@@ -129,6 +133,27 @@ function EProcessCard({ ep }: { ep: EProcess }) {
           <p className="mt-3 border-t border-paper-ink/60 pt-3 text-[11px]">Taken at face value (s = 1) the guarantee failed fivefold on real data. Widening it until it holds costs sensitivity (99% → 71%). The out-of-sample check had only 5 windows: inconclusive. The method is not ours; the measured gap is.</p>
         </div>
       )}
+    </section>
+  );
+}
+
+
+/** Recibos: lo que el sistema promete de cada alarma y de cada verde. Solo AGREGADOS (sin ids ni valores personales: los recibos individuales existen en la API). */
+function ReceiptsCard({ al, vd }: { al: AlarmasApi; vd: VerdesApi }) {
+  const act = al.alarmas.filter((a) => a.estado === "activa");
+  const plantilla = (act[0]?.regla_exacta ?? "").replace(/mu=[-\d.e]+/, "mu=‹personal›").replace(/sigma=[-\d.e]+/, "sigma=‹personal›").replace(/ phi=[-\d.e]+/, "").replace(/ x0=[-\d.e]+/, "");
+  const v = vd.cuerpo_agregado;
+  return (
+    <section className="mt-16 max-w-4xl" data-testid="receipts-card">
+      <div className="flex items-baseline gap-4"><h2 className="font-display text-3xl">Every colour carries a receipt</h2><Stamp banner={al.banner} /></div>
+      <p className="mt-3 max-w-2xl text-ink-dim">The ship never shows an alarm or a green without the exact rule behind it. Here is the count, never the person: these are everyday wearers, not astronauts.</p>
+      <div className="mt-6 grid gap-8 md:grid-cols-2">
+        <div><p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">Active alarms</p><p className="mt-1 font-display text-5xl leading-none">{act.length}<span className="ml-2 font-mono text-[11px] text-ink-faint">each with rule · seed · hash</span></p>
+          {plantilla && <p className="mt-3 break-words font-mono text-[11px] leading-relaxed text-ink-dim">{plantilla}</p>}
+          <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-faint">sealed in act {act[0]?.hash_preregistro.slice(0, 8)}… · seed {act[0]?.semilla}</p></div>
+        <div><p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">Green receipts</p><p className="mt-1 font-display text-5xl leading-none">{v.por_estado.verde ?? 0}<span className="ml-2 font-mono text-[11px] text-ink-faint">of {v.recibos}</span></p>
+          <p className="mt-3 text-[13px] leading-snug text-ink-dim">A green says how small a change it could have seen — here {v.mde_sigma_mediana.toFixed(2)}σ at the median — and how many days stood behind it (average coverage {Math.round(100 * v.cobertura_media)}%). {v.por_estado.sin_datos_suficientes ?? 0} receipts say <em>not enough data</em> instead: absence is its own state.</p></div>
+      </div>
     </section>
   );
 }

@@ -113,3 +113,8 @@ export type ViveroCand = { id: string; clave: string; titulo: string; mecanismo:
 export type Vivero = { banner: Banner; generado_utc: string; n_mecanismos: number; n_listos: number; n_bloqueados: number; n_ya_probadas: number; fuente_datos: string; candidatos: ViveroCand[] };
 
 export type Tierra = { banner: Banner; disponible: boolean; imagen?: string; fecha_utc?: string; caption?: string; cuerpo?: string };
+
+export type Cierre = { bucle: string; entradas: number; salidas: number; delta_almacen: number; perdida_declarada: number; residuo_conservacion: number; incertidumbre_propagada: number; veredicto: "CIERRA" | "NO CIERRA"; banner: Banner };
+export type Cierres = { banner: Banner; dia_habitat: number; cierres: Cierre[] };
+export type AlarmasApi = { banner: Banner; alarmas: { indicador: string | null; presupuesto_id: string | null; detector: string; sentido: string; estado: string; hash_preregistro: string; regla_exacta: string; semilla: number }[] };
+export type VerdesApi = { banner: Banner; cuerpo_agregado: { recibos: number; por_estado: Record<string, number>; cobertura_media: number; mde_sigma_mediana: number } };

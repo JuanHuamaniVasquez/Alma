@@ -156,6 +156,13 @@ sysmap --root . check                  # structural map: nothing worse than the 
 ```
 `tests/test_checklist_honestidad.py` is an executable checklist: every response and every screen declares REAL or SIMULATED; every line ALMA says has a source and audio; the acts are intact; every persisted alarm has a full receipt; every capsule declares limits; the UI never claims "10/10"; the narrator imports no language model.
 
+### Lab and world (M7–M8)
+
+- **The Foundry generates hypotheses.** `src/fabrica/generador.py` crosses a library of 11 published mechanisms with the real data the lab holds and emits candidates (6 ready to seal, 3 blocked because the data does not exist, 2 already tested); the Foundry shows them in "The nursery", then the sealed verdicts (9 cards, 3 per page).
+- **Real NASA/NOAA in the rings.** Dose ← GOES protons, Rhythm ← ISS sunlight, Energy ← solar X-rays (live; stored as DC-03 events with a raw-reading hash, DOC-01 v0.2.9); Time, Immunity, Load and Conduct show sealed results. Tap a ring for source and limit.
+- **The Frontier** (World ▸ Frontier): live ISS map, NASA EPIC Earth, blood of four real astronauts (Inspiration4, OSD-569), the OSDR catalogue, and our tests with their honest verdicts. **The Counterweight** (Ship ▸ Budget) shows conservation closure per day (simulated universe).
+- NASA photographs on each room's header are real, credited, and linked (`web/public/nasa/credits.json`).
+
 ### Tests that need local data
 
 A fresh clone runs **fewer** tests: five test files skip themselves when their real dataset is absent (`data/externos/` is not in git). To run everything, download the sources listed in `docs/politica-de-datos.md` (LifeSnaps S-07, Zenodo 8018238 S-13, MIT-BIH record 100 S-20, NASA OSDR OSD-569 S-24) and check each file against the SHA-256 in the code. `pytest -rs` shows which tests were skipped and why.

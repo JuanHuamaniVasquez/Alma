@@ -40,8 +40,8 @@ export function TopBar() {
   useEffect(() => { get<LedgerDays>("/api/libro/dias/").then((d) => { setDays(d); setChecked(true); }); }, []);
   useEffect(() => { setOpen(null); }, [path]);
   useEffect(() => {
-    const i = ROOMS.findIndex((r) => r.href === path);
     const h = (e: KeyboardEvent) => {
+      const i = ROOMS.findIndex((r) => r.href === window.location.pathname);          // se lee en el momento: una pulsación justo tras navegar no usa una ruta vieja
       if (e.key === "Escape") setOpen(null);
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
       if (e.key === "ArrowRight" && i < ROOMS.length - 1) router.push(ROOMS[i + 1].href);

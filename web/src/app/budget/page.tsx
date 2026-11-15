@@ -4,7 +4,7 @@ import { DayTicks } from "@/components/DayTicks";
 import { Room } from "@/components/Room";
 import { useShip } from "@/components/Ship";
 import { Stamp } from "@/components/Stamp";
-import { BUDGETS, get, type LedgerDay, type LedgerDays, type PrivacyBook, type NilmBook } from "@/lib/api";
+import { BUDGETS, get, type LedgerDay, type LedgerDays, type PrivacyBook, type NilmBook, type Cierres } from "@/lib/api";
 
 /** 07 · THE BUDGET — «Do the ship's books close?» Cuentas, nunca gráficas de personas. Un libro sin datos reales de ancla NO se simula: se muestra vacío. */
 export default function Budget() {
@@ -14,6 +14,8 @@ export default function Budget() {
   const [ledger, setLedger] = useState<LedgerDay | null>(null);
   const [priv, setPriv] = useState<PrivacyBook | null>(null);
   const [nilm, setNilm] = useState<NilmBook | null>(null);
+  const [cierres, setCierres] = useState<Cierres | null>(null);
+  useEffect(() => { if (day != null) get<Cierres>(`/api/cierres/dia/${day}/`).then(setCierres); }, [day]);
   useEffect(() => { get<PrivacyBook>("/api/privacidad/").then(setPriv); get<NilmBook>("/api/nilm/").then(setNilm); }, []);
   useEffect(() => {
     get<LedgerDays>("/api/libro/dias/").then(async (d) => {
@@ -31,7 +33,10 @@ export default function Budget() {
       <div className="mx-auto max-w-5xl px-10 pt-10">
         <h1 className="font-display text-5xl leading-tight">Do the ship&apos;s books close?</h1>
         <p className="mt-3 max-w-2xl text-ink-dim">Nine books, one rule: what comes in, minus what goes out, minus what is stored, must equal what was declared lost — within the manifest&apos;s own uncertainty. Where no real anchor exists, the book stays empty.</p>
-        <div className="mt-9 bg-paper px-8 pb-7 pt-6 font-mono text-[12.5px] text-paper-ink shadow-[0_24px_50px_-14px_rgb(0_0_0/.8)]">
+        {days.length > 0 && day != null && (
+          <div className="mt-7 flex items-end gap-5"><span className="pb-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">Pick a day · orange = a book did not close</span><DayTicks days={days} day={day} open={open} onPick={setDay} inline /></div>
+        )}
+        <div className="mt-4 bg-paper px-8 pb-7 pt-6 font-mono text-[12.5px] text-paper-ink shadow-[0_24px_50px_-14px_rgb(0_0_0/.8)]">
           <div className="flex items-baseline justify-between border-b border-paper-ink/60 pb-3">
             <span className="font-display text-3xl">Ledger · day {day ?? "—"}</span>
             {ledger && <Stamp banner={ledger.banner} />}
@@ -74,6 +79,24 @@ export default function Budget() {
             <p className="mt-3 border-t border-paper-ink/60 pt-3 text-[11px]">Exact counts never leave the server. ε = 2.0 is an illustrative budget, not a NASA policy. Tested: an attacker with exact counts recovers a crew member every time; with ε = 0.5 per query, they are wrong more than 12% of the time (<code>tests/test_privacidad.py</code>).</p>
           </div>
         )}
+        {cierres && (
+          <div className="mt-8 bg-paper px-8 pb-6 pt-5 font-mono text-[12.5px] text-paper-ink shadow-[0_24px_50px_-14px_rgb(0_0_0/.8)]" data-testid="closure-card">
+            <div className="flex items-baseline justify-between border-b border-paper-ink/60 pb-3"><span className="font-display text-3xl">The Counterweight · day {cierres.dia_habitat}</span><Stamp banner={cierres.banner} /></div>
+            <p className="mt-3 max-w-2xl text-[12px] leading-relaxed">The ledger above asks whether the manifest was right. This asks something stricter: <em>does the loop obey conservation?</em> What came in, minus what went out, minus what was stored, minus what was declared lost must be zero — within the propagated uncertainty. A leak nobody counted shows up here the same day.</p>
+            <table className="mt-3 w-full">
+              <thead><tr className="text-left text-[10px] uppercase tracking-[0.16em] text-paper-dim">{["loop", "in", "out", "stored", "declared lost", "residual", "±2σ", ""].map((h, i) => <th key={i} className={`pb-2 font-normal ${i ? "text-right" : ""}`}>{h}</th>)}</tr></thead>
+              <tbody>{cierres.cierres.map((c) => (
+                <tr key={c.bucle} className="border-t border-paper-dim/30 align-baseline">
+                  <td className="py-2.5 font-display text-[1.3rem] capitalize">{c.bucle === "aire" ? "Air" : c.bucle === "agua" ? "Water" : c.bucle}</td>
+                  <td className="text-right">{c.entradas.toFixed(2)}</td><td className="text-right">{c.salidas.toFixed(2)}</td><td className="text-right">{c.delta_almacen.toFixed(2)}</td><td className="text-right">{c.perdida_declarada.toFixed(2)}</td>
+                  <td className={`text-right ${c.veredicto === "NO CIERRA" ? "font-medium text-[#c2410c]" : ""}`}>{c.residuo_conservacion >= 0 ? "+" : "−"}{Math.abs(c.residuo_conservacion).toFixed(3)} kg</td>
+                  <td className="text-right">{(2 * c.incertidumbre_propagada).toFixed(3)}</td>
+                  <td className={`pl-4 text-right text-[11px] uppercase tracking-[0.14em] ${c.veredicto === "NO CIERRA" ? "font-medium text-[#c2410c]" : ""}`}>{c.veredicto === "CIERRA" ? "closes" : "does not close"}</td>
+                </tr>))}</tbody>
+            </table>
+            <p className="mt-3 border-t border-paper-ink/60 pt-3 text-[11px]">Simulated universe: supply is what the manifest promises, outflow is what was measured. The fixtures are labelled; no crewed cabin publishes this data.</p>
+          </div>
+        )}
         {nilm?.ejecutada && nilm.curvas && (() => {
           const W = 520, H = 190, L = 44, B = 28, xs = [0, 1, 2, 4], X = (h: number) => L + (h / 4) * (W - L - 52), Y = (v: number) => H - B - v * (H - B - 12);
           const tone: Record<string, string> = { "0.05": "#8a8174", "0.1": "#6b4a2b", "0.2": "#1a1612" };
@@ -100,7 +123,6 @@ export default function Budget() {
           );
         })()}
       </div>
-      {days.length > 0 && day != null && <DayTicks days={days} day={day} open={open} onPick={setDay} />}
     </Room>
   );
 }

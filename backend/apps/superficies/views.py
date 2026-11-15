@@ -451,6 +451,14 @@ class Entorno(SoloLectura):
             _ENTORNO["d"] = {"banner": Banner.REAL.value, "iss": fi.result(), "protones": fp.result(), "rayosx": fx.result(),
                              "aviso": "Live, real, NASA/NOAA-derived feeds. The ISS position is computed from orbital elements, not station telemetry."}
             _ENTORNO["t"] = time.time()
+            try:                                                       # mandamiento 1 (DOC-01 v0.2.9): lo leído entra al libro de eventos (DC-03) y al registro de intentos (DC-13)
+                from apps.ingesta.repositorio import guardar_eventos, guardar_intento
+                if ev := E.a_eventos(_ENTORNO["d"]):
+                    guardar_eventos(ev)
+                for i in E.a_intentos(_ENTORNO["d"]):
+                    guardar_intento(i)
+            finally:
+                E.ARCHIVADOS_NUEVOS.clear()
         return Response(_ENTORNO["d"])
 
 

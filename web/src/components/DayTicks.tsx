@@ -1,8 +1,8 @@
 "use client";
 /** Una marca por día del libro: calma sin ejes. El día con algún libro abierto se marca en naranja señal (regla: |residuo| > 2σ). */
-export function DayTicks({ days, day, open, onPick }: { days: number[]; day: number; open: Set<number>; onPick: (d: number) => void }) {
+export function DayTicks({ days, day, open, onPick, inline = false }: { days: number[]; day: number; open: Set<number>; onPick: (d: number) => void; inline?: boolean }) {
   return (
-    <nav aria-label="Ledger day" className="absolute bottom-7 right-8 z-20 flex items-end gap-[7px]">
+    <nav aria-label="Ledger day" className={inline ? "flex items-end gap-[7px]" : "absolute bottom-7 right-8 z-20 flex items-end gap-[7px]"}>
       {days.map((d) => (
         <button key={d} onClick={() => onPick(d)} aria-label={`Day ${d}`} aria-current={d === day} className="group flex flex-col items-center gap-1.5">
           <span className="font-mono text-[9px] tracking-widest text-ink-faint opacity-0 transition-opacity group-hover:opacity-100">{d}</span>

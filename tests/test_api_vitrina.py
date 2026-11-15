@@ -297,6 +297,7 @@ def test_m6_ecg_real_con_calidad_medida_y_aviso_de_no_astronauta():
     assert w["fs_envio"] == 180 and len(w["y"]) == 1800
 
 
+@pytest.mark.django_db
 def test_m7_entorno_con_respuestas_reales_guardadas(monkeypatch):
     """M7.1 · el entorno en vivo se prueba con respuestas REALES capturadas (tests/fixtures/entorno/), sin red; si una fuente cae, se dice y no se rellena."""
     from src.ingesta import entorno as E
@@ -341,3 +342,23 @@ def test_frontera_deriva_colores_y_cifras_del_registro_sellado():
     f = {x["id"]: x for x in get("/api/frontera/").json()["fichas"]}
     assert f["FB-021"]["numeros"]["fpr_s1_pct"] == 5.06 and f["FB-024"]["numeros"]["filas"] == 1 and f["FB-023"]["numeros"]["mejor_pct"] == 71
     assert all(x["verdict"] in {"held", "failed", "mixed", "measured", "open"} for x in f.values())
+
+
+@pytest.mark.django_db
+def test_el_entorno_en_vivo_deja_eventos_dc03_y_intentos_dc13_en_la_base(monkeypatch):
+    """DOC-01 v0.2.9 (mandamiento 1): lo que la API lee de la ISS/GOES queda registrado con su hash; un fallo queda como intento DC-13."""
+    from apps.ingesta.models import EventoClimaEspacial, IntentoIngesta
+    from apps.superficies import views
+    from src.ingesta import entorno as E
+    F = RAIZ / "tests" / "fixtures" / "entorno"
+
+    def falso(url, t=8.0):
+        E.ULTIMOS_HASHES[url] = (("1" if "wheretheiss" in url else "2" if "protons" in url else "3") * 64)
+        E.ARCHIVADOS_NUEVOS.add(url)
+        return json.loads((F / ("iss.json" if "wheretheiss" in url else "protones.json" if "protons" in url else "rayosx.json")).read_text())
+    monkeypatch.setattr(E, "_get", falso)
+    views._ENTORNO.update(t=0.0, d=None)
+    assert get("/api/entorno/").status_code == 200
+    assert set(EventoClimaEspacial.objects.filter(evento_id__startswith="entorno-").values_list("tipo", flat=True)) == {"posicion_estacion", "lectura_protones", "lectura_rayosx"}
+    assert IntentoIngesta.objects.filter(intento_id__startswith="entorno-", resultado="ok").count() == 3
+    views._ENTORNO.update(t=0.0, d=None)

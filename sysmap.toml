@@ -1,11 +1,12 @@
+# Activa desde 2026-11-15: raíces de Python correctas para que `impact/depende/archivo` vean los imports reales. El perfil de Blender (add-on MPFB, 600 MB) vive FUERA del repo (~/.local/share/alma-blender).
 # sysmap.toml, written by `sysmap init` from the folder layout. Read it, correct it, and answer the commented questions: they are what the folders cannot say.
 [project]
 name = "nasa"
-# python_roots = ["backend"]   # where does the Python code live?
-# web_src = "web/src"   # where does the web code live?
+python_roots = [".", "backend"]   # `from src.…` (raíz) y `apps.…` (backend/ está en el path de manage.py)
+web_src = "web/src"
 # openapi = "backend/openapi.json"   # the API contract, if there is one (it lets the map judge endpoints)
 # web_call_base = "/api/v1"   # the path the web client puts before its calls (axios baseURL), if any
-# api_router_module = ""   # the module that mounts every router (Django Ninja / DRF)
-# api_mount = "/api"
-# entrypoints = []   # files nobody imports on purpose: scripts run by hand or by a command
-# data_dirs = []   # folders of data files read by code (the map asks who reads them)
+api_router_module = "backend/config/urls.py"
+api_mount = "/api"
+entrypoints = ["scripts"]   # runners de actas y utilidades: se ejecutan a mano
+# data_dirs = []   # sin declarar: sysmap pediría un lector por carpeta de datos

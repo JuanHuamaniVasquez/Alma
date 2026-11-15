@@ -18,7 +18,7 @@
 - **Base de datos:** **PostgreSQL** local (usuario y contraseña en `.env`, **nunca** en el repo; `.env.example` documenta las variables). Los contratos DC-xx se materializan como schemas puros validados (M0.3); persistirlos en Postgres es una capa aparte.
 - **Frontend (vitrina, Dev C):** **Next.js** (React, TypeScript) en `web/`, consumiendo la API REST. Sustituye a la propuesta anterior de FastAPI.
 - **Reglas de arquitectura:** el dominio (`src/`) no importa Django ni Next; las dependencias van hacia dentro (superficies → fábrica → motor → libro → ingesta no se invierte, ver mandamiento 1). `sysmap check` y `pytest` en verde antes de cada commit.
-- **Semillas públicas del proyecto: 20261113 · 20261114 · 20261115 · 20261111 · 20261112.** Toda corrida es reproducible: usa estas semillas y las imprime en su salida. Sin semilla pública, no hay fila nueva (regla de dependencia 4 de DOC-01).
+- **Semillas públicas del proyecto: 20261113 · 20261114 · 20261115 · 20261111 · 20261112.** Toda corrida es reproducible: usa estas semillas y las imprime en su salida. Sin semilla pública, no hay fila nueva (regla de dependencia 4 de DOC-01). **Familia derivada pública (D-38, 2026-11-15):** `20261113 + i`, i = 0…9, solo para repeticiones de una misma prueba de regresión (FB-015-v2, FB-004R, FB-018); toda acta NUEVA declara sus semillas entre las cinco públicas.
 
 ## 3 · Los 3 mandamientos (reglas que el código jamás rompe)
 
@@ -57,7 +57,7 @@ Fuente: DOC-01 §2. Al materializar al repo, respeta estos estados — no recons
 
 | Módulo | Qué es | Estado |
 |---|---|---|
-| IN-3 | SWPC/DONKI/OSDR en vivo | OPERATIVO (SWPC, sin API key; verificado Kp=3,33 el 9-nov) / ESPECIFICADO (OSDR) |
+| IN-3 | SWPC/DONKI/OSDR en vivo | OPERATIVO (SWPC, sin API key; verificado Kp=3,33 el 9-nov) / ISS + protones GOES + rayos X como DC-03 con hash (DOC-01 v0.2.9) / catálogo OSDR en instantánea (M7.3) / DONKI sin acceso |
 | IN-4 | Banco de Falsaciones: replay, Monte Carlo, premortem, **modo adversario** | OPERATIVO (script) |
 | MO-1 / MO-2 / MO-3 | Modelo nulo personal / residuo 2σ / CUSUM bilateral | OPERATIVO (script; FB-001, FB-002 ya ejecutadas) |
 | LB-1 | Libro GPV de los 9 presupuestos | OPERATIVO (DC-04 + BD + API; aire/agua con ancla pública, `tiempo` real; el resto vacío por falta de dato) |

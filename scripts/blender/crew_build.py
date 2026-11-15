@@ -1,5 +1,5 @@
 """Genera a un tripulante FICTICIO realista con MPFB (humano 100 % generado por script en Blender; assets CC0 de MakeHuman) y lo deja listo para la vitrina.
-Uso:  BLENDER_USER_RESOURCES=data/blender_user blender -b --python scripts/blender/crew_build.py -- VEGA [--preview]
+Uso:  BLENDER_USER_RESOURCES=~/.local/share/alma-blender blender -b --python scripts/blender/crew_build.py -- VEGA [--preview]
 Salida: data/modelos/crew_<INDICATIVO>.blend (+ vista previa PNG con --preview). Nada de personas reales: son combinaciones de parámetros."""
 import math
 import re
