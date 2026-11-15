@@ -3,7 +3,7 @@
 ## Before the room (2 min)
 ```
 uv run python backend/manage.py runserver 127.0.0.1:8000     # backend (Postgres via .env)
-cd web && pnpm dev                                           # frontend on :3000
+cd web && pnpm build && pnpm start                           # frontend on :3000 (production build: faster and steadier than `pnpm dev`)
 uv run python backend/manage.py sembrar_demo                 # idempotent
 uv run --with kokoro-onnx --with soundfile python scripts/voz_alma.py   # only if the data changed
 uv run pytest -q                                              # must be green (372+)

@@ -60,15 +60,15 @@ Fuente: DOC-01 §2. Al materializar al repo, respeta estos estados — no recons
 | IN-3 | SWPC/DONKI/OSDR en vivo | OPERATIVO (SWPC, sin API key; verificado Kp=3,33 el 9-nov) / ESPECIFICADO (OSDR) |
 | IN-4 | Banco de Falsaciones: replay, Monte Carlo, premortem, **modo adversario** | OPERATIVO (script) |
 | MO-1 / MO-2 / MO-3 | Modelo nulo personal / residuo 2σ / CUSUM bilateral | OPERATIVO (script; FB-001, FB-002 ya ejecutadas) |
-| LB-1 | Libro GPV de los 9 presupuestos | ESPECIFICADO — **P0, antes que detectores nuevos** |
-| MO-6 | El Contrapeso (cierre de conservación → DC-08) | DISEÑADO — FB-005 preregistrada |
-| MO-4 / MO-5 | Triangulación 3 testigos / integrador lento del agua | DISEÑADO — FB-003 / FB-004 programadas |
+| LB-1 | Libro GPV de los 9 presupuestos | OPERATIVO (DC-04 + BD + API; aire/agua con ancla pública, `tiempo` real; el resto vacío por falta de dato) |
+| MO-6 | El Contrapeso (cierre de conservación → DC-08) | OPERATIVO (FB-005-D1 ejecutada; ρ sensible M2.17b) |
+| MO-4 / MO-5 | Triangulación 3 testigos / integrador lento del agua | OPERATIVO (FB-003R / FB-004R ejecutadas) |
 | MO-7 / MO-8 | Forma diaria del hábitat / demografía de testigos | DISEÑADO — FB-006 / FB-008 preregistradas |
-| FA-1 / FA-2 / FA-3 | Kanban H-cards / N-of-1 A-B-A-B / cápsula | ESPECIFICADO |
-| FA-4 | El Faro (predicciones fechadas, calificadas en público) | DISEÑADO |
-| SU-1…SU-4 | Alertas con recibo, tablero, sello semanal, premortems | ESPECIFICADO / DISEÑADO |
-| SU-5 | Frontend: las 6 pantallas | NO INICIADO |
-| GO-2 | Preregistro con hash SHA-256 | OPERATIVO (manual) |
+| FA-1 / FA-2 / FA-3 | Kanban H-cards / N-of-1 A-B-A-B / cápsula | FA-1 y FA-3 OPERATIVOS (`src/fabrica/mesa.py`, `capsula.py`); FA-2 (N-of-1) ESPECIFICADO |
+| FA-4 | El Faro (predicciones fechadas, calificadas en público) | OPERATIVO (F-001 fechada) |
+| SU-1…SU-4 | Alertas con recibo, tablero, sello semanal, premortems | SU-1/SU-2 cubiertos por el recibo de papel y las salas (`web/`); SU-3/SU-4 DISEÑADO |
+| SU-5 | Frontend (`web/`, inglés): 8 salas + voz de ALMA determinista | OPERATIVO (ver TASKS M3.x) |
+| GO-2 | Preregistro con hash SHA-256 | OPERATIVO (automatizado: `src/gobernanza/preregistro.py`; runners exigen acta intacta) |
 | GO-6 / GO-7 | Epidemiología del error / MODO FRONTERA | DISEÑADO (FB-007) / Declarado |
 
 ## 6 · Mapa de documentos (leer bajo demanda — no leer todo en cada sesión)

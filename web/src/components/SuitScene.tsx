@@ -1,4 +1,3 @@
-// @ts-nocheck — TEMPORAL: @types/three no se pudo instalar (npm sin red). Con red: `pnpm add -D @types/three@0.170` y quitar esta línea.
 "use client";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Line, useGLTF } from "@react-three/drei";
@@ -67,8 +66,9 @@ function Ring({ i, id, state, onPick, active, labels }: { i: number; id: string;
   const lw = state === "open" ? 2.4 : active || hover ? 1.8 : 1.1;
   const op = state === "absent" ? 0.16 : state === "open" ? 1 : active || hover ? 1 : 0.55;
   return (
+    <group>
+      <object3D ref={anchor} position={[(i % 2 ? 1 : -1) * 1.15, y, 0]} />{/* ancla fija, sin la inclinación del anillo: etiquetas a 0,2 m una de otra */}
     <group position={[0, y, 0]} rotation={[tilt, 0, roll]}>
-      <object3D ref={anchor} position={[(i % 2 ? 1 : -1) * 1.05, 0, 0]} />
       <group ref={g}>
         <Line ref={mat as never} points={pts} color={state === "open" ? SIGNAL : IVORY} lineWidth={lw} transparent opacity={op} dashed={state === "absent"} dashSize={0.04} gapSize={0.05} />
         <mesh onClick={(e) => { e.stopPropagation(); onPick(id); }} onPointerOver={() => { setHover(true); document.body.style.cursor = "pointer"; }}
@@ -76,6 +76,7 @@ function Ring({ i, id, state, onPick, active, labels }: { i: number; id: string;
           <torusGeometry args={[r, 0.06, 6, 48]} /><meshBasicMaterial transparent opacity={0} depthWrite={false} />
         </mesh>
       </group>
+    </group>
     </group>
   );
 }
