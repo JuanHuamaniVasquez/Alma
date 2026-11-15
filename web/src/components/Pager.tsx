@@ -10,14 +10,15 @@ export function usePaged<T>(items: T[], size: number) {
 }
 
 export function Pager({ page, pages, setPage, total, label = "items" }: { page: number; pages: number; setPage: (p: number) => void; total: number; label?: string }) {
-  if (pages <= 1) return <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">{total} {label}</p>;
+  const unit = total === 1 ? (label === "hypotheses" ? "hypothesis" : label.replace(/s$/, "")) : label;
+  if (pages <= 1) return <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">{total} {unit}</p>;
   const btn = "px-2 py-0.5 text-ink-dim transition-colors hover:text-ink disabled:opacity-25 disabled:hover:text-ink-dim";
   return (
     <nav className="mt-3 flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint" aria-label={`${label} pages`}>
       <button className={btn} disabled={page === 0} onClick={() => setPage(page - 1)} aria-label="Previous page">‹</button>
       <span aria-live="polite">{page + 1} / {pages}</span>
       <button className={btn} disabled={page >= pages - 1} onClick={() => setPage(page + 1)} aria-label="Next page">›</button>
-      <span className="ml-2 normal-case tracking-normal">{total} {label}</span>
+      <span className="ml-2 normal-case tracking-normal">{total} {unit}</span>
     </nav>
   );
 }

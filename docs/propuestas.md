@@ -60,3 +60,10 @@
 | MP-17 | **NILM metabólico de cabina**: desagregar CO₂/O₂/H₂O en cuerpos | Capa 1 (libro) + MO-6 | El cuerpo como 10.º presupuesto; huella fisiológica antes del síntoma | NASA BVAD, RQ y HR–VO₂ publicados — **por verificar** | FB-023 (SIMULADO etiquetado) |
 | MP-18 | **Consistencia física cruzada** sensor roto vs cuerpo enfermo | Capa 2 / MO-4–MO-8 | Distingue fallo de sensor de cambio fisiológico | relaciones temp–pulso publicadas — **por verificar** | FB-022 |
 | MP-19 | **Presupuesto de privacidad ε** como décimo libro para tripulaciones de 4–6 | Capa 4 / superficies | Hace explícito qué se puede publicar sin reidentificar | política de datos NASA/LSAH — **por verificar** | test + acta |
+
+## P-R1 · Conectar las otras fuentes de radiación (propuesta, 2026-11-15)
+- **Mejora:** hoy el anillo Dose solo lee protones solares (GOES ≥10 MeV). Faltan los electrones atrapados (GOES `integral-electrons-1-day.json`, ≥2 MeV, 5 min, verificado 2026-11-15) y un indicador de rayos cósmicos galácticos (monitores de neutrones, p. ej. NMDB; **endpoint no verificado**).
+- **Capa destino:** Ingesta (IN-3). **Requiere** ampliar DC-03 (`tipo`: `lectura_electrones`, `lectura_neutrones`) = cambio de versión de DOC-01 → necesita orden expresa.
+- **Qué compra:** el jurado pregunta «¿solo el Sol?»; hoy lo declaramos incompleto en la sala The Storm y en el anillo.
+- **Ancla:** NASA OCHMO radiation brief (límites 600 mSv carrera / 250 mSv por SPE, leído) y SIDC (80 mSv a máximo solar vs 160 mSv a mínimo en 6 meses en la ISS, leído).
+- **Costo:** ~1 sesión. **Estado:** PROPUESTA.

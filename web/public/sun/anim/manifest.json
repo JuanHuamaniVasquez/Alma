@@ -1,0 +1,507 @@
+{
+ "fuente": "NOAA SWPC \u00b7 GOES-19 SUVI y SOHO LASCO C2 (dominio p\u00fablico)",
+ "canales": {
+  "suvi195": [
+   {
+    "archivo": "suvi195_00.jpg",
+    "ts_utc": "2026-11-14T23:16:00Z"
+   },
+   {
+    "archivo": "suvi195_01.jpg",
+    "ts_utc": "2026-11-14T23:48:00Z"
+   },
+   {
+    "archivo": "suvi195_02.jpg",
+    "ts_utc": "2026-11-15T00:20:00Z"
+   },
+   {
+    "archivo": "suvi195_03.jpg",
+    "ts_utc": "2026-11-15T00:52:00Z"
+   },
+   {
+    "archivo": "suvi195_04.jpg",
+    "ts_utc": "2026-11-15T01:24:00Z"
+   },
+   {
+    "archivo": "suvi195_05.jpg",
+    "ts_utc": "2026-11-15T01:56:00Z"
+   },
+   {
+    "archivo": "suvi195_06.jpg",
+    "ts_utc": "2026-11-15T02:28:00Z"
+   },
+   {
+    "archivo": "suvi195_07.jpg",
+    "ts_utc": "2026-11-15T03:00:00Z"
+   },
+   {
+    "archivo": "suvi195_08.jpg",
+    "ts_utc": "2026-11-15T03:32:00Z"
+   },
+   {
+    "archivo": "suvi195_09.jpg",
+    "ts_utc": "2026-11-15T04:04:00Z"
+   },
+   {
+    "archivo": "suvi195_10.jpg",
+    "ts_utc": "2026-11-15T04:36:00Z"
+   },
+   {
+    "archivo": "suvi195_11.jpg",
+    "ts_utc": "2026-11-15T05:08:00Z"
+   },
+   {
+    "archivo": "suvi195_12.jpg",
+    "ts_utc": "2026-11-15T05:40:00Z"
+   },
+   {
+    "archivo": "suvi195_13.jpg",
+    "ts_utc": "2026-11-15T06:12:00Z"
+   },
+   {
+    "archivo": "suvi195_14.jpg",
+    "ts_utc": "2026-11-15T06:44:00Z"
+   },
+   {
+    "archivo": "suvi195_15.jpg",
+    "ts_utc": "2026-11-15T07:16:00Z"
+   },
+   {
+    "archivo": "suvi195_16.jpg",
+    "ts_utc": "2026-11-15T07:48:00Z"
+   },
+   {
+    "archivo": "suvi195_17.jpg",
+    "ts_utc": "2026-11-15T08:20:00Z"
+   },
+   {
+    "archivo": "suvi195_18.jpg",
+    "ts_utc": "2026-11-15T08:52:00Z"
+   },
+   {
+    "archivo": "suvi195_19.jpg",
+    "ts_utc": "2026-11-15T09:24:00Z"
+   },
+   {
+    "archivo": "suvi195_20.jpg",
+    "ts_utc": "2026-11-15T09:56:00Z"
+   },
+   {
+    "archivo": "suvi195_21.jpg",
+    "ts_utc": "2026-11-15T10:28:00Z"
+   },
+   {
+    "archivo": "suvi195_22.jpg",
+    "ts_utc": "2026-11-15T11:00:00Z"
+   },
+   {
+    "archivo": "suvi195_23.jpg",
+    "ts_utc": "2026-11-15T11:32:00Z"
+   },
+   {
+    "archivo": "suvi195_24.jpg",
+    "ts_utc": "2026-11-15T12:04:00Z"
+   },
+   {
+    "archivo": "suvi195_25.jpg",
+    "ts_utc": "2026-11-15T12:36:00Z"
+   },
+   {
+    "archivo": "suvi195_26.jpg",
+    "ts_utc": "2026-11-15T13:08:00Z"
+   },
+   {
+    "archivo": "suvi195_27.jpg",
+    "ts_utc": "2026-11-15T13:40:00Z"
+   },
+   {
+    "archivo": "suvi195_28.jpg",
+    "ts_utc": "2026-11-15T14:12:00Z"
+   },
+   {
+    "archivo": "suvi195_29.jpg",
+    "ts_utc": "2026-11-15T14:44:00Z"
+   },
+   {
+    "archivo": "suvi195_30.jpg",
+    "ts_utc": "2026-11-15T15:16:00Z"
+   },
+   {
+    "archivo": "suvi195_31.jpg",
+    "ts_utc": "2026-11-15T15:48:00Z"
+   },
+   {
+    "archivo": "suvi195_32.jpg",
+    "ts_utc": "2026-11-15T16:20:00Z"
+   },
+   {
+    "archivo": "suvi195_33.jpg",
+    "ts_utc": "2026-11-15T16:52:00Z"
+   },
+   {
+    "archivo": "suvi195_34.jpg",
+    "ts_utc": "2026-11-15T17:24:00Z"
+   },
+   {
+    "archivo": "suvi195_35.jpg",
+    "ts_utc": "2026-11-15T17:56:00Z"
+   },
+   {
+    "archivo": "suvi195_36.jpg",
+    "ts_utc": "2026-11-15T18:28:00Z"
+   },
+   {
+    "archivo": "suvi195_37.jpg",
+    "ts_utc": "2026-11-15T19:00:00Z"
+   },
+   {
+    "archivo": "suvi195_38.jpg",
+    "ts_utc": "2026-11-15T19:32:00Z"
+   },
+   {
+    "archivo": "suvi195_39.jpg",
+    "ts_utc": "2026-11-15T20:04:00Z"
+   },
+   {
+    "archivo": "suvi195_40.jpg",
+    "ts_utc": "2026-11-15T20:36:00Z"
+   },
+   {
+    "archivo": "suvi195_41.jpg",
+    "ts_utc": "2026-11-15T21:08:00Z"
+   },
+   {
+    "archivo": "suvi195_42.jpg",
+    "ts_utc": "2026-11-15T21:40:00Z"
+   },
+   {
+    "archivo": "suvi195_43.jpg",
+    "ts_utc": "2026-11-15T22:12:00Z"
+   },
+   {
+    "archivo": "suvi195_44.jpg",
+    "ts_utc": "2026-11-15T22:44:00Z"
+   }
+  ],
+  "suvi304": [
+   {
+    "archivo": "suvi304_00.jpg",
+    "ts_utc": "2026-11-14T23:16:00Z"
+   },
+   {
+    "archivo": "suvi304_01.jpg",
+    "ts_utc": "2026-11-14T23:48:00Z"
+   },
+   {
+    "archivo": "suvi304_02.jpg",
+    "ts_utc": "2026-11-15T00:20:00Z"
+   },
+   {
+    "archivo": "suvi304_03.jpg",
+    "ts_utc": "2026-11-15T00:52:00Z"
+   },
+   {
+    "archivo": "suvi304_04.jpg",
+    "ts_utc": "2026-11-15T01:24:00Z"
+   },
+   {
+    "archivo": "suvi304_05.jpg",
+    "ts_utc": "2026-11-15T01:56:00Z"
+   },
+   {
+    "archivo": "suvi304_06.jpg",
+    "ts_utc": "2026-11-15T02:28:00Z"
+   },
+   {
+    "archivo": "suvi304_07.jpg",
+    "ts_utc": "2026-11-15T03:00:00Z"
+   },
+   {
+    "archivo": "suvi304_08.jpg",
+    "ts_utc": "2026-11-15T03:32:00Z"
+   },
+   {
+    "archivo": "suvi304_09.jpg",
+    "ts_utc": "2026-11-15T04:04:00Z"
+   },
+   {
+    "archivo": "suvi304_10.jpg",
+    "ts_utc": "2026-11-15T04:36:00Z"
+   },
+   {
+    "archivo": "suvi304_11.jpg",
+    "ts_utc": "2026-11-15T05:08:00Z"
+   },
+   {
+    "archivo": "suvi304_12.jpg",
+    "ts_utc": "2026-11-15T05:40:00Z"
+   },
+   {
+    "archivo": "suvi304_13.jpg",
+    "ts_utc": "2026-11-15T06:12:00Z"
+   },
+   {
+    "archivo": "suvi304_14.jpg",
+    "ts_utc": "2026-11-15T06:44:00Z"
+   },
+   {
+    "archivo": "suvi304_15.jpg",
+    "ts_utc": "2026-11-15T07:16:00Z"
+   },
+   {
+    "archivo": "suvi304_16.jpg",
+    "ts_utc": "2026-11-15T07:48:00Z"
+   },
+   {
+    "archivo": "suvi304_17.jpg",
+    "ts_utc": "2026-11-15T08:20:00Z"
+   },
+   {
+    "archivo": "suvi304_18.jpg",
+    "ts_utc": "2026-11-15T08:52:00Z"
+   },
+   {
+    "archivo": "suvi304_19.jpg",
+    "ts_utc": "2026-11-15T09:24:00Z"
+   },
+   {
+    "archivo": "suvi304_20.jpg",
+    "ts_utc": "2026-11-15T09:56:00Z"
+   },
+   {
+    "archivo": "suvi304_21.jpg",
+    "ts_utc": "2026-11-15T10:28:00Z"
+   },
+   {
+    "archivo": "suvi304_22.jpg",
+    "ts_utc": "2026-11-15T11:00:00Z"
+   },
+   {
+    "archivo": "suvi304_23.jpg",
+    "ts_utc": "2026-11-15T11:32:00Z"
+   },
+   {
+    "archivo": "suvi304_24.jpg",
+    "ts_utc": "2026-11-15T12:04:00Z"
+   },
+   {
+    "archivo": "suvi304_25.jpg",
+    "ts_utc": "2026-11-15T12:36:00Z"
+   },
+   {
+    "archivo": "suvi304_26.jpg",
+    "ts_utc": "2026-11-15T13:08:00Z"
+   },
+   {
+    "archivo": "suvi304_27.jpg",
+    "ts_utc": "2026-11-15T13:40:00Z"
+   },
+   {
+    "archivo": "suvi304_28.jpg",
+    "ts_utc": "2026-11-15T14:12:00Z"
+   },
+   {
+    "archivo": "suvi304_29.jpg",
+    "ts_utc": "2026-11-15T14:44:00Z"
+   },
+   {
+    "archivo": "suvi304_30.jpg",
+    "ts_utc": "2026-11-15T15:16:00Z"
+   },
+   {
+    "archivo": "suvi304_31.jpg",
+    "ts_utc": "2026-11-15T15:48:00Z"
+   },
+   {
+    "archivo": "suvi304_32.jpg",
+    "ts_utc": "2026-11-15T16:20:00Z"
+   },
+   {
+    "archivo": "suvi304_33.jpg",
+    "ts_utc": "2026-11-15T16:52:00Z"
+   },
+   {
+    "archivo": "suvi304_34.jpg",
+    "ts_utc": "2026-11-15T17:24:00Z"
+   },
+   {
+    "archivo": "suvi304_35.jpg",
+    "ts_utc": "2026-11-15T17:56:00Z"
+   },
+   {
+    "archivo": "suvi304_36.jpg",
+    "ts_utc": "2026-11-15T18:28:00Z"
+   },
+   {
+    "archivo": "suvi304_37.jpg",
+    "ts_utc": "2026-11-15T19:00:00Z"
+   },
+   {
+    "archivo": "suvi304_38.jpg",
+    "ts_utc": "2026-11-15T19:32:00Z"
+   },
+   {
+    "archivo": "suvi304_39.jpg",
+    "ts_utc": "2026-11-15T20:04:00Z"
+   },
+   {
+    "archivo": "suvi304_40.jpg",
+    "ts_utc": "2026-11-15T20:36:00Z"
+   },
+   {
+    "archivo": "suvi304_41.jpg",
+    "ts_utc": "2026-11-15T21:08:00Z"
+   },
+   {
+    "archivo": "suvi304_42.jpg",
+    "ts_utc": "2026-11-15T21:40:00Z"
+   },
+   {
+    "archivo": "suvi304_43.jpg",
+    "ts_utc": "2026-11-15T22:12:00Z"
+   },
+   {
+    "archivo": "suvi304_44.jpg",
+    "ts_utc": "2026-11-15T22:44:00Z"
+   }
+  ],
+  "lasco": [
+   {
+    "archivo": "lasco_00.jpg",
+    "ts_utc": "2026-11-14T23:36:00Z"
+   },
+   {
+    "archivo": "lasco_01.jpg",
+    "ts_utc": "2026-11-15T00:12:00Z"
+   },
+   {
+    "archivo": "lasco_02.jpg",
+    "ts_utc": "2026-11-15T00:48:00Z"
+   },
+   {
+    "archivo": "lasco_03.jpg",
+    "ts_utc": "2026-11-15T01:48:00Z"
+   },
+   {
+    "archivo": "lasco_04.jpg",
+    "ts_utc": "2026-11-15T02:24:00Z"
+   },
+   {
+    "archivo": "lasco_05.jpg",
+    "ts_utc": "2026-11-15T03:00:00Z"
+   },
+   {
+    "archivo": "lasco_06.jpg",
+    "ts_utc": "2026-11-15T03:36:00Z"
+   },
+   {
+    "archivo": "lasco_07.jpg",
+    "ts_utc": "2026-11-15T04:12:00Z"
+   },
+   {
+    "archivo": "lasco_08.jpg",
+    "ts_utc": "2026-11-15T04:48:00Z"
+   },
+   {
+    "archivo": "lasco_09.jpg",
+    "ts_utc": "2026-11-15T05:24:00Z"
+   },
+   {
+    "archivo": "lasco_10.jpg",
+    "ts_utc": "2026-11-15T06:24:00Z"
+   },
+   {
+    "archivo": "lasco_11.jpg",
+    "ts_utc": "2026-11-15T07:00:00Z"
+   },
+   {
+    "archivo": "lasco_12.jpg",
+    "ts_utc": "2026-11-15T07:48:00Z"
+   },
+   {
+    "archivo": "lasco_13.jpg",
+    "ts_utc": "2026-11-15T08:24:00Z"
+   },
+   {
+    "archivo": "lasco_14.jpg",
+    "ts_utc": "2026-11-15T09:00:00Z"
+   },
+   {
+    "archivo": "lasco_15.jpg",
+    "ts_utc": "2026-11-15T09:36:00Z"
+   },
+   {
+    "archivo": "lasco_16.jpg",
+    "ts_utc": "2026-11-15T11:01:00Z"
+   },
+   {
+    "archivo": "lasco_17.jpg",
+    "ts_utc": "2026-11-15T11:36:00Z"
+   },
+   {
+    "archivo": "lasco_18.jpg",
+    "ts_utc": "2026-11-15T12:12:00Z"
+   },
+   {
+    "archivo": "lasco_19.jpg",
+    "ts_utc": "2026-11-15T12:48:00Z"
+   },
+   {
+    "archivo": "lasco_20.jpg",
+    "ts_utc": "2026-11-15T13:48:00Z"
+   },
+   {
+    "archivo": "lasco_21.jpg",
+    "ts_utc": "2026-11-15T14:24:00Z"
+   },
+   {
+    "archivo": "lasco_22.jpg",
+    "ts_utc": "2026-11-15T15:12:00Z"
+   },
+   {
+    "archivo": "lasco_23.jpg",
+    "ts_utc": "2026-11-15T15:48:00Z"
+   },
+   {
+    "archivo": "lasco_24.jpg",
+    "ts_utc": "2026-11-15T16:24:00Z"
+   },
+   {
+    "archivo": "lasco_25.jpg",
+    "ts_utc": "2026-11-15T17:00:00Z"
+   },
+   {
+    "archivo": "lasco_26.jpg",
+    "ts_utc": "2026-11-15T17:36:00Z"
+   },
+   {
+    "archivo": "lasco_27.jpg",
+    "ts_utc": "2026-11-15T18:12:00Z"
+   },
+   {
+    "archivo": "lasco_28.jpg",
+    "ts_utc": "2026-11-15T18:48:00Z"
+   },
+   {
+    "archivo": "lasco_29.jpg",
+    "ts_utc": "2026-11-15T19:24:00Z"
+   },
+   {
+    "archivo": "lasco_30.jpg",
+    "ts_utc": "2026-11-15T20:00:00Z"
+   },
+   {
+    "archivo": "lasco_31.jpg",
+    "ts_utc": "2026-11-15T20:36:00Z"
+   },
+   {
+    "archivo": "lasco_32.jpg",
+    "ts_utc": "2026-11-15T21:12:00Z"
+   },
+   {
+    "archivo": "lasco_33.jpg",
+    "ts_utc": "2026-11-15T21:48:00Z"
+   }
+  ]
+ }
+}

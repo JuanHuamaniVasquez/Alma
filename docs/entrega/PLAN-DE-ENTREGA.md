@@ -12,6 +12,8 @@ cd web && pnpm install && pnpm build && pnpm start                              
 ```
 Detalles y ruta de 4 minutos: `docs/submit/ruta-de-demostracion.md`. Datos externos grandes están en `data/externos/` (gitignored): se re-descargan con los scripts de `scripts/` (fuentes S-01…S-30 en `docs/politica-de-datos.md`).
 
+> **De dónde sale cada dato, API y cita: [`FUENTES.md`](FUENTES.md)** (obligatorio consultarlo; no se inventan fuentes).
+
 ## 1 · Estrategia (mi recomendación): empezar por lo mejor, mostrar lo mejor
 
 Sí: **abre con lo más fuerte y no con la arquitectura.** El jurado decide en los primeros 20 s. El mensaje único que une todo:

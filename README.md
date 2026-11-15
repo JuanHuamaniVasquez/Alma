@@ -195,4 +195,4 @@ Every source, licence and simulated component: [`docs/politica-de-datos.md`](doc
 
 
 ## Team handoff
-Start with [`docs/entrega/PLAN-DE-ENTREGA.md`](docs/entrega/PLAN-DE-ENTREGA.md): ranking of the strongest results, video scripts (`docs/submit/video-guion.md`), IEEE LaTeX skeleton (`docs/informe/ieee/`), and the open work list.
+Sources and APIs: [`docs/entrega/FUENTES.md`](docs/entrega/FUENTES.md). Start with [`docs/entrega/PLAN-DE-ENTREGA.md`](docs/entrega/PLAN-DE-ENTREGA.md): ranking of the strongest results, video scripts (`docs/submit/video-guion.md`), IEEE LaTeX skeleton (`docs/informe/ieee/`), and the open work list.
