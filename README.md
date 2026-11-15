@@ -22,7 +22,7 @@ cd web && pnpm install && pnpm build && pnpm start    # http://localhost:3000 â€
 uv run pytest -q                                      # 385 tests
 cd web && pnpm e2e                                    # 15 real-click checks in headless Chrome (needs both servers running; writes nothing)
 ```
-Demo route and checklist: [`docs/submit/ruta-de-demostracion.md`](docs/submit/ruta-de-demostracion.md). ALMA's voice is pre-rendered (`scripts/voz_alma.py`, Kokoro-82M, local); see `.env.example` for `ALMA_VOICE`.
+Final checklist: [`docs/checklist-final.md`](docs/checklist-final.md). Demo route: [`docs/submit/ruta-de-demostracion.md`](docs/submit/ruta-de-demostracion.md). ALMA's voice is pre-rendered (`scripts/voz_alma.py`, Kokoro-82M, local); see `.env.example` for `ALMA_VOICE`.
 
 ## Reproduce the science
 Each experiment is an *act* ([`docs/actas/FB-xxx.md`](docs/actas/)) hashed with SHA-256 **before** its runner can execute; runners refuse to run on an altered act, on different data, or twice. Seeds are public (20261111â€“20261115). Numbers are in [`docs/actas/RESULTADOS.jsonl`](docs/actas/RESULTADOS.jsonl), readings in `docs/actas/NOTA-*.md`. A draft report is in [`docs/preprint/manuscript.md`](docs/preprint/manuscript.md) (negative results first).

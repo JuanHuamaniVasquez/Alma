@@ -68,7 +68,9 @@ await page.waitForFunction(() => { const b = [...document.querySelectorAll("butt
 await page.evaluate(() => [...document.querySelectorAll("button")].find((b) => b.textContent.trim() === "Send").click());
 await esperarTexto("Saved.", 8000);
 check("el ánimo se envía con valor 4 y duración medida > 0", enviado?.valor === 4 && enviado.duracion_respuesta_s > 0 && /^crew-[0-9a-f]{8}$/.test(enviado.persona_id), JSON.stringify(enviado));
+const hablo0 = (await page.evaluate(() => window.__audio)).length;
 await page.evaluate(() => document.querySelector('button[aria-label^="Heart rate"]').click());
+await page.waitForFunction((n) => window.__audio.length > n, { timeout: 15000 }, hablo0).then(() => check("tocar el marcador de frecuencia cardíaca hace hablar a ALMA", true), () => check("tocar el marcador de frecuencia cardíaca hace hablar a ALMA", false));
 await esperarTexto("people with a baseline", 8000);
 const t = await texto();
 check("el recibo de frecuencia cardíaca declara su límite conocido", t.toLowerCase().includes("known limit") && t.toLowerCase().includes("not astronauts"));
@@ -76,6 +78,12 @@ await clicTexto("button", "Glucose").catch(() => {});
 await page.evaluate(() => document.querySelector('button[aria-label^="Glucose"]').click());
 await esperarTexto("The absence is data", 8000);
 check("glucosa se declara bloqueada, no simulada", (await texto()).toLowerCase().includes("nothing is simulated"));
+
+// 3b · subtítulos: se pueden apagar y el texto sigue disponible para lectores de pantalla (sr-only)
+await clicTexto("button", "subtitles on");
+await page.waitForFunction(() => [...document.querySelectorAll("button")].some((b) => b.textContent.trim() === "subtitles off"), { timeout: 5000 });
+check("«subtitles off» oculta el texto a la vista pero lo deja en el DOM", await page.$eval("p[aria-live]", (e) => getComputedStyle(e).position === "absolute" && e.textContent.length > 0));
+await clicTexto("button", "subtitles off");
 
 // 4 · la demo kill
 await page.goto(`${BASE}/kill`, { waitUntil: "domcontentloaded" });
@@ -95,6 +103,12 @@ check("el escenario G3 se rotula UNIVERSO SIMULADO", (await texto()).includes("7
 await clicTexto("button", "back to live");
 await page.waitForFunction(() => !document.body.innerText.toLowerCase().includes("simulated universe — day"), { timeout: 8000 });
 check("volver a «live» quita el banner simulado", true);
+
+// 5b · La Bóveda: «verifícalo tú mismo» recalcula en el navegador el SHA-256 de cada acta
+await page.goto(`${BASE}/vault`, { waitUntil: "domcontentloaded" });
+await esperarTexto("Verify all", 30000);
+await clicTexto("button", "Verify all");
+await page.waitForFunction(() => { const m = document.body.innerText.match(/(\d+) of (\d+) recomputed hashes match/i); return m && m[1] === m[2] && Number(m[2]) >= 20; }, { timeout: 60000 }).then(() => check("las actas recalculadas en el navegador coinciden TODAS con su hash sellado", true), async () => check("las actas recalculadas en el navegador coinciden TODAS con su hash sellado", false, (await texto()).match(/\d+ of \d+ recomputed[^\n]*/i)?.[0] ?? "sin resultado"));
 
 // 6 · Fundición y cápsulas
 await page.goto(`${BASE}/foundry`, { waitUntil: "domcontentloaded" });

@@ -270,3 +270,18 @@ class Indicadores(SoloLectura):
                         "mde_sigma_mediana": mdes[len(mdes) // 2] if mdes else None, "unidad": rv[0].unidad if rv else None,
                         "potencia_declarada": next((r.potencia_declarada for r in rv if r.potencia_declarada is not None), None), "banner": Banner.REAL.value, "fuente": "LifeSnaps (Zenodo 7229547): everyday people, not astronauts"})
         return Response({"banner": Banner.REAL.value, "indicadores": out})
+
+
+class ActaArchivo(SoloLectura):
+    """Los BYTES EXACTOS del acta preregistrada, para que cualquiera recalcule su SHA-256 (en el navegador) y lo compare con el hash sellado."""
+
+    def get(self, request, acta: str):
+        import re
+
+        from django.http import HttpResponse
+        if not re.fullmatch(r"FB-[0-9A-Za-z]+(?:-[0-9A-Za-z]+)*", acta):
+            raise Http404("id de acta inválido")
+        ruta = Path(settings.RAIZ) / "docs/actas" / f"{acta}.md"
+        if not ruta.is_file():
+            raise Http404("no existe esa acta")
+        return HttpResponse(ruta.read_bytes(), content_type="text/markdown; charset=utf-8")

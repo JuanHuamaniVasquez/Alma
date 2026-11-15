@@ -32,7 +32,15 @@ def lineas() -> list:
     base = narrador.todas(demo=g("/api/demo-kill/"), fund=g("/api/fundicion/"), storm=g("/api/tormenta/"), act=g("/api/actas/"), resid=g("/api/residuo/"), ind=g("/api/indicadores/"))
     dias = (g("/api/libro/dias/") or {}).get("dias", [])
     esc = [narrador.escenario(x) for x in (g(f"/api/tormenta/escenario/{e}/") for e in ("G1", "G2", "G3", "G4", "G5")) if x]
-    return base + esc + [narrador.libro_del_dia(d) for d in (g(f"/api/libro/dia/{n}/") for n in dias) if d]
+    libros = [d for d in (g(f"/api/libro/dia/{n}/") for n in dias) if d]
+    anillos = []
+    for d in libros:                                   # un anillo con libro habla por día; los que no tienen libro, una sola vez
+        for pres in ("aire", "agua", "energia", "dosis", "ritmo", "carga", "inmunidad", "conducta", "tiempo"):
+            ln = next((h for h in d["habitat"] if h["presupuesto_id"] == pres), None)
+            if ln is not None or not any(a.clave == f"ring-{pres}" for a in anillos):
+                anillos.append(narrador.presupuesto(d["dia_habitat"], pres, ln, d["banner"]))
+    inds = (g("/api/indicadores/") or {}).get("indicadores", [])
+    return base + esc + [narrador.libro_del_dia(d) for d in libros] + anillos + [narrador.indicador(i) for i in inds] + [narrador.astronauta()]
 
 
 def main() -> int:

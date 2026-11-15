@@ -77,3 +77,16 @@ def test_indicadores_con_canal_de_animo_lo_cuenta_aparte_y_no_lo_da_por_vacio():
     assert "Mood is a self-report channel with 3 reports" in con.texto and "other three stay empty" in con.texto
     sin = n.indicadores({"banner": "REAL", "indicadores": base + [{"indicador": "ánimo", "bloqueado": None, "canal": "autorreporte", "reportes": 0}]})
     assert "no reports yet; I will not invent any" in sin.texto
+
+
+def test_frases_de_anillos_indicadores_y_astronauta_solo_dicen_lo_que_hay():
+    ln = {"emision_esperada": 3.56, "emision_observada": 4.011, "residuo_contable": 0.451, "incertidumbre_del_manifiesto": 0.2, "cierra": False}
+    a = n.presupuesto(11, "aire", ln, "SIMULADO")
+    assert a.clave == "ring-aire-11" and "does not close" in a.texto and "question, not a verdict" in a.texto and numeros(a.texto) == {11, 3.56, 4.01, 0.451, 0.4}
+    vacio = n.presupuesto(14, "energia", None, "SIMULADO")
+    assert vacio.clave == "ring-energia" and "nothing is simulated" in vacio.texto and not numeros(vacio.texto)
+    fc = n.indicador({"indicador": "fc", "bloqueado": None, "personas_con_linea_base": 68, "verde": 58, "alarma": 8, "mde_sigma_mediana": 1.75, "potencia_declarada": 0.9})
+    assert numeros(fc.texto) == {58, 68, 8, 1.75, 90} and "Known limit" in fc.texto
+    assert "no data" in n.indicador({"indicador": "glucosa", "bloqueado": "x"}).texto and not numeros(n.indicador({"indicador": "glucosa", "bloqueado": "x"}).texto)
+    assert "Mood" in n.indicador({"indicador": "ánimo", "bloqueado": None, "canal": "autorreporte", "reportes": 5}).texto
+    assert "not a real person" in n.astronauta().texto

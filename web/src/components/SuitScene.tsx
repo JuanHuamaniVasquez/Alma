@@ -19,7 +19,7 @@ const BODY_ANCHORS: Record<string, [number, number, number]> = {
 };
 
 /** Traje NASA Z-2 (NASA 3D Resources, sin copyright). Visor oscuro y sin cara: la persona es el cuerpo, nunca un avatar. */
-function Suit({ marks, mode }: { marks: Marks; mode: "books" | "body" }) {
+function Suit({ marks, mode, onTap }: { marks: Marks; mode: "books" | "body"; onTap: () => void }) {
   const anchors = useRef<Record<string, THREE.Object3D | null>>({});
   const v = useMemo(() => new THREE.Vector3(), []);
   const { size } = useThree();
@@ -53,7 +53,7 @@ function Suit({ marks, mode }: { marks: Marks; mode: "books" | "body" }) {
     }
   });
   return (
-    <group ref={ref}>
+    <group ref={ref} onClick={(e) => { e.stopPropagation(); onTap(); }} onPointerOver={() => { document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = ""; }}>
       <primitive object={model} />
       {Object.entries(BODY_ANCHORS).map(([id, p]) => <object3D key={id} ref={(o) => { anchors.current[id] = o; }} position={p} />)}
     </group>
@@ -107,8 +107,8 @@ function Ring({ i, id, state, onPick, active, labels }: { i: number; id: string;
   );
 }
 
-export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd }: {
-  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void;
+export default function SuitScene({ ledger, picked, onPick, mode, indicators, pickedInd, onPickInd, onTapSuit }: {
+  ledger: LedgerDay | null; picked: string | null; onPick: (id: string) => void; mode: "books" | "body"; indicators: Indicator[]; pickedInd: string | null; onPickInd: (id: string) => void; onTapSuit: () => void;
 }) {
   const labels: Labels = useRef({});
   const marks: Marks = useRef({});
@@ -124,7 +124,7 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
         <directionalLight position={[-3, 2, -2.5]} intensity={1.5} color="#d9dde0" />
         <pointLight position={[0, 0.2, 1.6]} intensity={0.8} color="#ffb47a" distance={4} />
         <Rig />
-        <Suspense fallback={null}><Suit marks={marks} mode={mode} /></Suspense>
+        <Suspense fallback={null}><Suit marks={marks} mode={mode} onTap={onTapSuit} /></Suspense>
         <ContactShadows position={[0, 0, 0]} opacity={0.7} scale={4} blur={2.4} far={1.6} />
         {mode === "books" && BUDGETS.map(([id], i) => <Ring key={id} i={i} id={id} state={stateOf(id)} onPick={onPick} active={picked === id} labels={labels} />)}
       </Canvas>

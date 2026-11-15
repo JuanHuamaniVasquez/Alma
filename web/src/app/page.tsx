@@ -38,11 +38,17 @@ export default function MedicalModule() {
   useEffect(() => { setPicked(null); setPickedInd(null); }, [mode]);                       // al cambiar de modo se cierran los recibos; NO al cargar la voz
   useEffect(() => { if (mode === "body" && has("indicadores")) say("indicadores"); }, [mode, has("indicadores")]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const pickRing = (id: string) => {                      // tocar un anillo: recibo + ALMA lo explica (con libro: por día; sin libro: una sola frase)
+    setPicked(id);
+    const k = ledger?.habitat.some((h) => h.presupuesto_id === id) ? `ring-${id}-${day}` : `ring-${id}`;
+    if (has(k)) say(k, true);
+  };
+  const pickInd = (id: string) => { setPickedInd(id); if (has(`ind-${id}`)) say(`ind-${id}`, true); };
   const label = BUDGETS.find(([id]) => id === picked)?.[1] ?? "";
   const line = ledger?.habitat.find((h) => h.presupuesto_id === picked) ?? null;
   return (
     <div className="absolute inset-0" style={{ background: "radial-gradient(60% 70% at 50% 42%, #2a2018 0%, #14110e 55%, #0d0c0b 100%)" }}>
-      <SuitScene ledger={ledger} picked={picked} onPick={setPicked} mode={mode} indicators={inds} pickedInd={pickedInd} onPickInd={setPickedInd} />
+      <SuitScene ledger={ledger} picked={picked} onPick={pickRing} mode={mode} indicators={inds} pickedInd={pickedInd} onPickInd={pickInd} onTapSuit={() => { if (has("suit")) say("suit", true); }} />
       <div role="tablist" aria-label="View" className="absolute left-1/2 top-5 z-20 flex -translate-x-1/2 gap-6 font-mono text-[11px] uppercase tracking-[0.22em]">
         {([["books", "Books"], ["body", "Body"]] as const).map(([m, t]) => (
           <button key={m} role="tab" aria-selected={mode === m} onClick={() => setMode(m)} className={`border-b pb-1 transition-colors ${mode === m ? "border-ink text-ink" : "border-transparent text-ink-faint hover:text-ink-dim"}`}>{t}</button>

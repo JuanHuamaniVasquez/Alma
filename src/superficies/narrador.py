@@ -136,3 +136,45 @@ def indicadores(d: dict) -> Linea:
                   if animo["reportes"] else "Mood is a self-report channel with no reports yet; I will not invent any. ")
     texto += f"The other {_NUM[len(vacios)]} stay empty on purpose: nothing is simulated. This is everyday people, not astronauts."
     return Linea("indicadores", texto, "/api/indicadores · DC-14 · LifeSnaps", d["banner"])
+
+
+_PRES = {"aire": "Air", "agua": "Water", "energia": "Energy", "dosis": "Dose", "ritmo": "Rhythm", "carga": "Load", "inmunidad": "Immunity",
+         "conducta": "Conduct", "tiempo": "Time"}
+
+
+def presupuesto(dia: int, pres: str, linea: dict | None, banner: str) -> Linea:
+    """Lo que ALMA dice al tocar un anillo: la cuenta del libro de ese día, o la ausencia (no hay ancla real, no se simula)."""
+    nombre = _PRES[pres]
+    if linea is None:
+        return Linea(f"ring-{pres}", f"{nombre}: no ledger. No public anchor exists for this book yet, so nothing is simulated. The absence is data.",
+                     "/api/libro · DC-04", "SIMULADO")
+    res, piso = linea["residuo_contable"], 2 * linea["incertidumbre_del_manifiesto"]
+    if linea["cierra"]:
+        cierre = "The book closes, inside its stated uncertainty."
+    else:
+        cierre = "The book does not close. That is a question, not a verdict."
+    texto = (f"{nombre}, day {dia}. The manifest expected {linea['emision_esperada']:.2f} kilograms and {linea['emision_observada']:.2f} were observed. "
+             f"The residual is {abs(res):.3f} kilograms {'above' if res >= 0 else 'below'} the plan, against a blind floor of {piso:.2f}. {cierre}")
+    return Linea(f"ring-{pres}-{dia}", texto, f"/api/libro/dia/{dia} · DC-04", banner)
+
+
+def indicador(i: dict) -> Linea:
+    """Lo que ALMA dice al tocar un marcador del cuerpo. Bloqueado = lo dice; con datos = cuenta de estados; ánimo = cómo funciona (sin cifras)."""
+    nom = _NOM[i["indicador"]]
+    clave = f"ind-{i['indicador']}"
+    if i.get("canal") == "autorreporte":
+        return Linea(clave, "Mood is a self-report channel: three touches, and I also record how long you took to answer. It has no detector yet, so its dot stays neutral.",
+                     "/api/indicadores · DC-02", "REAL")
+    if i["bloqueado"]:
+        return Linea(clave, f"{nom.capitalize()}: no data. There is no verified sensor uncertainty for this indicator, so nothing is simulated. The absence is data.",
+                     "/api/indicadores · política de datos", "REAL")
+    texto = (f"{nom.capitalize()}: {i['verde']} of {i['personas_con_linea_base']} people with a personal baseline have a green with a receipt, {i['alarma']} an alarm. "
+             f"A green means it could have seen a drop of {i['mde_sigma_mediana']} sigma with {round(i['potencia_declarada'] * 100)} percent power, and nothing more.")
+    if i["indicador"] == "fc":
+        texto += " Known limit: daily pulse is autocorrelated, so treat an alarm as a question."
+    return Linea(clave, texto, "/api/indicadores · DC-14 · LifeSnaps", "REAL")
+
+
+def astronauta() -> Linea:
+    return Linea("suit", "This is a NASA Z-2 prototype suit, not a real person. The rings are the ship's nine books; the Body view shows the six official indicators. "
+                         "Touch a ring or a dot and I will explain it.", "NASA 3D Resources · Z-2", "REAL")

@@ -202,3 +202,16 @@ def test_animo_valida_con_dc02_guarda_agrega_sin_ids_y_limita_el_ritmo():
     assert ani["bloqueado"] is None and ani["reportes"] == 1 and ani["distribucion"]["4"] == 1 and ani["duracion_mediana_s"] == 2.7
     assert "crew-ab12cd34" not in r.content.decode()                                                      # el pseudónimo no sale
     assert c.get("/api/animo/").status_code == 405                                                        # solo se escribe, no se lee
+
+
+# --- «verifícalo tú mismo»: los bytes del acta sirven para recomputar el hash sellado ---------------------------------
+def test_cada_acta_servida_hashea_a_su_hash_sellado_y_no_hay_path_traversal():
+    import hashlib
+    indice = [json.loads(l) for l in (RAIZ / "docs/actas/INDEX.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+    assert len(indice) >= 20
+    for a in indice:
+        r = get(f"/api/actas/{a['acta']}/archivo/")
+        assert r.status_code == 200 and hashlib.sha256(r.content).hexdigest() == a["hash_sha256"], a["acta"]   # el servidor no altera ni un byte
+    for malo in ("..%2F..%2F.env", "FB-005%2F..%2F..%2FREADME", "x", "FB-"):
+        assert get(f"/api/actas/{malo}/archivo/").status_code == 404, malo
+    assert APIClient().post("/api/actas/FB-005/archivo/", {}).status_code == 405
