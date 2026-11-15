@@ -162,3 +162,66 @@ def estimar_phi(series: dict[str, list[tuple[date, float]]], *, filtro_personas:
     """φ poblacional: media de la autocorrelación lag-1 de las unidades de 28 días de las personas elegidas, acotada a ±PHI_MAX."""
     ac = [lag1([v for _, v in b + m]) for p, serie in series.items() if filtro_personas(p) for b, m in unidades(serie)]
     return max(-PHI_MAX, min(PHI_MAX, statistics.fmean(ac))) if ac else 0.0
+
+
+# --- M2.10 / FB-011: contraste del recibo de verde en datos reales --------------------------------------
+MS_FB011 = (14, 10, 7)
+ALFA_H1 = 0.05 / 3  # Bonferroni sobre los tres m
+
+
+def cola_baja(k: int, n: int, p: float) -> float:
+    """P(X ≤ k) para X ~ Binomial(n, p), exacta."""
+    return sum(math.comb(n, i) * p ** i * (1 - p) ** (n - i) for i in range(0, k + 1))
+
+
+def k_critico_potencia(n: int, p: float = 0.90, alfa: float = ALFA_H1) -> int:
+    """Mayor k con P(X ≤ k | n, p) ≤ alfa: con ≤ k detecciones se REFUTA «potencia ≥ p» (regla de H1 de FB-011)."""
+    return max((k for k in range(n + 1) if cola_baja(k, n, p) <= alfa), default=-1)
+
+
+def submuestras(n_unidades: int, semilla: int = 20261113) -> list[dict[int, list[int]]]:
+    """Índices de los días de monitoreo que se conservan, EN EL ORDEN fijado por el acta FB-011:
+    un único generador; por unidad, primero m=10 y luego m=7; m=14 usa todos."""
+    rng = random.Random(semilla)
+    out = []
+    for _ in range(n_unidades):
+        i10 = sorted(rng.sample(range(14), 10))
+        i7 = sorted(rng.sample(range(14), 7))
+        out.append({14: list(range(14)), 10: i10, 7: i7})
+    return out
+
+
+def evaluar_verde(series: dict[str, list[tuple[date, float]]], indicador: Indicador, sigma_sensor: float, *,
+                  h: float = H_FB009, ms: Sequence[int] = MS_FB011) -> dict:
+    from .potencia import mde_sigma  # evita ciclo de importación al cargar el paquete
+    ordenadas = [(p, u) for p in sorted(series) for u in unidades(series[p])]
+    cortes = submuestras(len(ordenadas))
+    por_m = {}
+    for m in ms:
+        mde = mde_sigma(m)
+        det = ctrl = 0
+        fisicos = []
+        for (p, (base, mon)), idx in zip(ordenadas, cortes):
+            sub = [mon[i] for i in idx[m]]
+            r = ejecutar_unidad(p, indicador, sigma_sensor, base, sub, h, delta=mde)
+            rc = ejecutar_unidad(p, indicador, sigma_sensor, base, sub, h, delta=mde / 2)
+            det += bool(r.alarma and r.sentido == "caída")
+            ctrl += bool(rc.alarma and rc.sentido == "caída")
+            fisicos.append(mde * r.sigma_efectiva)
+        n = len(ordenadas)
+        por_m[str(m)] = {"mde_sigma": mde, "n": n, "detecciones": det, "tasa": det / n if n else 0.0, "wilson95": wilson(det, n),
+                         "control_detecciones": ctrl, "control_tasa": ctrl / n if n else 0.0,
+                         "mediana_mde_fisico": statistics.median(fisicos) if fisicos else None,
+                         "k_critico_H1": k_critico_potencia(n) if n else None}
+    return {"indicador": indicador.value, "n_unidades": len(ordenadas), "por_m": por_m}
+
+
+def veredictos_verde(sueno: dict, pulso: dict) -> dict:
+    """Aplica las reglas de FB-011: H1 (sueño), H2 (control), H3 (predicción de fallo en pulso, m = 14)."""
+    ms = sueno["por_m"]
+    h1 = all(v["detecciones"] > v["k_critico_H1"] for v in ms.values())
+    h2 = all(v["control_tasa"] < 0.90 for v in ms.values())
+    p14 = pulso["por_m"]["14"]
+    return {"H1": "SOSTENIDA" if h1 else "REFUTADA", "H2": "CONTROL VÁLIDO" if h2 else "CONTROL INVÁLIDO",
+            "H3": "SOSTENIDA" if p14["tasa"] < 0.90 else "REFUTADA",
+            "H3_significativamente_menor": p14["detecciones"] <= k_critico_potencia(p14["n"], alfa=0.05)}

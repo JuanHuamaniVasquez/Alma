@@ -225,3 +225,97 @@ def test_fb010_el_resultado_de_pulso_se_reproduce_exactamente():
     assert phi == pytest.approx(r["resultados"]["fc"]["phi_estimado_en_entrenamiento"])
     nuevo = evaluar(por, Indicador.FC, sigma_de(IndicadorSensor.FC).sigma, personas=prueba, phi=phi)
     assert nuevo["M1"]["alarmas"] == r["resultados"]["fc"]["prueba_blanqueado"]["M1"]["alarmas"]
+
+
+# --- FB-011: el evaluador (sin tocar el dataset de la evaluación) --------------------------------------------
+def test_k_critico_de_h1_es_el_que_el_acta_declaro():
+    from src.motor.evaluacion import cola_baja, k_critico_potencia
+    assert k_critico_potencia(97) == 80 and k_critico_potencia(144) == 121
+    assert cola_baja(80, 97, 0.9) <= 0.05 / 3 < cola_baja(81, 97, 0.9)
+    assert k_critico_potencia(144, alfa=0.05) == 122
+    # la potencia de la prueba que el acta declaró: con potencia real 0.80 se refuta ≈77 % de las veces
+    assert cola_baja(80, 97, 0.80) == pytest.approx(0.77, abs=0.01)
+
+
+def test_el_submuestreo_respeta_el_orden_del_acta_un_generador_primero_m10_luego_m7():
+    from src.motor.evaluacion import submuestras
+    rng = random.Random(20261113)
+    esperado = [(sorted(rng.sample(range(14), 10)), sorted(rng.sample(range(14), 7))) for _ in range(5)]
+    got = submuestras(5)
+    assert [(g[10], g[7]) for g in got] == esperado and all(g[14] == list(range(14)) for g in got)
+    assert all(len(g[10]) == 10 and len(set(g[10])) == 10 and len(g[7]) == 7 for g in got)
+    assert submuestras(5) == got  # determinista
+
+
+def test_evaluar_verde_sobre_el_extracto_real_tiene_la_estructura_del_acta():
+    from src.motor.evaluacion import evaluar_verde
+    regs = [r for r in cargar(EXTRACTO).registros if r.indicador is IndicadorSensor.SUENO and r.calidad is CalidadDato.OK]
+    res = evaluar_verde({"p-real": [(r.ts_utc.date(), r.valor) for r in regs]}, Indicador.SUENO, sigma_de(IndicadorSensor.SUENO).sigma)
+    assert res["n_unidades"] == 3 and set(res["por_m"]) == {"14", "10", "7"}
+    assert [res["por_m"][m]["mde_sigma"] for m in ("14", "10", "7")] == [1.75, 2.25, 2.75]
+    for v in res["por_m"].values():
+        assert v["control_detecciones"] <= v["detecciones"] + 3 and 0 <= v["tasa"] <= 1 and v["mediana_mde_fisico"] > 0
+    assert evaluar_verde({"x": []}, Indicador.SUENO, 1.0)["n_unidades"] == 0
+
+
+def test_los_veredictos_de_fb011_siguen_las_reglas_del_acta():
+    from src.motor.evaluacion import veredictos_verde
+
+    def r(det, ctrl, n=97):
+        return {"por_m": {m: {"detecciones": det, "control_tasa": ctrl, "k_critico_H1": 80, "n": n, "tasa": det / n} for m in ("14", "10", "7")}}
+    ok = veredictos_verde(r(95, 0.3), r(120, 0.3, 144))
+    assert ok == {"H1": "SOSTENIDA", "H2": "CONTROL VÁLIDO", "H3": "SOSTENIDA", "H3_significativamente_menor": True}
+    mal = veredictos_verde(r(80, 0.95), r(140, 0.3, 144))
+    assert mal["H1"] == "REFUTADA" and mal["H2"] == "CONTROL INVÁLIDO" and mal["H3"] == "REFUTADA"
+
+
+# --- FB-011: el resultado REGISTRADO ----------------------------------------------------------------------
+def _registro_fb011():
+    lineas = (RAIZ / "docs" / "actas" / "RESULTADOS.jsonl").read_text(encoding="utf-8").splitlines()
+    return [json.loads(l) for l in lineas if l and json.loads(l)["acta"] == "FB-011"]
+
+
+def test_fb011_una_sola_ejecucion_tras_registrar_con_el_csv_y_la_tabla_preregistrados():
+    (r,) = _registro_fb011()
+    texto = (RAIZ / "docs" / "actas" / "FB-011.md").read_text(encoding="utf-8")
+    assert r["hash_acta"] == hash_acta(RAIZ / "docs" / "actas" / "FB-011.md")
+    reg = datetime.strptime(r["acta_registrada_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    eje = datetime.strptime(r["ts_ejecucion_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+    assert reg < eje and r["csv_sha256"] in texto and r["tabla_sha256"] in texto and r["semillas"] == [20261113]
+
+
+def test_fb011_unidades_y_umbrales_son_los_que_el_acta_declaro_antes_de_correr():
+    (r,) = _registro_fb011()
+    assert (r["sueno"]["n_unidades"], r["pulso"]["n_unidades"]) == (97, 144)
+    assert [v["k_critico_H1"] for v in r["sueno"]["por_m"].values()] == [80, 80, 80]
+    assert [r["sueno"]["por_m"][m]["mde_sigma"] for m in ("14", "10", "7")] == [1.75, 2.25, 2.75]
+
+
+def test_fb011_los_veredictos_salen_de_las_reglas_y_la_prediccion_propia_fue_refutada():
+    from src.motor.evaluacion import veredictos_verde
+    (r,) = _registro_fb011()
+    assert veredictos_verde(r["sueno"], r["pulso"]) == r["veredictos"]
+    assert r["veredictos"]["H1"] == "SOSTENIDA" and r["veredictos"]["H2"] == "CONTROL VÁLIDO"
+    # HECHO REGISTRADO: la predicción preregistrada de fallo en pulso (potencia < 0,90) resultó REFUTADA
+    assert r["veredictos"]["H3"] == "REFUTADA" and r["pulso"]["por_m"]["14"]["tasa"] >= 0.90
+
+
+def test_fb011_el_control_negativo_puede_fallar_y_la_cobertura_no_hunde_la_potencia_declarada():
+    (r,) = _registro_fb011()
+    for v in r["sueno"]["por_m"].values():
+        assert v["control_tasa"] < 0.5 < v["tasa"]  # con la mitad del MDE casi no detecta; con el MDE casi siempre
+    assert all(v["detecciones"] > v["k_critico_H1"] for v in r["sueno"]["por_m"].values())
+
+
+@pytest.mark.skipif(not COMPLETO.exists(), reason="el dataset completo no está en este equipo")
+def test_fb011_el_resultado_de_sueno_se_reproduce_exactamente():
+    from src.motor.evaluacion import evaluar_verde
+    (r,) = _registro_fb011()
+    por = {}
+    for x in cargar(COMPLETO).registros:
+        if x.indicador is IndicadorSensor.SUENO and x.calidad is CalidadDato.OK:
+            por.setdefault(x.persona_id, []).append((x.ts_utc.date(), x.valor))
+    nuevo = evaluar_verde(por, Indicador.SUENO, sigma_de(IndicadorSensor.SUENO).sigma)
+    for m in ("14", "10", "7"):
+        assert nuevo["por_m"][m]["detecciones"] == r["sueno"]["por_m"][m]["detecciones"]
+        assert nuevo["por_m"][m]["control_detecciones"] == r["sueno"]["por_m"][m]["control_detecciones"]
