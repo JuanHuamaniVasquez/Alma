@@ -246,8 +246,14 @@ class Indicadores(SoloLectura):
         out = []
         for ind in Indicador:
             base = {"indicador": ind.value}
-            if ind is Indicador.ANIMO:
-                out.append({**base, "bloqueado": "No self-report channel yet (DC-02 needs real users); nothing is simulated."})
+            if ind is Indicador.ANIMO:      # canal de autorreporte (IN-2): solo agregado, sin ids; sin detector todavía (no hay color de estado)
+                from apps.ingesta.models import Autorreporte
+                rep = list(Autorreporte.objects.filter(tipo="ánimo", registro_ausencia=False))
+                dur = sorted(r.duracion_respuesta_s for r in rep)
+                out.append({**base, "bloqueado": None, "canal": "autorreporte", "reportes": len(rep), "personas": len({r.persona_id for r in rep}),
+                            "distribucion": {str(v): sum(1 for r in rep if r.valor == v) for v in range(1, 6)},
+                            "duracion_mediana_s": dur[len(dur) // 2] if dur else None, "escala": "Likert 1-5 (1 = very low, 5 = very good)",
+                            "banner": Banner.REAL.value, "fuente": "self-reported by people using this demo: not astronauts"})
                 continue
             try:
                 sigma_de(IndicadorSensor(ind.value))

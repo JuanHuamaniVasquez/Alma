@@ -27,7 +27,7 @@
 | M4 Fundición | 5 tarjetas DC-12, 1 detector circulado, Faro F-001, Adversario, cápsulas DC-07 | MP-15/M2.22 para el detector de varianza |
 | M5 Entrega | Checklist de honestidad ejecutable, borradores de formulario/video/ruta/preprint, revisión de literatura (PubMed+NTRS) | URLs, video, ensayo, IEEE/Scholar, revisión humana |
 
-Tests: **382 pytest verdes** (HEAD en `git log`). `sysmap check`: nada peor que la línea base.
+Tests: **385 pytest verdes** (HEAD en `git log`). `sysmap check`: nada peor que la línea base.
 
 ## 2 · Contratos de datos (DC-01…DC-14) — `src/contratos/`
 
@@ -36,7 +36,7 @@ Todos con schema y tests (`tests/test_contratos.py`, coherencia con DOC-01 en `t
 ## 3 · Capa 0 · Ingesta — `src/ingesta/`
 
 - [x] **IN-1** adaptadores reales: LifeSnaps (S-07), Zenodo 8018238 (S-13), Utah agua (S-12); series por persona en `series.py`.
-- [ ] **IN-2** autorreporte en 3 toques → DC-02 (necesita endpoint de captura; sin usuarios no hay dato real).
+- [ ] **IN-2** autorreporte de ánimo en 3 toques → DC-02: HECHO (`POST /api/animo/`, UI en el modo Body; sin detector aún).
 - [~] **IN-3** SWPC operativo (Kp, rayos X, alertas oficiales Kp ≥ 5; compuerta de admisión; archivo crudo con hash; persistido). Pendiente: DONKI, OSDR en vivo, plasma/campo magnético, programar la ingesta (hoy `manage.py ingestar_swpc`).
 - [x] **IN-4** banco de falsaciones (`src/motor/banco.py`, `scripts/banco.py`), adversario (`adversario.py`) y escenarios de tormenta (`escenarios.py`, X-14). Todo SIMULADO y etiquetado.
 

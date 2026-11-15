@@ -35,11 +35,11 @@
   "audio": "/voice/493cdc99f7863690.mp3"
  },
  "indicadores": {
-  "id": "65917ab0480fb984",
-  "texto": "Of the six official indicators, two have a verified sensor uncertainty. For heart rate: 58 of 68 people with a personal baseline have a green with a receipt, 8 an alarm, and 2 too few days to say; for sleep: 50 of 58 people with a personal baseline have a green with a receipt, 0 an alarm, and 8 too few days to say. The other four stay empty on purpose: nothing is simulated. This is everyday people, not astronauts.",
+  "id": "cd33af5667fc7ffe",
+  "texto": "Of the six official indicators, two have a verified sensor uncertainty. For heart rate: 58 of 68 people with a personal baseline have a green with a receipt, 8 an alarm, and 2 too few days to say; for sleep: 50 of 58 people with a personal baseline have a green with a receipt, 0 an alarm, and 8 too few days to say. Mood is a self-report channel with no reports yet; I will not invent any. The other three stay empty on purpose: nothing is simulated. This is everyday people, not astronauts.",
   "fuente": "/api/indicadores · DC-14 · LifeSnaps",
   "banner": "REAL",
-  "audio": "/voice/65917ab0480fb984.mp3"
+  "audio": "/voice/cd33af5667fc7ffe.mp3"
  },
  "escenario-G1": {
   "id": "47ef8b69ba9f8228",

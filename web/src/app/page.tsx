@@ -50,7 +50,7 @@ export default function MedicalModule() {
       <p className="pointer-events-none absolute left-6 top-6 max-w-xs font-mono text-[10px] uppercase leading-relaxed tracking-[0.2em] text-ink-faint">
         Crew member · NASA Z-2 prototype suit<br />model: NASA 3D Resources · not a real person
       </p>
-      {mode === "body" && pickedInd && <IndicatorSlip ind={inds.find((i) => i.indicador === pickedInd)} name={INDICATOR_NAMES[pickedInd]} onClose={() => setPickedInd(null)} />}
+      {mode === "body" && pickedInd && <IndicatorSlip ind={inds.find((i) => i.indicador === pickedInd)} name={INDICATOR_NAMES[pickedInd]} onClose={() => setPickedInd(null)} onSent={() => get<{ indicadores: Indicator[] }>("/api/indicadores/").then((d) => setInds(d?.indicadores ?? []))} />}
       {mode === "books" && picked && ledger && <Receipt line={line} label={label} day={ledger.dia_habitat} banner={ledger.banner} onClose={() => setPicked(null)} />}
       {mode === "books" && day != null && <DayTicks days={days} day={day} open={open} onPick={setDay} />}
       <AlmaDock room={mode === "body" ? "indicadores" : day != null ? `libro-${day}` : undefined} />

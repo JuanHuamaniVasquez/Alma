@@ -136,8 +136,9 @@ def test_indicadores_agregados_sin_ids_y_los_bloqueados_no_se_simulan():
     d = r.json()
     por = {i["indicador"]: i for i in d["indicadores"]}
     assert set(por) == {"presión", "fc", "glucosa", "temperatura", "sueño", "ánimo"} and d["banner"] == "REAL"
-    for k in ("presión", "glucosa", "temperatura", "ánimo"):
+    for k in ("presión", "glucosa", "temperatura"):
         assert por[k]["bloqueado"] and "nothing is simulated" in por[k]["bloqueado"] and "personas_con_linea_base" not in por[k]
+    assert por["ánimo"]["bloqueado"] is None and por["ánimo"]["canal"] == "autorreporte" and por["ánimo"]["reportes"] == 0   # canal abierto, sin reportes: no se inventa ninguno
     for k in ("fc", "sueño"):
         assert por[k]["bloqueado"] is None and por[k]["personas_con_linea_base"] == 1 and por[k]["fuente"].endswith("not astronauts")
         assert por[k]["verde"] + por[k]["sin_datos_suficientes"] + por[k]["alarma"] == 1
@@ -180,3 +181,24 @@ def test_ingestar_swpc_cada_repite_y_se_detiene_sin_red(monkeypatch):
     with pytest.raises(KeyboardInterrupt):
         call_command("ingestar_swpc", "kp", cada=7)
     assert llamadas == [7, 7] and IntentoIngesta.objects.filter(resultado="fallo").count() == 2   # 2 rondas completas antes de la interrupción; cada fallo es dato
+
+
+# --- IN-2: captura del ánimo en 3 toques (DC-02) ---------------------------------------------------------------------
+@pytest.mark.django_db
+def test_animo_valida_con_dc02_guarda_agrega_sin_ids_y_limita_el_ritmo():
+    from apps.ingesta.models import Autorreporte
+    c = APIClient()
+    ok = c.post("/api/animo/", {"persona_id": "crew-ab12cd34", "valor": 4, "duracion_respuesta_s": 2.7}, format="json")
+    assert ok.status_code == 201 and Autorreporte.objects.count() == 1
+    assert c.post("/api/animo/", {"persona_id": "crew-ab12cd34", "valor": 2, "duracion_respuesta_s": 1.0}, format="json").status_code == 429   # < 10 s
+    for malo in ({"persona_id": "crew-zz9yy8xx", "valor": 9, "duracion_respuesta_s": 1.0},           # fuera de la escala
+                 {"persona_id": "crew-zz9yy8xx", "valor": 3},                                           # sin duración medida: el contrato lo rechaza
+                 {"persona_id": "Juan Pérez!", "valor": 3, "duracion_respuesta_s": 1.0},               # no es un pseudónimo
+                 {"persona_id": "crew-zz9yy8xx", "valor": 3, "duracion_respuesta_s": -1.0}):
+        assert c.post("/api/animo/", malo, format="json").status_code == 400, malo
+    assert Autorreporte.objects.count() == 1
+    r = get("/api/indicadores/")
+    ani = next(i for i in r.json()["indicadores"] if i["indicador"] == "ánimo")
+    assert ani["bloqueado"] is None and ani["reportes"] == 1 and ani["distribucion"]["4"] == 1 and ani["duracion_mediana_s"] == 2.7
+    assert "crew-ab12cd34" not in r.content.decode()                                                      # el pseudónimo no sale
+    assert c.get("/api/animo/").status_code == 405                                                        # solo se escribe, no se lee

@@ -43,3 +43,10 @@ def a_dominio_intento(fila: IntentoIngesta) -> DC13Intento:
     return DC13Intento.model_validate(dict(
         intento_id=fila.intento_id, ts_utc=fila.ts_utc, fuente=fila.fuente, url=fila.url, resultado=fila.resultado,
         http_status=fila.http_status, hash_lectura_cruda=fila.hash_lectura_cruda, error=fila.error, banner=fila.banner))
+
+
+def guardar_autorreporte(r):
+    """Guarda un DC-02 ya validado (el contrato rechaza lo incoherente antes de llegar aquí)."""
+    from .models import Autorreporte
+    return Autorreporte.objects.create(persona_id=r.persona_id, ts_utc=r.ts_utc, banner=r.banner.value, tipo=r.tipo.value, escala=r.escala,
+                                       valor=r.valor, duracion_respuesta_s=r.duracion_respuesta_s, registro_ausencia=r.registro_ausencia)

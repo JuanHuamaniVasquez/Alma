@@ -67,3 +67,13 @@ def test_indicadores_dice_estados_y_lo_bloqueado_queda_vacio():
     assert numeros(l.texto) == {70, 50, 8, 12, 60, 40, 5, 15} and "nothing is simulated" in l.texto and "not astronauts" in l.texto
     assert "two have a verified" in l.texto and "other four stay empty" in l.texto and l.banner == "REAL"
     assert "absence" in n.indicadores({"banner": "REAL", "indicadores": [{"indicador": "fc", "bloqueado": None, "personas_con_linea_base": 0}]}).texto
+
+
+def test_indicadores_con_canal_de_animo_lo_cuenta_aparte_y_no_lo_da_por_vacio():
+    base = [{"indicador": "fc", "bloqueado": None, "personas_con_linea_base": 10, "verde": 9, "alarma": 1, "sin_datos_suficientes": 0},
+            {"indicador": "sueño", "bloqueado": None, "personas_con_linea_base": 10, "verde": 9, "alarma": 0, "sin_datos_suficientes": 1},
+            {"indicador": "presión", "bloqueado": "x"}, {"indicador": "glucosa", "bloqueado": "x"}, {"indicador": "temperatura", "bloqueado": "x"}]
+    con = n.indicadores({"banner": "REAL", "indicadores": base + [{"indicador": "ánimo", "bloqueado": None, "canal": "autorreporte", "reportes": 3}]})
+    assert "Mood is a self-report channel with 3 reports" in con.texto and "other three stay empty" in con.texto
+    sin = n.indicadores({"banner": "REAL", "indicadores": base + [{"indicador": "ánimo", "bloqueado": None, "canal": "autorreporte", "reportes": 0}]})
+    assert "no reports yet; I will not invent any" in sin.texto

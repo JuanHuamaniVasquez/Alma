@@ -65,5 +65,15 @@ export type Capsule = {
 export type Indicator = {
   indicador: string; bloqueado: string | null; personas_con_linea_base?: number; verde?: number; sin_datos_suficientes?: number; alarma?: number;
   cobertura_media?: number | null; mde_sigma_mediana?: number | null; unidad?: string | null; potencia_declarada?: number | null; banner?: Banner; fuente?: string;
+  canal?: string; reportes?: number; personas?: number; distribucion?: Record<string, number>; duracion_mediana_s?: number | null; escala?: string;
 };
 export const INDICATOR_NAMES: Record<string, string> = { fc: "Heart rate", "sueño": "Sleep", "presión": "Blood pressure", glucosa: "Glucose", temperatura: "Temperature", "ánimo": "Mood" };
+
+/** Pseudónimo de este navegador para el autorreporte (nunca un nombre). */
+export function crewId(): string {
+  try {
+    let id = localStorage.getItem("alma-crew-id");
+    if (!id) { id = "crew-" + Array.from(crypto.getRandomValues(new Uint8Array(4)), (b) => b.toString(16).padStart(2, "0")).join(""); localStorage.setItem("alma-crew-id", id); }
+    return id;
+  } catch { return "crew-" + Math.random().toString(16).slice(2, 10); }
+}

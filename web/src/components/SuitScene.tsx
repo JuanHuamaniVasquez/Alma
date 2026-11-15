@@ -1,7 +1,7 @@
 "use client";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ContactShadows, Line, useGLTF } from "@react-three/drei";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { ContactShadows, Line, useGLTF, useProgress } from "@react-three/drei";
+import { Suspense, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { BUDGETS, INDICATOR_NAMES, type Indicator, type LedgerDay } from "@/lib/api";
 
@@ -19,7 +19,7 @@ const BODY_ANCHORS: Record<string, [number, number, number]> = {
 };
 
 /** Traje NASA Z-2 (NASA 3D Resources, sin copyright). Visor oscuro y sin cara: la persona es el cuerpo, nunca un avatar. */
-function Suit({ marks, mode, onReady }: { marks: Marks; mode: "books" | "body"; onReady: () => void }) {
+function Suit({ marks, mode }: { marks: Marks; mode: "books" | "body" }) {
   const anchors = useRef<Record<string, THREE.Object3D | null>>({});
   const v = useMemo(() => new THREE.Vector3(), []);
   const { size } = useThree();
@@ -112,8 +112,9 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
 }) {
   const labels: Labels = useRef({});
   const marks: Marks = useRef({});
-  const [ready, setReady] = useState(false);
-  const indState = (i?: Indicator) => (!i || i.bloqueado ? "blocked" : (i.alarma ?? 0) > 0 ? "alarm" : "ok");
+  const { active, progress } = useProgress();
+  const ready = !active && progress >= 100;
+  const indState = (i?: Indicator) => (!i || i.bloqueado ? "blocked" : i.canal === "autorreporte" ? "channel" : (i.alarma ?? 0) > 0 ? "alarm" : "ok");
   const stateOf = (id: string): State => { const p = ledger?.presupuestos[id]; return !p ? "absent" : p.cierra ? "closes" : "open"; };
   return (
     <div className="absolute inset-0">
@@ -123,7 +124,7 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
         <directionalLight position={[-3, 2, -2.5]} intensity={1.5} color="#d9dde0" />
         <pointLight position={[0, 0.2, 1.6]} intensity={0.8} color="#ffb47a" distance={4} />
         <Rig />
-        <Suspense fallback={null}><Suit marks={marks} mode={mode} onReady={() => setReady(true)} /></Suspense>
+        <Suspense fallback={null}><Suit marks={marks} mode={mode} /></Suspense>
         <ContactShadows position={[0, 0, 0]} opacity={0.7} scale={4} blur={2.4} far={1.6} />
         {mode === "books" && BUDGETS.map(([id], i) => <Ring key={id} i={i} id={id} state={stateOf(id)} onPick={onPick} active={picked === id} labels={labels} />)}
       </Canvas>
@@ -135,7 +136,7 @@ export default function SuitScene({ ledger, picked, onPick, mode, indicators, pi
             <button key={id} ref={(el) => { marks.current[id] = el; }} onClick={() => onPickInd(id)} aria-label={`${INDICATOR_NAMES[id]} — open receipt`}
               className="group absolute left-0 top-0 flex items-center gap-2 opacity-0 will-change-transform focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink">
               <span className={`relative grid h-[22px] w-[22px] place-items-center rounded-full border ${pickedInd === id ? "border-ink bg-ink/20" : "border-ink-dim bg-bg/50"} backdrop-blur-sm`}>
-                <span className={`h-[9px] w-[9px] rounded-full ${st === "alarm" ? "bg-signal animate-pulse" : st === "ok" ? "bg-ok" : "border border-dashed border-ink-faint"}`} />
+                <span className={`h-[9px] w-[9px] rounded-full ${st === "alarm" ? "bg-signal animate-pulse" : st === "ok" ? "bg-ok" : st === "channel" ? "bg-ink-dim" : "border border-dashed border-ink-faint"}`} />
               </span>
               <span className="whitespace-nowrap bg-bg/80 px-1.5 py-px font-mono text-[10px] uppercase tracking-[0.2em] text-ink-dim backdrop-blur-sm group-hover:text-ink">{INDICATOR_NAMES[id]}</span>
             </button>

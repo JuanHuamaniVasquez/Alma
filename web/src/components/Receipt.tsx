@@ -1,5 +1,6 @@
 "use client";
-import type { Banner, HabitatLine } from "@/lib/api";
+import { useRef, useState } from "react";
+import { crewId, type Banner, type HabitatLine } from "@/lib/api";
 import { Stamp } from "./Stamp";
 
 const fmt = (x: number) => (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(3);
@@ -52,7 +53,8 @@ function Row({ k, v, strong }: { k: string; v: string; strong?: boolean }) {
 }
 
 /** Recibo de un indicador oficial del reto (estado agregado de la cohorte; nunca ids ni valores). Lo bloqueado se declara, no se simula. */
-export function IndicatorSlip({ ind, name, onClose }: { ind: import("@/lib/api").Indicator | undefined; name: string; onClose: () => void }) {
+export function IndicatorSlip({ ind, name, onClose, onSent }: { ind: import("@/lib/api").Indicator | undefined; name: string; onClose: () => void; onSent: () => void }) {
+  if (ind?.canal === "autorreporte") return <MoodSlip ind={ind} name={name} onClose={onClose} onSent={onSent} />;
   const blocked = !ind || !!ind.bloqueado;
   const n = ind?.personas_con_linea_base ?? 0;
   return (
@@ -87,6 +89,64 @@ export function IndicatorSlip({ ind, name, onClose }: { ind: import("@/lib/api")
           <span className="text-[10px] uppercase tracking-[0.14em] text-paper-dim">{blocked ? "source · /api/indicadores" : "everyday people · not astronauts"}</span>
           <Stamp banner={blocked ? "REAL" : (ind!.banner ?? "REAL")} />
         </div>
+      </div>
+    </aside>
+  );
+}
+
+
+const MOODS = ["Very low", "Low", "Okay", "Good", "Very good"];
+
+/** Ánimo en 3 toques (1: abrir el marcador · 2: elegir · 3: enviar). El tiempo de respuesta se MIDE aquí (DC-02) y es dato. Sin texto libre. */
+function MoodSlip({ ind, name, onClose, onSent }: { ind: import("@/lib/api").Indicator; name: string; onClose: () => void; onSent: () => void }) {
+  const t0 = useRef(performance.now());
+  const [val, setVal] = useState<number | null>(null);
+  const dur = useRef<number | null>(null);
+  const [state, setState] = useState<"idle" | "sending" | "sent" | string>("idle");
+  const pick = (v: number) => { if (dur.current == null) dur.current = (performance.now() - t0.current) / 1000; setVal(v); };
+  const send = async () => {
+    if (val == null || dur.current == null) return;
+    setState("sending");
+    try {
+      const r = await fetch("/api/animo/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ persona_id: crewId(), valor: val, duracion_respuesta_s: Math.round(dur.current * 100) / 100 }) });
+      if (r.ok) { setState("sent"); onSent(); } else setState(r.status === 429 ? "Too soon: one report every 10 seconds." : "Could not save the report.");
+    } catch { setState("API offline: nothing was saved."); }
+  };
+  const dist = ind.distribucion ?? {}, max = Math.max(1, ...Object.values(dist));
+  return (
+    <aside aria-label={`Receipt for ${name}`} className="absolute right-8 top-0 z-20 w-[22rem]">
+      <div className="mx-4 h-[5px] rounded-b bg-black shadow-[0_2px_0_rgb(255_255_255/.06)]" />
+      <div className="slot-in relative -mt-px rotate-[0.6deg] bg-paper px-6 pb-6 pt-5 font-mono text-[12px] leading-relaxed text-paper-ink shadow-[0_24px_50px_-12px_rgb(0_0_0/.7)]">
+        <button onClick={onClose} aria-label="Close receipt" className="absolute right-4 top-3 text-paper-dim hover:text-paper-ink">×</button>
+        <div className="flex items-baseline justify-between border-b border-dashed border-paper-dim/50 pb-3">
+          <span className="font-display text-[1.7rem] leading-none">{name}</span><span className="text-[10px] uppercase tracking-[0.18em] text-paper-dim">3 touches</span>
+        </div>
+        {state === "sent" ? (
+          <p className="mt-4 text-[12px]"><b>Saved.</b> Your answer is one real data point in a self-report channel. It carries no name and no free text; only the value and how long you took.</p>
+        ) : (
+          <>
+            <p className="mt-4 font-display text-[1.25rem] leading-snug">How do you feel right now?</p>
+            <div className="mt-3 grid grid-cols-5 gap-1.5" role="radiogroup" aria-label="Mood, 1 to 5">
+              {MOODS.map((m, i) => (
+                <button key={m} role="radio" aria-checked={val === i + 1} onClick={() => pick(i + 1)} title={m}
+                  className={`border py-2 text-[13px] transition-colors ${val === i + 1 ? "border-paper-ink bg-paper-ink text-paper" : "border-paper-dim/60 hover:border-paper-ink"}`}>{i + 1}</button>
+              ))}
+            </div>
+            <p className="mt-1 flex justify-between text-[9.5px] uppercase tracking-[0.1em] text-paper-dim"><span>very low</span><span>very good</span></p>
+            <button onClick={send} disabled={val == null || state === "sending"} className="mt-4 w-full border border-paper-ink py-2 text-[11px] uppercase tracking-[0.2em] transition-colors enabled:hover:bg-paper-ink enabled:hover:text-paper disabled:opacity-35">
+              {state === "sending" ? "Sending…" : "Send"}
+            </button>
+            {state !== "idle" && state !== "sending" && <p role="alert" className="mt-2 text-[11px] font-medium text-[#c2410c]">{state}</p>}
+          </>
+        )}
+        <div className="mt-5 border-t border-dashed border-paper-dim/50 pt-3">
+          <p className="text-[10px] uppercase tracking-[0.14em] text-paper-dim">{ind.reportes ?? 0} reports so far{ind.duracion_mediana_s != null ? ` · median answer ${ind.duracion_mediana_s} s` : ""}</p>
+          <div className="mt-2 flex h-8 items-end gap-1.5">
+            {[1, 2, 3, 4, 5].map((k) => <span key={k} className="flex-1 bg-paper-ink/70" style={{ height: `${Math.max(((dist[String(k)] ?? 0) / max) * 100, 4)}%` }} title={`${k}: ${dist[String(k)] ?? 0}`} />)}
+          </div>
+          <p className="mt-2 text-[10.5px] text-paper-dim">No detector yet: a self-report has no colour of its own, so this dot stays neutral.</p>
+        </div>
+        <div className="mt-4 flex items-center justify-between"><span className="text-[10px] uppercase tracking-[0.14em] text-paper-dim">DC-02 · self-reported · not astronauts</span><Stamp banner="REAL" /></div>
       </div>
     </aside>
   );

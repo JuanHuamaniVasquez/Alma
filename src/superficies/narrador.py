@@ -123,11 +123,16 @@ _NOM = {"fc": "heart rate", "sueño": "sleep", "presión": "blood pressure", "gl
 def indicadores(d: dict) -> Linea:
     """Los indicadores oficiales como ESTADOS: solo cuenta (personas, verdes, alarmas); lo bloqueado se dice bloqueado, nunca se rellena."""
     todos = d["indicadores"]
-    activos = [i for i in todos if not i["bloqueado"] and i["personas_con_linea_base"]]
+    activos = [i for i in todos if not i["bloqueado"] and i.get("personas_con_linea_base")]
+    animo = next((i for i in todos if i.get("canal") == "autorreporte"), None)
+    vacios = [i for i in todos if i["bloqueado"]]
     if not activos:
         return Linea("indicadores", "I hold no personal baselines yet. The absence is recorded, not filled in.", "/api/indicadores · DC-14", d["banner"])
     partes = [(f"{_NOM[i['indicador']]}: {i['verde']} of {i['personas_con_linea_base']} people with a personal baseline have a green with a receipt, "
                f"{i['alarma']} an alarm, and {i['sin_datos_suficientes']} too few days to say") for i in activos]
-    texto = (f"Of the {_NUM[len(todos)]} official indicators, {_NUM[len(activos)]} have a verified sensor uncertainty. For {'; for '.join(partes)}. "
-             f"The other {_NUM[len(todos) - len(activos)]} stay empty on purpose: nothing is simulated. This is everyday people, not astronauts.")
+    texto = (f"Of the {_NUM[len(todos)]} official indicators, {_NUM[len(activos)]} have a verified sensor uncertainty. For {'; for '.join(partes)}. ")
+    if animo is not None:
+        texto += (f"Mood is a self-report channel with {animo['reportes']} reports so far, taken by people using this very demo, and no detector yet. "
+                  if animo["reportes"] else "Mood is a self-report channel with no reports yet; I will not invent any. ")
+    texto += f"The other {_NUM[len(vacios)]} stay empty on purpose: nothing is simulated. This is everyday people, not astronauts."
     return Linea("indicadores", texto, "/api/indicadores · DC-14 · LifeSnaps", d["banner"])

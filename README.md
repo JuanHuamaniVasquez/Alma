@@ -11,6 +11,7 @@ Health-monitoring software for astronauts (NASA Space Apps 2026 · Challenge 4).
 - **An interface in English** (`web/`): eight rooms and ALMA, a deterministic narrator — every sentence is a template + a data value + its source (no free-text AI), with subtitles always visible.
 
 ## Run it (offline-capable)
+One command once `.env` and `uv sync` are done: `scripts/demo.sh`. Step by step:
 ```bash
 cp .env.example .env            # fill in your local PostgreSQL credentials (never committed)
 uv sync                         # Python 3.12 environment
@@ -18,7 +19,7 @@ uv run python backend/manage.py migrate
 uv run python backend/manage.py sembrar_demo          # 14 days of SIMULATED habitat (aire, agua)
 uv run python backend/manage.py runserver 127.0.0.1:8000
 cd web && pnpm install && pnpm build && pnpm start    # http://localhost:3000 — click once to wake ALMA
-uv run pytest -q                                      # 382 tests
+uv run pytest -q                                      # 385 tests
 ```
 Demo route and checklist: [`docs/submit/ruta-de-demostracion.md`](docs/submit/ruta-de-demostracion.md). ALMA's voice is pre-rendered (`scripts/voz_alma.py`, Kokoro-82M, local); see `.env.example` for `ALMA_VOICE`.
 

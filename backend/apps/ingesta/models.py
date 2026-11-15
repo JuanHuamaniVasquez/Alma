@@ -62,3 +62,22 @@ class IntentoIngesta(models.Model):
 
     def __str__(self) -> str:
         return f"{self.intento_id} {self.resultado} [{self.banner}]"
+
+
+class Autorreporte(models.Model):
+    """DC-02 · Canal B — autorreporte de ánimo en 3 toques. Solo se anexa. El tiempo de respuesta es dato; el texto libre no existe."""
+    persona_id = models.CharField(max_length=64, db_index=True)
+    ts_utc = models.DateTimeField(db_index=True)
+    banner = models.CharField(max_length=10, choices=Banner.choices)
+    tipo = models.CharField(max_length=10)
+    escala = models.CharField(max_length=80)
+    valor = models.SmallIntegerField(null=True)
+    duracion_respuesta_s = models.FloatField(null=True)
+    registro_ausencia = models.BooleanField(default=False)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(condition=Q(registro_ausencia=True, valor__isnull=True, duracion_respuesta_s__isnull=True)
+                                   | Q(registro_ausencia=False, valor__isnull=False, duracion_respuesta_s__isnull=False),
+                                   name="dc02_ausencia_es_dato"),
+        ]
