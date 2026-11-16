@@ -141,10 +141,10 @@ export function Anatomy({ m, picked, onPick, states, arrastrado }: { m: Medidas;
     const l = ladoOf(s), dirH = l.wr.clone().sub(l.el).normalize(), ap = V(0, 0, 1), perp = ap.clone().sub(dirH.clone().multiplyScalar(dirH.dot(ap))).normalize();
     return (
       <group key={"br" + s}>
-        <Ball p={l.sh} r={u(0.0145)} /><Seg a={l.sh.clone().lerp(l.el, 0.04)} b={l.el.clone().lerp(l.sh, 0.03)} r={u(0.0082)} k={1} />
-        <Ball p={l.el.clone().add(perp.clone().multiplyScalar(u(0.004)))} r={u(0.0125)} sc={[1, 0.9, 1]} />
-        <Seg a={l.el.clone().addScaledVector(perp, -u(0.003))} b={l.wr.clone().addScaledVector(perp, -u(0.006))} r={u(0.0062)} />
-        <Seg a={l.el.clone().addScaledVector(perp, u(0.006))} b={l.wr.clone().addScaledVector(perp, u(0.006))} r={u(0.0056)} />
+        <Ball p={l.sh} r={u(0.0125)} /><Seg a={l.sh.clone().lerp(l.el, 0.04)} b={l.el.clone().lerp(l.sh, 0.03)} r={u(0.0058)} k={1} />
+        <Ball p={l.el.clone().add(perp.clone().multiplyScalar(u(0.004)))} r={u(0.009)} sc={[1, 0.9, 1]} />
+        <Seg a={l.el.clone().addScaledVector(perp, -u(0.003))} b={l.wr.clone().addScaledVector(perp, -u(0.006))} r={u(0.0042)} />
+        <Seg a={l.el.clone().addScaledVector(perp, u(0.006))} b={l.wr.clone().addScaledVector(perp, u(0.006))} r={u(0.004)} />
         <Ball p={l.el.clone().add(V(0, 0, -u(0.01)))} r={u(0.007)} />
         <Mano s={s} />
       </group>
@@ -157,13 +157,13 @@ export function Anatomy({ m, picked, onPick, states, arrastrado }: { m: Medidas;
     return (
       <group key={"pi" + s}>
         <Ball p={l.hip} r={u(0.0145)} />
-        <Tube pts={[l.hip, l.hip.clone().lerp(troc, 0.55).add(V(0, u(0.004), 0)), troc, troc.clone().lerp(l.kn, 0.35).addScaledVector(lat, -u(0.004)), l.kn.clone().lerp(troc, 0.2).add(V(0, u(0.004), u(0.001)))]} r={u(0.0125)} />
-        <Ball p={troc.clone().add(V(0, u(0.006), 0))} r={u(0.0115)} sc={[0.9, 1.3, 1]} />
-        <Ball p={l.kn.clone().add(V(s * u(0.013), -u(0.002), 0))} r={u(0.0145)} /><Ball p={l.kn.clone().add(V(-s * u(0.013), -u(0.002), 0))} r={u(0.0148)} />
+        <Tube pts={[l.hip, l.hip.clone().lerp(troc, 0.55).add(V(0, u(0.004), 0)), troc, troc.clone().lerp(l.kn, 0.35).addScaledVector(lat, -u(0.004)), l.kn.clone().add(V(0, u(0.008), u(0.001)))]} r={u(0.0085)} />
+        <Ball p={troc.clone().add(V(0, u(0.006), 0))} r={u(0.0095)} sc={[0.9, 1.3, 1]} />
+        <Ball p={l.kn.clone().add(V(s * u(0.012), -u(0.002), 0))} r={u(0.0115)} /><Ball p={l.kn.clone().add(V(-s * u(0.012), -u(0.002), 0))} r={u(0.0118)} />
         <Ball p={l.kn.clone().add(V(0, 0, u(0.02)))} r={u(0.0115)} sc={[1, 1.1, 0.5]} />
-        <mesh position={l.kn.clone().add(V(0, -u(0.014), 0))} material={bone}><cylinderGeometry args={[u(0.021), u(0.018), u(0.005), 18]} /></mesh>
-        <Seg a={l.kn.clone().add(V(0, -u(0.016), 0))} b={mal.clone().add(V(-s * u(0.004), u(0.014), 0))} r={u(0.0102)} />
-        <Seg a={l.kn.clone().add(V(s * u(0.024), -u(0.022), -u(0.006)))} b={mal.clone().add(V(s * u(0.019), u(0.005), -u(0.004)))} r={u(0.0058)} />
+        <mesh position={l.kn.clone().add(V(0, -u(0.014), 0))} material={bone}><cylinderGeometry args={[u(0.0185), u(0.016), u(0.005), 18]} /></mesh>
+        <Seg a={l.kn.clone().add(V(0, -u(0.016), 0))} b={mal.clone().add(V(-s * u(0.004), u(0.014), 0))} r={u(0.0072)} />
+        <Seg a={l.kn.clone().add(V(s * u(0.024), -u(0.022), -u(0.006)))} b={mal.clone().add(V(s * u(0.019), u(0.005), -u(0.004)))} r={u(0.0038)} />
         <Ball p={mal.clone().add(V(-s * u(0.011), -u(0.007), 0))} r={u(0.0095)} /><Ball p={mal.clone().add(V(s * u(0.02), -u(0.011), -u(0.003)))} r={u(0.009)} />
         <Pie s={s} />
       </group>
@@ -201,7 +201,7 @@ export function Anatomy({ m, picked, onPick, states, arrastrado }: { m: Medidas;
       {/* ---- columna: 7 cervicales, 12 torácicas, 5 lumbares (cuerpo + apófisis espinosa y transversas), sacro y cóccix */}
       {spine.map((p, i) => {
         const tan = (spine[Math.min(23, i + 1)].clone().sub(spine[Math.max(0, i - 1)])).normalize(), q = new THREE.Quaternion().setFromUnitVectors(V(0, 1, 0), tan);
-        const reg = i < 5 ? 0 : i < 17 ? 1 : 2, r = u(reg === 0 ? 0.0185 : reg === 1 ? 0.0152 - 0.0005 * (i - 5) * 0.5 : 0.0112), h = u(reg === 2 ? 0.0078 : 0.0092), esp = u(reg === 0 ? 0.027 : reg === 1 ? 0.03 : 0.017), tr = u(reg === 0 ? 0.026 : reg === 1 ? 0.027 : 0.016);
+        const reg = i < 5 ? 0 : i < 17 ? 1 : 2, r = u(reg === 0 ? 0.0135 : reg === 1 ? 0.0105 - 0.0003 * (i - 5) * 0.5 : 0.0082), h = u(reg === 2 ? 0.0078 : 0.0092), esp = u(reg === 0 ? 0.027 : reg === 1 ? 0.03 : 0.017), tr = u(reg === 0 ? 0.026 : reg === 1 ? 0.027 : 0.016);
         return (
           <group key={i} position={p} quaternion={q}>
             <mesh material={bone} scale={[1.18, 1, 0.9]}><cylinderGeometry args={[r, r * 1.04, h, 14]} /></mesh>
@@ -221,8 +221,8 @@ export function Anatomy({ m, picked, onPick, states, arrastrado }: { m: Medidas;
         <group key={i}>
           {[-1, 1].map((s) => (
             <group key={s} scale={[s, 1, 1]}>
-              <Tube pts={c.rib} r={u(0.0036)} />
-              {c.cart && <Tube pts={c.cart} r={u(0.0034)} mat={cart} />}
+              <Tube pts={c.rib} r={u(0.0029)} />
+              {c.cart && <Tube pts={c.cart} r={u(0.0027)} mat={cart} />}
               <Ball p={c.rib[0]} r={u(0.0048)} />
             </group>
           ))}
@@ -237,7 +237,7 @@ export function Anatomy({ m, picked, onPick, states, arrastrado }: { m: Medidas;
         const l = ladoOf(s), pEs = V(s * u(0.011), yEs0 + u(0.004), zEs(yEs0) - u(0.002)), acr = l.sh.clone().add(V(-s * u(0.004), u(0.025), -u(0.01))), pb = perfil(m, l.sh.y - u(0.04));
         return (
           <group key={"sc" + s}>
-            <Tube pts={[pEs, pEs.clone().lerp(acr, 0.3).add(V(0, u(0.006), u(0.014))), pEs.clone().lerp(acr, 0.7).add(V(0, u(0.011), u(0.002))), acr]} r={u(0.0058)} />
+            <Tube pts={[pEs, pEs.clone().lerp(acr, 0.3).add(V(0, u(0.006), u(0.014))), pEs.clone().lerp(acr, 0.7).add(V(0, u(0.011), u(0.002))), acr]} r={u(0.0036)} />
             <mesh geometry={gOmoplato} material={bone} position={[s * u(0.088), l.sh.y - u(0.05), pb.zb + u(0.022)]} rotation={[0.08, 0, s * 0.06]} scale={[s, 1, 1]} />
           </group>
         );
@@ -250,8 +250,8 @@ export function Anatomy({ m, picked, onPick, states, arrastrado }: { m: Medidas;
         return (
           <group key={"pv" + s}>
             <mesh geometry={gIlion} material={bone} position={[s * u(0.014), py - u(0.045), pz - u(0.014)]} rotation={[0.12, -s * 0.64, s * 0.1]} scale={[s, 1, 1]} />
-            <Tube pts={[l.hip.clone().add(V(0, u(0.01), -u(0.004)), ), l.hip.clone().add(V(-s * u(0.012), -u(0.03), -u(0.026))), V(s * u(0.04), l.hip.y - u(0.062), pz - u(0.028)), V(s * u(0.046), l.hip.y - u(0.07), pz + u(0.002))]} r={u(0.0085)} />
-            <Tube pts={[l.hip.clone().add(V(-s * u(0.008), -u(0.004), u(0.008))), V(s * u(0.035), l.hip.y - u(0.024), pz + u(0.05)), V(s * u(0.011), l.hip.y - u(0.046), pz + u(0.067))]} r={u(0.0072)} />
+            <Tube pts={[l.hip.clone().add(V(0, u(0.01), -u(0.004)), ), l.hip.clone().add(V(-s * u(0.012), -u(0.03), -u(0.026))), V(s * u(0.04), l.hip.y - u(0.062), pz - u(0.028)), V(s * u(0.046), l.hip.y - u(0.07), pz + u(0.002))]} r={u(0.006)} />
+            <Tube pts={[l.hip.clone().add(V(-s * u(0.008), -u(0.004), u(0.008))), V(s * u(0.035), l.hip.y - u(0.024), pz + u(0.05)), V(s * u(0.011), l.hip.y - u(0.046), pz + u(0.067))]} r={u(0.0052)} />
           </group>
         );
       })}
