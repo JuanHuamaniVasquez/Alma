@@ -181,6 +181,9 @@ check("sin contacto: el Guardián sigue decidiendo a bordo y cita el retardo de 
 await page.goto(`${BASE}/?awake=1`, { waitUntil: "domcontentloaded" });
 await esperarTexto("protons · live", 60000);
 check("los anillos Dose y Rhythm muestran datos REALES en vivo (no «no ledger»)", (await page.evaluate(() => document.body.innerText.toLowerCase())).includes("sunlight · live") || (await page.evaluate(() => document.body.innerText.toLowerCase())).includes("shadow · live"));
+// la ETIQUETA del anillo también es un botón (no solo la línea circular): clic en «Conduct …» abre su ficha
+await page.evaluate(() => document.querySelector('[role="button"][aria-label^="Conduct"]')?.click());
+await page.waitForFunction(() => /not a balance|real result|sealed/i.test(document.body.innerText), { timeout: 8000 }).then(() => check("clic en la etiqueta «Conduct …» abre la ficha del anillo", true), () => check("clic en la etiqueta «Conduct …» abre la ficha del anillo", false));
 await page.goto(`${BASE}/frontier?awake=1`, { waitUntil: "domcontentloaded" });
 await esperar("#live", 60000); await esperar("#astronauts", 30000); await esperar("#atlas", 30000);
 const ft = await page.evaluate(() => document.body.innerText.toLowerCase());

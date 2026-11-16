@@ -1,55 +1,124 @@
-% ALMA / TONO-LAB — informe IEEE (esqueleto SIN redactar). Compilar: pdflatex main && bibtex main && pdflatex main && pdflatex main
-% Orden: lo mejor primero. Cada sección dice su fuente; copiar cifras de NOTA-FB-xxx.md, no de memoria.
+% ALMA / TONO-LAB -- research report (IEEE conference format, English).
+% Build: pdflatex main && pdflatex main   (class IEEEtran: present on Overleaf and any full TeX Live)
+% Every number below is copied from docs/actas/RESULTADOS.jsonl and its NOTA-FB-xxx.md (see Section "Reproducibility").
 \documentclass[conference]{IEEEtran}
-\usepackage{graphicx,booktabs,hyperref,amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
+\newcommand{\act}[1]{\texttt{FB-#1}}
+\newcommand{\sd}{$\sigma$}
 \begin{document}
-\title{ALMA: A Health Monitor That Says When It Cannot See --- Preregistered Falsification for Crewed Habitats}
-\author{\IEEEauthorblockN{Team ALMA (NASA Space Apps 2026)}\IEEEauthorblockA{Challenge: Create Health Monitoring Software for Astronauts on Space Missions}}
+
+\title{ALMA: A Health Monitor That Says When It Cannot See\\
+\large Preregistered Falsification of Body--Habitat Monitoring for Crewed Missions}
+
+\author{\IEEEauthorblockN{Team ALMA (TONO-LAB)}
+\IEEEauthorblockA{NASA Space Apps Challenge 2026 --- ``Create Health Monitoring Software for Astronauts on Space Missions''\\
+Repository: \url{https://github.com/userly03/ALMA}}}
+
 \maketitle
 
 \begin{abstract}
-% <=200 palabras. Fuente: docs/preprint/manuscript.md (Abstract) + INVENTARIO-IEEE.md C-01..C-21.
-% Debe contener: mensaje unico; conservacion vs manifiesto (SIMULADO); piso de deteccion en astronautas reales (n=4); 29 actas con hash previo; fallos publicados.
+Open data on astronaut health are almost nonexistent, so a monitor cannot be validated on the people it is meant to protect. We therefore built ALMA around a different promise: every alarm prints the exact rule, seed and preregistration hash that produced it, and every ``all clear'' declares the smallest effect it could have detected. We tested each component with 30 hash-sealed experiments (25 executed so far, each once), on real wearable, blood-count, neutron-monitor and ECG data and on a labelled simulated habitat. Three results lead. (i)~In a simulated habitat, a conservation-of-mass check flags a 0.30\,kg air leak (residual $+0.260$\,kg) that a manifest-based detector scores at 0.53\sd{} and misses. (ii)~On the only open astronaut blood data (four Inspiration4 crew), a personal band built from three baseline draws cannot see a median 24\% fall in lymphocytes: the band's detection floor is about $\pm$70\% of the personal mean. (iii)~The same CUSUM used for bodies, applied unchanged to a neutron monitor, catches 41\% of severe geomagnetic storms against 6\% by chance, but 13\,h after the storm index crosses storm level: it confirms, it does not forecast. Most hypotheses we generated were refuted, and we publish them all.
 \end{abstract}
 
 \begin{IEEEkeywords}
-astronaut health, personal baseline, conservation of mass, preregistration, negative results
+astronaut health monitoring, personal baseline, CUSUM, conservation of mass, preregistration, negative results, detection floor
 \end{IEEEkeywords}
 
 \section{Introduction}
-% Reto NASA, ausencia de datos abiertos por persona, pregunta guia. Fuente: INVENTARIO-IEEE.md fila Introduccion; docs/radar-nasa.md.
+Crewed missions beyond low Earth orbit will have limited ground support: a one-way communication delay of up to about 22 minutes for Mars~\cite{mcbrayer2022}, no real-time specialist, and a crew too small to average over. Monitoring must therefore run onboard and personalise: each person is compared with their own signature~\cite{zheng2023,scott2023}. The obstacle is evidence. Per-person astronaut data are not openly available; what NASA's Open Science Data Repository (OSDR) does release for human spaceflight is a handful of studies, among them blood counts of four civilian astronauts. Any health-monitoring system built today is therefore validated on proxies, and the risk is that proxies flatter it.
 
-\section{Main Results (Strongest First)}
-\subsection{Conservation catches what the manifest cannot (simulated universe)}
-% FB-003R, FB-005; src/motor/contrapeso.py; /kill. Banner SIMULADO obligatorio. Figura: captura /kill.
-\subsection{The detection floor in real astronaut blood work (n=4)}
-% FB-024, FB-025 (C-13, C-15); NOTA-FB-024/025.md. Limite: n=4, exploratorio.
-\subsection{Every alarm has a receipt; every experiment a prior hash}
-% DC-05, DC-14; docs/actas/; tests/test_orden_de_actas.py (C-09, C-11).
-\subsection{A laboratory that generates and closes its own hypotheses}
-% generador.py; FB-026, FB-027, FB-028 (C-16, C-19, C-20, C-21). Tabla de veredictos.
+We take the position that, under these constraints, a monitor's most valuable property is \emph{knowing what it cannot see}. ALMA (Spanish for ``soul''; working name TONO-LAB) has two hearts. The \emph{Guardian} watches the crew's bodies, the habitat's books and the space environment. \emph{The Foundry} is a laboratory that coins hypotheses, tests each once under a hash sealed beforehand, and publishes the outcome; a hypothesis that survives compiles into a new detector for the Guardian. We report what the system is, how every claim was made, and, first and in detail, what held and what failed.
+
+\textbf{Contributions.} (1)~A method of work: preregistration with a SHA-256 hash committed before execution, one run per act, public seeds, a control that can fail, and negative results published. (2)~A receipt contract: alarms and ``all clears'' that carry their own rule, seed, hash, power and minimum detectable effect. (3)~Thirty sealed experiments (25 executed so far) and 16 hypothesis cards, 10 of them refuted. (4)~An open, offline-capable interface that separates real from simulated data on every screen.
+We claim no algorithmic novelty (Section~\ref{sec:related}); the contribution is the application, the measurement of what each detector cannot see, and the discipline.
+
+\section{Related Work}\label{sec:related}
+\emph{Change detection.} The CUSUM chart~\cite{page1954} is the detector ALMA uses for bodies, habitat books and cosmic rays. Individual CUSUMs on physiological series date to the 1990s~\cite{cornelissen1997}. Anytime-valid inference and e-processes~\cite{ramdas2023,shin2022} offer false-alarm guarantees under continuous monitoring; we measured how those guarantees fare on real wearable data (Section~\ref{sec:neg}).
+\emph{Conservation and reconciliation.} Data reconciliation against balances to detect gross errors is a classical process-engineering method~\cite{tamhane1985}; mass-balance diagnosis already exists for spacecraft cabin air~\cite{kayatin2021}. We apply the idea daily to a crewed habitat, with the manifest's own uncertainty as the detection floor.
+\emph{Personal baselines and wearables.} Baseline-and-deviation monitoring with wearables is an active field, including for astronauts~\cite{gupta2025,zheng2023}; reliability manifests of the ISS have been off by 1.9--22$\times$~\cite{jones2019}, which motivates not trusting a manifest alone. Alarm fatigue is a known hazard~\cite{cvach2012}; it motivates ``green only with a receipt''.
+\emph{Search scope.} We searched PubMed and the NASA Technical Reports Server directly and the web; IEEE Xplore and Google Scholar were not queried, and the search is not systematic. ``We found nothing'' is not evidence of absence.
 
 \section{System}
-% Capas ingesta->libro->motor->fabrica->superficies; contratos DC-01..DC-14; tres mandamientos. Fuente: DOC-01 sec.2-3, README.md.
+Data flow is one-directional: ingestion $\to$ ledger $\to$ engine $\to$ factory $\to$ surfaces, and nothing reads a sensor directly. Fourteen data contracts (DC-01\ldots DC-14) define every record. Three commandments are enforced in code and tests:
+\begin{enumerate}
+\item \textbf{Everything reads from the ledger} (contract DC-04, nine budgets: air, water, energy, dose, rhythm, load, immunity, conduct, time) or from event contracts, never from raw sensors.
+\item \textbf{Nothing is tested without a preregistration hash} made before running; a test checks that every act is committed before its result.
+\item \textbf{Colours only with a contestable rule.} Every alarm carries its rule text, seed and hash (DC-05); a green is a receipt (DC-14) that declares its power and minimum detectable effect, or it is ``not enough days''. A REAL/SIMULATED banner is mandatory on every record and screen, and a derived record never upgrades to REAL silently.
+\end{enumerate}
+The interface is a web application with nine rooms (medical module, machine room, the leak, the vault, the foundry, the storm, the budget, the capsule, the frontier), a deterministic narrator whose sentences are templates plus data values (it is not a language model), and an offline mode. The crew is fictional (five generated characters with stand-in body states), and the habitat is a labelled simulated universe anchored to public NASA planning values.
 
 \section{Methods}
-% Linea base personal, 2-sigma, CUSUM, conservacion, e-proceso (Shin--Ramdas--Rinaldo arXiv:2203.03532), MDE (DC-14), preregistro SHA-256, nulos por permutacion.
+\textbf{Personal baseline and detectors.} Each indicator is compared with the person's own baseline; the two-sigma residual and the bilateral CUSUM $S^{\pm}_t=\max(0,S^{\pm}_{t-1}\pm z_t-k)$ with $k=0.5$ raise a flag when $S^{\pm}\geq h$. The threshold $h$ is calibrated by Monte Carlo with a public seed so that the false-alarm probability over 14 days is 1\%, including the uncertainty of estimating the baseline from 14 days.\\
+\textbf{Conservation closure.} For each loop (water, air, energy), inputs minus outputs minus storage must equal the declared loss within the manifest's propagated uncertainty (``closes'' / ``does not close'').\\
+\textbf{Detection floor.} Every ``all clear'' declares the minimum detectable effect (MDE) in $\sigma$ and in physical units; with too little data it states ``not enough days''.\\
+\textbf{Preregistration.} Each act states the question, the success rule and the kill rule, and is hashed (SHA-256 of its exact bytes) and committed \emph{before} its runner can execute; runners refuse an altered act, different data, or a second run. Public seeds are 20261113, 20261114, 20261115, 20261111 and 20261112; the derived family $20261113+i$ is used only for regression repeats. Each act includes a control that can fail, and the authors' own predictions are recorded and reported when wrong.\\
+\textbf{Statistics.} Within-person contrasts use label shuffling inside each person; correlations use circular shifts; Bonferroni corrections are fixed in the act; replication cohorts are independent.
 
-\section{Negative Results and Our Own Errors}
-% INVENTARIO-IEEE.md sec.6 (FB-002 8/10 no replicado, FB-020, FB-021 5x, FB-022, FB-023, FB-027 polaridad).
+\section{Results (strongest first)}
+\subsection{A conservation law sees what a manifest cannot (simulated)}
+In the labelled simulated habitat (\act{003R}, \act{005-D1}), on a day with an injected 0.30\,kg air leak, a detector that compares the book with the manifest scores 0.53\sd{} and raises no alarm. The conservation check on the same day, with the manifest's propagated uncertainty $\sigma=0.0548$\,kg, shows a residual of $+0.260$\,kg and ``does not close''. On a control day both are quiet; the prediction was recorded beforehand and confirmed. This is a simulation: no open dataset of a crewed cabin exists, and the model of the flows is ours.
 
-\section{Discussion and Limits}
-% INVENTARIO-IEEE.md sec.9 (lo que NO se afirma).
+\subsection{The detection floor in real astronaut blood work}
+We reconciled the open complete-blood-count data of four civilian astronauts of the Inspiration4 mission (OSD-569; seven draws each) against themselves (absolute count = percentage $\times$ leukocytes): 1 of 28 rows does not close, a probable data-entry error in public data (\act{024}). On landing day the median lymphocyte count fell 24\%. Yet with three preflight draws each, no astronaut left their personal band: the hypothesis that at least two of four would is refuted (0 of 4). Pooling the group's within-person variance narrows the bands by about 30\% (median ratio 1.42), but the detection floor for lymphocytes stays near $\pm$70\% of the personal mean, almost three times the median fall (\act{025}, exploratory, same data). The consequence is the central design rule of ALMA: before alarming, declare what the baseline can see. With $n=4$ and no in-flight draws, this is a demonstration of the floor, not a clinical result.
 
-\section{Reproducibility}
-% Semillas 20261113, 20261114, 20261115, 20261111, 20261112; hashes en docs/actas/; comandos de docs/entrega/PLAN-DE-ENTREGA.md sec.0.
+\subsection{Alarms with receipts, experiments with hashes}
+Of 30 sealed acts, 25 have been executed, each once; their order of commit versus result is checked by a test. The receipt contract is implemented and tested, but real green receipts cover only heart rate and sleep from a consumer wearable cohort. Table~\ref{tab:cards} summarises the laboratory's 16 hypothesis cards; one of the sustained cards (short sleep as a context alarm) has been compiled into a new detector.
 
-\section{Ethics}
-% Civiles anonimos, tripulacion ficticia, privacidad epsilon (C-06). Fuente: docs/politica-de-datos.md sec.12.
+\begin{table}[t]
+\centering\caption{Foundry cards (DC-12) by state.}\label{tab:cards}
+\begin{tabular}{|l|c|}
+\hline
+State & Cards\\ \hline
+Refuted & 10\\ \hline
+Sustained & 4\\ \hline
+No data (blocked) & 1\\ \hline
+In test & 1\\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{A laboratory that generates and closes its own hypotheses}
+A library of mechanisms with identified sources is crossed with the data that actually exist, producing candidates with a price and a refuting signal; the generator also drafts the preregistration from the same specification the runner uses, so what is sealed and what runs cannot diverge. The first complete loop (\act{026}; LifeSnaps, everyday wearers, not astronauts) gave: sleeping below one's own median lowers overnight heart-rate variability (RMSSD) by 0.21 sd (36 people, $p=0.0001$, placebo with labels shifted by 40 days null) --- sustained; the matching resting-pulse effect (+0.25 bpm, $p=0.003$) is real but below the sealed minimum of 0.5 bpm --- refuted by the written rule; same-row training load shows no effect. A second batch (\act{027}) produced four refutations: warmer nights and a higher stress score went with \emph{better} sleep efficiency (opposite to what we sealed; we had not verified the polarity of the score, which includes sleep as an input), geomagnetic activity showed no link with breathing, and next-night HRV after hard days fell by the expected 0.08 sd but at $p=0.029$, above the corrected threshold. An independent cohort (\act{028}, 169 people) shrank the pulse effect to +0.11 bpm ($p=0.0325$): refuted under both sealed rules.
+
+\subsection{Cosmic rays as a second witness}\label{sec:cosmic}
+Applying the \emph{same} CUSUM, unchanged, to the hourly pressure-corrected neutron-monitor series of Oulu (NMDB~\cite{nmdb}, 2008--2025) against severe geomagnetic storms (Kp $\geq 7$; GFZ index~\cite{matzka2021}), with $h$ calibrated only on 2008--2016, we tested 2017--2025 (\act{029}). It detects 9 of 22 storms (41\%; chance 6\%, $p=0.001$; exact 95\% interval 21--64\%) with 4.9 false alarms per year, so the false-alarm and placebo hypotheses hold; the 50\% sensitivity target and the lead-time target fail, with a median of $-13$\,h: the neutron monitor confirms a storm already under way. It cannot replace an early-warning ladder.
+
+\subsection{The space around the crew, live}
+The interface reads, with a raw-response hash and an archive, the ISS position (derived from orbital elements), GOES protons and electrons, solar X-rays, the planetary K index, official NOAA notices, and the neutron monitor, and computes NOAA scale levels with printed rules. None is a dose measured on board, and the interface says so. A real ECG record (MIT-BIH record 100~\cite{moody2001}) is annotated by our R-peak detector: 2\,272 of 2\,273 beats found (sensitivity 99.96\%, no invented beats) on one clean record.
+
+\section{Negative Results and Our Own Errors}\label{sec:neg}
+These results are part of the method. (1)~The variance channel had 9.0\% false alarms on real data (\act{020}); a robust variant was inconclusive (5 validation windows, \act{020-v2}). (2)~A ``10 of 10 detections, 21-day lead'' result that we could not reproduce: our replication detected 8 of 10 (\act{015-v2}). (3)~A control we wrote could not fail (\act{010}). (4)~The theoretical false-alarm guarantee of an e-process was five times optimistic on real wearables: 5.06\% observed against 1\% requested; calibration restores 0\% at the cost of power at $2\sigma$, from 99\% to 71\% (\act{021}); out-of-sample validation had only 5 windows. (5)~Temperature, breathing and RMSSD do couple with resting pulse within person out of sample ($\rho=+0.24$, $+0.27$, $-0.53$), but a classifier to tell a broken sensor from a changed body failed (66\% accuracy; 44\% of untouched real blocks flagged) because RMSSD and pulse share one optical sensor (\act{022}). (6)~Attribution of excess cabin CO$_2$ to one crew member works only with staggered schedules (71\% at best against 20\% chance, simulated) and our 80\% target was missed (\act{023}). (7)~Solar storms against sleep and HRV: null (\act{014}). (8)~Our predictions for \act{011}, \act{022}, \act{026}, \act{027} and \act{029} were wrong in at least one hypothesis, and a sealed stress hypothesis failed because we did not check a score's polarity.
+
+\section{Limitations}
+We make \emph{no} claim that ALMA detects disease or has been validated on astronauts. Real data come from everyday people with consumer devices; astronaut data are four civilians, none sampled in flight. Habitat data are simulated, and where we could measure real data the simulation's assumptions were often optimistic (water-demand correlation across households $\approx0.13$; pulse autocorrelation $\approx0.18$). Several results are inconclusive by sample size. Where an act extended earlier work on the same data, it says so. The anatomical layer of the interface is illustrative: a segmented reference body (BodyParts3D~\cite{bp3d}) deformed to fictional characters. ALMA is not a language model and not a medical device.
+
+\section{Reproducibility and Ethics}
+Code, seeds and data sources are public in the repository. \texttt{uv run pytest} re-derives the contracts (475 tests), and each runner script reproduces its act exactly; the interface runs offline. Every figure in this report traces to a row of \texttt{docs/actas/RESULTADOS.jsonl}, its preregistered act and its note; every data source, licence and simulated component is listed in \texttt{docs/politica-de-datos.md}. Personal data are civilian and anonymised; the crew is fictional; per-person content never reaches the decision surfaces, only aggregates and states; a differential-privacy ledger shows that with five people an exact average plus one subtraction names someone. Attributions: we acknowledge the NMDB database (www.nmdb.eu), founded under the European Union's FP7 programme (contract no.\ 213007), and the PIs of individual neutron monitors: Oulu (Sodankyla Geophysical Observatory of the University of Oulu, Finland). Human anatomy: BodyParts3D, \copyright{} The Database Center for Life Science, licensed under CC Attribution 4.0 International.
 
 \section{Future Work}
-% FB-026 H2 en cohorte con rmssd; M6.5; M2.22; NILM con datos de cabina reales.
+(1)~Replicate the sleep--HRV finding in a cohort with RMSSD. (2)~A flare-to-proton-storm ladder from the GOES archive to give minutes of warning. (3)~Connect belt electrons and cosmic rays as dose proxies once an open on-board dosimetry feed is available. (4)~Test the receipts on any open in-flight dataset that appears. (5)~Replace the simulated cabin with real habitat telemetry.
 
-\bibliographystyle{IEEEtran}
-\bibliography{refs}
+\section*{Acknowledgments}
+Data: NASA OSDR, NOAA SWPC, GFZ Potsdam, NMDB, PhysioNet, Zenodo cohorts. Built for the NASA Space Apps Challenge 2026.
+
+\begin{thebibliography}{99}\small
+\bibitem{mcbrayer2022} McBrayer, Chai and Judd, ``Communication delays, disruptions, and blackouts for crewed Mars missions,'' NASA NTRS 20220013418, 2022.
+\bibitem{zheng2023} Zheng \emph{et al.}, ``Time-resolved molecular measurements reveal changes in astronauts during spaceflight,'' \emph{Front.\ Physiol.}, 2023, doi:10.3389/fphys.2023.1219221.
+\bibitem{scott2023} Scott \emph{et al.}, ``Biomonitoring and precision health in deep space supported by artificial intelligence,'' \emph{Nat.\ Mach.\ Intell.}, 2023, doi:10.1038/s42256-023-00617-5.
+\bibitem{page1954} E.~S. Page, ``Continuous inspection schemes,'' \emph{Biometrika}, 1954, doi:10.1093/biomet/41.1-2.100.
+\bibitem{cornelissen1997} Corn\'elissen \emph{et al.}, individual CUSUM on a physiological response, 1997, doi:10.3109/03091909709031156.
+\bibitem{ramdas2023} Ramdas, Gr\"unwald, Vovk and Shafer, ``Game-theoretic statistics and safe anytime-valid inference,'' \emph{Statist.\ Sci.}, 2023, doi:10.1214/23-STS894.
+\bibitem{shin2022} Shin, Ramdas and Rinaldo, ``E-detectors,'' arXiv:2203.03532.
+\bibitem{tamhane1985} Tamhane and Mah, ``Data reconciliation and gross error detection in chemical process networks,'' \emph{Technometrics}, 1985, doi:10.1080/00401706.1985.10488080.
+\bibitem{kayatin2021} Kayatin \emph{et al.}, spacecraft cabin mass-balance diagnosis, NASA NTRS 20210016640, 2021.
+\bibitem{gupta2025} Gupta \emph{et al.}, review of astronaut wearable monitoring, 2025, doi:10.1016/j.lssr.2025.06.011.
+\bibitem{jones2019} Jones, ``High reliability requires more than providing spares,'' NASA NTRS 20190027319, 2019.
+\bibitem{cvach2012} Cvach, ``Monitor alarm fatigue: an integrative review,'' \emph{Biomed.\ Instrum.\ Technol.}, 2012, doi:10.2345/0899-8205-46.4.268.
+\bibitem{nmdb} NMDB, Neutron Monitor Database, \url{https://www.nmdb.eu}; Oulu station, University of Oulu.
+\bibitem{matzka2021} Matzka \emph{et al.}, ``The geomagnetic Kp index and derived indices of geomagnetic activity,'' \emph{Space Weather}, 2021, doi:10.1029/2020SW002641.
+\bibitem{moody2001} Moody and Mark, ``The impact of the MIT-BIH arrhythmia database,'' \emph{IEEE Eng.\ Med.\ Biol.}, 2001, doi:10.1109/51.932724.
+\bibitem{bp3d} BodyParts3D, \copyright{} The Database Center for Life Science, CC BY 4.0, \url{https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html}.
+\end{thebibliography}
+
 \end{document}
