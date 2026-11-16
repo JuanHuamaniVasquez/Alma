@@ -7,6 +7,6 @@ await p.goto(`http://localhost:3000/?awake=1&crew=${crew}&layer=anatomy`, { wait
 await new Promise((r) => setTimeout(r, 14000));
 const snap = async (n) => { await new Promise((r) => setTimeout(r, 1200)); await p.screenshot({ path: `/tmp/claude-1000/ana_${n}.png` }); };
 await snap("frente");
-await p.mouse.move(720, 450); await p.mouse.down(); await p.mouse.move(960, 450, { steps: 12 }); await p.mouse.up(); await snap("giro");
 await p.mouse.move(720, 450); for (let i = 0; i < 7; i++) { await p.mouse.wheel({ deltaY: -320 }); await new Promise((r) => setTimeout(r, 100)); } await snap("zoom");
+await p.mouse.move(720, 450); await p.mouse.down(); await p.mouse.move(960, 450, { steps: 12 }); await p.mouse.up(); await snap("giro");
 await b.close();

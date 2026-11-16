@@ -173,7 +173,7 @@ export function Anatomy({ m, picked, onPick, states, arrastrado }: { m: Medidas;
   // ---------- posiciones de órganos (según el perfil medido)
   const yC = (costillas[1].rib[7].y + costillas[7].rib[7].y) / 2, pC = perfil(m, yC), zC = (pC.zb + pC.zf) / 2;
   const cabeza = m.head, sw = m.headW * 0.86;
-  const dientes = Array.from({ length: 12 }, (_, i) => { const t = (i - 5.5) / 5.5, a = t * 0.95; return V(Math.sin(a) * u(0.026), -u(0.071) + 0.0, u(0.047) * Math.cos(a) - u(0.002)); });
+  const dientes = Array.from({ length: 12 }, (_, i) => { const t = (i - 5.5) / 5.5, a = t * 0.85; return V(Math.sin(a) * u(0.022), -u(0.0745), u(0.04) * Math.cos(a) + u(0.002)); });
 
   return (
     <group name="anatomy">
@@ -183,14 +183,14 @@ export function Anatomy({ m, picked, onPick, states, arrastrado }: { m: Medidas;
         <Ball p={V(0, -u(0.036), u(0.034))} r={u(0.03)} sc={[1.05, 0.85, 0.85]} />
         {[-1, 1].map((s) => (
           <group key={s}>
-            <Ball p={V(s * u(0.0205), -u(0.0105), u(0.0545))} r={u(0.0095)} sc={[1, 0.9, 0.45]} mat={hueco} /><mesh position={[s * u(0.0205), -u(0.0105), u(0.0585)]} material={bone}><torusGeometry args={[u(0.0108), u(0.0022), 8, 20]} /></mesh>
+            <Ball p={V(s * u(0.0205), -u(0.0105), u(0.0545))} r={u(0.0082)} sc={[1.1, 0.9, 0.45]} mat={hueco} /><mesh position={[s * u(0.0205), -u(0.0105), u(0.0575)]} scale={[1.1, 0.92, 1]} material={bone}><torusGeometry args={[u(0.0092), u(0.0013), 6, 20]} /></mesh>
             <Tube pts={[V(s * u(0.036), -u(0.024), u(0.03)), V(s * u(0.044), -u(0.016), u(0.012)), V(s * u(0.0455), -u(0.014), -u(0.006))]} r={u(0.0042)} />
             <Ball p={V(s * u(0.04), -u(0.026), u(0.032))} r={u(0.0085)} sc={[1, 0.8, 0.7]} />
-            <Tube pts={[V(s * u(0.0475), -u(0.016), -u(0.004)), V(s * u(0.046), -u(0.048), u(0.004)), V(s * u(0.037), -u(0.071), u(0.02)), V(s * u(0.02), -u(0.079), u(0.04)), V(0, -u(0.0815), u(0.047))]} r={u(0.0058)} />
+            <Tube pts={[V(s * u(0.0435), -u(0.016), -u(0.004)), V(s * u(0.042), -u(0.048), u(0.004)), V(s * u(0.034), -u(0.07), u(0.02)), V(s * u(0.018), -u(0.078), u(0.036)), V(0, -u(0.0805), u(0.043))]} r={u(0.0058)} />
           </group>
         ))}
         <Ball p={V(0, -u(0.032), u(0.057))} r={u(0.0085)} sc={[0.6, 1.2, 0.6]} mat={hueco} />
-        {dientes.map((p, i) => <mesh key={i} position={[p.x, p.y + u(0.0105), p.z]} material={neutro("#f3eee0")}><boxGeometry args={[u(0.0042), u(0.0075), u(0.003)]} /></mesh>)}
+        {dientes.map((p, i) => <mesh key={i} position={[p.x, p.y + u(0.0105), p.z]} material={neutro("#f3eee0")}><boxGeometry args={[u(0.003), u(0.0052), u(0.0024)]} /></mesh>)}
         {/* cerebro: dos hemisferios + cerebelo + tronco; los dos con indicador son «ánimo» (anterior) y «sueño» (posterior) */}
         <Organ id="ánimo" color="#d98a8f" pos={V(0, u(0.014), u(0.018))} scale={[1, 0.88, 1.05]} r={u(0.03)} />
         <Organ id="sueño" color="#c9777f" pos={V(0, u(0.012), -u(0.016))} scale={[1, 0.88, 1]} r={u(0.03)} />
@@ -239,7 +239,6 @@ export function Anatomy({ m, picked, onPick, states, arrastrado }: { m: Medidas;
           <group key={"sc" + s}>
             <Tube pts={[pEs, pEs.clone().lerp(acr, 0.3).add(V(0, u(0.006), u(0.014))), pEs.clone().lerp(acr, 0.7).add(V(0, u(0.011), u(0.002))), acr]} r={u(0.0058)} />
             <mesh geometry={gOmoplato} material={bone} position={[s * u(0.088), l.sh.y - u(0.05), pb.zb + u(0.022)]} rotation={[0.08, 0, s * 0.06]} scale={[s, 1, 1]} />
-            <Tube pts={[acr, acr.clone().add(V(-s * u(0.012), -u(0.004), -u(0.028))), V(s * u(0.115), l.sh.y - u(0.04), pb.zb + u(0.045))]} r={u(0.0042)} />
           </group>
         );
       })}

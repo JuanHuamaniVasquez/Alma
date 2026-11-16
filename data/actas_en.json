@@ -437,6 +437,21 @@
     "wearables",
     "independent cohort"
    ]
+  },
+  "FB-029": {
+   "title": "Cosmic rays as a second witness to solar storms",
+   "summary": "The same CUSUM that watches bodies and habitats, run on a real neutron monitor (Oulu, 2008–2025) against 22 severe geomagnetic storms. It catches 41% of them (chance: 6%, p = 0.001) with under 5 false alarms a year, but a median 13 hours after the storm index reaches storm level. Cosmic rays confirm a storm; they do not forecast it. Sealed before running.",
+   "outcome": "mixed",
+   "data": "real",
+   "tags": [
+    "cosmic rays",
+    "neutron monitor",
+    "cusum",
+    "geomagnetic storm",
+    "forbush",
+    "kp",
+    "lead time"
+   ]
   }
  }
 }

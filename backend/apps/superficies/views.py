@@ -573,6 +573,10 @@ class Frontera(SoloLectura):
                         "numeros": {"filas": len(a["conciliacion"]["filas"]), "de": 28, "linfocitos_r1_pct": round(a["tabla"]["abs_lymphocytes|R+1"]["mediana_cambio_pct"])}})
         if (a := r.get("FB-025")):
             out.append({"id": "FB-025", "verdict": _veredicto_agregado(a["veredictos"]), "hash": a["hash_acta"][:8], "numeros": {"piso_linfocitos_pct": round(a["piso_pct"]["abs_lymphocytes"])}})
+        if (a := r.get("FB-029")):
+            pr = a["prueba"]
+            out.append({"id": "FB-029", "verdict": _veredicto_agregado(a["veredictos"]), "hash": a["hash_acta"][:8],
+                        "numeros": {"sens_pct": round(100 * pr["kp7"]["sensibilidad"]), "azar_pct": round(100 * pr["placebo"]["media_placebo"]), "adelanto_h": round(pr["kp7"]["adelanto_mediano_h"] or 0), "falsas_anio": pr["falsas_por_anio"], "n_eventos": pr["kp7"]["n_eventos"]}})
         try:
             q = _ecg()["calidad"]
             out.append({"id": "ECG", "verdict": "measured", "hash": None, "numeros": {"hallados": q["detectados"], "referencia": q["referencia"], "sensibilidad_pct": round(100 * q["sensibilidad"], 2)}})

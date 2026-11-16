@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Room } from "@/components/Room";
 import { Stamp } from "@/components/Stamp";
 import { useAlma } from "@/components/Alma";
-import { get, type Banner, type Entorno, type Scenario, type SpaceEvent } from "@/lib/api";
+import { get, type Banner, type Entorno, type Frontera, type Scenario, type SpaceEvent } from "@/lib/api";
 
 const SUN = [
   { id: "suvi195", name: "Corona · 195 Å", anim: true, note: "GOES-19 SUVI · hot plasma, ~1.2 million K" },
@@ -121,6 +121,9 @@ const fmt = (x: number | undefined, d = 1) => (x == null ? "—" : x.toLocaleStr
 
 /** Respuesta honesta a «¿es el Sol la única radiación?»: no. Los valores en vivo vienen de /api/entorno/ (NOAA SWPC GOES y NMDB/Oulu); las referencias son literatura citada, no mediciones de ALMA. */
 function RadiationPanel({ onClose, env }: { onClose: () => void; env: Entorno | null }) {
+  const [fr, setFr] = useState<Frontera | null>(null);
+  useEffect(() => { get<Frontera>("/api/frontera/").then(setFr); }, []);
+  const f29 = fr?.fichas.find((f) => f.id === "FB-029")?.numeros;
   const p = env?.protones, e = env?.electrones, n = env?.neutrones;
   const filas = [
     { t: "Solar particle events", sub: "episodic · hours to days", ok: !!p?.disponible, que: "Protons accelerated by flares and shock waves. Rare, but the only source that can deliver a harmful dose quickly; NASA limits the dose from a single event to 250 mSv.",
@@ -154,7 +157,8 @@ function RadiationPanel({ onClose, env }: { onClose: () => void; env: Entorno | 
               <h3 className="font-display text-[1.35rem] text-ink">{f.t}</h3>
               <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">{f.sub}</p>
               <p className="mt-3 text-[14px] leading-relaxed text-ink-dim">{f.que}</p>
-              {f.live ? (<><p className="mt-3 font-mono text-[11px] tracking-[0.04em] text-ink">{f.live}</p><Spark v={f.serie ?? []} umbral={f.umbral} /><p className="font-mono text-[9.5px] uppercase tracking-[0.14em] text-ink-faint">LIVE · REAL · {f.fuente}{f.umbral != null ? " · dashed = threshold" : ""}</p></>)
+              {f.live ? (<><p className="mt-3 font-mono text-[11px] tracking-[0.04em] text-ink">{f.live}</p><Spark v={f.serie ?? []} umbral={f.umbral} /><p className="font-mono text-[9.5px] uppercase tracking-[0.14em] text-ink-faint">LIVE · REAL · {f.fuente}{f.umbral != null ? " · dashed = threshold" : ""}</p>
+                {f.t === "Galactic cosmic rays" && f29 && <p className="mt-3 border-t border-line pt-3 text-[12.5px] leading-snug text-ink-dim">Sealed test FB-029: our CUSUM on this monitor caught {f29.sens_pct}% of {f29.n_eventos} severe storms (chance: {f29.azar_pct}%), a median {Math.abs(f29.adelanto_h)} h <em>after</em> the storm index reached storm level. It confirms a storm; it does not forecast one.</p>}</>)
                 : <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.14em] text-warn">{f.fuente ? "source unavailable right now — the absence is data" : "not modelled"}</p>}
             </article>
           ))}

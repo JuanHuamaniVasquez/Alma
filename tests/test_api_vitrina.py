@@ -347,6 +347,7 @@ def test_frontera_deriva_colores_y_cifras_del_registro_sellado():
     assert vg({"H1": "SOSTENIDA", "H2": "VÁLIDO"}) == "held" and vg({"H1": "REFUTADA", "H2": "NO CONCLUYENTE"}) == "failed" and vg({"H1": "SOSTENIDA", "H2": "REFUTADA"}) == "mixed"
     f = {x["id"]: x for x in get("/api/frontera/").json()["fichas"]}
     assert f["FB-021"]["numeros"]["fpr_s1_pct"] == 5.06 and f["FB-024"]["numeros"]["filas"] == 1 and f["FB-023"]["numeros"]["mejor_pct"] == 71
+    assert f["FB-029"]["numeros"] == {"sens_pct": 41, "azar_pct": 6, "adelanto_h": -13, "falsas_anio": 4.89, "n_eventos": 22} and f["FB-029"]["verdict"] == "mixed"
     assert all(x["verdict"] in {"held", "failed", "mixed", "measured", "open"} for x in f.values())
 
 
