@@ -1,3 +1,5 @@
+> **HISTÓRICO.** Guía inicial para montar el repo (ya está montado). El índice vigente de documentos es `docs/entrega/PLAN-DE-ENTREGA.md` (qué abrir y en qué orden) y `docs/entrega/FUENTES.md` (de dónde sale cada dato).
+
 # LEEME — Cómo armar el repo de ALMA para trabajar con Claude Code (5 minutos)
 
 ## 1 · Qué va donde

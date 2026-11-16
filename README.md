@@ -2,7 +2,7 @@
 
 Health-monitoring software for astronauts (NASA Space Apps 2026 · Challenge 4: *Create Health Monitoring Software for Astronauts on Space Missions*).
 
-**Live demo:** <https://alma-iota-dusky.vercel.app> · [The Storm room (real Sun, live space weather)](https://alma-iota-dusky.vercel.app/storm) · **Code:** <https://github.com/userly03/ALMA>
+**Live demo:** <https://alma-iota-dusky.vercel.app> · **Video:** <https://www.youtube.com/watch?v=WkNsMz1kj2g> · [The Storm room (real Sun, live space weather)](https://alma-iota-dusky.vercel.app/storm) · **Code:** <https://github.com/userly03/ALMA>
 
 One rule runs through everything: **no colour without a contestable rule behind it.** Every alarm prints its receipt — the exact rule, the seed that reproduces it, the hash of the preregistration it came from. Every "all clear" states what the detector could actually have seen, given the days really observed. Every experiment was sealed with a SHA-256 hash **before** it ran, and the failures are published next to the successes.
 
@@ -13,7 +13,7 @@ One rule runs through everything: **no colour without a contestable rule behind 
 ---
 
 ## Contents
-1. [What ALMA is](#what-alma-is) · 2. [Run it](#run-it) · 3. [The interface: eight rooms](#the-interface-eight-rooms) · 4. [ALMA, the assistant](#alma-the-assistant) · 5. [Real vs simulated](#real-vs-simulated) · 6. [The science: preregistered and published, failures included](#the-science) · 7. [Architecture](#architecture) · 8. [API](#api) · 9. [Tests and honesty checks](#tests-and-honesty-checks) · 10. [Known limits](#known-limits) · 11. [Roadmap](#roadmap) · 12. [Credits and licences](#credits-and-licences) · 13. [Document map](#document-map)
+1. [What ALMA is](#what-alma-is) · 2. [Run it](#run-it) · 3. [The interface: nine rooms](#the-interface-nine-rooms) · 4. [ALMA, the assistant](#alma-the-assistant) · 5. [Real vs simulated](#real-vs-simulated) · 6. [The science: preregistered and published, failures included](#the-science) · 7. [Architecture](#architecture) · 8. [API](#api) · 9. [Tests and honesty checks](#tests-and-honesty-checks) · 10. [Known limits](#known-limits) · 11. [Roadmap](#roadmap) · 12. [Credits and licences](#credits-and-licences) · 13. [Document map](#document-map)
 
 ## What ALMA is
 - **A ledger of nine budgets** — air, water, energy, dose, rhythm, load, immunity, conduct, time. A book *closes* if |residual| ≤ 2σ of its manifest's own uncertainty; otherwise it asks a question (never "a verdict"). Books with no real anchor stay **empty** instead of being simulated.
@@ -47,7 +47,7 @@ uv run --with kokoro-onnx --with soundfile python scripts/voz_busqueda.py   # se
 ```
 Model files go in `data/voz_modelo/` (not versioned; see `scripts/voz_alma.py`). Voice and effect: `ALMA_VOICE`, `ALMA_FX` in `.env.example`.
 
-## The interface: eight rooms
+## The interface: nine rooms
 Navigate with the top bar or the ← → keys. Everything that talks has subtitles; sound and subtitles can be switched off next to ALMA's orb. Tap/click almost anything and ALMA explains it.
 
 | # | Room | Question it answers | What you see | Data |
@@ -55,7 +55,7 @@ Navigate with the top bar or the ← → keys. Everything that talks has subtitl
 | 01 | **Medical Module** | *How am I, really?* | The crew (5 fictional characters), **inside** the ship (stylized uniform, face, callsign) or **outside** (NASA Z-2 suit). **Books**: nine rings, orange only where a book does not close; a day selector; a paper receipt per ring. **Body**: the six official indicators (blood pressure, heart rate, glucose, temperature, sleep, mood) as clickable dots; heart rate and sleep show real states, the rest say why they are empty. Mood is captured in **three touches**. | Habitat **SIMULATED**; body states **REAL stand-ins**; crew **FICTIONAL** |
 | 02 | **Machine Room** | *What did the engine see?* | Two "seismograph tapes" — what the manifest promised vs what was observed, in σ; a surprise is a *flag, not an alarm*. | SIMULATED |
 | 03 | **The Leak** | *Can a detector be blind?* | The kill demo: same day, same data, two detectors. Inject a 0.30 kg leak: the manifest detector scores 0.53σ and stays silent; the conservation law says the loop does not close. The preregistration hash is on screen. | SIMULATED (act FB-005-D1) |
-| 04 | **The Vault** | *Can this be faked?* | The 21 preregistered acts with their hashes. **Search by typing or by voice**, filters, pagination, and **"verify it yourself"**: your browser recomputes each act's SHA-256. | REAL project records |
+| 04 | **The Vault** | *Can this be faked?* | The 30 preregistered acts with their hashes. **Search by typing or by voice**, filters, pagination, and **"verify it yourself"**: your browser recomputes each act's SHA-256. | REAL project records |
 | 05 | **The Foundry** | *How is an idea born?* | Hypothesis cards in four columns, each showing **what would kill it**; the compiled detector; a dated public forecast. | REAL (not astronauts) |
 | 06 | **The Storm** | *What is the Sun doing right now?* | The real Sun today (NASA SDO) and the real planetary K index (NOAA); press **G1–G5** to simulate a storm (clearly stamped SIMULATED UNIVERSE, with recipe, seed and hash). | REAL + labelled simulation |
 | 07 | **The Budget** | *Do the ship's books close?* | The nine books as a ledger: expected, observed, residual, the "blind below 2σ" floor. Seven books are empty on purpose: *no ledger · nothing simulated*. | SIMULATED (2 books) |
@@ -95,7 +95,7 @@ Policy ([`docs/politica-de-datos.md`](docs/politica-de-datos.md)): *nothing simu
 | **Not available** | Blood pressure, glucose, temperature (no verified sensor uncertainty) · energy, dose, rhythm, load, immunity, conduct books · OSDR OS-892 data files — all shown **empty and explained** | — |
 
 ## The science
-Every claim is an **act** ([`docs/actas/`](docs/actas/)): question, success rule and kill rule, hashed (SHA-256 of its exact bytes) **before** its runner can execute; runners refuse to run on an altered act, on different data, or twice. Seeds are public (20261111–20261115). Each experiment has a control that can fail. The authors' own predictions are recorded and reported when wrong. **21 acts sealed, 16 executed once.**
+Every claim is an **act** ([`docs/actas/`](docs/actas/)): question, success rule and kill rule, hashed (SHA-256 of its exact bytes) **before** its runner can execute; runners refuse to run on an altered act, on different data, or twice. Seeds are public (20261111–20261115). 30 acts sealed, 25 executed so far. Each experiment has a control that can fail. The authors' own predictions are recorded and reported when wrong. **21 acts sealed, 16 executed once.**
 
 | Act | Result (numbers from `docs/actas/RESULTADOS.jsonl`) |
 |---|---|
@@ -110,6 +110,9 @@ Every claim is an **act** ([`docs/actas/`](docs/actas/)): question, success rule
 | FB-018 / FB-019 · the adversary | A zigzag (same mean, more variance) is caught 1.8 % of the time; the limit is *information*: a 28-day baseline reaches 95 %. |
 | FB-020 · variance channel on real data | Sees the zigzag (99 %) but **9.0 % false alarms — refuted**; disabled for alarms. |
 | FB-020-v2 · robust variant | Selected on one cohort; validation had 5 windows → **inconclusive**. |
+| FB-024 / FB-025 · real astronaut blood (Inspiration4, n = 4) | 1 of 28 blood-count rows does not reconcile; lymphocytes fell a median 24 % on landing day but **no astronaut left the personal band** (floor ≈ ±70 %). |
+| FB-026 / FB-027 / FB-028 · hypotheses written by the lab | Short sleep lowers overnight HRV by 0.21 sd (**sustained**, p = 0.0001, placebo null); the pulse effect shrank to +0.11 bpm in an independent cohort (**refuted**); four more refuted. |
+| FB-029 · cosmic rays as a second witness | The same CUSUM on a neutron monitor catches 41 % of severe storms (chance 6 %), a median 13 h after the storm index crosses storm level: **confirms, does not forecast**. |
 
 Related work and what we can and cannot claim: [`docs/revision-literatura.md`](docs/revision-literatura.md) — **no algorithmic novelty is claimed** (CUSUM, data reconciliation and spacecraft mass balance are established); the contribution is a *method of work*. A negative-results-first manuscript draft is in [`docs/preprint/manuscript.md`](docs/preprint/manuscript.md) (not submitted).
 
@@ -132,7 +135,7 @@ Ingestion → Ledger → Engine → Foundry → Surfaces        (one direction o
 ```
 | Path | What |
 |---|---|
-| `src/contratos/` | The 14 data contracts DC-01…DC-14 (versioned in DOC-01, currently v0.2.8) — sensors, self-report, space events, ledger, alarm-with-receipt, residual stream, capsule, conservation closure, daily shape, error contagion, sensor life, foundry card, ingestion attempt, green receipt |
+| `src/contratos/` | The 14 data contracts DC-01…DC-14 (versioned in DOC-01, currently v0.2.10) — sensors, self-report, space events, ledger, alarm-with-receipt, residual stream, capsule, conservation closure, daily shape, error contagion, sensor life, foundry card, ingestion attempt, green receipt |
 | `src/ingesta/` | Adapters (LifeSnaps, Zenodo, Utah), NOAA SWPC client and parsers, sensor-uncertainty table with sources |
 | `src/libro/` | Ledger, real `time` budget, the fictional crew (`tripulacion.py`) |
 | `src/motor/` | Baselines, CUSUM, conservation closure (*El Contrapeso*), triangulation, water integrator, variance channel, adversary, storm scenarios, green receipts, per-person indicator state |
@@ -151,7 +154,7 @@ Read-only JSON, with a REAL/SIMULATED `banner` in every response and **no indivi
 
 ## Tests and honesty checks
 ```bash
-uv run pytest -q                       # 393 tests: contracts, engine, API, privacy, narrator, honesty checklist
+uv run pytest -q                       # 475 tests: contracts, engine, API, privacy, narrator, honesty checklist
 cd web && pnpm test:unit               # 6 tests of the search/intent engine
 cd web && pnpm e2e                     # 25 real-click checks in headless Chrome (audio starts after the click, arrows, Body → Mood in 3 touches,
                                        # leak demo, storm scenario, vault search by typing and by (simulated) voice, 21 of 21 hashes recomputed in the browser…)
@@ -161,7 +164,7 @@ sysmap --root . check                  # structural map: nothing worse than the 
 
 ### Lab and world (M7–M8)
 
-- **The Foundry generates hypotheses.** `src/fabrica/generador.py` crosses a library of 11 published mechanisms with the real data the lab holds and emits candidates (6 ready to seal, 3 blocked because the data does not exist, 2 already tested); the Foundry shows them in "The nursery", then the sealed verdicts (12 cards, 3 per page). The generator also **drafts the preregistration** from the same specification the runner uses; FB-026 is the first full loop: candidate → drafted act → hash → one run → cards (sleep below your own median lowers overnight HRV by 0.21 sd, p = 0.0001).
+- **The Foundry generates hypotheses.** `src/fabrica/generador.py` crosses a library of 12 published mechanisms with the real data the lab holds and emits candidates (today 9 already tested and sealed, 3 blocked because the data does not exist — in-flight data); the Foundry shows them in "The nursery", then the sealed verdicts (16 cards: 10 refuted, 4 sustained, 3 per page). The generator also **drafts the preregistration** from the same specification the runner uses; FB-026 is the first full loop: candidate → drafted act → hash → one run → cards (sleep below your own median lowers overnight HRV by 0.21 sd, p = 0.0001).
 - **Real NASA/NOAA in the rings.** Dose ← GOES protons, Rhythm ← ISS sunlight, Energy ← solar X-rays (live; stored as DC-03 events with a raw-reading hash, DOC-01 v0.2.9); Time, Immunity, Load and Conduct show sealed results. Tap a ring for source and limit.
 - **The Frontier** (World ▸ Frontier): live ISS map, NASA EPIC Earth, blood of four real astronauts (Inspiration4, OSD-569), the OSDR catalogue, and our tests with their honest verdicts. **The Counterweight** (Ship ▸ Budget) shows conservation closure per day (simulated universe).
 - NASA photographs on each room's header are real, credited, and linked (`web/public/nasa/credits.json`).

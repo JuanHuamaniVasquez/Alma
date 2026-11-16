@@ -27,3 +27,6 @@ data/blender_user/
 data/modelos/*.blend
 *.blend1
 data/entorno_vivo/
+
+# vault de Obsidian generado por graphify (solo lectura humana; se regenera con /graphify . --obsidian)
+graphify-out/obsidian/
