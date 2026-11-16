@@ -1,0 +1,5 @@
+# Los hashes científicos dependen de los bytes exactos ya registrados en Git.
+docs/actas/** -text
+data/** -text
+# Render ejecuta estos archivos en Linux, incluso si se editan desde Windows.
+*.sh text eol=lf

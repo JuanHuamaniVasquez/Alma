@@ -7,6 +7,9 @@ __pycache__/
 .ruff_cache/
 graphify-out/cache/
 .env
+.env.*
+!.env.example
+.vercel/
 node_modules/
 .next/
 data/externos/

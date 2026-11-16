@@ -3,6 +3,7 @@ import os
 import sys
 from pathlib import Path
 
+import dj_database_url
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,7 +14,18 @@ if str(RAIZ) not in sys.path:  # el dominio puro (src/) cuelga de la raíz del r
 
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 DEBUG = os.environ.get("DJANGO_DEBUG", "0") == "1"
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if h.strip()]
+if os.environ.get("RENDER_EXTERNAL_HOSTNAME"):
+    ALLOWED_HOSTS.append(os.environ["RENDER_EXTERNAL_HOSTNAME"])
+
+# Render termina TLS en su proxy; la base remota exige TLS por defecto.
+if os.environ.get("RENDER") == "true":
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+    SECURE_REDIRECT_EXEMPT = [r"^healthz/$"]
+    SECURE_HSTS_SECONDS = 31536000
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 DJANGO_APPS = [
     "django.contrib.contenttypes",
@@ -35,13 +47,20 @@ INSTALLED_APPS = DJANGO_APPS + TERCEROS + APPS_ALMA
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
 TEMPLATES = []
 
-DATABASES = {
+DATABASES = {"default": dj_database_url.parse(
+    os.environ["DATABASE_URL"],
+    conn_max_age=0,
+    conn_health_checks=True,
+    ssl_require=os.environ.get("DATABASE_SSL_REQUIRE", "1") == "1",
+)} if os.environ.get("DATABASE_URL") else {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ["POSTGRES_DB"],

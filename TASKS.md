@@ -153,6 +153,10 @@
 - [x] **M9.10 Anatomía pulida** (2026-11-15): esqueleto completo procedural AJUSTADO a cada cuerpo medido sobre su malla (`src/lib/anatomia.ts`, `src/components/Anatomy.tsx`): cráneo con órbitas y dientes, mandíbula, 24 vértebras con apófisis, sacro, 12 pares de costillas con cartílago y esternón, clavículas y omóplatos, brazos con manos (carpo, metacarpianos, falanges), pelvis, piernas con rótula y pies; órganos en el lado correcto (el paciente mira a +z: su izquierda es +x), vasos, intestino, bazo, riñones; marcas de los indicadores sobre los órganos medidos.
 - [x] **M9.11 Anatomía humana REAL** (D-58): BodyParts3D 4.0 (CC BY 4.0, S-37) → GLB con Draco (3,3 MB) → `AnatomyReal.tsx` lo ajusta a cada cuerpo medido (cadenas hombro-codo-muñeca-dedos y cadera-rodilla-tobillo-pie, tronco por perfil, cabeza por tamaño); cráneo, 24 vértebras, costillas con cartílago, manos, pelvis, pies y órganos reales; indicadores sobre corazón, lóbulo frontal, pineal, hipotálamo, páncreas y arteria del brazo izquierdo; respaldo procedural si no carga; atribución en pantalla y README.
 
+## M10 · Despliegue gratuito (petición del humano, 2026-11-15)
+
+- [ ] **M10.1 Vercel + Render + Neon** — configurar PostgreSQL remoto con TLS, hosts de Render, Gunicorn, proxy de Next.js, arranque idempotente de la demo y ECG público verificado por hash. Preparación implementada: build Next.js con Node 22 correcto, 6 tests web correctos, 459 pytest correctos / 10 omitidos; 5 fallos y 3 errores preexistentes por lecturas crudas no versionadas (reproducidos en copia limpia de 4e579c1). `.gitattributes` conserva los hashes científicos. Ver `docs/despliegue.md`. Publicación pendiente de conectar las cuentas de hosting; no se marca terminado.
+
 ## Bloqueado / decisiones pendientes del humano (no son ítems de código)
 
 - Stack definitivo (M0.1) — propuesta por defecto en CLAUDE.md §2.

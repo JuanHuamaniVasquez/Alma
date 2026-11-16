@@ -21,6 +21,8 @@ One rule runs through everything: **no colour without a contestable rule behind 
 - **An interface in English with an assistant, ALMA,** whose every sentence is a template + a data value + its source. It is **not** a language model: it cannot invent a number.
 
 ## Run it
+Para publicar la demo sin dominio propio: [Vercel + Render + Neon](docs/despliegue.md).
+
 Needs Python 3.12 (`uv`), PostgreSQL, Node 22 + `pnpm`, Chrome (for the tests that drive a browser). Offline-capable once installed (3D model, fonts, voice and the last Sun image are local).
 
 ```bash
