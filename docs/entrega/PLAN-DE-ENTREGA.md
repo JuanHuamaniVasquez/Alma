@@ -38,7 +38,7 @@ Sí: **abre con lo más fuerte y no con la arquitectura.** El jurado decide en l
 |---|---|---|---|---|
 | **Video 30–60 s** (obligatorio del formulario) | mp4, inglés | guion listo | `docs/submit/video-guion.md` | Dev C (grabación + voz ALMA) |
 | **Video largo 2–3 min** (opcional, para la ronda del jurado) | mp4, inglés | guion listo | mismo archivo, §«Versión extendida» | Dev C |
-| **Informe IEEE (LaTeX)** | PDF 6–8 pp. | esqueleto listo; **sin redactar** | `docs/informe/ieee/main.tex` + `INVENTARIO-IEEE.md` + `docs/preprint/manuscript.md` (borrador 1 220 palabras, ya en inglés) | Dev A (resultados) + Dev B (sistema) |
+| **Informe IEEE (LaTeX, inglés)** | PDF ≈ 5–6 pp. | **PRIMER BORRADOR COMPLETO** en `docs/informe/ieee/main.tex` (compilar en Overleaf; ver su README) | `docs/informe/ieee/main.tex` + `INVENTARIO-IEEE.md` + `docs/preprint/manuscript.md` (borrador 1 220 palabras, ya en inglés) | Dev A (resultados) + Dev B (sistema) |
 | **Formulario Space Apps** | texto | casi listo | `docs/submit/formulario.md` (faltan URLs repo/PDF) | cualquiera |
 | **Demo en vivo (4 min)** | — | lista | `docs/submit/ruta-de-demostracion.md` | quien presente |
 

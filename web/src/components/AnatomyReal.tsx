@@ -112,7 +112,7 @@ function construir(scene: THREE.Object3D, m: Medidas): Ajuste {
   const cr = get("neurocranium"), mand = get("mandible");
   const [cy0, cy1] = rango(cr, 1), [my0] = rango(mand, 1);
   const centroCr = V((rango(cr, 0)[0] + rango(cr, 0)[1]) / 2, (cy0 + cy1) / 2, (rango(cr, 2)[0] + rango(cr, 2)[1]) / 2);
-  const anchoCr = rango(cr, 0)[1] - rango(cr, 0)[0], kHead = (0.8 * m.headW) / Math.max(1e-6, anchoCr);   // el ancho del cráneo ≈ 0,8 del ancho de la cabeza medida (piel y pelo incluidos)
+  const anchoCr = rango(cr, 0)[1] - rango(cr, 0)[0], kHead = (0.8 * 0.8 * m.headW) / Math.max(1e-6, anchoCr);   // ancho del cráneo = 0,64 del de la cabeza medida (0,8 anatómico × 0,8 pedido: el humano lo ve grande frente al holograma)
   const anclaBP = por("atlas") ? centro(get("atlas"), () => true) : centroCr, anclaCh = torso(anclaBP);          // el cráneo se apoya en el atlas (C1) de la columna ajustada: unido al cuello, no al centro de la piel de la cabeza
   const cabeza = (v: V3): V3 => v.clone().sub(anclaBP).multiplyScalar(kHead).add(anclaCh);
 
