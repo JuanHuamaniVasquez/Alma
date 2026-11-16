@@ -6,7 +6,8 @@ import * as THREE from "three";
 import { BUDGETS, INDICATOR_NAMES, type Anillo, type Entorno, type Indicator, type LedgerDay } from "@/lib/api";
 import type { CrewLook } from "./CrewFigure";
 import { medirCuerpo, medidasPorDefecto, perfil } from "@/lib/anatomia";
-import { Anatomy, type OrganState } from "./Anatomy";
+import type { OrganState } from "./Anatomy";
+import { AnatomyReal } from "./AnatomyReal";
 
 useGLTF.setDecoderPath("/draco/");
 useGLTF.preload("/models/z2_suit.glb"); useGLTF.preload("/models/z2_helmet.glb");
@@ -159,7 +160,7 @@ function Suit({ helmet, crew, layer, pickedInd, onPickInd, states, ...props }: {
   return (
     <Body anchors={ANCHORS_EVA} {...props}>
       <primitive object={wrap}>{/* hijo de wrap: hereda la misma escala y desplazamiento que el traje (coordenadas nativas del modelo) */}
-        {layer === "anatomy" && <group name="anatomy-eva" userData={{ noholo: true }} position={[0, 0.06, 0.0]}><Anatomy m={MEDIDAS_EVA} picked={pickedInd} onPick={onPickInd} states={states} arrastrado={() => view.moved} /></group>}
+        {layer === "anatomy" && <group name="anatomy-eva" userData={{ noholo: true }} position={[0, 0.06, 0.0]}><AnatomyReal m={MEDIDAS_EVA} picked={pickedInd} onPick={onPickInd} states={states} arrastrado={() => view.moved} /></group>}
       </primitive>
     </Body>
   );
@@ -205,7 +206,6 @@ function CrewGLB({ name, layer, pickedInd, onPickInd, states, ...props }: { name
     m.position.set(-c.x, -box.min.y, -c.z);
     prepCrew(m);
     const medidas = medirCuerpo(m);                                  // el esqueleto se ajusta a ESTE cuerpo
-    if (typeof window !== "undefined") (window as unknown as { __medidas?: unknown }).__medidas = medidas;
     return { model: m, H: size.y, medidas };
   }, [scene]);
   useEffect(() => {
@@ -220,7 +220,7 @@ function CrewGLB({ name, layer, pickedInd, onPickInd, states, ...props }: { name
     });
   }, [layer, model, props.holo]);
   const anchors = useMemo(() => (medidas ? anchorsMedidas(medidas) : anchorsFor(H)), [H, medidas]);
-  return <Body anchors={anchors} {...props}><primitive object={model} />{layer === "anatomy" && <group userData={{ noholo: true }}><Anatomy m={medidas ?? medidasPorDefecto(H)} picked={pickedInd} onPick={onPickInd} states={states} arrastrado={() => view.moved} /></group>}</Body>;
+  return <Body anchors={anchors} {...props}><primitive object={model} />{layer === "anatomy" && <group userData={{ noholo: true }}><AnatomyReal m={medidas ?? medidasPorDefecto(H)} picked={pickedInd} onPick={onPickInd} states={states} arrastrado={() => view.moved} /></group>}</Body>;
 }
 
 /** La bahía holográfica: peana con anillos, haz de luz vertical y anillos de barrido en el suelo. Solo luz (aditivo): sin geometría pesada. */

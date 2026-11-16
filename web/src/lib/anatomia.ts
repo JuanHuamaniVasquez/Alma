@@ -74,8 +74,8 @@ export function medirCuerpo(root: THREE.Object3D): Medidas | null {
   const lados: Record<string, Lado> = {};
   for (const s of [-1, 1]) {
     const base = s < 0 ? d.L : d.R;
-    const hip = pierna(s, (hipY - ymin) / S) ?? base.hip, kn = pierna(s, 0.285) ?? base.kn, an = pierna(s, 0.045) ?? base.an;
-    hip.y = hipY; kn.y = y(0.285); an.y = y(0.039);
+    const kn = pierna(s, 0.285) ?? base.kn, an = pierna(s, 0.045) ?? base.an, hip = V(s * 0.056 * S, hipY, 0);   // a la altura de la cadera las dos piernas forman un solo grupo: la articulación se coloca por proporción (z se fija abajo, con el tronco)
+    kn.y = y(0.285); an.y = y(0.039);
     let zheel = Infinity, ztoe = -Infinity;
     for (let i = 0; i < pts.length; i += 3) if (pts[i + 1] < y(0.03) && Math.sign(pts[i]) === s && Math.abs(pts[i]) > 0.02 * S) { zheel = Math.min(zheel, pts[i + 2]); ztoe = Math.max(ztoe, pts[i + 2]); }
     lados[s < 0 ? "L" : "R"] = { ...base, hip, kn, an, heel: V(an.x, ymin, Number.isFinite(zheel) ? zheel + 0.012 * S : an.z - 0.04 * S), toe: V(an.x * 1.04, ymin, Number.isFinite(ztoe) ? ztoe - 0.004 * S : an.z + 0.1 * S) };
@@ -105,9 +105,9 @@ export function medirCuerpo(root: THREE.Object3D): Medidas | null {
       if (Math.hypot(pts[i] - e.x, pts[i + 2] - e.z) < 0.05 * S && Math.sign(pts[i]) === s) tipY = Math.min(tipY, pts[i + 1]);
     }
     const tip = aprox(Number.isFinite(tipY) ? tipY : y(0.4));
-    const sh = aprox(y(0.80)), L = sh.distanceTo(tip), up = dir.clone();
-    const el = sh.clone().addScaledVector(up.clone().negate(), 0.186 / 0.332 * (L - 0.108 * S));
-    const wr = tip.clone().addScaledVector(up, 0.108 * S);
+    const wr = tip.clone().addScaledVector(dir, 0.108 * S), sh = aprox(y(0.80));
+    sh.x = Math.sign(sh.x) * Math.min(Math.abs(sh.x), 0.108 * S);          // el eje del brazo extrapolado cae sobre el deltoides: la articulación del hombro está más adentro
+    const el = sh.clone().lerp(wr, 0.186 / 0.332);
     return { sh, el, wr, tip };
   };
   const bl = fila(-1), br = fila(1);
@@ -130,6 +130,7 @@ export function medirCuerpo(root: THREE.Object3D): Medidas | null {
     return n ? { c: V(sx / n, top - 0.0585 * S, sz / n), w: xmax - xmin, d: zmax - zmin } : null;
   })();
   const zMed = torso.length ? (torso[0].zb + torso[0].zf) / 2 : 0;
+  for (const l of [L, R]) l.hip.z = zMed + 0.02 * S;
   return {
     ...d, S, medido: true, L, R, torso: torso.length > 4 ? torso : d.torso,
     head: cabeza?.c ?? d.head, headW: cabeza ? cabeza.w * 0.88 : d.headW, headH: 0.117 * S, headD: cabeza ? cabeza.d * 0.9 : d.headD,

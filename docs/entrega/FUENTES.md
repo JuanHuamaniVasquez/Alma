@@ -50,6 +50,8 @@ Cada respuesta cruda se hashea (DC-03/DC-13); si una fuente cae, la API devuelve
 | Método e-proceso (no es nuestro) | arXiv:2203.03532 (Shin, Ramdas, Rinaldo) | `revision-literatura.md` |
 | Recursos del reto (listado del equipo) | `docs/recursos-nasa.md` | — |
 
+| **Anatomía humana real (BodyParts3D 4.0)** | https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html · licencia CC BY 4.0 (atribución obligatoria) | capa Anatomy (`anatomy_bp3d.glb`) | S-37 |
+
 ## D · Otros
 Modelo 3D del traje (S-17: https://github.com/nasa/NASA-3D-Resources) · voz de ALMA (S-18: https://huggingface.co/hexgrad/Kokoro-82M) · PDF fundacional (S-11, `docs/ALMA-documento-del-proyecto-v0.3.pdf`) · biblioteca de literatura verificada (S-06, S-16, S-19: `docs/auditoria-de-fuentes.md`, `docs/revision-literatura.md`).
 

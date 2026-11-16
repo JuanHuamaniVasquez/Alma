@@ -196,3 +196,9 @@ Every source, licence and simulated component: [`docs/politica-de-datos.md`](doc
 
 ## Team handoff
 Sources and APIs: [`docs/entrega/FUENTES.md`](docs/entrega/FUENTES.md). Start with [`docs/entrega/PLAN-DE-ENTREGA.md`](docs/entrega/PLAN-DE-ENTREGA.md): ranking of the strongest results, video scripts (`docs/submit/video-guion.md`), IEEE LaTeX skeleton (`docs/informe/ieee/`), and the open work list.
+
+
+## Third-party assets and attribution
+- **Human anatomy (Anatomy layer):** BodyParts3D, © The Database Center for Life Science, licensed under [CC Attribution 4.0 International](https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html). Subset of the 4.0 release (189 bones, costal cartilages, organs), converted with `scripts/anatomia_bp3d_a_glb.py` and fitted to each fictional crew member at load time. Shown for illustration; not a scan of any person and not a diagnosis.
+- **Cosmic-ray data:** we acknowledge the NMDB database (www.nmdb.eu), founded under the European Union's FP7 programme (contract no. 213007), and the PIs of individual neutron monitors: Oulu (Sodankyla Geophysical Observatory of the University of Oulu, Finland).
+- Other sources and licences: `docs/entrega/FUENTES.md`, `docs/politica-de-datos.md`.
