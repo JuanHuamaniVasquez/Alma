@@ -2,6 +2,8 @@
 
 Health-monitoring software for astronauts (NASA Space Apps 2026 · Challenge 4: *Create Health Monitoring Software for Astronauts on Space Missions*).
 
+**Live demo:** <https://alma-iota-dusky.vercel.app> · [The Storm room (real Sun, live space weather)](https://alma-iota-dusky.vercel.app/storm) · **Code:** <https://github.com/userly03/ALMA>
+
 One rule runs through everything: **no colour without a contestable rule behind it.** Every alarm prints its receipt — the exact rule, the seed that reproduces it, the hash of the preregistration it came from. Every "all clear" states what the detector could actually have seen, given the days really observed. Every experiment was sealed with a SHA-256 hash **before** it ran, and the failures are published next to the successes.
 
 ![The Medical Module: a crew member, the nine books as rings, and a paper receipt for the air book](docs/screenshots/01-medical-module.jpg)
@@ -65,6 +67,7 @@ Navigate with the top bar or the ← → keys. Everything that talks has subtitl
 | ![The Leak](docs/screenshots/04-the-leak.jpg) | ![The Vault](docs/screenshots/05-the-vault.jpg) |
 | ![The Foundry](docs/screenshots/06-the-foundry.jpg) | ![The Storm](docs/screenshots/07-the-storm.jpg) |
 | ![The Budget](docs/screenshots/08-the-budget.jpg) | ![The Capsule](docs/screenshots/09-the-capsule.jpg) |
+| ![The Frontier](docs/screenshots/10-the-frontier.jpg) | ![Real human anatomy fitted to a crew member](docs/screenshots/11-anatomy.jpg) |
 
 ### Medical Module extras (M6)
 

@@ -24,6 +24,7 @@ ALMA is health-monitoring software for astronauts built around one rule: no colo
 Not astronaut data. The habitat is a labelled simulation anchored to public NASA figures. Our replication of an earlier 10/10 detection result reached 8/10 and is reported as "documented, not replicated". The variance channel failed its real-data test (9% false alarms) and is not enabled for alarms.
 
 ## Links (to be filled by the team)
-- Code repository: `<TEAM: add public repo URL>`
+- Code repository: https://github.com/userly03/ALMA  *(must be PUBLIC when submitting)*
+- Live demo: https://alma-iota-dusky.vercel.app · The Storm room: https://alma-iota-dusky.vercel.app/storm
 - Project document (PDF v0.4): `<TEAM: add link>`
 - Demo video (30–60 s): `<TEAM: add link after recording — see video-guion.md>`

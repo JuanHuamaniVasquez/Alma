@@ -6,8 +6,8 @@ const OUT = new URL("../../docs/screenshots/", import.meta.url).pathname;
 mkdirSync(OUT, { recursive: true });
 const SHOTS = [
   ["01-medical-module", "/?awake=1&day=11&pick=aire&crew=LYRA"], ["02-body-indicators", "/?awake=1&mode=body&ind=fc&crew=RIGEL"], ["03-machine-room", "/machine?awake=1&pick=aire:10"],
-  ["04-the-leak", "/kill?awake=1&leak=1"], ["05-the-vault", "/vault?awake=1"], ["06-the-foundry", "/foundry?awake=1"], ["07-the-storm", "/storm?awake=1&sim=G3"],
-  ["08-the-budget", "/budget?awake=1"], ["09-the-capsule", "/capsule?awake=1"],
+  ["04-the-leak", "/kill?awake=1&leak=1"], ["05-the-vault", "/vault?awake=1"], ["06-the-foundry", "/foundry?awake=1"], ["07-the-storm", "/storm?awake=1"],
+  ["08-the-budget", "/budget?awake=1"], ["09-the-capsule", "/capsule?awake=1"], ["10-the-frontier", "/frontier?awake=1"], ["11-anatomy", "/?awake=1&crew=VEGA&layer=anatomy"],
 ];
 const b = await puppeteer.launch({ executablePath: process.env.CHROME ?? "/usr/bin/google-chrome", headless: "new", args: ["--no-sandbox", "--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
 for (const [name, path] of SHOTS) {
