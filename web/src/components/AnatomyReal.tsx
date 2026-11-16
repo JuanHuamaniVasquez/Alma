@@ -112,9 +112,8 @@ function construir(scene: THREE.Object3D, m: Medidas): Ajuste {
   const [cy0, cy1] = rango(cr, 1), [my0] = rango(mand, 1);
   const centroCr = V((rango(cr, 0)[0] + rango(cr, 0)[1]) / 2, (cy0 + cy1) / 2, (rango(cr, 2)[0] + rango(cr, 2)[1]) / 2);
   const kHead = (m.headH * 0.86) / Math.max(1e-6, cy1 - my0);
-  const centroCabezaCh = V(m.head.x, m.head.y + 0.0, m.head.z);
-  const centroCabezaBP = V(centroCr.x, (cy1 + my0) / 2, centroCr.z);
-  const cabeza = (v: V3): V3 => v.clone().sub(centroCabezaBP).multiplyScalar(kHead).add(centroCabezaCh);
+  const anclaBP = por("atlas") ? centro(get("atlas"), () => true) : centroCr, anclaCh = torso(anclaBP);          // el cráneo se apoya en el atlas (C1) de la columna ajustada: unido al cuello, no al centro de la piel de la cabeza
+  const cabeza = (v: V3): V3 => v.clone().sub(anclaBP).multiplyScalar(kHead).add(anclaCh);
 
   // ---- hombro: el brazo parte de donde el TÓRAX ajustado deja el hombro del modelo (así queda unido a su clavícula y omóplato); codo y muñeca siguen las medidas del personaje
   const hombro = { left: torso(BL.sh), right: torso(BR.sh) };
