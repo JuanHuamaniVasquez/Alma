@@ -111,13 +111,14 @@ function construir(scene: THREE.Object3D, m: Medidas): Ajuste {
   const cr = get("neurocranium"), mand = get("mandible");
   const [cy0, cy1] = rango(cr, 1), [my0] = rango(mand, 1);
   const centroCr = V((rango(cr, 0)[0] + rango(cr, 0)[1]) / 2, (cy0 + cy1) / 2, (rango(cr, 2)[0] + rango(cr, 2)[1]) / 2);
-  const kHead = (m.headH * 0.86) / Math.max(1e-6, cy1 - my0);
+  const kHead = (m.headH * 0.74) / Math.max(1e-6, cy1 - my0);
   const anclaBP = por("atlas") ? centro(get("atlas"), () => true) : centroCr, anclaCh = torso(anclaBP);          // el cráneo se apoya en el atlas (C1) de la columna ajustada: unido al cuello, no al centro de la piel de la cabeza
   const cabeza = (v: V3): V3 => v.clone().sub(anclaBP).multiplyScalar(kHead).add(anclaCh);
 
   // ---- hombro: el brazo parte de donde el TÓRAX ajustado deja el hombro del modelo (así queda unido a su clavícula y omóplato); codo y muñeca siguen las medidas del personaje
   const hombro = { left: torso(BL.sh), right: torso(BR.sh) };
-  const codo = { left: hombro.left.clone().lerp(CL.wr, 0.186 / 0.332), right: hombro.right.clone().lerp(CR.wr, 0.186 / 0.332) };
+  const flex = V(0, 0, -0.026 * m.S);                                   // brazo relajado: el codo cede hacia atrás y el antebrazo se adelanta (≈ 20° de flexión), no un palo recto
+  const codo = { left: hombro.left.clone().lerp(CL.wr, 0.186 / 0.332).add(flex), right: hombro.right.clone().lerp(CR.wr, 0.186 / 0.332).add(flex) };
   const brazoL = { left: [cadena(BL.sh, BL.el, hombro.left, codo.left), cadena(BL.el, BL.wr, codo.left, CL.wr), cadena(BL.wr, BL.tip, CL.wr, CL.tip)], right: [cadena(BR.sh, BR.el, hombro.right, codo.right), cadena(BR.el, BR.wr, codo.right, CR.wr), cadena(BR.wr, BR.tip, CR.wr, CR.tip)] };
   const piernaL = { left: [cadena(BL.hip, BL.knee, CL.hip, CL.kn), cadena(BL.knee, BL.ankle, CL.kn, CL.an), cadena(BL.ankle, BL.toe.clone().setX(BL.ankle.x), CL.an, V(CL.an.x, CL.toe.y, CL.toe.z))],
                     right: [cadena(BR.hip, BR.knee, CR.hip, CR.kn), cadena(BR.knee, BR.ankle, CR.kn, CR.an), cadena(BR.ankle, BR.toe.clone().setX(BR.ankle.x), CR.an, V(CR.an.x, CR.toe.y, CR.toe.z))] };
