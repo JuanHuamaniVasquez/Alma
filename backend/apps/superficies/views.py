@@ -206,6 +206,14 @@ class DemoKill(SoloLectura):
 _SWPC_REFRESCO: dict = {"t": 0.0}
 
 
+def _en_segundo_plano(f) -> None:
+    import threading
+    threading.Thread(target=f, daemon=True).start()
+
+
+_EJECUTAR = _en_segundo_plano        # los tests lo reemplazan por una llamada directa
+
+
 def _refrescar_swpc(cada_s: float = 600.0) -> None:
     """La Tormenta en vivo no debe mostrar un Kp viejo: si pasaron `cada_s` desde la última ingesta, se vuelve a leer SWPC (Kp y rayos X). Pasa por la misma ruta que
     `manage.py ingestar_swpc` (archivo crudo + hash + DC-03 + DC-13, también si falla): mandamiento 1. Un fallo no rompe la respuesta: queda como DC-13 y se sirve lo ya guardado."""
@@ -213,6 +221,10 @@ def _refrescar_swpc(cada_s: float = 600.0) -> None:
     if time.time() - _SWPC_REFRESCO["t"] < cada_s:
         return
     _SWPC_REFRESCO["t"] = time.time()
+    _EJECUTAR(_ingerir_swpc)                                                   # en segundo plano: la respuesta no espera a la red; la siguiente petición ya ve lo nuevo
+
+
+def _ingerir_swpc() -> None:
     try:
         from apps.ingesta.repositorio import guardar_resultado
         from src.ingesta.archivo import ahora_utc
@@ -480,14 +492,18 @@ class Entorno(SoloLectura):
         if _ENTORNO["d"] is None or time.time() - _ENTORNO["t"] > 30:                     # caché de 30 s: respeta ≈1 petición/s de la fuente de la ISS
             from concurrent.futures import ThreadPoolExecutor
             nm_viejo = time.time() - _ENTORNO.get("t_nm", 0.0) > 600 or _ENTORNO.get("nm") is None      # NMDB publica por hora: se pregunta cada 10 min, no cada 30 s
-            with ThreadPoolExecutor(5) as ex:                                              # las fuentes en paralelo (≈ 1 s en vez de ≈ 6 s)
+            with ThreadPoolExecutor(6) as ex:                                              # las fuentes en paralelo (≈ 1 s en vez de ≈ 6 s)
                 fi, fp, fx, fe = (ex.submit(E.seguro, E.iss, E.URL_ISS), ex.submit(E.seguro, E.protones, E.URL_PROT), ex.submit(E.seguro, E.rayosx, E.URL_XR),
                                   ex.submit(E.seguro, E.electrones, E.URL_EL))
+                fa = ex.submit(E.seguro, E.avisos, E.URL_AL)
                 fn = ex.submit(E.seguro, E.neutrones, E.URL_NM) if nm_viejo else None
             if fn is not None:
                 _ENTORNO["nm"], _ENTORNO["t_nm"] = fn.result(), time.time()
-            _ENTORNO["d"] = {"banner": Banner.REAL.value, "iss": fi.result(), "protones": fp.result(), "rayosx": fx.result(), "electrones": fe.result(), "neutrones": _ENTORNO["nm"],
+            _ENTORNO["d"] = {"banner": Banner.REAL.value, "iss": fi.result(), "protones": fp.result(), "rayosx": fx.result(), "electrones": fe.result(), "neutrones": _ENTORNO["nm"], "avisos_noaa": fa.result(),
                              "aviso": "Live, real, NASA/NOAA-derived feeds. The ISS position is computed from orbital elements, not station telemetry."}
+            kp = next((e.parametros["kp"] for e in EventoClimaEspacial.objects.filter(parametros__has_key="kp").order_by("-ts_utc_inicio")[:1]), None)
+            _ENTORNO["d"]["niveles"] = E.niveles(_ENTORNO["d"], kp)
+            _ENTORNO["d"]["hay_aviso"] = any(v["aviso"] for v in _ENTORNO["d"]["niveles"].values())
             _ENTORNO["t"] = time.time()
             try:                                                       # mandamiento 1 (DOC-01 v0.2.9): lo leído entra al libro de eventos (DC-03) y al registro de intentos (DC-13)
                 from apps.ingesta.repositorio import guardar_eventos, guardar_intento

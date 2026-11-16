@@ -9,9 +9,11 @@ const SUN = [
   { id: "suvi195", name: "Corona · 195 Å", anim: true, note: "GOES-19 SUVI · hot plasma, ~1.2 million K" },
   { id: "suvi304", name: "Chromosphere · 304 Å", anim: true, note: "GOES-19 SUVI · cooler plasma, ~50,000 K" },
   { id: "lasco", name: "Coronagraph", anim: true, note: "SOHO LASCO C2 · outer corona; ejections of plasma drift outward" },
-  { id: "hmi", name: "Surface · sunspots", anim: false, note: "SDO HMI · one frame: sunspots change over days", live: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg", local: "/sun/latest_1024_HMIIC.jpg" },
+  { id: "rot", name: "Rotation · 14 days", anim: true, note: "SDO HMI · one frame per day at 12:00 UTC: sunspots travel across the disc as the Sun turns (≈25 days at its equator)" },
+  { id: "hmi", name: "Surface · now", anim: false, note: "SDO HMI · one frame: sunspots change over days", live: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg", local: "/sun/latest_1024_HMIIC.jpg" },
 ] as const;
-type Cuadro = { archivo: string; ts_utc: string };
+type Cuadro = { archivo: string; ts_utc: string; dir?: string };
+const rutaCuadro = (c: Cuadro) => `${c.dir ?? "/sun/anim"}/${c.archivo}`;
 const G1 = 5; // NOAA G1 (tormenta geomagnética menor): Kp ≥ 5. Regla de color: solo por encima de este umbral hay naranja (S-15).
 
 /** 06 · THE STORM — «What is the Sun doing right now?» Sol real (NASA SDO) y Kp real (NOAA SWPC). Nada simulado en esta sala. */
@@ -24,15 +26,18 @@ export default function Storm() {
   const [i, setI] = useState(0);
   const [play, setPlay] = useState(true);
   const [radiacion, setRadiacion] = useState(false);
+  const [env, setEnvP] = useState<Entorno | null>(null);
+  useEffect(() => { const l = () => get<Entorno>("/api/entorno/").then(setEnvP); l(); const id = setInterval(l, 60000); return () => clearInterval(id); }, []);
   const [scale, setScale] = useState<string | null>(null);        // null = en vivo; "G1"…"G5" = escenario SIMULADO
   const [sc, setSc] = useState<Scenario | null>(null);
   const { say } = useAlma();
   useEffect(() => { const l = () => get<{ banner: Banner; eventos: SpaceEvent[] }>("/api/tormenta/?tipo=lectura_clima_espacial&con=kp").then((d) => { setEv(d?.eventos ?? []); if (d) setBanner(d.banner); }); l(); const id = setInterval(l, 600000); return () => clearInterval(id); }, []);   // el servidor vuelve a leer SWPC cada 10 min
-  useEffect(() => { fetch("/sun/anim/manifest.json").then((r) => r.json()).then((m) => setFrames(m.canales ?? {})).catch(() => setFrames({})); }, []);
+  useEffect(() => { Promise.all([fetch("/sun/anim/manifest.json").then((r) => r.json()).catch(() => ({ canales: {} })), fetch("/sun/rot/manifest.json").then((r) => r.json()).catch(() => ({ cuadros: [] }))])
+      .then(([a, r]) => setFrames({ ...(a.canales ?? {}), rot: (r.cuadros ?? []).map((c: Cuadro) => ({ ...c, dir: "/sun/rot" })) })); }, []);
   const canal = SUN[sun];
   const cuadros = canal.anim ? (frames[canal.id] ?? []) : [];
   useEffect(() => { setI(0); setSrc(canal.anim ? "" : canal.live); }, [sun]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { if (!cuadros.length) return; cuadros.forEach((c) => { const im = new Image(); im.src = `/sun/anim/${c.archivo}`; }); }, [cuadros.length, sun]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (!cuadros.length) return; cuadros.forEach((c) => { const im = new Image(); im.src = rutaCuadro(c); }); }, [cuadros.length, sun]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (!play || cuadros.length < 2) return; const t = setInterval(() => setI((k) => (k + 1) % cuadros.length), 170); return () => clearInterval(t); }, [play, cuadros.length]);
   useEffect(() => { const q = new URLSearchParams(window.location.search).get("sim"); if (q) setScale(q); }, []);   // ?sim=G3 → enlace profundo
   useEffect(() => {
@@ -47,14 +52,14 @@ export default function Storm() {
     <Room voice={scale ? undefined : "tormenta"}>
       {scale && sc && <div className="absolute inset-x-0 top-0 z-10 border-b border-warn/60 bg-warn/10 py-1.5 text-center font-mono text-[11px] uppercase tracking-[0.3em] text-warn">SIMULATED UNIVERSE — DAY {sc.dia_habitat}</div>}
       <div className={`mx-auto grid h-full max-w-6xl grid-cols-[minmax(0,34rem)_1fr] items-center gap-14 px-10 pb-28 pt-14 ${radiacion ? "invisible" : ""}`}>
-        <figure className="relative" style={{ width: "min(100%, calc(100vh - 19rem))" }}>
+        <figure className="relative" style={{ width: "min(100%, calc(100vh - 22rem))" }}>
           <div className={`relative aspect-square w-full overflow-hidden rounded-full shadow-[0_0_120px_10px_rgb(255_120_40/.18)] transition-opacity duration-700 ${scale ? "opacity-35" : ""}`}>
             {/* hotlink al último SDO; si no hay red, la instantánea local con su marca de tiempo */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={canal.anim ? (cuadros[i] ? `/sun/anim/${cuadros[i].archivo}` : "") : src} alt={`NASA/NOAA Sun, ${canal.name}`} onError={() => { if (!canal.anim) setSrc(canal.local); }} className="h-full w-full scale-[1.12] object-cover" />
+            <img src={canal.anim ? (cuadros[i] ? rutaCuadro(cuadros[i]) : "") : src} alt={`NASA/NOAA Sun, ${canal.name}`} onError={() => { if (!canal.anim) setSrc(canal.local); }} className="h-full w-full scale-[1.12] object-cover" />
           </div>
           <figcaption className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">
-            <span>{canal.note}</span><span className="text-ink-dim">{scale ? "real images from the last 24 h — not part of the scenario" : canal.anim ? (cuadros[i] ? `real time-lapse · ${cuadros[i].ts_utc.slice(0, 16).replace("T", " ")} UTC · last 24 h` : "loading…") : "latest frame (live link; local snapshot if offline)"}</span>
+            <span>{canal.note}</span><span className="text-ink-dim">{scale ? "real images from the last 24 h — not part of the scenario" : canal.anim ? (cuadros[i] ? `real time-lapse · ${cuadros[i].ts_utc.slice(0, 16).replace("T", " ")} UTC · ${canal.id === "rot" ? "last 14 days" : "last 24 h"}` : "loading…") : "latest frame (live link; local snapshot if offline)"}</span>
           </figcaption>
           <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1">
             {canal.anim && cuadros.length > 1 && <button onClick={() => setPlay(!play)} aria-label={play ? "Pause time-lapse" : "Play time-lapse"} className="border border-ink-faint px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-dim hover:text-ink">{play ? "❚❚ pause" : "▶ play"}</button>}
@@ -75,6 +80,14 @@ export default function Storm() {
           </div>
           {kps.length > 0 && <p className="mt-3 flex justify-between font-mono text-[9.5px] uppercase tracking-[0.14em] text-ink-faint"><span>{kps[0].ts_utc_inicio.slice(0, 10)}</span><span>peak Kp {peak.toFixed(2)} · {kps.length} readings, 3 h each</span><span>{now!.ts_utc_inicio.slice(0, 16).replace("T", " ")} UTC</span></p>}
           {now && <p className="mt-6 break-all font-mono text-[10px] leading-relaxed text-ink-faint">{scale && sc ? `recipe · ${sc.receta_en} · seed ${sc.semilla} · series sha256 ${now.hash_lectura_cruda}` : `source · NOAA SWPC · raw reading sha256 ${now.hash_lectura_cruda}`}</p>}
+          {!scale && env?.niveles && (
+            <div className="mt-5 border-l-2 pl-4" style={{ borderColor: env.hay_aviso ? "var(--color-signal)" : "var(--color-line)" }}>
+              <p className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[11px] uppercase tracking-[0.16em]">
+                {(["S", "R", "G"] as const).map((k) => { const n = env.niveles![k]; return <span key={k} title={`${n.nombre}: ${n.valor} ${n.unidad} · ${n.regla}`} className={n.aviso ? "text-signal" : "text-ink-dim"}>{n.etiqueta} <span className="normal-case tracking-normal text-ink-faint">{n.nombre.toLowerCase()}</span></span>; })}
+              </p>
+              {env.avisos_noaa?.mensajes?.[0] && <p className="mt-1 text-[12px] leading-snug text-ink-dim">NOAA, {env.avisos_noaa.mensajes[0].ts_utc.slice(5, 16).replace("T", " ")} UTC: <em>{env.avisos_noaa.mensajes[0].titular}</em></p>}
+            </div>
+          )}
           <div className="mt-4"><Stamp banner={scale && sc ? sc.banner : banner} /></div>
           <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-line pt-5">
             <span className="mr-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">What if — simulate</span>
@@ -86,7 +99,7 @@ export default function Storm() {
           </div>
         </section>
       </div>
-      {radiacion && <RadiationPanel onClose={() => setRadiacion(false)} />}
+      {radiacion && <RadiationPanel onClose={() => setRadiacion(false)} env={env} />}
     </Room>
   );
 }
@@ -107,9 +120,7 @@ function Spark({ v, umbral }: { v: number[]; umbral?: number }) {
 const fmt = (x: number | undefined, d = 1) => (x == null ? "—" : x.toLocaleString("en-US", { maximumFractionDigits: d }));
 
 /** Respuesta honesta a «¿es el Sol la única radiación?»: no. Los valores en vivo vienen de /api/entorno/ (NOAA SWPC GOES y NMDB/Oulu); las referencias son literatura citada, no mediciones de ALMA. */
-function RadiationPanel({ onClose }: { onClose: () => void }) {
-  const [env, setEnv] = useState<Entorno | null>(null);
-  useEffect(() => { const l = () => get<Entorno>("/api/entorno/").then(setEnv); l(); const id = setInterval(l, 60000); return () => clearInterval(id); }, []);
+function RadiationPanel({ onClose, env }: { onClose: () => void; env: Entorno | null }) {
   const p = env?.protones, e = env?.electrones, n = env?.neutrones;
   const filas = [
     { t: "Solar particle events", sub: "episodic · hours to days", ok: !!p?.disponible, que: "Protons accelerated by flares and shock waves. Rare, but the only source that can deliver a harmful dose quickly; NASA limits the dose from a single event to 250 mSv.",
@@ -128,6 +139,15 @@ function RadiationPanel({ onClose }: { onClose: () => void }) {
           <button onClick={onClose} className="shrink-0 font-mono text-[11px] uppercase tracking-[0.2em] text-ink-dim underline underline-offset-4 hover:text-ink">close</button>
         </div>
         <p className="mt-3 max-w-3xl text-[15px] leading-relaxed text-ink-dim">A crew is exposed to four kinds. Three are read live below from real instruments; none of them is a dose measured inside a spacecraft, so ALMA shows the environment, not an exposure. The fourth is not modelled.</p>
+        {env?.avisos_noaa?.mensajes && env.avisos_noaa.mensajes.length > 0 && (
+          <div className="mt-6 border border-line p-5">
+            <h3 className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">What NOAA said in the last 72 hours · official text, not an ALMA detection</h3>
+            <ul className="mt-3 space-y-1.5 text-[13.5px] text-ink-dim">
+              {env.avisos_noaa.mensajes.map((m) => <li key={m.codigo + m.ts_utc}><span className="mr-3 font-mono text-[10.5px] text-ink-faint">{m.ts_utc.slice(5, 16).replace("T", " ")} UTC · {m.codigo}</span>{m.titular}</li>)}
+            </ul>
+            <p className="mt-3 font-mono text-[9.5px] uppercase tracking-[0.14em] text-ink-faint">source · NOAA SWPC alerts.json · raw reading sha256 {env.avisos_noaa.hash_lectura_cruda?.slice(0, 16)}…</p>
+          </div>
+        )}
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           {filas.map((f) => (
             <article key={f.t} className="border border-line p-5">

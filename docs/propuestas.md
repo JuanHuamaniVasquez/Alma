@@ -67,3 +67,12 @@
 - **Qué compra:** el jurado pregunta «¿solo el Sol?»; hoy lo declaramos incompleto en la sala The Storm y en el anillo.
 - **Ancla:** NASA OCHMO radiation brief (límites 600 mSv carrera / 250 mSv por SPE, leído) y SIDC (80 mSv a máximo solar vs 160 mSv a mínimo en 6 meses en la ISS, leído).
 - **Costo:** ~1 sesión. **Estado:** ACEPTADA y APLICADA el 2026-11-15 (el humano ordenó conectarlas): DOC-01 v0.2.10, `src/ingesta/entorno.py`, S-33/S-34.
+
+
+## P-R2 · ¿El mismo motor que vigila cuerpos y hábitat ve un decaimiento Forbush? (propuesta, 2026-11-15)
+- **Mejora:** aplicar CUSUM bilateral (MO-3, el mismo código) a la serie horaria del monitor de neutrones de Oulu (NMDB) y preguntar, preregistrado: ¿detecta las tormentas geomagnéticas fuertes (Kp ≥ 6, GFZ desde 1932) y con qué adelanto frente al Kp? Los decaimientos Forbush acompañan a las eyecciones de masa coronal; si el motor los ve, un solo detector sirve a tres escalas (cuerpo, hábitat, Sol).
+- **Capa destino:** Motor/Fábrica (tarjeta DC-12 nueva con fuente NMDB + GFZ). **Qué compra:** el único puente medible entre rayos cósmicos y el resto del sistema, con datos reales y años de historia. **Ancla:** NMDB (S-34) y GFZ Kp (S-09), ambos ya verificados; falta citar la literatura de Forbush (verificar antes). **Costo:** 1 sesión (descargar NMDB por rangos anuales). **Prueba:** FB-029 con control placebo (días sin tormenta). **Estado:** PROPUESTA.
+
+## P-R3 · Escalera de aviso por llamarada: del rayo X a la tormenta de protones (propuesta, 2026-11-15)
+- **Mejora:** medir con el archivo de GOES cuántas veces una llamarada ≥ M5 fue seguida de S1+ dentro de 24 h y con qué retraso, y mostrar en La Tormenta «llamarada ahora → probabilidad histórica y tiempo típico de llegada de protones». Hoy el chip S/R/G avisa cuando ya pasó; la escalera daría minutos de ventaja.
+- **Capa destino:** Motor (recibo con regla y semilla) + La Tormenta. **Ancla:** archivos GOES/NCEI y umbrales de S-15 (verificar el enlace de descarga de histórico antes). **Costo:** 1–2 sesiones. **Prueba:** preregistrada (probabilidad condicional con intervalo, no un clasificador). **Estado:** PROPUESTA.

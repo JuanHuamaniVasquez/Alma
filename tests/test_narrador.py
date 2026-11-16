@@ -20,7 +20,7 @@ def numeros(t):
 def test_cada_numero_dicho_viene_de_los_datos():
     assert numeros(n.demo_kill(DEMO).texto) == {0.53, 0.3}
     assert numeros(n.fundicion(FUND).texto) == {5, 2, 1}
-    assert numeros(n.tormenta(STORM).texto) == {3.33}
+    assert numeros(n.tormenta(STORM).texto) == set() and "live" in n.tormenta(STORM).texto     # la voz está grabada y el Sol no: no pronuncia una lectura en vivo
     assert numeros(n.actas(ACTAS).texto) == {3, 2, 256}                          # 256 = «SHA-256», nombre del algoritmo
     assert numeros(n.libro_del_dia(LIBRO).texto) == {7, 1, 2}
 
@@ -103,5 +103,5 @@ def test_frontier_dice_solo_hechos_sellados_y_con_su_fuente():
     a = {"banner": "REAL", "ejecutada": True, "hash_acta": "41f0413d" + "0" * 56, "conciliacion": {"valores": 5, "filas": 1, "de_filas": 28},
          "tabla": {"abs_lymphocytes|R+1": {"mediana_cambio_pct": -23.8}}}
     l = n.frontier({"astro": a, "osdr": {"n": 52}})
-    assert l.clave == "frontier" and "1 of 28" in l.texto and "24 percent" in l.texto and "52 NASA studies" in l.texto and "41f0413d" in l.fuente
+    assert l.clave == "frontier" and "24 percent" in l.texto and "Four real astronauts" in l.texto and "no alarm is not no effect" in l.texto.lower() and "41f0413d" in l.fuente
     assert n.frontier({"astro": {"banner": "REAL", "ejecutada": False}, "osdr": {"n": 0}}).texto.startswith("I have no astronaut blood record")

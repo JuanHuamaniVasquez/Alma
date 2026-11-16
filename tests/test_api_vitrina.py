@@ -23,7 +23,7 @@ def test_fundicion_expone_tablero_tarjetas_detector_y_faro():
     assert d["tablero"]["nacidas"] == len(d["tarjetas"]) == 16
     assert d["tablero"]["detectores_nuevos"] == len(d["detectores"]) == 1
     assert all(t["senal_refutadora"] and t["fuentes"] for t in d["tarjetas"])  # sin fuente o sin señal refutadora no existe
-    assert len(d["faro"]) == 1
+    assert len(d["faro"]) == 2
     assert all(t["en"] and t["en"]["refuter"] for t in d["tarjetas"]) and d["detectores"][0]["en"] and d["faro"][0]["en"]  # nada sin su versión en inglés
 
 
@@ -303,11 +303,12 @@ def test_m7_entorno_con_respuestas_reales_guardadas(monkeypatch):
     from src.ingesta import entorno as E
     from apps.superficies import views
     F = RAIZ / "tests" / "fixtures" / "entorno"
-    monkeypatch.setattr(E, "_get", lambda url, t=8.0: json.loads((F / ("iss.json" if "wheretheiss" in url else "protones.json" if "protons" in url else "electrones.json" if "electrons" in url else "rayosx.json")).read_text()))
+    monkeypatch.setattr(E, "_get", lambda url, t=8.0: json.loads((F / ("iss.json" if "wheretheiss" in url else "protones.json" if "protons" in url else "electrones.json" if "electrons" in url else "alertas.json" if "alerts" in url else "rayosx.json")).read_text()))
     monkeypatch.setattr(E, "_get_nm", lambda: (F / "neutrones.html").read_text())
     views._ENTORNO.update(t=0.0, d=None, nm=None, t_nm=0.0)
     d = get("/api/entorno/").json()
     assert d["electrones"]["disponible"] and d["electrones"]["umbral_swpc_pfu"] == 1000.0 and isinstance(d["electrones"]["alerta_swpc"], bool) and len(d["electrones"]["serie"]) > 100
+    assert set(d["niveles"]) == {"S", "R", "G"} and isinstance(d["hay_aviso"], bool) and d["avisos_noaa"]["disponible"] and d["avisos_noaa"]["mensajes"] is not None
     assert d["neutrones"]["disponible"] and 50 < d["neutrones"]["cps"] < 200 and d["neutrones"]["n_lecturas"] > 40 and "NMDB" in d["neutrones"]["reconocimiento"]
     assert d["banner"] == "REAL" and d["iss"]["disponible"] and d["iss"]["visibilidad"] in {"daylight", "eclipsed", "visible"} and 350 < d["iss"]["alt_km"] < 450
     assert d["protones"]["disponible"] and d["protones"]["umbral_s1_pfu"] == 10.0 and isinstance(d["protones"]["tormenta_s1_o_mas"], bool)
@@ -360,7 +361,7 @@ def test_el_entorno_en_vivo_deja_eventos_dc03_y_intentos_dc13_en_la_base(monkeyp
     def falso(url, t=8.0):
         E.ULTIMOS_HASHES[url] = (("1" if "wheretheiss" in url else "2" if "protons" in url else "4" if "electrons" in url else "3") * 64)
         E.ARCHIVADOS_NUEVOS.add(url)
-        return json.loads((F / ("iss.json" if "wheretheiss" in url else "protones.json" if "protons" in url else "electrones.json" if "electrons" in url else "rayosx.json")).read_text())
+        return json.loads((F / ("iss.json" if "wheretheiss" in url else "protones.json" if "protons" in url else "electrones.json" if "electrons" in url else "alertas.json" if "alerts" in url else "rayosx.json")).read_text())
 
     def falso_nm():
         E.ULTIMOS_HASHES[E.URL_NM] = "5" * 64
@@ -396,6 +397,7 @@ def test_tormenta_en_vivo_refresca_swpc_si_esta_vieja_y_filtra_kp_sin_que_los_ra
     monkeypatch.setattr("apps.ingesta.repositorio.guardar_resultado", lambda r: llamadas.append(r))
     monkeypatch.setattr("src.ingesta.cliente.ingestar", lambda feed, **k: feed.nombre if hasattr(feed, "nombre") else str(feed))
     views._SWPC_REFRESCO["t"] = 0.0
+    monkeypatch.setattr(views, "_EJECUTAR", lambda f: f())
     t = datetime(2026, 11, 15, 12, tzinfo=UTC)
     EventoClimaEspacial.objects.create(evento_id="k1", ts_utc_inicio=t, ts_utc_fin=t, tipo="lectura_clima_espacial", fuente="swpc", banner="REAL", parametros={"kp": 2.0}, hash_lectura_cruda=H)
     for i in range(3):

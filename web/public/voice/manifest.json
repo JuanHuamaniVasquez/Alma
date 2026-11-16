@@ -1,10 +1,10 @@
 {
  "tormenta": {
-  "id": "0b579b12f484ab53",
-  "texto": "Planetary K index is 0.33, read from NOAA's Space Weather Prediction Center.",
-  "fuente": "swpc · 2026-11-15T09:00:00Z · sha256 5620cb9b",
+  "id": "83ad3786b102134b",
+  "texto": "The planetary K index on screen is read live from NOAA's Space Weather Prediction Center. A geomagnetic storm begins when it crosses the dashed line. I do not say the number aloud: my voice is recorded, and the Sun is not.",
+  "fuente": "swpc · 2026-11-15T21:00:00Z · sha256 c557cd60",
   "banner": "REAL",
-  "audio": "/voice/0b579b12f484ab53.mp3"
+  "audio": "/voice/83ad3786b102134b.mp3"
  },
  "demo_kill": {
   "id": "a0d5104e363d84c3",
@@ -42,11 +42,11 @@
   "audio": "/voice/cd33af5667fc7ffe.mp3"
  },
  "frontier": {
-  "id": "7cde3303c7cf2d90",
-  "texto": "The Frontier. Real astronauts: four people from the Inspiration4 mission, whose blood counts NASA has opened. Checking each count against itself found 1 of 28 that did not add up. Lymphocytes fell a median 24 percent on landing day, and no one left their personal band, because with three baseline samples the band is too wide to see it. No alarm is not no effect. The catalogue lists 52 NASA studies of spaceflown human bodies. Above, the ship watches the real space around the crew, live.",
+  "id": "b44f177b33d1cf3e",
+  "texto": "The Frontier. Four real astronauts from the Inspiration4 mission. Their lymphocytes fell a median 24 percent on landing day, and no one left their personal band, because three baseline samples make the band too wide to see it. No alarm is not no effect.",
   "fuente": "/api/astronautas · FB-024 · sha256 41f0413d",
   "banner": "REAL",
-  "audio": "/voice/7cde3303c7cf2d90.mp3"
+  "audio": "/voice/b44f177b33d1cf3e.mp3"
  },
  "escenario-G1": {
   "id": "47ef8b69ba9f8228",

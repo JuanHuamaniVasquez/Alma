@@ -70,3 +70,30 @@ def test_electrones_y_neutrones_reales_se_leen_y_respetan_su_contrato():
     with pytest.raises(ValidationError):
         DC03Evento(tipo=TipoEvento.LECTURA_ELECTRONES, fuente=FuenteEvento.NMDB, parametros={"flujo_electrones_pfu": 1.0}, **ok)        # NMDB solo emite neutrones
     E.ARCHIVADOS_NUEVOS.clear()
+
+
+def test_niveles_s_r_g_con_umbrales_publicos_de_noaa_y_su_regla():
+    env = _env(); E.ARCHIVADOS_NUEVOS.clear()
+    n = E.niveles(env, kp=5.0)
+    assert n["G"]["nivel"] == 1 and n["G"]["aviso"] and n["G"]["etiqueta"] == "G1" and "Kp 5" in n["G"]["regla"]
+    assert n["S"]["nivel"] == (1 if env["protones"]["pfu"] >= 10 else 0) and n["R"]["nivel"] == E.nivel(env["rayosx"]["flujo_wm2"], E.ESCALA_R_WM2)
+    # límites exactos de las escalas
+    assert [E.nivel(v, E.ESCALA_S_PFU) for v in (9.99, 10, 99, 100, 1e5)] == [0, 1, 1, 2, 5]
+    assert [E.nivel(v, E.ESCALA_R_WM2) for v in (9e-6, 1e-5, 1e-4, 2e-3)] == [0, 1, 3, 5]
+    assert [E.nivel(v, E.ESCALA_G_KP) for v in (4.67, 5.0, 7.0, 9.0)] == [0, 1, 3, 5]
+    assert E.niveles(env, None)["G"]["nivel"] == 0                                  # sin Kp no se inventa un nivel
+    assert E.niveles({"protones": {"disponible": False}, "rayosx": {"disponible": False}}, 3.0)["S"]["nivel"] == 0
+    # R1/R2 (frecuentes) no disparan el aviso; R3 sí
+    assert not E.niveles({"protones": {"disponible": False}, "rayosx": {"disponible": True, "flujo_wm2": 2e-5}}, 0.0)["R"]["aviso"]
+    assert E.niveles({"protones": {"disponible": False}, "rayosx": {"disponible": True, "flujo_wm2": 1.2e-4}}, 0.0)["R"]["aviso"]
+
+
+def test_avisos_oficiales_de_noaa_se_citan_tal_cual_con_su_codigo_y_hora():
+    from datetime import UTC, datetime
+    lista = json.loads((F / "alertas.json").read_text())
+    a = E.avisos(lista, ahora=datetime(2026, 11, 15, 20, tzinfo=UTC))
+    t = [m["titular"] for m in a["mensajes"]]
+    assert t[0] == "WATCH: Geomagnetic Storm Category G1 Predicted" and "ALERT: Type II Radio Emission" in t
+    assert all(m["codigo"] and m["ts_utc"].endswith("Z") for m in a["mensajes"]) and len(t) == len(set(t))
+    assert all(m["ts_utc"] >= "2026-11-12T20:00:00Z" for m in a["mensajes"])           # solo las últimas 72 h
+    assert E.avisos([], ahora=datetime(2026, 11, 15, tzinfo=UTC))["mensajes"] == []

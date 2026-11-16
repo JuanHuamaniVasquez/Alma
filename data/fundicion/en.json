@@ -125,6 +125,10 @@
   "F-001": {
    "statement": "NASA's open data repository (OSDR) will publish at least one data file for experiment OS-892 before 2027-12-31.",
    "grading": "True if the official API lists at least one file by that date; false if it still lists none on 2028-01-01."
+  },
+  "F-002": {
+   "statement": "NOAA's geomagnetic-storm watch of 15 Nov 2026 13:34 UTC (message A20F: a G1 storm expected on 17 and 18 November) will come true: the planetary Kp index reaches 5 or more in some 3-hour reading between 17 Nov 00:00 and 19 Nov 00:00 UTC.",
+   "grading": "True if NOAA's planetary K-index feed shows any reading in that window with Kp ≥ 5; false otherwise. Probability: our own estimate, no model."
   }
  }
 }

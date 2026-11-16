@@ -35,8 +35,12 @@ export function TopBar() {
   const { day } = useShip();
   const [checked, setChecked] = useState(false);
   const [live, setLive] = useState<boolean | null>(null);
+  const [avisos, setAvisos] = useState<NonNullable<Entorno["niveles"]>[keyof NonNullable<Entorno["niveles"]>][]>([]);
   const [open, setOpen] = useState<string | null>(null);
-  useEffect(() => { get<Entorno>("/api/entorno/").then((d) => setLive(!!d && (d.iss.disponible || d.protones.disponible))); }, []);
+  useEffect(() => {
+    const l = () => get<Entorno>("/api/entorno/").then((d) => { setLive(!!d && (d.iss.disponible || d.protones.disponible)); setAvisos(d?.niveles ? Object.values(d.niveles).filter((n) => n.aviso) : []); });
+    l(); const id = setInterval(l, 60000); return () => clearInterval(id);
+  }, []);
   useEffect(() => { get<LedgerDays>("/api/libro/dias/").then((d) => { setDays(d); setChecked(true); }); }, []);
   useEffect(() => { setOpen(null); }, [path]);
   useEffect(() => {
@@ -79,6 +83,9 @@ export function TopBar() {
         </nav>
       </div>
       <div className="flex items-center gap-3 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em] text-ink-dim">
+        {avisos.map((n) => (
+          <Link key={n.etiqueta} href="/storm" className="inline-block animate-pulse border border-signal px-1.5 py-[1px] font-medium tracking-[0.16em] text-signal" title={`${n.nombre}: ${n.valor} ${n.unidad} · rule: ${n.regla} · source: ${n.fuente} · real, from NOAA thresholds`}>{n.etiqueta}<span className="hidden md:inline"> · {n.nombre.toLowerCase()}</span></Link>
+        ))}
         {checked && !days && <span className="text-signal" title="Start the backend: uv run python backend/manage.py runserver">API offline</span>}
         {LEDGER_ROOMS.includes(path) && days && days.ultimo != null && <span className="hidden -rotate-1 border border-warn px-1.5 py-[1px] font-medium tracking-[0.16em] text-warn md:inline-block" title={`The habitat's air and water are a simulated universe · day ${day ?? days.ultimo}`}>Habitat simulated · day {day ?? days.ultimo}</span>}
         {live && <span className="inline-block border border-ok px-1.5 py-[1px] font-medium tracking-[0.16em] text-ok" title="Live NASA/NOAA feeds: ISS orbit, GOES protons and X-rays"><span aria-hidden>●</span><span className="hidden sm:inline"> Live</span></span>}

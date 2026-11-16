@@ -78,3 +78,18 @@ def test_faro_no_se_edita_y_exige_probabilidad_valida(tmp_path):
         faro.registrar(f, p)
     with pytest.raises(ValueError, match="estrictamente"):
         faro.registrar(tmp_path / "g.jsonl", Prediccion("Y", "e", "r", 1.0, "2026-11-15T00:00:00Z", "2027-01-01", "u"))
+
+
+def test_faro_f002_aviso_de_noaa_con_regla_de_kp_y_estado_pendiente():
+    """M9 · F-002: el WATCH de NOAA se convierte en una predicción fechada; la regla de calificación es pura y el Faro no califica antes de la fecha."""
+    from src.fabrica.faro import kp_alcanza
+    reg = [json.loads(l) for l in (RAIZ / "data/faro/predicciones.jsonl").read_text(encoding="utf-8").splitlines()]
+    d = next(x for x in reg if x["id"] == "F-002")
+    p = Prediccion(**{k: d[k] for k in Prediccion.__dataclass_fields__})
+    assert p.hash() == d["sha256"] and 0 < p.probabilidad < 1 and p.emitida_utc < "2026-11-17"       # sellada ANTES de la ventana
+    serie = [{"time_tag": "2026-11-16T21:00:00", "Kp": 6.0}, {"time_tag": "2026-11-17T03:00:00", "Kp": 4.67}, {"time_tag": "2026-11-18T09:00:00", "Kp": 5.0}, {"time_tag": "2026-11-19T00:00:00", "Kp": 7.0}]
+    assert kp_alcanza(serie, "2026-11-17T00:00:00", "2026-11-19T00:00:00") is True            # 5,0 dentro de la ventana
+    assert kp_alcanza(serie[:2] + serie[3:], "2026-11-17T00:00:00", "2026-11-19T00:00:00") is False   # el 6,0 de antes y el 7,0 de después no cuentan
+    real = json.loads((RAIZ / "tests/fixtures/entorno/kp.json").read_text())
+    assert kp_alcanza(real, "2000-01-01T00:00:00", "2100-01-01T00:00:00", umbral=99.0) is False
+    assert calificar(p, False, hoy=date(2026, 11, 16))["estado"] == "pendiente"

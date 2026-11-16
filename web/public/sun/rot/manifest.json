@@ -1,0 +1,61 @@
+{
+ "fuente": "NASA SDO / HMI (browse p\u00fablico)",
+ "cuadros": [
+  {
+   "archivo": "hmi_20261102.jpg",
+   "ts_utc": "2026-11-02T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261103.jpg",
+   "ts_utc": "2026-11-03T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261104.jpg",
+   "ts_utc": "2026-11-04T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261105.jpg",
+   "ts_utc": "2026-11-05T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261106.jpg",
+   "ts_utc": "2026-11-06T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261107.jpg",
+   "ts_utc": "2026-11-07T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261108.jpg",
+   "ts_utc": "2026-11-08T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261109.jpg",
+   "ts_utc": "2026-11-09T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261110.jpg",
+   "ts_utc": "2026-11-10T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261111.jpg",
+   "ts_utc": "2026-11-11T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261112.jpg",
+   "ts_utc": "2026-11-12T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261113.jpg",
+   "ts_utc": "2026-11-13T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261114.jpg",
+   "ts_utc": "2026-11-14T12:00:00Z"
+  },
+  {
+   "archivo": "hmi_20261115.jpg",
+   "ts_utc": "2026-11-15T12:00:00Z"
+  }
+ ]
+}

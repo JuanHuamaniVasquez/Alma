@@ -14,6 +14,7 @@ Todo es REAL y de ahora mismo; si una fuente no responde, el campo viene `dispon
 from __future__ import annotations
 
 import json
+import re
 import urllib.request
 from collections.abc import Callable
 from datetime import UTC, datetime
@@ -22,6 +23,7 @@ URL_ISS = "https://api.wheretheiss.at/v1/satellites/25544"
 URL_PROT = "https://services.swpc.noaa.gov/json/goes/primary/integral-protons-1-day.json"
 URL_XR = "https://services.swpc.noaa.gov/json/goes/primary/xrays-1-day.json"
 URL_EL = "https://services.swpc.noaa.gov/json/goes/primary/integral-electrons-1-day.json"
+URL_AL = "https://services.swpc.noaa.gov/products/alerts.json"
 URL_NM = "https://www.nmdb.eu/nest/draw_graph.php"          # clave estable de la fuente (la consulta lleva fechas y cambia)
 UMBRAL_S1_PFU = 10.0
 UMBRAL_ELECTRONES_PFU = 1000.0
@@ -130,6 +132,57 @@ def neutrones(texto: str | None = None) -> dict:
     base = sorted(v)[len(v) // 2]                                         # mediana de la ventana (≈ 72 h)
     return {"disponible": True, "estacion": "Oulu (Finland)", "cps": ult, "ts_utc": filas[-1][0], "mediana_ventana": round(base, 3), "variacion_pct": round(100 * (ult / base - 1), 2),
             "min_ventana": min(v), "max_ventana": max(v), "n_lecturas": len(v), "fuente": URL_NM, "hash_lectura_cruda": ULTIMOS_HASHES.get(URL_NM), "serie": [round(x, 2) for x in v], "reconocimiento": ACK_NMDB}
+
+
+# Escalas de clima espacial de NOAA (https://www.swpc.noaa.gov/noaa-scales-explanation, leída 2026-11-15): umbrales de nivel 1…5.
+ESCALA_S_PFU = (10.0, 100.0, 1e3, 1e4, 1e5)          # protones ≥10 MeV (tormenta de radiación)
+ESCALA_R_WM2 = (1e-5, 5e-5, 1e-4, 1e-3, 2e-3)       # rayos X 0,1–0,8 nm: M1, M5, X1, X10, X20 (apagón de radio)
+ESCALA_G_KP = (5.0, 6.0, 7.0, 8.0, 9.0)             # Kp (tormenta geomagnética; G5 = Kp 9)
+NIVEL_DE_AVISO = {"S": 1, "G": 1, "R": 3}            # a partir de aquí ALMA avisa en todas las salas (R1/R2 son frecuentes y no alteran a una tripulación)
+
+
+def nivel(valor: float | None, umbrales: tuple[float, ...]) -> int:
+    return 0 if valor is None else sum(valor >= u for u in umbrales)
+
+
+def niveles(env: dict, kp: float | None) -> dict:
+    """Nivel S/R/G AHORA, calculado de las lecturas ya contratadas (DC-03) con los umbrales públicos de NOAA. Cada nivel lleva su regla exacta imprimible (mandamiento 3)."""
+    p, x = env.get("protones", {}), env.get("rayosx", {})
+    out = {"S": {"nivel": nivel(p.get("pfu") if p.get("disponible") else None, ESCALA_S_PFU), "valor": p.get("pfu"), "unidad": "pfu",
+                 "regla": "S1 or higher if GOES protons ≥10 MeV reach 10 pfu (S2 100, S3 1,000, S4 10,000, S5 100,000)", "nombre": "Solar radiation storm", "fuente": URL_PROT},
+           "R": {"nivel": nivel(x.get("flujo_wm2") if x.get("disponible") else None, ESCALA_R_WM2), "valor": x.get("flujo_wm2"), "unidad": "W/m²",
+                 "regla": "R1 = M1 flare (1e-5 W/m²), R2 = M5, R3 = X1 (1e-4), R4 = X10, R5 = X20", "nombre": "Radio blackout", "fuente": URL_XR},
+           "G": {"nivel": nivel(kp, ESCALA_G_KP), "valor": kp, "unidad": "Kp",
+                 "regla": "G1 = Kp 5, G2 = Kp 6, G3 = Kp 7, G4 = Kp 8, G5 = Kp 9", "nombre": "Geomagnetic storm", "fuente": "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json"}}
+    for k, v in out.items():
+        v["aviso"] = v["nivel"] >= NIVEL_DE_AVISO[k]
+        v["etiqueta"] = f"{k}{v['nivel']}" if v["nivel"] else f"{k}0"
+    return out
+
+
+_TITULAR_AVISO = re.compile(r"^(CONTINUED |EXTENDED )?(WATCH|WARNING|ALERT|SUMMARY|CANCEL WATCH)[^\n]*", re.MULTILINE)
+
+
+def avisos(lista: list | None = None, ahora: datetime | None = None, horas: float = 72.0, maximo: int = 6) -> dict:
+    """Mensajes OFICIALES de NOAA SWPC de las últimas `horas` (alerts.json): se muestran tal cual, con su código y hora. NO son detecciones de ALMA (la decisión de no convertirlos en
+    eventos DC-03 vive en `src/ingesta/swpc.py`): son lo que NOAA dijo, citado."""
+    from datetime import timedelta
+    L = lista if lista is not None else _get(URL_AL)
+    t0 = (ahora or datetime.now(UTC)) - timedelta(hours=horas)
+    out, vistos = [], set()
+    for m in L:
+        ts = datetime.strptime(m["issue_datetime"][:19], "%Y-%m-%d %H:%M:%S").replace(tzinfo=UTC)
+        h = _TITULAR_AVISO.search(m["message"].replace("\r", ""))
+        if ts < t0 or not h:
+            continue
+        titular = re.sub(r"\s+", " ", h.group(0)).strip()
+        if titular in vistos:
+            continue
+        vistos.add(titular)
+        out.append({"codigo": m["product_id"], "ts_utc": ts.strftime("%Y-%m-%dT%H:%M:%SZ"), "titular": titular})
+        if len(out) >= maximo:
+            break
+    return {"disponible": True, "mensajes": out, "fuente": URL_AL, "hash_lectura_cruda": ULTIMOS_HASHES.get(URL_AL)}
 
 
 def seguro(f: Callable[[], dict], fuente: str) -> dict:

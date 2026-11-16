@@ -10,6 +10,8 @@
 | Rayos X solares 0,1–0,8 nm | https://services.swpc.noaa.gov/json/goes/primary/xrays-1-day.json | anillo Energy | S-27 |
 | Otros feeds SWPC (rtsw viento/mag, alertas) | `data/SWPC-fuentes.md` (reemplazos verificados: `rtsw_wind_1m`, `rtsw_mag_1m`, `products/alerts.json`) | referencia | S-02 |
 | Sol animado (SUVI 195/304, LASCO C2) | https://services.swpc.noaa.gov/products/animations/suvi-primary-195.json (y `-304`, `lasco-c2.json`) | The Storm; se guarda local con `scripts/descargar_sol_animado.py` | S-31 |
+| **Avisos oficiales de NOAA** (WATCH/WARNING/ALERT) | https://services.swpc.noaa.gov/products/alerts.json | The Storm («What NOAA said in the last 72 hours»), Faro F-002 | S-36 |
+| **Rotación del Sol** (SDO/HMI diario, 14 días) | https://sdo.gsfc.nasa.gov/assets/img/browse/AAAA/MM/DD/AAAAMMDD_120000_1024_HMIIC.jpg · `scripts/descargar_rotacion_solar.py` | The Storm · Rotation | S-35 |
 | Imagen fija del Sol (SDO HMI, manchas) | https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg | The Storm | — |
 | **Electrones GOES ≥2 MeV** (cinturones) | https://services.swpc.noaa.gov/json/goes/primary/integral-electrons-1-day.json | The Storm (panel de radiación), The Frontier | S-33 |
 | **Rayos cósmicos: monitor de neutrones Oulu** | https://www.nmdb.eu/nest/draw_graph.php (ascii; ver `src/ingesta/entorno.py::_url_nm`) · reconocimiento obligatorio en S-34 | The Storm, The Frontier | S-34 |

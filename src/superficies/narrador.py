@@ -57,10 +57,8 @@ def frontier(d: dict) -> Linea:
         return Linea("frontier", "I have no astronaut blood record to read. The absence is recorded, not filled in.", "/api/astronautas · FB-024", a["banner"])
     cambio = abs(a["tabla"]["abs_lymphocytes|R+1"]["mediana_cambio_pct"])
     c = a["conciliacion"]
-    texto = (f"The Frontier. Real astronauts: four people from the Inspiration4 mission, whose blood counts NASA has opened. Checking each count against itself found "
-             f"{c['filas']} of {c['de_filas']} that did not add up. Lymphocytes fell a median {cambio:.0f} percent on landing day, and no one left their personal band, "
-             f"because with three baseline samples the band is too wide to see it. No alarm is not no effect. The catalogue lists {o['n']} NASA studies of spaceflown human bodies. "
-             f"Above, the ship watches the real space around the crew, live.")
+    texto = (f"The Frontier. Four real astronauts from the Inspiration4 mission. Their lymphocytes fell a median {cambio:.0f} percent on landing day, and no one left their personal band, "
+             f"because three baseline samples make the band too wide to see it. No alarm is not no effect.")
     return Linea("frontier", texto, f"/api/astronautas · FB-024 · sha256 {_corto(a['hash_acta'])}", a["banner"])
 
 
@@ -70,8 +68,8 @@ def tormenta(d: dict) -> Linea:
         return Linea("tormenta", "I have no live space weather reading right now. The absence is recorded, not filled in.",
                      "/api/tormenta · DC-03", d["banner"])
     e = kps[0]
-    kp = e["parametros"]["kp"]
-    texto = f"Planetary K index is {kp:.2f}, read from NOAA's Space Weather Prediction Center."
+    texto = ("The planetary K index on screen is read live from NOAA's Space Weather Prediction Center. A geomagnetic storm begins when it crosses the dashed line. "
+             "I do not say the number aloud: my voice is recorded, and the Sun is not.")
     return Linea("tormenta", texto, f"{e['fuente']} · {e['ts_utc_inicio']} · sha256 {_corto(e['hash_lectura_cruda'])}", e["banner"])
 
 

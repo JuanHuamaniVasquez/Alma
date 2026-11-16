@@ -52,3 +52,12 @@ def osdr_tiene_archivos(payload: dict) -> bool:
     """Regla de calificación del Faro F-001: el registro OSDR del experimento lista ≥ 1 archivo en `files`."""
     campos = payload.get("fields") or []
     return bool(campos) and len(campos[0].get("files") or []) >= 1
+
+
+def kp_alcanza(payload: list[dict], desde: str, hasta: str, umbral: float = 5.0) -> bool:
+    """Regla de calificación del Faro F-002: alguna lectura del índice Kp planetario (3 h) con `desde ≤ time_tag < hasta` (UTC) llega a `umbral`. Formato NOAA SWPC `noaa-planetary-k-index.json`."""
+    for f in payload:
+        t = str(f.get("time_tag", ""))[:19].replace(" ", "T")
+        if desde <= t < hasta and f.get("Kp") is not None and float(f["Kp"]) >= umbral:
+            return True
+    return False
