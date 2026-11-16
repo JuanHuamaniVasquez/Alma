@@ -87,10 +87,11 @@ function construir(scene: THREE.Object3D, m: Medidas): Ajuste {
   const zSpineCh = (y: number) => { const p = perfil(m, Math.min(y, m.neck.y)); const z0 = p.zb + 0.3 * (p.zf - p.zb); if (y <= m.neck.y) return z0; const k = Math.min(1, (y - m.neck.y) / (0.1 * m.S)); return z0 + (m.head.z - 0.015 * m.S - z0) * k * k * (3 - 2 * k); };
   const yHipBP = (BL.hip.y + BR.hip.y) / 2, yHipCh = (CL.hip.y + CR.hip.y) / 2;
   const c7 = por("seventh cervical vertebra") ? centro(get("seventh cervical vertebra"), () => true).y : yHipBP + 0.5, atlas = por("atlas") ? centro(get("atlas"), () => true).y : c7 + 0.08;
-  const yBaseCh = m.head.y - 0.056 * m.S;
+  const yBaseCh = m.head.y - 0.0265 * m.S;                            // el atlas queda ≈ 0,085 S por debajo de la coronilla (antes 0,115 S: el cráneo bajaba demasiado)
+  const cObj = m.neck.y - 0.03 * m.S;                                  // C7 está ≈ 0,03 S por debajo del punto más estrecho del cuello
   const mapY = (y: number) => {                                       // altura del modelo → altura del personaje (tres tramos: cadera–C7, C7–atlas, resto)
-    if (y <= c7) return yHipCh + (y - yHipBP) * ((m.neck.y - yHipCh) / (c7 - yHipBP));
-    if (y <= atlas) return m.neck.y + (y - c7) * ((yBaseCh - m.neck.y) / Math.max(1e-6, atlas - c7));
+    if (y <= c7) return yHipCh + (y - yHipBP) * ((cObj - yHipCh) / (c7 - yHipBP));
+    if (y <= atlas) return cObj + (y - c7) * ((yBaseCh - cObj) / Math.max(1e-6, atlas - c7));
     return yBaseCh + (y - atlas) * ((m.head.y - yBaseCh) / Math.max(1e-6, (m.head.y - yBaseCh) + 0.02));
   };
   // anchuras y fondo: caja torácica del modelo contra la del personaje
@@ -111,13 +112,13 @@ function construir(scene: THREE.Object3D, m: Medidas): Ajuste {
   const cr = get("neurocranium"), mand = get("mandible");
   const [cy0, cy1] = rango(cr, 1), [my0] = rango(mand, 1);
   const centroCr = V((rango(cr, 0)[0] + rango(cr, 0)[1]) / 2, (cy0 + cy1) / 2, (rango(cr, 2)[0] + rango(cr, 2)[1]) / 2);
-  const kHead = (m.headH * 0.74) / Math.max(1e-6, cy1 - my0);
+  const anchoCr = rango(cr, 0)[1] - rango(cr, 0)[0], kHead = (0.8 * m.headW) / Math.max(1e-6, anchoCr);   // el ancho del cráneo ≈ 0,8 del ancho de la cabeza medida (piel y pelo incluidos)
   const anclaBP = por("atlas") ? centro(get("atlas"), () => true) : centroCr, anclaCh = torso(anclaBP);          // el cráneo se apoya en el atlas (C1) de la columna ajustada: unido al cuello, no al centro de la piel de la cabeza
   const cabeza = (v: V3): V3 => v.clone().sub(anclaBP).multiplyScalar(kHead).add(anclaCh);
 
   // ---- hombro: el brazo parte de donde el TÓRAX ajustado deja el hombro del modelo (así queda unido a su clavícula y omóplato); codo y muñeca siguen las medidas del personaje
   const hombro = { left: torso(BL.sh), right: torso(BR.sh) };
-  const flex = V(0, 0, -0.026 * m.S);                                   // brazo relajado: el codo cede hacia atrás y el antebrazo se adelanta (≈ 20° de flexión), no un palo recto
+  const flex = V(0, 0, -0.036 * m.S);                                   // brazo relajado: el codo cede hacia atrás y el antebrazo se adelanta (≈ 20° de flexión), no un palo recto
   const codo = { left: hombro.left.clone().lerp(CL.wr, 0.186 / 0.332).add(flex), right: hombro.right.clone().lerp(CR.wr, 0.186 / 0.332).add(flex) };
   const brazoL = { left: [cadena(BL.sh, BL.el, hombro.left, codo.left), cadena(BL.el, BL.wr, codo.left, CL.wr), cadena(BL.wr, BL.tip, CL.wr, CL.tip)], right: [cadena(BR.sh, BR.el, hombro.right, codo.right), cadena(BR.el, BR.wr, codo.right, CR.wr), cadena(BR.wr, BR.tip, CR.wr, CR.tip)] };
   const piernaL = { left: [cadena(BL.hip, BL.knee, CL.hip, CL.kn), cadena(BL.knee, BL.ankle, CL.kn, CL.an), cadena(BL.ankle, BL.toe.clone().setX(BL.ankle.x), CL.an, V(CL.an.x, CL.toe.y, CL.toe.z))],

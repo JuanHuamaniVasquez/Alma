@@ -70,7 +70,7 @@ export function medirCuerpo(root: THREE.Object3D): Medidas | null {
     const cs = clusters(pts, y(f), dy, gap);
     if (cs.length >= 2 && !cs.some((k) => k.min < -0.01 * S && k.max > 0.01 * S)) { yCrotch = y(f); break; }
   }
-  const hipY = yCrotch + 0.04 * S;
+  const hipY = yCrotch + 0.065 * S;                                   // centro de la cabeza femoral ≈ 0,52 S (la cresta ilíaca queda ≈ 0,60 S)
   const lados: Record<string, Lado> = {};
   for (const s of [-1, 1]) {
     const base = s < 0 ? d.L : d.R;
@@ -99,10 +99,8 @@ export function medirCuerpo(root: THREE.Object3D): Medidas | null {
     const dir = b.clone().sub(a).normalize();                     // hacia arriba por el brazo
     let tipY = Infinity;
     const aprox = (yy: number) => a.clone().add(dir.clone().multiplyScalar((yy - a.y) / dir.y));
-    for (let i = 0; i < pts.length; i += 3) {                      // punta del dedo: el punto más bajo cercano al eje del brazo
-      if (pts[i + 1] > a.y + 0.02 * S) continue;
-      const e = aprox(pts[i + 1]);
-      if (Math.hypot(pts[i] - e.x, pts[i + 2] - e.z) < 0.05 * S && Math.sign(pts[i]) === s) tipY = Math.min(tipY, pts[i + 1]);
+    for (let i = 0; i < pts.length; i += 3) {                      // punta del dedo: el punto más bajo de la mano (lejos del muslo: |x| > 0,21 S) del lado de este brazo
+      if (s * pts[i] > 0.21 * S && pts[i + 1] > y(0.3)) tipY = Math.min(tipY, pts[i + 1]);
     }
     const tip = aprox(Number.isFinite(tipY) ? tipY : y(0.4));
     const wr = tip.clone().addScaledVector(dir, 0.108 * S), sh = aprox(y(0.80));
