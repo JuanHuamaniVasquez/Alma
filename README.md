@@ -183,6 +183,8 @@ A fresh clone runs **fewer** tests: five test files skip themselves when their r
 Tracked in [`docs/checklist-final.md`](docs/checklist-final.md) and `TASKS.md`. Next candidates: ALMA as a **side panel** that tucks away after speaking so it never covers content (all rooms) · **search, filters, pagination and voice report in every room where they apply**, with a global command palette · **"try to fool ALMA"** (draw an anomaly and see which detector catches it) · mission replay · a 3D habitat with lit air/water loops · photorealistic crew (Quaternius CC0 characters) · local (offline) speech recognition · validating the robust variance channel on a larger independent cohort · more real NASA/NOAA feeds (DONKI, OSDR when OS-892 publishes).
 
 ## Credits and licences
+Code: **Apache License 2.0** ([`LICENSE`](LICENSE), [`NOTICE`](NOTICE)). Third-party data, models and images keep their own licences, listed below and in `NOTICE`.
+
 Every source, licence and simulated component: [`docs/politica-de-datos.md`](docs/politica-de-datos.md). Highlights: LifeSnaps (Zenodo 7229547) · Sjögren/SLE/healthy Fitbit study (Zenodo 8018238, CC BY 4.0) · NOAA SWPC and Space Weather Scales · **NASA SDO** imagery · Utah residential water use (HydroShare, CC BY) · NASA NTRS reports (Ewert & Stromgren 2019; Jones 2019; Kayatin 2021) · **NASA Z-2 spacesuit model** (NASA 3D Resources, "free and without copyright") · Kokoro-82M voice model (Apache-2.0) · fonts Instrument Serif, Schibsted Grotesk, IBM Plex Mono (SIL OFL).
 
 *Licence of this repository: to be set by the team before publication.*

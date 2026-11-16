@@ -30,3 +30,7 @@ data/entorno_vivo/
 
 # vault de Obsidian generado por graphify (solo lectura humana; se regenera con /graphify . --obsidian)
 graphify-out/obsidian/
+
+# archivos locales de graphify (rutas de esta máquina) y su visor HTML: se regeneran
+graphify-out/.graphify_*
+graphify-out/graph.html
