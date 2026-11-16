@@ -5,6 +5,8 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { BUDGETS, INDICATOR_NAMES, type Anillo, type Entorno, type Indicator, type LedgerDay } from "@/lib/api";
 import type { CrewLook } from "./CrewFigure";
+import { medirCuerpo, medidasPorDefecto, perfil } from "@/lib/anatomia";
+import { Anatomy, type OrganState } from "./Anatomy";
 
 useGLTF.setDecoderPath("/draco/");
 useGLTF.preload("/models/z2_suit.glb"); useGLTF.preload("/models/z2_helmet.glb");
@@ -13,6 +15,7 @@ type Layer = "uniform" | "body" | "anatomy";
 const HEIGHT = 1.9, FOCUS_Y = 0.98;
 /** Vista del usuario: arrastrar (ratón o dedo) gira la figura, rueda/pellizco acerca. `moved` distingue arrastre de toque (el toque hace hablar a ALMA). */
 const view = { yaw: 0, zoom: 1, moved: false, last: 0 };
+const MEDIDAS_EVA = medidasPorDefecto(1.78);
 const IVORY = "#efe8da", SIGNAL = "#ff5a1f";
 
 /** Holograma: fresnel (borde brillante), líneas de barrido que suben, parpadeo mínimo y el mapa de color del modelo como modulación de brillo (los detalles del traje se leen).
@@ -156,10 +159,17 @@ function Suit({ helmet, crew, layer, pickedInd, onPickInd, states, ...props }: {
   return (
     <Body anchors={ANCHORS_EVA} {...props}>
       <primitive object={wrap}>{/* hijo de wrap: hereda la misma escala y desplazamiento que el traje (coordenadas nativas del modelo) */}
-        {layer === "anatomy" && <group name="anatomy-eva" userData={{ noholo: true }} position={[0, 0.06, 0.0]}><Anatomy H={1.78} picked={pickedInd} onPick={onPickInd} states={states} /></group>}
+        {layer === "anatomy" && <group name="anatomy-eva" userData={{ noholo: true }} position={[0, 0.06, 0.0]}><Anatomy m={MEDIDAS_EVA} picked={pickedInd} onPick={onPickInd} states={states} arrastrado={() => view.moved} /></group>}
       </primitive>
     </Body>
   );
+}
+
+/** Anclas de los indicadores sobre el cuerpo MEDIDO: cada marca cae sobre su órgano (cerebro, cuello, corazón y brazo IZQUIERDO del paciente = +x, páncreas). */
+function anchorsMedidas(m: ReturnType<typeof medirCuerpo> & object): Record<string, [number, number, number]> {
+  const S = m.S, yC = m.neck.y - 0.17 * S, pC = perfil(m, yC), pn = perfil(m, m.neck.y), pa = perfil(m, yC - 0.108 * S);
+  return { "sueño": [0, m.head.y + 0.095 * S, m.head.z], "ánimo": [-0.045 * S, m.head.y + 0.014 * S, m.head.z + 0.062 * S], temperatura: [0, m.neck.y, pn.zf + 0.012 * S],
+           fc: [pC.hw * 0.18 + 0.012 * S, yC - 0.018 * S, pC.zf + 0.012 * S], "presión": [m.R.sh.x * 0.9 + m.R.el.x * 0.1 + 0.012 * S, m.R.sh.y * 0.7 + m.R.el.y * 0.3, m.R.sh.z + 0.02 * S], glucosa: [0, yC - 0.108 * S, pa.zf + 0.01 * S] };
 }
 
 /** Anclas de los indicadores sobre el cuerpo generado (fracciones de la altura H; pies en y=0, frente = +z; A-pose). */
@@ -169,84 +179,6 @@ function anchorsFor(H: number): Record<string, [number, number, number]> {
 }
 const HAIR = /short0|bob0|ponytail|long0|afro|braid|eyebrow|eyelash/;
 
-
-/** Capa de anatomía: esqueleto y órganos PROCEDURALES (proporciones estándar sobre la altura H; ilustrativo, no un escaneo ni un diagnóstico).
- *  Cada indicador cae sobre su órgano: sueño/ánimo → cerebro, temperatura → cuello/tronco, fc → corazón, presión → arteria braquial, glucosa → páncreas/estómago. */
-type OrganState = "ok" | "alarm" | "channel" | "blocked";
-function Anatomy({ H, picked, onPick, states }: { H: number; picked: string | null; onPick: (id: string) => void; states: Record<string, OrganState> }) {
-  const P = (x: number, y: number, z = 0) => new THREE.Vector3(x * H, y * H, z * H);
-  const J = useMemo(() => ({
-    head: P(0, 0.935, 0.005), neck: P(0, 0.865), chest: P(0, 0.73), pelvis: P(0, 0.52),
-    shL: P(-0.105, 0.815), elL: P(-0.17, 0.705), wrL: P(-0.24, 0.585), shR: P(0.105, 0.815), elR: P(0.17, 0.705), wrR: P(0.24, 0.585),
-    hipL: P(-0.055, 0.5), knL: P(-0.062, 0.275), anL: P(-0.07, 0.045), hipR: P(0.055, 0.5), knR: P(0.062, 0.275), anR: P(0.07, 0.045),
-  }), [H]);                                                         // eslint-disable-line react-hooks/exhaustive-deps
-  const bone = <meshStandardMaterial color="#e9e0cc" roughness={0.55} />;
-  const Cap = ({ a, b, r, mat }: { a: THREE.Vector3; b: THREE.Vector3; r: number; mat?: React.ReactNode }) => {
-    const d = b.clone().sub(a), len = d.length(), q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.clone().normalize());
-    return <mesh position={a.clone().add(b).multiplyScalar(0.5)} quaternion={q}><capsuleGeometry args={[r * H, Math.max(0.001, len - 2 * r * H), 6, 12]} />{mat ?? bone}</mesh>;
-  };
-  /** Órgano = indicador oficial del reto: tocarlo lo selecciona; el elegido late y brilla. */
-  const Organ = ({ id, color, pos, scale = [1, 1, 1], rot = [0, 0, 0], r }: { id?: string; color: string; pos: THREE.Vector3; scale?: [number, number, number]; rot?: [number, number, number]; r: number }) => {
-    const on = !!id && picked === id, ref = useRef<THREE.Mesh>(null);
-    useFrame(({ clock }) => { if (ref.current) ref.current.scale.setScalar(on ? 1 + 0.07 * Math.sin(clock.elapsedTime * 5) : 1); });
-    return (
-      <mesh ref={ref} position={pos} rotation={rot} scale={scale}
-        onClick={id ? (e) => { e.stopPropagation(); if (!view.moved) onPick(id); } : undefined}
-        onPointerOver={id ? () => { document.body.style.cursor = "pointer"; } : undefined} onPointerOut={id ? () => { document.body.style.cursor = ""; } : undefined}>
-        <sphereGeometry args={[r * H, 20, 16]} />
-        {(() => {                                                       // el color del órgano ES el estado de su recibo: verde con recibo · naranja alarma · gris sin sensor verificado
-          const st = id ? states[id] : undefined;
-          if (on) return <meshStandardMaterial color="#ff7a3a" roughness={0.45} emissive="#ff5a1f" emissiveIntensity={0.9} />;
-          if (st === "blocked") return <meshStandardMaterial color="#6b6258" roughness={0.8} transparent opacity={0.55} />;
-          if (st === "alarm") return <meshStandardMaterial color={color} roughness={0.45} emissive="#ff5a1f" emissiveIntensity={0.7} />;
-          if (st === "ok") return <meshStandardMaterial color={color} roughness={0.45} emissive="#6fae7a" emissiveIntensity={0.32} />;
-          return <meshStandardMaterial color={color} roughness={0.45} emissive={color} emissiveIntensity={0.18} />;
-        })()}
-      </mesh>
-    );
-  };
-  const organ = (color: string) => <meshStandardMaterial color={color} roughness={0.45} emissive={color} emissiveIntensity={0.18} />;
-  const vertebrae = Array.from({ length: 24 }, (_, i) => { const t = i / 23; return P(0, 0.86 - t * 0.35, -0.028 - 0.012 * Math.sin(t * Math.PI)); });
-  const ribs = Array.from({ length: 8 }, (_, i) => 0.805 - i * 0.026);
-  return (
-    <group name="anatomy">
-      {/* cráneo, mandíbula y cerebro */}
-      <mesh position={J.head}><sphereGeometry args={[0.052 * H, 24, 18]} /><meshStandardMaterial color="#e9e0cc" roughness={0.5} transparent opacity={0.55} /></mesh>
-      <Organ id="ánimo" color="#d98a8f" pos={J.head.clone().add(new THREE.Vector3(0, 0.006 * H, 0.016 * H))} scale={[1, 0.9, 0.8]} r={0.03} />
-      <Organ id="sueño" color="#c9777f" pos={J.head.clone().add(new THREE.Vector3(0, 0.004 * H, -0.012 * H))} scale={[1, 0.9, 0.9]} r={0.03} />
-      <Organ id="temperatura" color="#e8c06a" pos={J.head.clone().add(new THREE.Vector3(0, -0.012 * H, 0.004 * H))} r={0.009} />
-      <mesh position={J.head.clone().add(new THREE.Vector3(0, -0.04 * H, 0.025 * H))} scale={[1, 0.7, 0.9]}><sphereGeometry args={[0.028 * H, 14, 10]} />{bone}</mesh>
-      {/* columna */}
-      {vertebrae.map((v, i) => <mesh key={i} position={v}><boxGeometry args={[0.02 * H, 0.011 * H, 0.016 * H]} />{bone}</mesh>)}
-      {/* caja torácica: costillas como arcos + esternón + clavículas */}
-      {ribs.map((y, i) => (
-        <group key={i} position={[0, y * H, -0.01 * H]} scale={[1 - i * 0.012, 1, 1]}>
-          <mesh rotation={[Math.PI / 2, 0, 0]}><torusGeometry args={[0.085 * H, 0.0035 * H, 6, 40, Math.PI * 1.55]} />{bone}</mesh>
-        </group>
-      ))}
-      <Cap a={P(0, 0.835, 0.045)} b={P(0, 0.74, 0.06)} r={0.007} />
-      <Cap a={P(0, 0.84, 0.03)} b={J.shL} r={0.0055} /><Cap a={P(0, 0.84, 0.03)} b={J.shR} r={0.0055} />
-      {/* pelvis */}
-      <mesh position={J.pelvis} rotation={[Math.PI / 2, 0, 0]} scale={[1, 0.75, 1]}><torusGeometry args={[0.062 * H, 0.014 * H, 8, 28]} />{bone}</mesh>
-      {/* brazos y piernas (húmero/radio, fémur/tibia) */}
-      <Cap a={J.shL} b={J.elL} r={0.009} /><Cap a={J.elL} b={J.wrL} r={0.0075} />
-      <Cap a={J.shR} b={J.elR} r={0.009} /><Cap a={J.elR} b={J.wrR} r={0.0075} />
-      <Cap a={J.hipL} b={J.knL} r={0.012} /><Cap a={J.knL} b={J.anL} r={0.0095} />
-      <Cap a={J.hipR} b={J.knR} r={0.012} /><Cap a={J.knR} b={J.anR} r={0.0095} />
-            {/* arteria braquial (presión arterial): sigue el húmero izquierdo */}
-      {Array.from({ length: 7 }, (_, i) => <Organ key={i} id="presión" color="#b3262e" pos={J.shL.clone().lerp(J.elL, 0.1 + i * 0.13).add(new THREE.Vector3(0, 0, 0.012 * H))} r={0.006} />)}
-      {[J.shL, J.shR, J.elL, J.elR, J.knL, J.knR, J.hipL, J.hipR].map((v, i) => <mesh key={i} position={v}><sphereGeometry args={[0.0125 * H, 12, 10]} />{bone}</mesh>)}
-      {/* órganos */}
-      <Organ id="fc" color="#c8323c" pos={P(-0.055, 0.745, 0.018)} rot={[0, 0, 0.35]} scale={[0.9, 1.15, 0.9]} r={0.03} />
-      <mesh position={P(-0.05, 0.775, 0.0)} scale={[0.8, 1.7, 0.9]}><sphereGeometry args={[0.032 * H, 18, 14]} />{organ("#e9a3a8")}</mesh>
-      <mesh position={P(0.05, 0.775, 0.0)} scale={[0.8, 1.7, 0.9]}><sphereGeometry args={[0.032 * H, 18, 14]} />{organ("#e9a3a8")}</mesh>
-      <mesh position={P(0.045, 0.665, 0.015)} scale={[1.5, 0.8, 0.9]}><sphereGeometry args={[0.032 * H, 18, 14]} />{organ("#8a3d2a")}</mesh>
-      <mesh position={P(-0.035, 0.635, 0.02)} scale={[1.1, 0.9, 0.9]}><sphereGeometry args={[0.028 * H, 18, 14]} />{organ("#d9806a")}</mesh>
-      <Organ id="glucosa" color="#d8b24a" pos={P(0, 0.58, 0.012)} scale={[1.6, 0.9, 0.8]} r={0.02} />
-      <mesh position={P(0, 0.54, 0.015)} scale={[1.7, 1, 0.9]}><sphereGeometry args={[0.034 * H, 18, 14]} />{organ("#c98a7a")}</mesh>
-    </group>
-  );
-}
 
 /** Materiales del tripulante generado: pelo/cejas con recorte alfa, piel opaca, uniforme con color por vértice. */
 function prepCrew(m: THREE.Object3D) {
@@ -267,12 +199,14 @@ function prepCrew(m: THREE.Object3D) {
  *  Capas: «uniform» (con mono) o «body» (solo el cuerpo). Personaje FICTICIO: combinación de parámetros, nunca una persona real. */
 function CrewGLB({ name, layer, pickedInd, onPickInd, states, ...props }: { name: string; layer: Layer; pickedInd: string | null; onPickInd: (id: string) => void; states: Record<string, OrganState>; marks: Marks; mode: "books" | "body"; onTap: () => void; holo: boolean }) {
   const { scene } = useGLTF(`/models/crew_${name}.glb`);
-  const { model, H } = useMemo(() => {
+  const { model, H, medidas } = useMemo(() => {
     const m = scene.clone(true);
     const box = new THREE.Box3().setFromObject(m), c = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
     m.position.set(-c.x, -box.min.y, -c.z);
     prepCrew(m);
-    return { model: m, H: size.y };
+    const medidas = medirCuerpo(m);                                  // el esqueleto se ajusta a ESTE cuerpo
+    if (typeof window !== "undefined") (window as unknown as { __medidas?: unknown }).__medidas = medidas;
+    return { model: m, H: size.y, medidas };
   }, [scene]);
   useEffect(() => {
     model.traverse((o) => {
@@ -285,8 +219,8 @@ function CrewGLB({ name, layer, pickedInd, onPickInd, states, ...props }: { name
       }
     });
   }, [layer, model, props.holo]);
-  const anchors = useMemo(() => anchorsFor(H), [H]);
-  return <Body anchors={anchors} {...props}><primitive object={model} />{layer === "anatomy" && <group userData={{ noholo: true }}><Anatomy H={H} picked={pickedInd} onPick={onPickInd} states={states} /></group>}</Body>;
+  const anchors = useMemo(() => (medidas ? anchorsMedidas(medidas) : anchorsFor(H)), [H, medidas]);
+  return <Body anchors={anchors} {...props}><primitive object={model} />{layer === "anatomy" && <group userData={{ noholo: true }}><Anatomy m={medidas ?? medidasPorDefecto(H)} picked={pickedInd} onPick={onPickInd} states={states} arrastrado={() => view.moved} /></group>}</Body>;
 }
 
 /** La bahía holográfica: peana con anillos, haz de luz vertical y anillos de barrido en el suelo. Solo luz (aditivo): sin geometría pesada. */
