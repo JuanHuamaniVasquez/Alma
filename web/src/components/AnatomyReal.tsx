@@ -35,7 +35,7 @@ const cadena = (A: V3, B: V3, A2: V3, B2: V3) => {
   return (v: V3, peso = 1) => { const r = v.clone().sub(A).applyQuaternion(q).multiplyScalar(k).add(A2); return peso >= 1 ? r : v.clone().lerp(r, peso); };
 };
 
-type Ajuste = { grupo: Map<string, Pieza[]>; todas: Pieza[]; sueno: V3; hipotalamo: V3 };
+type Ajuste = { grupo: Map<string, Pieza[]>; todas: Pieza[]; sueno: V3; hipotalamo: V3; braquial: [V3, V3] };
 
 function construir(scene: THREE.Object3D, m: Medidas): Ajuste {
   const piezas: Pieza[] = [];
@@ -111,16 +111,15 @@ function construir(scene: THREE.Object3D, m: Medidas): Ajuste {
   const cr = get("neurocranium"), mand = get("mandible");
   const [cy0, cy1] = rango(cr, 1), [my0] = rango(mand, 1);
   const centroCr = V((rango(cr, 0)[0] + rango(cr, 0)[1]) / 2, (cy0 + cy1) / 2, (rango(cr, 2)[0] + rango(cr, 2)[1]) / 2);
-  const kHead = (m.headH * 1.02) / Math.max(1e-6, cy1 - my0);
+  const kHead = (m.headH * 0.86) / Math.max(1e-6, cy1 - my0);
   const centroCabezaCh = V(m.head.x, m.head.y + 0.0, m.head.z);
   const centroCabezaBP = V(centroCr.x, (cy1 + my0) / 2, centroCr.z);
   const cabeza = (v: V3): V3 => v.clone().sub(centroCabezaBP).multiplyScalar(kHead).add(centroCabezaCh);
 
-  // ---- hombro: la cintura escapular sigue al tórax y se desplaza para que la glenoides coincida con el hombro medido
-  const dHombro = (L: "left" | "right") => { const b = L === "left" ? BL : BR, c = L === "left" ? CL : CR; return c.sh.clone().sub(torso(b.sh)); };
-  const desp = { left: dHombro("left").setZ(0), right: dHombro("right").setZ(0) };
-
-  const brazoL = { left: [cadena(BL.sh, BL.el, CL.sh, CL.el), cadena(BL.el, BL.wr, CL.el, CL.wr), cadena(BL.wr, BL.tip, CL.wr, CL.tip)], right: [cadena(BR.sh, BR.el, CR.sh, CR.el), cadena(BR.el, BR.wr, CR.el, CR.wr), cadena(BR.wr, BR.tip, CR.wr, CR.tip)] };
+  // ---- hombro: el brazo parte de donde el TÓRAX ajustado deja el hombro del modelo (así queda unido a su clavícula y omóplato); codo y muñeca siguen las medidas del personaje
+  const hombro = { left: torso(BL.sh), right: torso(BR.sh) };
+  const codo = { left: hombro.left.clone().lerp(CL.wr, 0.186 / 0.332), right: hombro.right.clone().lerp(CR.wr, 0.186 / 0.332) };
+  const brazoL = { left: [cadena(BL.sh, BL.el, hombro.left, codo.left), cadena(BL.el, BL.wr, codo.left, CL.wr), cadena(BL.wr, BL.tip, CL.wr, CL.tip)], right: [cadena(BR.sh, BR.el, hombro.right, codo.right), cadena(BR.el, BR.wr, codo.right, CR.wr), cadena(BR.wr, BR.tip, CR.wr, CR.tip)] };
   const piernaL = { left: [cadena(BL.hip, BL.knee, CL.hip, CL.kn), cadena(BL.knee, BL.ankle, CL.kn, CL.an), cadena(BL.ankle, BL.toe.clone().setX(BL.ankle.x), CL.an, V(CL.an.x, CL.toe.y, CL.toe.z))],
                     right: [cadena(BR.hip, BR.knee, CR.hip, CR.kn), cadena(BR.knee, BR.ankle, CR.kn, CR.an), cadena(BR.ankle, BR.toe.clone().setX(BR.ankle.x), CR.an, V(CR.an.x, CR.toe.y, CR.toe.z))] };
 
@@ -137,7 +136,7 @@ function construir(scene: THREE.Object3D, m: Medidas): Ajuste {
       if (lado && /\bhumerus$/.test(n)) return (v) => brazoL[lado][0](v);
       if (lado && /\b(radius|ulna)$/.test(n)) return (v) => brazoL[lado][1](v);
       if (dedoMano) { const l = lado ?? (n.includes("left") ? "left" : "right"); return (v) => brazoL[l][2](v); }
-      if (lado && /\b(scapula|clavicle)$/.test(n)) return (v) => torso(v).add(desp[lado].clone().multiplyScalar(/clavicle/.test(n) ? Math.min(1, Math.abs(v.x) / Math.max(1e-6, Math.abs(lado === "left" ? BL.sh.x : BR.sh.x))) : 1));
+      if (lado && /\b(scapula|clavicle)$/.test(n)) return (v) => torso(v);
       return torso;
     })();
     const a = posiciones(p.mesh), v = V();
@@ -149,7 +148,7 @@ function construir(scene: THREE.Object3D, m: Medidas): Ajuste {
   for (const p of piezas) { const k = p.grupo; grupo.set(k, [...(grupo.get(k) ?? []), p]); }
   const ph = por("pineal body"), hy = piezas.find((p) => p.grupo === "hipotalamo");
   const cen = (p?: Pieza) => (p ? centro(posiciones(p.mesh), () => true) : V());
-  return { grupo, todas: piezas, sueno: cen(ph), hipotalamo: cen(hy) };
+  return { grupo, todas: piezas, sueno: cen(ph), hipotalamo: cen(hy), braquial: [hombro.left, codo.left] };
 }
 
 const COLOR: Record<string, string> = { hueso: "#e6dcc3", cartilago: "#c9d6d2", corazon: "#c8323c", aorta: "#8e2a30", vena_cava: "#3b5c8a", pulmon_izq: "#e9a3a8", pulmon_der: "#e9a3a8", traquea: "#cbd5d6", esofago: "#d6a29a",
@@ -204,7 +203,7 @@ function Real({ m, picked, onPick, states, arrastrado }: { m: Medidas; picked: s
         </mesh>
       ))}
       {/* arteria braquial: sigue el húmero izquierdo del paciente (+x), donde está la marca de la presión */}
-      {Array.from({ length: 8 }, (_, i) => { const pos = m.R.sh.clone().lerp(m.R.el, 0.08 + i * 0.12).add(V(-0.004 * S, 0, 0.011 * S)); const on = picked === "presión", st = states["presión"];
+      {Array.from({ length: 8 }, (_, i) => { const pos = aj.braquial[0].clone().lerp(aj.braquial[1], 0.08 + i * 0.12).add(V(-0.004 * S, 0, 0.011 * S)); const on = picked === "presión", st = states["presión"];
         return (
           <mesh key={i} position={pos} onClick={(e) => { e.stopPropagation(); if (!arrastrado()) onPick("presión"); }} onPointerOver={() => { document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = ""; }}>
             <sphereGeometry args={[0.0034 * S, 10, 8]} /><meshStandardMaterial color={st === "blocked" ? "#6b6258" : "#b3262e"} emissive={on ? "#ff5a1f" : st === "ok" ? "#6fae7a" : "#b3262e"} emissiveIntensity={on ? 0.9 : st === "ok" ? 0.32 : 0.18} />
