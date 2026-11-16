@@ -92,21 +92,27 @@ export function medirCuerpo(root: THREE.Object3D): Medidas | null {
     }
     return cen;
   };
+  /** Eje REAL del brazo: centroides de la piel del brazo de cada lado en cortes desde la axila hasta la mano (0,56–0,74 S), más el hombro (extrapolado hacia arriba) y la punta del dedo.
+   *  Codo y muñeca se toman por longitud de arco sobre esa polilínea con las proporciones del brazo (húmero 0,186 S, antebrazo 0,146 S, mano 0,108 S): el hueso sigue el brazo tal como está, con su flexión. */
   const fila = (s: number): { sh: THREE.Vector3; el: THREE.Vector3; wr: THREE.Vector3; tip: THREE.Vector3 } | null => {
-    const cen = sdf(s);
-    if (cen.length < 3) return null;
-    const a = cen[0], b = cen[cen.length - 1];                    // punto más bajo y más alto medidos
-    const dir = b.clone().sub(a).normalize();                     // hacia arriba por el brazo
-    let tipY = Infinity;
-    const aprox = (yy: number) => a.clone().add(dir.clone().multiplyScalar((yy - a.y) / dir.y));
-    for (let i = 0; i < pts.length; i += 3) {                      // punta del dedo: el punto más bajo de la mano (lejos del muslo: |x| > 0,21 S) del lado de este brazo
-      if (s * pts[i] > 0.21 * S && pts[i + 1] > y(0.3)) tipY = Math.min(tipY, pts[i + 1]);
+    const cen: THREE.Vector3[] = [];
+    for (let f = 0.74; f >= 0.56; f -= 0.02) {
+      const cs = clusters(pts, y(f), dy, gap);
+      if (cs.length < 3) continue;
+      const k = s < 0 ? cs[0] : cs[cs.length - 1];
+      if (Math.abs(k.mx) > 0.12 * S) cen.push(V(k.mx, y(f), k.mz));
     }
-    const tip = aprox(Number.isFinite(tipY) ? tipY : y(0.4));
-    const wr = tip.clone().addScaledVector(dir, 0.108 * S), sh = aprox(y(0.80));
-    sh.x = Math.sign(sh.x) * Math.min(Math.abs(sh.x), 0.108 * S);          // el eje del brazo extrapolado cae sobre el deltoides: la articulación del hombro está más adentro
-    const el = sh.clone().lerp(wr, 0.186 / 0.332);
-    return { sh, el, wr, tip };
+    if (cen.length < 4) return null;
+    let tipY = Infinity;
+    for (let i = 0; i < pts.length; i += 3) if (s * pts[i] > 0.21 * S && pts[i + 1] > y(0.3)) tipY = Math.min(tipY, pts[i + 1]);
+    const ult = cen[cen.length - 1], dirBajo = ult.clone().sub(cen[cen.length - 3]).normalize();
+    const tip = ult.clone().addScaledVector(dirBajo, (ult.y - (Number.isFinite(tipY) ? tipY : y(0.45))) / Math.max(0.3, Math.abs(dirBajo.y)));
+    const arr = cen[0].clone().sub(cen[2]).normalize();               // hacia arriba por el brazo
+    const sh = cen[0].clone().addScaledVector(arr, (y(0.80) - cen[0].y) / Math.max(0.3, arr.y));
+    sh.x = Math.sign(sh.x) * Math.min(Math.abs(sh.x), 0.108 * S);     // el eje extrapolado cae sobre el deltoides: la articulación está más adentro
+    const path = [sh, ...cen, tip], seg = path.slice(1).map((q, i) => q.distanceTo(path[i])), total = seg.reduce((a, b) => a + b, 0);
+    const en = (frac: number) => { let d = frac * total; for (let i = 0; i < seg.length; i++) { if (d <= seg[i]) return path[i].clone().lerp(path[i + 1], d / seg[i]); d -= seg[i]; } return tip.clone(); };
+    return { sh, el: en(0.186 / 0.44), wr: en(0.332 / 0.44), tip };
   };
   const bl = fila(-1), br = fila(1);
   const L: Lado = { ...lados.L, ...(bl ?? { sh: d.L.sh, el: d.L.el, wr: d.L.wr, tip: d.L.tip }) };
